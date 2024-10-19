@@ -1,0 +1,265 @@
+---
+import TopCats from '../components/Rankings/TopCats.astro'
+import TopContributors from '../components/Rankings/TopContributors.astro'
+import TopLinks from '../components/Rankings/TopLinks.astro'
+import ScrollUp from '../components/ScrollUp.astro'
+import SearchFilters from '../components/SearchFilters/Filters'
+import { CATS_ENDPOINT, CONTRIBUTORS_ENDPOINT, LINKS_ENDPOINT } from '../constants'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import {
+Periods,
+SortMetrics,
+type CatCount,
+type Contributor,
+type PaginatedLinks,
+type Period,
+type SortMetric,
+} from '../types'
+import fetch_with_handle_redirect from '../util/fetch_with_handle_redirect'
+
+// Auth
+const token = Astro.cookies.get('token')?.value
+const user = Astro.cookies.get('user')?.value
+
+// Params
+// period
+let period: Period = 'all'
+if (
+	Astro.url.searchParams.get('period') &&
+	(Periods as readonly string[]).includes(
+		Astro.url.searchParams.get('period') as Period
+	)
+) {
+	period = Astro.url.searchParams.get('period') as Period
+}
+// sort by
+let sort_by: SortMetric = 'rating'
+if (
+	Astro.url.searchParams.get('sort_by') && (SortMetrics as readonly string[]).includes(
+		Astro.url.searchParams.get('sort_by') as SortMetric
+	)) {
+		sort_by = Astro.url.searchParams.get('sort_by') as SortMetric
+	}
+// cats
+let cats = ""
+if (Astro.url.searchParams.get('cats')) {
+	cats = Astro.url.searchParams.get('cats') as string
+}
+// Encode cats params reserved chars
+const encoded_cats = encodeURIComponent(cats)
+
+// nsfw
+let nsfw: boolean = false
+if (Astro.url.searchParams.get('nsfw') && Astro.url.searchParams.get('nsfw') === 'true') {
+	nsfw = true
+}
+// page
+let page = 1
+if (Astro.url.searchParams.get('page')) {
+	page = parseInt(Astro.url.searchParams.get('page') as string)
+}
+
+// Get links
+let links_url = LINKS_ENDPOINT
+
+// edit URL params accordingly
+// cats
+let has_cats = false
+if (cats) {
+	has_cats = true
+	links_url += `?cats=${encoded_cats}`
+}
+// period
+let has_period = false
+if (period !== 'all') {
+	has_period = true
+
+	if (has_cats) {
+		links_url += `&period=${period}`
+	} else {
+		links_url += `?period=${period}`
+	}
+}
+// sort by
+let has_sort_by = false
+if (sort_by !== 'rating') {
+	has_sort_by = true
+
+	if (has_cats || has_period) {
+		links_url += `&sort_by=${sort_by}`
+	} else {
+		links_url += `?sort_by=${sort_by}`
+	}
+}
+// nsfw
+let has_nsfw = false
+if (nsfw) {
+	has_nsfw = true
+	if (has_cats || has_period || has_sort_by) {
+		links_url += `&nsfw=${nsfw}`
+	} else {
+		links_url += `?nsfw=${nsfw}`
+	}
+}
+// page
+if (has_cats || has_period || has_sort_by || has_nsfw) {
+	links_url += `&page=${page}`
+} else {
+	links_url += `?page=${page}`
+}
+
+// Get links
+const get_links_resp = await (token
+	? fetch_with_handle_redirect(links_url, {
+			headers: { Authorization: `Bearer ${token}` },
+		})
+	: fetch_with_handle_redirect(links_url))
+if (!get_links_resp.Response || get_links_resp.RedirectTo) {
+	return Astro.redirect(get_links_resp.RedirectTo)
+}
+const data: PaginatedLinks = await get_links_resp.Response.json()
+const links = data.Links
+
+// Top cats
+let top_cats: CatCount[] = []
+let top_subcats: CatCount[] = []
+
+// Top contributors
+let top_contributors: Contributor[] = []
+
+if (links && links.length) {
+
+	// Get cat(s) contributors and subcat counts
+	let contributors_url = CONTRIBUTORS_ENDPOINT
+
+	if (cats) {
+		contributors_url += `?cats=${encoded_cats}`
+		let subcats_url = CATS_ENDPOINT + `?cats=${encoded_cats}`
+
+		if (period !== 'all') {
+			contributors_url += `&period=${period}`
+			subcats_url += `&period=${period}`
+		}
+
+		const subcats_resp = await fetch_with_handle_redirect(subcats_url)
+		if (!subcats_resp.Response || subcats_resp.RedirectTo) {
+			return Astro.redirect(subcats_resp.RedirectTo)
+		}
+		top_subcats = await subcats_resp.Response.json()
+	
+	// Get cat counts
+	} else {
+		let cats_url = CATS_ENDPOINT
+		if (period !== 'all') {
+			contributors_url += `?period=${period}`
+			cats_url += `?period=${period}`
+		}
+
+		const top_cats_resp = await fetch_with_handle_redirect(cats_url)
+		if (!top_cats_resp.Response || top_cats_resp.RedirectTo) {
+			return Astro.redirect(top_cats_resp.RedirectTo)
+		}
+		top_cats = await top_cats_resp.Response.json()
+		// [{Cat: 'umvc3', Count: 1}, ...]
+	}
+
+	const contributors_resp = await fetch_with_handle_redirect(contributors_url)
+	if (!contributors_resp.Response || contributors_resp.RedirectTo) {
+		return Astro.redirect(contributors_resp.RedirectTo)
+	}
+	top_contributors = await contributors_resp.Response.json()
+}
+
+const page_title = (cats ? cats : "Top") + (sort_by !== 'rating' ? " (Newest)" : " (Rating)")
+
+---
+
+<BaseLayout Title='Top Links / Cats / Contributors'>
+	<main>
+		<h1>{page_title}</h1>
+		
+		<SearchFilters 
+			client:load 
+			InitialPeriod={period}
+			InitialSortBy={sort_by}
+			InitialCats={cats.length ? cats.split(',') : []}
+			InitialNSFW={nsfw}
+		/>
+
+		{
+			links && links.length ? (
+				<>
+					<section>
+						<TopCats 
+							TopCats={top_subcats?.length ? top_subcats : top_cats}
+							CatsParams={encoded_cats}
+							Period={period}
+							SortBy={sort_by}
+							NSFW={nsfw}
+						/>
+					</section>
+
+					<TopContributors Contributors={top_contributors} />
+
+					<section>
+						<h2>Top Links</h2>
+
+						<TopLinks 
+							Links={links}
+							NSFW={nsfw}
+							Period={period}
+							SortBy={sort_by}
+							Page={page}
+							NextPage={data.NextPage}
+							Token={token}
+							User={user}
+						/>
+					</section>
+
+					<ScrollUp />
+				</>
+			) : (
+				<section>
+					<p id="no-links">No links found.</p>
+					<p>&macr;&bsol;&lowbar;&lpar;&#x30c4;&rpar;&lowbar;&sol;&macr;</p>
+					<p id="add-link"><a href={`/new`}>Add link</a></p>
+					{user ? (
+						<p>
+							
+						</p>
+					) : null}
+				</section>
+			)
+		}
+	</main>
+</BaseLayout>
+
+<style>
+	#search-filters {
+		padding-bottom: 1.5rem;
+
+		div {
+			display: flex;
+			align-items: center;
+		}
+
+		p {
+			margin-top: 0;
+		}
+
+		a {
+			margin-left: 5px;
+		}
+	}
+
+	:is(li a, li strong:has(a)):has(+ span) {
+		display: inline-block;
+	}
+
+	p#no-links {
+		margin-top: 0;
+	}
+	p#add-link {
+		margin-top: 1rem;
+	}
+</style>

@@ -1,0 +1,210 @@
+---
+interface Props {
+	Title: string
+}
+
+const { Title: title } = Astro.props
+let user = Astro.cookies.get('user')?.value
+---
+
+<!doctype html>
+<html lang='en'>
+	<head>
+		<meta charset='UTF-8' />
+		<meta name='description' content='Flexible Internet Treasure Map (FITM)' />
+		<meta name='viewport' content='width=device-width' />
+		<meta name='generator' content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<nav>
+		<a href='/'>Home</a>
+		<a href='/about'>About</a>
+		<a href='/top'>Top</a>
+		<a href='/new'>New</a>
+		{
+			user ? (
+			<a href=`/map/${user}` id="user-tmap-link">{user}</a>) : (<a href='/login' id="login-link">Login</a>)
+		}
+	</nav>
+	<body>
+		<slot />
+	</body>
+
+	<style is:global>
+		:root {
+			--text: hsl(0, 0%, 92%);
+			--treasurey: hsl(44, 55%, 80%);
+			--treasurey-dark: hsl(44, 25%, 60%);
+			--sky: hsl(180, 33%, 82%);
+		}
+		html {
+			font-family: system-ui, sans-serif;
+			background: #13151a;
+			background-size: 224px;
+		}
+		nav,
+		footer {
+			max-width: 1080px;
+			margin: 0 auto;
+			padding: 0.5rem 1rem;
+
+			a,
+			a:visited {
+				color: var(--text);
+			}
+		}
+		nav :is(#user-tmap-link, #login-link) {
+			float: right;
+		}
+		main {
+			margin: auto;
+			padding: 0.5rem;
+			width: 800px;
+			max-width: calc(100% - 2rem);
+			color: var(--text);
+			line-height: 1.4;
+		}
+		h1 {
+			font-size: 2rem;
+			font-weight: 700;
+			line-height: 1;
+			text-align: center;
+		}
+		h1:has(+h2.subtitle) {
+			margin-bottom: 0.5rem;
+		}
+		h1,
+		h2.subtitle {
+			margin-bottom: 1rem;
+		}
+		h2 {
+			font-size: 1.25rem;
+		}
+		h2.subtitle {
+			font-size: 1rem;
+			font-weight: normal;
+			text-align: center;
+		}
+		h2.subtitle.bg {
+			background: hsla(180, 33%, 82%, 0.05);
+			padding: 3px;
+		}
+		h3 {
+			font-size: 1.15rem;
+		}
+		h2, h3, h4, h5, h6 {
+			margin: 0;
+		}
+		p {
+			margin-bottom: 0;
+		}
+		section {
+			padding: 1rem 0;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+		}
+		a {
+			color: var(--treasurey);
+		}
+		form {
+			max-width: 100%;
+
+			label {
+				display: block;
+				margin-top: 3px;
+			}
+
+			textarea {
+				max-width: 100%;
+			}
+
+			label:is(#search-period, #search-sort-by, #search-cats, #search-nsfw) {
+				display: inline;
+
+				+ * {
+					margin-left: 5px;
+				}
+			}
+		}
+		img {
+			height: auto;
+			object-fit: contain;
+			max-width: 100%;
+		}
+		details {
+			max-width: 100%;
+		}
+		details[open] {
+			summary pre { 
+				display: none;
+			}
+		}
+		pre {
+			white-space: pre-line;
+			margin: 0;
+		}
+
+		button {
+			color: black;
+		}
+
+		button.img-btn {
+			padding: 3px 3px 0px;
+			margin-top: 0;
+			min-width: fit-content;
+			background-color: transparent;
+			border: none;
+			cursor: pointer;
+		}
+
+		#top-cats,
+		#top-contributors {
+			display: flex;
+			flex-direction: column;
+			list-style-position: inside;
+			margin: 0;
+			padding: 0.5rem 1rem;
+
+			li {
+				padding-right: 1rem;
+			}
+
+			li a {
+				display: inline-block;
+			}
+		}
+
+		nav.pagination + ol#top-links {
+			margin-top: 0;
+		}
+
+		#cat-list {
+			display: flex;
+			flex-wrap: wrap;
+			padding-inline-start: 0;
+			gap: 5px;
+		}
+
+		.error {
+			color: red;
+
+			a {
+				color: red;
+			}
+		}
+
+		@media (min-width: 400px) {
+			h2 {
+				font-size: 1.5rem;
+			}
+		}
+
+		@media (min-width: 680px) {
+			main {
+				padding: 2rem;
+				padding-bottom: 1rem;
+				max-width: calc(100% - 4rem);
+			}
+		}
+
+	</style>
+</html>

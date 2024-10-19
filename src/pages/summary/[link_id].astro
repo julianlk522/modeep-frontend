@@ -1,0 +1,138 @@
+---
+import Link from '../../components/Link/Link'
+import Summary from '../../components/Summary/Summary'
+import NewSummary from '../../components/Summary/NewSummary'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import type { SummaryPage } from '../../types'
+import {SUMMARIES_ENDPOINT} from '../../constants'
+import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
+
+// Auth
+const token = Astro.cookies.get('token')?.value
+const user = Astro.cookies.get('user')?.value
+const is_signed_in = user && token
+
+const { link_id } = Astro.params
+if (!link_id) {
+	return Astro.redirect('/404')
+}
+
+// Get summaries + link
+const summaries_url = SUMMARIES_ENDPOINT + `/${link_id}`
+const get_summaries_resp = await (token
+	? fetch_with_handle_redirect(summaries_url, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
+	: fetch_with_handle_redirect(summaries_url))
+if (!get_summaries_resp.Response || get_summaries_resp.RedirectTo) {
+	return Astro.redirect(get_summaries_resp.RedirectTo)
+}
+let summary_data: SummaryPage = await get_summaries_resp.Response.json()
+const { Link: link, Summaries: summaries } = summary_data
+
+// put summary with highest like count first,
+// unless it is a tie between "Auto Summary" and 1+ others
+// (in that case, the next highest first)
+summaries.sort((a, b) => {
+	if (a.LikeCount !== b.LikeCount) {
+		return b.LikeCount - a.LikeCount;
+	}
+	
+	if (a.SubmittedBy === 'Auto Summary') {
+		return 1;
+	} else if (b.SubmittedBy === 'Auto Summary') {
+		return -1;
+	}
+	
+	return a.Text.localeCompare(b.Text);
+})
+
+let summary_from_user_exists = false
+for (const summary of summaries) {
+	if (summary.SubmittedBy === user) {
+		summary_from_user_exists = true
+		break
+	}
+}
+
+const page_title = link.Summary ? `Summaries for "${link.Summary}"` : 'Link Summaries'
+---
+
+<BaseLayout Title={page_title}>
+	<script>
+		import { assign_login_redirect_handler } from '../../util/login_redirect'
+		assign_login_redirect_handler()
+	</script>
+	<main>
+		<h1>Summaries</h1>
+		<section>
+			<Link
+				client:load
+				Link={link}
+				IsSummaryPage={true}
+				Token={token}
+				User={user}
+			/>
+		</section>
+
+		<section>
+			{is_signed_in ? 
+				<NewSummary 
+					client:load 
+					LinkID={link_id} 
+					SummaryFromUserExists={summary_from_user_exists}
+					Token={token} 
+				/> 
+			: <p id='login-redirect-link'>
+				<a href='/login'>
+					Login
+				</a>
+				<span> to like summaries or add your own.</span>
+			</p>
+			}
+		</section>
+
+		<section>
+			<h2>Top Summaries</h2>
+			<ol id="top-summaries">
+				{
+					summaries.length ? (
+						summaries.map((summary) => (
+							<Summary
+								client:load
+								Token={token}
+								User={user}
+								ID={summary.ID}
+								Text={summary.Text}
+								SubmittedBy={summary.SubmittedBy}
+								LastUpdated={summary.LastUpdated}
+								LikeCount={summary.LikeCount}
+								IsLiked={summary.IsLiked}
+							/>
+						))
+					) : (
+						<p>No summaries yet.</p>
+					)
+				}
+			</ol>
+		</section>
+	</main>
+</BaseLayout>
+
+<style>
+	p#login-redirect-link {
+		margin-top: 0;
+
+		a {
+			display: inline-block;
+		}
+	}
+
+	#top-summaries {
+		max-width: calc(100% - 1rem);
+		margin-left: auto;
+		padding-inline-start: 0;
+	}
+</style>

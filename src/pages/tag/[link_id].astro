@@ -1,0 +1,108 @@
+---
+import Link from '../../components/Link/Link'
+import EditTag from '../../components/Tag/EditTag'
+import TagCat from '../../components/Tag/TagCat'
+import { TAGS_ENDPOINT } from '../../constants'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import type { TagPage } from '../../types'
+import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
+import CSRLastUpdated from '../../components/Tag/CSRLastUpdated'
+
+const token = Astro.cookies.get('token')?.value
+const user = Astro.cookies.get('user')?.value
+
+const { link_id } = Astro.params
+if (!link_id) {
+	return Astro.redirect('/404')
+}
+
+const tags_url = TAGS_ENDPOINT + `/${link_id}`
+const get_tags_resp = await (token ? fetch_with_handle_redirect(tags_url, {
+	headers: {
+		Authorization: `Bearer ${token}`,
+	},
+}) : fetch_with_handle_redirect(tags_url))
+if (!get_tags_resp.Response || get_tags_resp.RedirectTo) {
+	return Astro.redirect(get_tags_resp.RedirectTo)
+}
+const tag_Data: TagPage = await get_tags_resp.Response.json()
+const { Link: link, UserTag: user_tag, TagRankings: tags } = tag_Data
+link.TagCount = tags.length
+
+const page_title = link.Summary ? `Tags for "${link.Summary}"` : `Link Tags`
+---
+
+<BaseLayout Title={page_title}>
+	<script>
+		import { assign_login_redirect_handler } from '../../util/login_redirect'
+		assign_login_redirect_handler()
+	</script>
+	<main>
+		<section>
+			<h2>Link:</h2>
+			<Link
+				client:load
+				Link={link}
+				IsTagPage={true}
+				Token={token}
+				User={user}
+			/>
+		</section>
+
+		{user ? 
+			<EditTag
+				client:load
+				LinkID={link_id}
+				Token={token}
+				UserTag={user_tag}
+				OnlyTag={tags.length === 1}
+			/> 
+		: <section>
+			<p id="login-redirect-link"><a href="/login">Login</a> to start tagging links.</p>
+		</section>}
+
+		{
+			tags ? (
+				<section>
+					<h2>Top Tags</h2>
+					<ol id="top-tags">
+						{tags.map((tag) => (
+							<li class='tag'>
+								<ul id='cat-list'>
+									{tag.Cats.split(',').map((tag) => {
+										return (
+											<TagCat Cat={tag} />
+										)
+									})}
+								</ul>
+								<p>
+									submitted by{' '}
+									<a href={`/map/${tag.SubmittedBy}`}>
+										{tag.SubmittedBy}
+									</a>
+								</p>
+								<CSRLastUpdated client:load LastUpdated={tag.LastUpdated} />
+								<p>
+									
+									lifespan: {tag.LifeSpanOverlap.toFixed(2)}%
+								</p>
+							</li>
+						))}
+					</ol>
+				</section>
+			) : null
+		}
+	</main>
+</BaseLayout>
+
+<style>
+	ol#top-tags {
+		padding-inline-start: 0;
+	}
+	#login-redirect-link {
+		margin-top: 0;
+	}
+	.tag:not(:last-child) {
+		margin-bottom: 2rem;
+	}
+</style>

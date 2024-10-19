@@ -1,0 +1,27 @@
+#profile-about {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 1rem;
+	margin-top: 1rem;
+
+	button#edit-about-btn {
+		align-self: start;
+		margin-right: 25%;
+	}
+
+	button#confirm-changes {
+		display: block;
+	}
+
+	button#edit-about-btn,
+	button#confirm-changes {
+		padding: 3px 0 0;
+	}
+}
+
+@media (min-width: 680px) {
+	#profile-about button#edit-about-btn {
+		margin-right: 50%;
+	}
+}

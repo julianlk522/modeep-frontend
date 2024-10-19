@@ -1,0 +1,31 @@
+---
+import { Image } from "astro:assets"
+import fitm_island from '../../public/fitm-island.webp'
+import NoFooter from "../layouts/NoFooter.astro"
+
+---
+
+<NoFooter Title="Leave Feedback for FITM">
+	<main>	
+		<section>
+			<h1>Feedback</h1>
+			<p>If you have an opinion about how FITM could be better, please email <a href='mailto:fitm-contact@proton.me'>fitm-contact@proton.me</a> to share it. </p>
+			<p>Your comments are appreciated and any suggestions will be considered in the next round of updates.</p>
+			<p>Thanks for stopping by!</p>
+		</section>
+
+		<Image id="fitm-island" src={fitm_island} alt='an island with a chest of web treasure' />
+	</main>
+</NoFooter>
+
+<style>
+	section {
+		padding: 2rem 0;
+	}
+	#fitm-island {
+		max-height: 350px;
+		display: block;
+		margin: 2rem auto 0;
+		opacity: 50%;
+	}
+</style>

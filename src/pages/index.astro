@@ -1,0 +1,123 @@
+---
+import TopCats from '../components/Rankings/TopCats.astro'
+import TopContributors from '../components/Rankings/TopContributors.astro'
+import TopLinks from '../components/Rankings/TopLinks.astro'
+import ScrollUp from '../components/ScrollUp.astro'
+import { CATS_ENDPOINT, CONTRIBUTORS_ENDPOINT, LINKS_ENDPOINT } from '../constants'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { Periods, type CatCount, type Contributor, type PaginatedLinks } from '../types'
+import fetch_with_handle_redirect from '../util/fetch_with_handle_redirect'
+
+// Auth
+const token = Astro.cookies.get('token')?.value
+const user = Astro.cookies.get('user')?.value
+
+// Get top cats
+const top_cats_resp = await (token
+	? fetch_with_handle_redirect(CATS_ENDPOINT, {
+			headers: { Authorization: `Bearer ${token}` },
+		})
+	: fetch_with_handle_redirect(CATS_ENDPOINT))
+if (!top_cats_resp.Response || top_cats_resp.RedirectTo) {
+	return Astro.redirect(top_cats_resp.RedirectTo)
+}
+const top_cats: CatCount[] = await top_cats_resp.Response?.json()
+
+// Get top contributors
+const top_contributors_resp = await fetch_with_handle_redirect(CONTRIBUTORS_ENDPOINT)
+if (!top_contributors_resp.Response || top_contributors_resp.RedirectTo) {
+	return Astro.redirect(top_contributors_resp.RedirectTo)
+}
+const top_contributors: Contributor[] = await top_contributors_resp.Response.json()
+
+// Get top links
+const DEFAULT_PERIOD = Periods[2] // month
+const links_url = LINKS_ENDPOINT + `?period=${DEFAULT_PERIOD}`
+const get_links_resp = await (token
+	? fetch_with_handle_redirect(links_url, {
+			headers: { Authorization: `Bearer ${token}` },
+		})
+	: fetch_with_handle_redirect(links_url))
+if (!get_links_resp.Response || get_links_resp.RedirectTo) {
+	return Astro.redirect(get_links_resp.RedirectTo)
+}
+const data: PaginatedLinks = await get_links_resp.Response.json()
+const links = data.Links
+
+const other_periods = Periods.filter((other) => other !== 'month')
+---
+
+<BaseLayout Title='FITM: share and discover the most treasured links across the web'>
+	<main>
+			<h1>FITM.online</h1>
+			<h2 class='subtitle bg'>a map of the web's treasures</h2>
+
+			<h3 id="add-link"><a href={`/new`}>Add link</a></h3>
+
+		<section>
+			<TopCats TopCats={top_cats} />
+		</section>
+
+		<TopContributors Contributors={top_contributors} />
+
+		<section>
+			<h2>Top Links This Month</h2>
+			<ol id='change-period'>
+				{
+					other_periods.map((period) => (
+						<li class='period'>
+							<a href={`/top?period=${period}`}>{period}</a>
+						</li>
+					))
+				}
+			</ol>
+
+			<TopLinks 
+				Links={links}
+				NextPage={data.NextPage}
+				Token={token}
+				User={user}
+			/>
+		</section>
+
+		<ScrollUp />
+	</main>
+</BaseLayout>
+
+<style>
+	html:before {
+		content: '';
+		width: 175px;
+		height: 162px;
+		position: absolute;
+		background-image: url(../../chest.webp);
+		background-size: 175px;
+		left: 50%;
+		transform: translatex(-50%);
+		top: 1em;
+		opacity: 25%;
+		pointer-events: none;
+	}
+	#add-link {
+		text-align: center;
+	}
+	#change-period {
+		display: flex;
+		list-style: none;
+		padding-inline-start: 1rem;
+		margin-top: 0;
+	}
+	#add-link,
+	#change-period {
+		a,
+		a:visited {
+			color: var(--text);
+		}
+	}
+	.period {
+		margin-right: 0.5rem;
+	}
+	.period:last-of-type {
+		margin-right: 0;
+	}
+</style>

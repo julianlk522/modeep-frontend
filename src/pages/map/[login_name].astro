@@ -1,0 +1,342 @@
+---
+import Link from '../../components/Link/Link'
+import TopCats from '../../components/Rankings/TopCats.astro'
+import ScrollUp from '../../components/ScrollUp.astro'
+import TagCat from "../../components/Tag/TagCat"
+import AboutText from '../../components/Tmap/AboutText'
+import EditAbout from '../../components/Tmap/EditAbout'
+import ProfilePic from '../../components/Tmap/ProfilePic'
+import { TMAP_ENDPOINT } from '../../constants'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import type { FilteredTreasureMap, Profile, TreasureMap } from '../../types'
+import { tmap_sections } from '../../types'
+import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
+import { format_short_date } from '../../util/format_date'
+
+// Auth
+const token = Astro.cookies.get('token')?.value
+const user = Astro.cookies.get('user')?.value
+
+// Params
+// login_name
+const { login_name } = Astro.params
+if (!login_name) {
+	return Astro.redirect('/')
+}
+const is_signed_in_user = login_name === user
+let page_title = `${login_name}'s Treasure Map`
+
+// cats
+let cats = ""
+let cats_split: string[] = []
+if (Astro.url.searchParams.get('cats')) {
+	cats = Astro.url.searchParams.get('cats') as string
+	cats_split = cats.split(',')
+
+	if (cats.length) {
+		page_title += ' (Filtered)'
+	}
+}
+// Encode cats reserved chars
+const encoded_cats = encodeURIComponent(cats)
+
+// nsfw
+let nsfw = false
+if (Astro.url.searchParams.get('nsfw') && Astro.url.searchParams.get('nsfw') === 'true') {
+	nsfw = true
+}
+
+// Get Tmap
+let tmap: TreasureMap | FilteredTreasureMap
+let tmap_url = TMAP_ENDPOINT + `/${login_name}`
+if (cats) {
+	tmap_url += `?cats=${encoded_cats}`
+}
+
+if (nsfw) {
+	if (cats) {
+		tmap_url += `&nsfw=true`
+	} else {
+		tmap_url += `?nsfw=true`
+	}
+}
+
+const tmap_resp = token
+	? await fetch_with_handle_redirect(tmap_url, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
+	: await fetch_with_handle_redirect(tmap_url)
+if (!tmap_resp.Response || tmap_resp.RedirectTo) {
+	return Astro.redirect(tmap_resp.RedirectTo)
+}
+tmap = await tmap_resp.Response.json()
+const used_sections = tmap_sections.filter((s) => tmap[s]?.length)
+
+// Display about if used (unfiltered only)
+let profile: Profile | undefined
+let display_pfp = false
+let display_about = false
+let abbreviated_about: string | undefined
+
+if (!cats && tmap.hasOwnProperty('Profile')) {
+	profile = (tmap as TreasureMap).Profile
+	const has_pfp = profile.PFP?.length > 0
+	display_pfp = has_pfp || is_signed_in_user
+
+	const has_about = profile.About?.length > 0
+	display_about = has_about || is_signed_in_user
+
+	abbreviated_about = profile.About?.length > 200 ? `${profile.About.slice(0, 200)}...` : undefined
+}
+
+// Display NSFW links count if > 0
+const nsfw_links_count = tmap.NSFWLinksCount
+
+---
+
+<BaseLayout Title={page_title}>
+	<main>
+		<h1>{login_name}'s Treasure Map</h1>
+		<h2 class="subtitle">
+			{profile ? `created: ${format_short_date(profile.Created)}` : `(Filtered${nsfw ? ', NSFW' : ''})`}
+		</h2>
+
+		<!-- Profile  -->
+		 {profile && (display_about || display_pfp) ? (
+			<section id="profile">
+				<ProfilePic 
+					client:load
+					LoginName={login_name} 
+					PFP={profile.PFP}
+					SignedInUser={user} 
+					Token={token} 
+				/>
+
+				{
+					display_about ? 
+						is_signed_in_user ? 
+							<EditAbout
+								client:load 
+								Token={token} 
+								Initial={profile.About}
+							/>
+						: abbreviated_about 
+							?  <details>
+								<summary>
+									<AboutText About={abbreviated_about} />
+								</summary>
+								<AboutText About={profile.About} />
+							</details> 
+							: profile.About?.length > 0 ?
+								<AboutText About={profile.About} />
+							: null
+					: null
+				}
+			</section>
+		)
+		: null}
+			
+			{/* Filters */}
+			{cats || nsfw_links_count ? <section id='filters'>
+
+			{/* NSFW */}
+			{nsfw_links_count ? <p id="nsfw-filter">NSFW links ({nsfw_links_count}):</p>
+			<span>
+				{nsfw ? <a href={`/map/${login_name}${cats ? `?cats=${cats}` : ''}`}>hide</a> : <a href={`/map/${login_name}${cats ? `?cats=${cats}&nsfw=true` : '?nsfw=true'}`}>show</a>}
+			</span> : null}
+
+			{/* Cats */}
+			{cats ? <div id='cat-filter-container' class="flex">
+				<div id="cat-filter-actions">
+					<p id="cat-filter">Cats:</p>
+					<span id='reset-cat-filter'>
+						<a href={`/map/${login_name}`}>reset</a>
+					</span>
+					<p id="transfer-to-global-map">
+						<a href={`/top?cats=${cats}${nsfw ? '&nsfw=true' : ''}`}>Transfer cats to Global Treasure Map</a>
+					</p>
+				</div>
+				<ul id='cat-list'>
+					{
+						cats_split.length > 1 ? (
+							cats_split.map((cat) => {
+								return (
+									<TagCat Cat={cat} />
+								)
+							})
+						) : (
+							<TagCat Cat={cats_split[0]} />
+						)
+					}
+				</ul>
+			</div> : null}
+		</section> : null}
+
+		{used_sections.length ? 
+			<>
+				{/* Overview */}
+				<section id='overview' class='flex'>
+					<div>
+						<TopCats
+							TopCats={tmap.Cats}
+							CatsParams={encoded_cats}
+							NSFW={nsfw}
+							IsTmapFromUser={login_name}
+						/>
+					</div>
+					{used_sections.length > 1 ? <div id="skip-to-section-container">
+						<h2>Skip to Section</h2>
+						<ul id='skip-to-link-section'>
+							{
+								used_sections.map((s) => (
+									<li>
+										<a href={`#${s}`}>{s}</a>
+									</li>
+								))
+							}
+						</ul>
+					</div> : null}
+				</section>
+
+			{/* Links Sections */}
+			{
+				used_sections.map((s) => {
+					return (
+						<section id={s} class='link-section'>
+							<h2>{s}</h2>
+							<ol>
+								{tmap[s].map((link) => (
+										<Link
+											client:load
+											Link={link}
+											NSFWCatLinks={nsfw}
+											CatsFromUser={
+												link.CatsFromUser
+													? login_name
+													: undefined
+											}
+											IsTmapPage={true}
+											Token={token}
+											User={user}
+										/>
+									)
+								)}
+							</ol>
+						</section>
+					)
+				})
+			}
+			</>
+		: <section>
+			<p id="no-links">No links found.</p>
+			<p>&macr;&bsol;&lowbar;&lpar;&#x30c4;&rpar;&lowbar;&sol;&macr;</p>
+		</section>}
+
+		<ScrollUp />
+	</main>
+</BaseLayout>
+
+<style>	
+	h1,
+	h2.subtitle {
+		text-align: left;
+	}
+
+	section#filters {
+		p#nsfw-filter,
+		p#cat-filter {
+			display: inline;
+		}
+		#cat-filter-container {
+			display: flex;
+			flex-direction: column;
+			margin-bottom: 0.5rem;
+
+			#cat-filter-actions {
+				margin-right: 1rem;
+			}
+
+			#transfer-to-global-map,
+			#reset-cat-filter {
+				margin: 0;
+			}
+
+			#cat-list {
+				margin-bottom: 0;
+			}
+		}
+	}
+
+	#profile {
+		padding-top: 0;
+
+		astro-island:has(div#profile-pic) + pre {
+			margin-top: 1rem;
+		}
+	}
+
+	#overview {
+		display: flex;
+		
+		div:has(#skip-to-link-section) {
+			margin: 0 auto;
+		}
+
+		#skip-to-link-section {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		#skip-to-link-section {
+			padding: 0.5rem;
+		}
+	}
+
+	.link-section {
+		padding: 0 0 0.5rem;
+
+		h2 {
+			position: sticky;
+			top: 0px;
+			z-index: 1;
+			padding: 1rem 0;
+			background-color: #13151a;
+		}
+
+		ol {
+			max-width: calc(100% - 1rem);
+			margin-top: 0;
+			margin-bottom: 0.5rem;
+			margin-left: auto;
+			padding: 0;
+		}
+	}
+
+	p#no-links {
+		margin-top: 0;
+	}
+
+	@media (min-width: 480px) {
+		section#filters {
+			#cat-filter-container {
+				flex-direction: row;
+
+				#transfer-to-global-map,
+				#reset-cat-filter {
+					margin: 0;
+				}
+				
+				#cat-list {
+					margin: 0 auto;
+					align-content: center;
+				}
+			}
+		}
+		#overview > * {
+			max-width: 50%;
+		}
+	}
+</style>

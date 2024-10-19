@@ -1,0 +1,63 @@
+---
+import NewLinks from '../components/Link/NewLinks.tsx'
+import MaroonedLinksTip from '../components/Modal/MaroonedLinksTip.astro'
+import ToolTip from '../components/Modal/ToolTip.tsx'
+import BaseLayout from '../layouts/BaseLayout.astro'
+
+let token = Astro.cookies.get('token')?.value
+let user = Astro.cookies.get('user')?.value
+
+if (!token || !user) {
+	Astro.cookies.set('redirect_to', Astro.url.pathname, {
+		maxAge: 300,
+		path: '/login',
+		sameSite: 'strict',
+		secure: true,
+	})
+	return Astro.redirect('/login')
+}
+---
+
+<BaseLayout Title='Submit New Link(s)'>
+	<main>
+		<h1>Submit New Links(s)</h1>
+		<section>
+			<h2>Rules</h2>
+			<ul>
+				<li>Anything 
+					<ToolTip client:load Prompt={"NSFW"}>
+						<p style="margin-bottom: 1rem;"><em>NSFW</em>: Not Safe For Work</p>
+					</ToolTip> 
+					must be tagged with cat 
+					<span id="example-cat" class="cat">"NSFW"</span>
+				</li>
+				<li>50 links max per day</li>
+			</ul>
+		</section>
+
+		<section>
+			<h2>Tips</h2>
+			<ToolTip client:load Prompt={"Avoiding \"Marooned\" Links"}>
+				<MaroonedLinksTip />
+			</ToolTip>
+		</section>
+
+		<NewLinks client:load Token={token} User={user} />
+	</main>
+</BaseLayout>
+
+<style>
+	#example-cat {
+		display: inline-block;
+		height: 25px;
+		margin: 5px;
+		padding: 0 5px;
+		border-radius: 2px;
+		color: black;
+		background-color: var(--sky);
+		font-weight: bold;
+	}
+	a {
+		font-weight: bold;
+	}
+</style>

@@ -1,0 +1,17 @@
+form#edit-tag {
+	padding: 1rem 0;
+
+	#user-tags-header-bar {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+
+		button.delete-tag-btn {
+			margin-left: -5px;
+		}
+	}
+
+	div#search-cats-container {
+		margin-top: 5px;
+	}
+}
