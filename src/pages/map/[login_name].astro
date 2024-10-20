@@ -9,7 +9,7 @@ import ProfilePic from '../../components/Tmap/ProfilePic'
 import { TMAP_ENDPOINT } from '../../constants'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import type { FilteredTreasureMap, Profile, SortMetric, TreasureMap } from '../../types'
-import { SortMetrics, tmap_sections } from '../../types'
+import { tmap_sections } from '../../types'
 import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
 import { format_short_date } from '../../util/format_date'
 
@@ -47,18 +47,21 @@ if (Astro.url.searchParams.get('nsfw') && Astro.url.searchParams.get('nsfw') ===
 }
 
 // sort_by
+let sort_by: SortMetric | undefined
 const sort_by_params = Astro.url.searchParams.get('sort_by')
 const is_sort_by_newest = sort_by_params === 'newest'
-const opposite_sort_metric = is_sort_by_newest ? 'rating' : 'newest'
+if (is_sort_by_newest) {
+	sort_by = 'newest'
+}
 
 const has_cats_or_nsfw_params = cats || nsfw
 const sort_by_params_separator = has_cats_or_nsfw_params ? '&' : '?'
 
-let sort_query = ""
+let opposite_sort_search_params = `${cats ? '?cats=' + encoded_cats : ''}${nsfw ? cats? '&nsfw=true' : '?nsfw=true' : ''}`
 if (!is_sort_by_newest) {
-	sort_query = `${sort_by_params_separator}sort_by=${opposite_sort_metric}`
+	opposite_sort_search_params += `${sort_by_params_separator}sort_by=newest`
 }
-const opposite_sort_pathname = Astro.url.pathname + sort_query
+const opposite_sort_URL = Astro.url.pathname + opposite_sort_search_params
 
 // Get Tmap
 let tmap: TreasureMap | FilteredTreasureMap
@@ -67,19 +70,19 @@ if (cats) {
 	tmap_url += `?cats=${encoded_cats}`
 }
 
-if (nsfw) {
-	if (cats) {
-		tmap_url += `&nsfw=true`
-	} else {
-		tmap_url += `?nsfw=true`
-	}
-}
-
 if (is_sort_by_newest) {
-	if (has_cats_or_nsfw_params) {
+	if (cats) {
 		tmap_url += `&sort_by=newest`
 	} else {
 		tmap_url += `?sort_by=newest`
+	}
+}
+
+if (nsfw) {
+	if (cats || sort_by) {
+		tmap_url += `&nsfw=true`
+	} else {
+		tmap_url += `?nsfw=true`
 	}
 }
 
@@ -115,15 +118,14 @@ if (!cats && tmap.hasOwnProperty('Profile')) {
 
 // Display NSFW links count if > 0
 const nsfw_links_count = tmap.NSFWLinksCount
-
 ---
 
 <BaseLayout Title={page_title}>
 	<main>
 		<h1>{login_name}'s Treasure Map</h1>
-		<h2 class="subtitle">
-			{profile ? `created: ${format_short_date(profile.Created)}` : `(Filtered${nsfw ? ', NSFW' : ''})`}
-		</h2>
+		{profile ? <p id="profile-created">
+			created: {format_short_date(profile.Created)}
+		</p> : null}
 
 		<!-- Profile  -->
 		 {profile && (display_about || display_pfp) ? (
@@ -161,28 +163,28 @@ const nsfw_links_count = tmap.NSFWLinksCount
 		: null}
 			
 			{/* Filters */}
-			{cats || nsfw_links_count ? <section id='filters'>
+			{<section id='filters'>
+
+			{/* Sort By */}
+			<p id="sort-by-filter">Sort By: 
+				<a href={opposite_sort_URL}>{is_sort_by_newest ? 'rating' : 'newest'}</a>
+			</p>
 
 			{/* NSFW */}
 			{nsfw_links_count ? <p id="nsfw-filter">NSFW links ({nsfw_links_count}):</p>
 			<span>
-				{nsfw ? <a href={`/map/${login_name}${cats ? `?cats=${cats}` : ''}`}>hide</a> : <a href={`/map/${login_name}${cats ? `?cats=${cats}&nsfw=true` : '?nsfw=true'}`}>show</a>}
+				{nsfw ? <a href={`/map/${login_name}${cats ? `?cats=${encoded_cats}` : ''}${sort_by ? cats ? `&sort_by=${sort_by}` : `?sort_by=${sort_by}` : ''}`}>hide</a> : <a href={`/map/${login_name}${cats ? `?cats=${encoded_cats}` : ''}${sort_by ? cats ? `&sort_by=${sort_by}` : `?sort_by=${sort_by}` : ''}${cats || sort_by ? `&nsfw=true` : '?nsfw=true'}`}>show</a>}
 			</span> : null}
-
-			{/* Sort By */}
-			<p id="sort-by-filter">Sort By: 
-				<a href={opposite_sort_pathname}>{opposite_sort_metric}</a>
-			</p>
-
+			
 			{/* Cats */}
 			{cats ? <div id='cat-filter-container' class="flex">
 				<div id="cat-filter-actions">
 					<p id="cat-filter">Cats:</p>
 					<span id='reset-cat-filter'>
-						<a href={`/map/${login_name}`}>reset</a>
+					<a href={`/map/${login_name}${sort_by ? `?sort_by=${sort_by}` : ''}${nsfw ? sort_by ? '&nsfw=true' : '?nsfw=true' : ''}`}>reset</a>
 					</span>
 					<p id="transfer-to-global-map">
-						<a href={`/top?cats=${cats}${nsfw ? '&nsfw=true' : ''}`}>Transfer cats to Global Treasure Map</a>
+						<a href={`/top?cats=${encoded_cats}${sort_by ? `&sort_by=${sort_by}` : ''}${nsfw ? sort_by ? '&nsfw=true' : '?nsfw=true' : ''}`}>Transfer cats to Global Treasure Map</a>
 					</p>
 				</div>
 				<ul id='cat-list'>
@@ -199,7 +201,7 @@ const nsfw_links_count = tmap.NSFWLinksCount
 					}
 				</ul>
 			</div> : null}
-		</section> : null}
+		</section>}
 
 		{used_sections.length ? 
 			<>
@@ -209,6 +211,7 @@ const nsfw_links_count = tmap.NSFWLinksCount
 						<TopCats
 							TopCats={tmap.Cats}
 							CatsParams={encoded_cats}
+							SortBy={sort_by}
 							NSFW={nsfw}
 							IsTmapFromUser={login_name}
 						/>
@@ -266,12 +269,19 @@ const nsfw_links_count = tmap.NSFWLinksCount
 </BaseLayout>
 
 <style>	
-	h1,
-	h2.subtitle {
+	h1 {
 		text-align: left;
+		margin-bottom: 0;
+	}
+
+	p#profile-created {
+		margin: 0.5rem 0 1rem;
 	}
 
 	section#filters {
+		p#sort-by-filter {
+			margin-top: 0;
+		}
 		p#nsfw-filter,
 		p#cat-filter {
 			display: inline;
