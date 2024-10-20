@@ -8,8 +8,8 @@ import EditAbout from '../../components/Tmap/EditAbout'
 import ProfilePic from '../../components/Tmap/ProfilePic'
 import { TMAP_ENDPOINT } from '../../constants'
 import BaseLayout from '../../layouts/BaseLayout.astro'
-import type { FilteredTreasureMap, Profile, TreasureMap } from '../../types'
-import { tmap_sections } from '../../types'
+import type { FilteredTreasureMap, Profile, SortMetric, TreasureMap } from '../../types'
+import { SortMetrics, tmap_sections } from '../../types'
 import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
 import { format_short_date } from '../../util/format_date'
 
@@ -46,6 +46,20 @@ if (Astro.url.searchParams.get('nsfw') && Astro.url.searchParams.get('nsfw') ===
 	nsfw = true
 }
 
+// sort_by
+const sort_by_params = Astro.url.searchParams.get('sort_by')
+const is_sort_by_newest = sort_by_params === 'newest'
+const opposite_sort_metric = is_sort_by_newest ? 'rating' : 'newest'
+
+const has_cats_or_nsfw_params = cats || nsfw
+const sort_by_params_separator = has_cats_or_nsfw_params ? '&' : '?'
+
+let sort_query = ""
+if (!is_sort_by_newest) {
+	sort_query = `${sort_by_params_separator}sort_by=${opposite_sort_metric}`
+}
+const opposite_sort_pathname = Astro.url.pathname + sort_query
+
 // Get Tmap
 let tmap: TreasureMap | FilteredTreasureMap
 let tmap_url = TMAP_ENDPOINT + `/${login_name}`
@@ -58,6 +72,14 @@ if (nsfw) {
 		tmap_url += `&nsfw=true`
 	} else {
 		tmap_url += `?nsfw=true`
+	}
+}
+
+if (is_sort_by_newest) {
+	if (has_cats_or_nsfw_params) {
+		tmap_url += `&sort_by=newest`
+	} else {
+		tmap_url += `?sort_by=newest`
 	}
 }
 
@@ -146,6 +168,11 @@ const nsfw_links_count = tmap.NSFWLinksCount
 			<span>
 				{nsfw ? <a href={`/map/${login_name}${cats ? `?cats=${cats}` : ''}`}>hide</a> : <a href={`/map/${login_name}${cats ? `?cats=${cats}&nsfw=true` : '?nsfw=true'}`}>show</a>}
 			</span> : null}
+
+			{/* Sort By */}
+			<p id="sort-by-filter">Sort By: 
+				<a href={opposite_sort_pathname}>{opposite_sort_metric}</a>
+			</p>
 
 			{/* Cats */}
 			{cats ? <div id='cat-filter-container' class="flex">
