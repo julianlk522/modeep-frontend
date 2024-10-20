@@ -69,25 +69,10 @@ let user = Astro.cookies.get('user')?.value
 			font-weight: 700;
 			line-height: 1;
 			text-align: center;
-		}
-		h1:has(+h2.subtitle) {
-			margin-bottom: 0.5rem;
-		}
-		h1,
-		h2.subtitle {
 			margin-bottom: 1rem;
 		}
 		h2 {
 			font-size: 1.25rem;
-		}
-		h2.subtitle {
-			font-size: 1rem;
-			font-weight: normal;
-			text-align: center;
-		}
-		h2.subtitle.bg {
-			background: hsla(180, 33%, 82%, 0.05);
-			padding: 3px;
 		}
 		h3 {
 			font-size: 1.15rem;

@@ -50,7 +50,7 @@ const other_periods = Periods.filter((other) => other !== 'month')
 <BaseLayout Title='FITM: share and discover the most treasured links across the web'>
 	<main>
 			<h1>FITM.online</h1>
-			<h2 class='subtitle bg'>a map of the web's treasures</h2>
+			<p id='subtitle'>a map of the web's treasures</p>
 
 			<h3 id="add-link"><a href={`/new`}>Add link</a></h3>
 
@@ -98,7 +98,16 @@ const other_periods = Periods.filter((other) => other !== 'month')
 		opacity: 25%;
 		pointer-events: none;
 	}
-	#add-link {
+	h1 {
+		margin-bottom: 0.5rem;
+	}
+	p#subtitle {
+		background: hsla(180, 33%, 82%, 0.05);
+		padding: 3px;
+		margin-bottom: 1rem;
+	}
+	p#subtitle,
+	h3#add-link {
 		text-align: center;
 	}
 	#change-period {
@@ -107,17 +116,17 @@ const other_periods = Periods.filter((other) => other !== 'month')
 		padding-inline-start: 1rem;
 		margin-top: 0;
 	}
-	#add-link,
-	#change-period {
+	h3#add-link,
+	ol#change-period {
 		a,
 		a:visited {
 			color: var(--text);
 		}
 	}
-	.period {
+	li.period {
 		margin-right: 0.5rem;
 	}
-	.period:last-of-type {
+	li.period:last-of-type {
 		margin-right: 0;
 	}
 </style>
