@@ -2,12 +2,15 @@
 	position: relative;
 	margin: 1rem 0 0;
 }
+
 astro-island:first-of-type li.link {
 	margin-top: 0;
 }
+
 .link.single {
 	list-style: none;
 }
+
 .preview {
 	display: inline-flex;
 	gap: 1rem;
@@ -23,6 +26,7 @@ a.url-anchor {
 	display: block;
 	width: fit-content;
 }
+
 a.url-anchor:visited {
 	color: var(--treasurey-dark);
 }
@@ -36,33 +40,46 @@ p.url {
 	overflow-wrap: anywhere;
 }
 
-.summaries a:not(:visited),
-.summaries a:visited,
-.tags .tags-page-link:not(:visited),
-.tags .tags-page-link:visited {
+.summaries-page-link a:not(:visited),
+.summaries-page-link a:visited,
+div.tags a.tags-page-link:not(:visited),
+div.tags a.tags-page-link:visited {
 	color: var(--text);
 }
-.tags {
-	max-width: calc(100% - 32px);
 
-	span:first-of-type {
+div.tags {
+	max-width: calc(100% - 32px);
+	margin-top: 0.5rem;
+
+	ul.cats {
+		list-style: none;
+		display: inline;
+		padding-inline-start: 0;
 		margin-left: 3px;
+
+		li {
+			display: inline;
+		}
 	}
 }
+
 .copy-cats-btn {
 	vertical-align: middle;
 	margin-left: 5px;
 	color: var(--text);
 }
+
 .like-btn,
 .copy-btn {
 	border-radius: 2px;
 }
+
 .like-btn.liked,
 .copy-btn.copied {
 	background-color: var(--sky);
 	font-weight: bold;
 }
+
 .like-btn,
 .copy-btn,
 .same-user-like-count {
@@ -71,11 +88,13 @@ p.url {
 	gap: 3px;
 	margin-top: 1rem;
 }
+
 p,
 button,
 .same-user-like-count {
 	margin-top: 0.5rem;
 }
+
 p {
 	margin-bottom: 0;
 }
@@ -90,6 +109,7 @@ button.delete-link-btn {
 	.link {
 		margin-top: 2rem;
 	}
+
 	.preview {
 		overflow: auto;
 	}

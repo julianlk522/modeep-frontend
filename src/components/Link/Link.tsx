@@ -55,7 +55,7 @@ export default function Link(props: Props) {
 	} = props.Link
 
 	const is_your_link = user !== undefined && submitted_by === user
-	const has_only_your_tag = tag_count === 1 && is_your_link
+	const has_one_tag = tag_count === 1
 
 	const [is_copied, set_is_copied] = useState(props.Link.IsCopied)
 	const [is_liked, set_is_liked] = useState(props.Link.IsLiked)
@@ -251,36 +251,45 @@ export default function Link(props: Props) {
 				)}
 			</p>
 
-			{is_tag_page && has_only_your_tag ? null : (
-				<p class='tags'>
-					<a class='tags-page-link' href={`/tag/${id}`}>
+			{is_tag_page && has_one_tag ? null : (
+				<div class='tags'>
+					<a
+						title={`View tags for this link (${tag_count} total), add or edit yours`}
+						class='tags-page-link'
+						href={`/tag/${id}`}
+					>
 						{tag_attribution}
 					</a>
 					{': '}
-					{split_cats.map((cat, i) =>
-						i === split_cats.length - 1 ? (
-							<a
-								href={
-									cats_endpoint +
-									`?cats=${encodeURIComponent(cat)}${nsfw_cat_links ? '&nsfw=true' : ''}`
-								}
-							>
-								{cat}
-							</a>
-						) : (
-							<span>
-								<a
-									href={
-										cats_endpoint +
-										`?cats=${encodeURIComponent(cat)}${nsfw_cat_links ? '&nsfw=true' : ''}`
-									}
-								>
-									{cat}
-								</a>
-								,{' '}
-							</span>
-						)
-					)}
+					<ul class='cats'>
+						{split_cats.map((cat, i) => (
+							<li>
+								{i === split_cats.length - 1 ? (
+									<a
+										href={
+											cats_endpoint +
+											`?cats=${encodeURIComponent(cat)}${nsfw_cat_links ? '&nsfw=true' : ''}`
+										}
+									>
+										{cat}
+									</a>
+								) : (
+									<>
+										<a
+											href={
+												cats_endpoint +
+												`?cats=${encodeURIComponent(cat)}${nsfw_cat_links ? '&nsfw=true' : ''}`
+											}
+										>
+											{cat}
+										</a>
+										,{' '}
+									</>
+								)}
+							</li>
+						))}
+					</ul>
+
 					{set_new_link_cats ? (
 						<button
 							title='Copy cats to pending new link'
@@ -304,12 +313,15 @@ export default function Link(props: Props) {
 							</svg>
 						</button>
 					) : null}
-				</p>
+				</div>
 			)}
 
 			{is_summary_page ? null : (
-				<p class='summaries'>
-					<a href={`/summary/${id}`}>summaries ({summary_count})</a>
+				<p class='summaries-page-link'>
+					<a
+						title={`View summaries for this link (${summary_count} total), add or edit yours`}
+						href={`/summary/${id}`}>summaries ({summary_count})
+					</a>
 				</p>
 			)}
 
@@ -424,7 +436,12 @@ export default function Link(props: Props) {
 						class='delete-link-btn img-btn'
 						onClick={() => set_show_delete_modal(true)}
 					>
-						<img src='../../../delete.svg' height={20} width={20} />
+						<img
+							alt='Delete Link'
+							src='../../../delete.svg'
+							height={20}
+							width={20}
+						/>
 					</button>
 
 					{show_delete_modal ? (
