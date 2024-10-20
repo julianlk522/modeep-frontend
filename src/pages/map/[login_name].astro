@@ -26,6 +26,7 @@ if (!login_name) {
 const is_signed_in_user = login_name === user
 let page_title = `${login_name}'s Treasure Map`
 
+// config
 // cats
 let cats = ""
 let cats_split: string[] = []
@@ -128,7 +129,7 @@ const nsfw_links_count = tmap.NSFWLinksCount
 		</p> : null}
 
 		<!-- Profile  -->
-		 {profile && (display_about || display_pfp) ? (
+		{profile && (display_about || display_pfp) ? (
 			<section id="profile">
 				<ProfilePic 
 					client:load
@@ -138,35 +139,60 @@ const nsfw_links_count = tmap.NSFWLinksCount
 					Token={token} 
 				/>
 
-				{
-					display_about ? 
-						is_signed_in_user ? 
-							<EditAbout
-								client:load 
-								Token={token} 
-								Initial={profile.About}
-							/>
-						: abbreviated_about 
-							?  <details>
-								<summary>
-									<AboutText About={abbreviated_about} />
-								</summary>
-								<AboutText About={profile.About} />
-							</details> 
-							: profile.About?.length > 0 ?
-								<AboutText About={profile.About} />
-							: null
-					: null
-				}
+				{display_about ? 
+					is_signed_in_user ? 
+						<EditAbout
+							client:load 
+							Token={token} 
+							Initial={profile.About}
+						/>
+					: abbreviated_about 
+						?  <details>
+							<summary>
+								<AboutText About={abbreviated_about} />
+							</summary>
+							<AboutText About={profile.About} />
+						</details> 
+						: profile.About?.length > 0 ?
+							<AboutText About={profile.About} />
+						: null
+				: null}
 			</section>
-		)
+		) : null}
+
+		{/* Overview */}
+		{used_sections.length ? 
+			<section id='overview' class='flex'>
+				<div>
+					<TopCats
+						TopCats={tmap.Cats}
+						CatsParams={encoded_cats}
+						SortBy={sort_by}
+						NSFW={nsfw}
+						IsTmapFromUser={login_name}
+					/>
+				</div>
+				{used_sections.length > 1 ? <div id="skip-to-section-container">
+					<h2>Skip to Section</h2>
+					<ul id='skip-to-link-section'>
+						{
+							used_sections.map((s) => (
+								<li>
+									<a href={`#${s}`}>{s}</a>
+								</li>
+							))
+						}
+					</ul>
+				</div> : null}
+			</section> 
 		: null}
-			
-			{/* Filters */}
-			{<section id='filters'>
+
+		{/* Config */}
+		{<section id='sort-and-filter'>
+			<h2>Sort and Filter</h2>
 
 			{/* Sort By */}
-			<p id="sort-by-filter">Sort By: 
+			<p id="toggle-sort-by">Sort By: 
 				<a href={opposite_sort_URL}>{is_sort_by_newest ? 'rating' : 'newest'}</a>
 			</p>
 
@@ -175,12 +201,12 @@ const nsfw_links_count = tmap.NSFWLinksCount
 			<span>
 				{nsfw ? <a href={`/map/${login_name}${cats ? `?cats=${encoded_cats}` : ''}${sort_by ? cats ? `&sort_by=${sort_by}` : `?sort_by=${sort_by}` : ''}`}>hide</a> : <a href={`/map/${login_name}${cats ? `?cats=${encoded_cats}` : ''}${sort_by ? cats ? `&sort_by=${sort_by}` : `?sort_by=${sort_by}` : ''}${cats || sort_by ? `&nsfw=true` : '?nsfw=true'}`}>show</a>}
 			</span> : null}
-			
+
 			{/* Cats */}
-			{cats ? <div id='cat-filter-container' class="flex">
-				<div id="cat-filter-actions">
-					<p id="cat-filter">Cats:</p>
-					<span id='reset-cat-filter'>
+			{cats ? <div id='cats-filter-container' class="flex">
+				<div id="cats-filter-actions">
+					<p id="cats-filter">Cats Filter:</p>
+					<span id='reset-cats-filter'>
 					<a href={`/map/${login_name}${sort_by ? `?sort_by=${sort_by}` : ''}${nsfw ? sort_by ? '&nsfw=true' : '?nsfw=true' : ''}`}>reset</a>
 					</span>
 					<p id="transfer-to-global-map">
@@ -188,77 +214,43 @@ const nsfw_links_count = tmap.NSFWLinksCount
 					</p>
 				</div>
 				<ul id='cat-list'>
-					{
-						cats_split.length > 1 ? (
-							cats_split.map((cat) => {
-								return (
-									<TagCat Cat={cat} />
-								)
-							})
-						) : (
-							<TagCat Cat={cats_split[0]} />
-						)
-					}
+					{cats_split.length > 1 ? (
+						cats_split.map((cat) => {
+							return (
+								<TagCat Cat={cat} />
+							)
+						})
+					) : (
+						<TagCat Cat={cats_split[0]} />
+					)}
 				</ul>
 			</div> : null}
 		</section>}
 
+		{/* Links Sections */}
 		{used_sections.length ? 
-			<>
-				{/* Overview */}
-				<section id='overview' class='flex'>
-					<div>
-						<TopCats
-							TopCats={tmap.Cats}
-							CatsParams={encoded_cats}
-							SortBy={sort_by}
-							NSFW={nsfw}
-							IsTmapFromUser={login_name}
-						/>
-					</div>
-					{used_sections.length > 1 ? <div id="skip-to-section-container">
-						<h2>Skip to Section</h2>
-						<ul id='skip-to-link-section'>
-							{
-								used_sections.map((s) => (
-									<li>
-										<a href={`#${s}`}>{s}</a>
-									</li>
-								))
-							}
-						</ul>
-					</div> : null}
+			used_sections.map((s) => (
+				<section id={s} class='link-section'>
+					<h2>{s}</h2>
+					<ol>
+						{tmap[s].map((link) => (
+							<Link
+								client:load
+								Link={link}
+								NSFWCatLinks={nsfw}
+								CatsFromUser={
+									link.CatsFromUser
+										? login_name
+										: undefined
+								}
+								IsTmapPage={true}
+								Token={token}
+								User={user}
+							/>
+						))}
+					</ol>
 				</section>
-
-			{/* Links Sections */}
-			{
-				used_sections.map((s) => {
-					return (
-						<section id={s} class='link-section'>
-							<h2>{s}</h2>
-							<ol>
-								{tmap[s].map((link) => (
-										<Link
-											client:load
-											Link={link}
-											NSFWCatLinks={nsfw}
-											CatsFromUser={
-												link.CatsFromUser
-													? login_name
-													: undefined
-											}
-											IsTmapPage={true}
-											Token={token}
-											User={user}
-										/>
-									)
-								)}
-							</ol>
-						</section>
-					)
-				})
-			}
-			</>
+			))
 		: <section>
 			<p id="no-links">No links found.</p>
 			<p>&macr;&bsol;&lowbar;&lpar;&#x30c4;&rpar;&lowbar;&sol;&macr;</p>
@@ -271,6 +263,8 @@ const nsfw_links_count = tmap.NSFWLinksCount
 <style>	
 	h1 {
 		text-align: left;
+	}
+	h1:has(+#profile-created) {
 		margin-bottom: 0;
 	}
 
@@ -278,25 +272,22 @@ const nsfw_links_count = tmap.NSFWLinksCount
 		margin: 0.5rem 0 1rem;
 	}
 
-	section#filters {
-		p#sort-by-filter {
-			margin-top: 0;
-		}
+	section#sort-and-filter {
 		p#nsfw-filter,
-		p#cat-filter {
+		p#cats-filter {
 			display: inline;
 		}
-		#cat-filter-container {
+		#cats-filter-container {
 			display: flex;
 			flex-direction: column;
 			margin-bottom: 0.5rem;
 
-			#cat-filter-actions {
+			#cats-filter-actions {
 				margin-right: 1rem;
 			}
 
 			#transfer-to-global-map,
-			#reset-cat-filter {
+			#reset-cats-filter {
 				margin: 0;
 			}
 
@@ -357,12 +348,12 @@ const nsfw_links_count = tmap.NSFWLinksCount
 	}
 
 	@media (min-width: 480px) {
-		section#filters {
-			#cat-filter-container {
+		section#sort-and-filter {
+			#cats-filter-container {
 				flex-direction: row;
 
 				#transfer-to-global-map,
-				#reset-cat-filter {
+				#reset-cats-filter {
 					margin: 0;
 				}
 				
