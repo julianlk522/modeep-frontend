@@ -94,30 +94,24 @@ const page_title = link.Summary ? `Summaries for "${link.Summary}"` : 'Link Summ
 			}
 		</section>
 
-		<section>
+		{summaries.length ? <section>
 			<h2>Top Summaries</h2>
 			<ol id="top-summaries">
-				{
-					summaries.length ? (
-						summaries.map((summary) => (
-							<Summary
-								client:load
-								Token={token}
-								User={user}
-								ID={summary.ID}
-								Text={summary.Text}
-								SubmittedBy={summary.SubmittedBy}
-								LastUpdated={summary.LastUpdated}
-								LikeCount={summary.LikeCount}
-								IsLiked={summary.IsLiked}
-							/>
-						))
-					) : (
-						<p>No summaries yet.</p>
-					)
-				}
+				{summaries.map((summary) => 
+					<Summary
+						client:load
+						Token={token}
+						User={user}
+						ID={summary.ID}
+						Text={summary.Text}
+						SubmittedBy={summary.SubmittedBy}
+						LastUpdated={summary.LastUpdated}
+						LikeCount={summary.LikeCount}
+						IsLiked={summary.IsLiked}
+					/>
+				)}
 			</ol>
-		</section>
+		</section> : null}
 	</main>
 </BaseLayout>
 
