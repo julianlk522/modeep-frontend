@@ -1,6 +1,7 @@
 interface Props {
 	Cat: string
 	Count?: number
+	IsNSFW?: boolean
 	Addable?: boolean
 	Removable?: boolean
 	AddedSignal?: Signal<string | undefined>
@@ -12,7 +13,12 @@ import { useEffect, useRef } from 'preact/hooks'
 import './TagCat.css'
 
 export default function TagCat(props: Props) {
-	const { Cat: cat, Addable: addable, Removable: removable } = props
+	const {
+		Cat: cat,
+		IsNSFW: is_nsfw,
+		Addable: addable,
+		Removable: removable,
+	} = props
 	const add_btn_ref = useRef<HTMLButtonElement>(null)
 	const delete_btn_ref = useRef<HTMLButtonElement>(null)
 
@@ -56,7 +62,7 @@ export default function TagCat(props: Props) {
 	return (
 		<li
 			title={addable ? `Add cat '${cat}'` : ''}
-			class={`cat${addable ? ' addable' : ''}`}
+			class={`cat${addable ? ' addable' : ''}${is_nsfw ? ' nsfw' : ''}`}
 		>
 			<p>
 				{props.Cat}

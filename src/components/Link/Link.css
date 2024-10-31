@@ -61,6 +61,10 @@ div.tags {
 
 		li {
 			display: inline;
+
+			a.nsfw {
+				color: var(--danger);
+			}
 		}
 	}
 }

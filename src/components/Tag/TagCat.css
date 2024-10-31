@@ -21,7 +21,9 @@ li.cat {
 		padding-right: 0;
 	}
 }
-
+li.cat.nsfw {
+	background-color: var(--danger);
+}
 li.cat.addable {
 	opacity: 0.4;
 }

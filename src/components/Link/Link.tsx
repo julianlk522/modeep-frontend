@@ -266,6 +266,7 @@ export default function Link(props: Props) {
 							<li>
 								{i === split_cats.length - 1 ? (
 									<a
+										class={cat === 'NSFW' ? 'nsfw' : ''}
 										href={
 											cats_endpoint +
 											`?cats=${encodeURIComponent(cat)}${nsfw_cat_links ? '&nsfw=true' : ''}`
@@ -276,6 +277,7 @@ export default function Link(props: Props) {
 								) : (
 									<>
 										<a
+											class={cat === 'NSFW' ? 'nsfw' : ''}
 											href={
 												cats_endpoint +
 												`?cats=${encodeURIComponent(cat)}${nsfw_cat_links ? '&nsfw=true' : ''}`
