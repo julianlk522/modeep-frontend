@@ -16,6 +16,17 @@ export default function TagCat(props: Props) {
 	const add_btn_ref = useRef<HTMLButtonElement>(null)
 	const delete_btn_ref = useRef<HTMLButtonElement>(null)
 
+	useEffect(() => {
+		if (!addable) {
+			return
+		}
+		add_btn_ref.current?.addEventListener('click', handle_add)
+
+		return () => {
+			add_btn_ref.current?.removeEventListener('click', handle_add)
+		}
+	}, [addable])
+
 	async function handle_add(e: MouseEvent) {
 		e.preventDefault()
 
@@ -23,22 +34,24 @@ export default function TagCat(props: Props) {
 		props.AddedSignal.value = cat
 	}
 
+	useEffect(() => {
+		if (!removable) {
+			return
+		}
+
+		delete_btn_ref.current?.addEventListener('click', handle_delete)
+
+		return () => {
+			delete_btn_ref.current?.removeEventListener('click', handle_delete)
+		}
+	}, [removable])
+
 	async function handle_delete(e: MouseEvent) {
 		e.preventDefault()
 
 		if (!props.DeletedSignal) return
 		props.DeletedSignal.value = cat
 	}
-
-	useEffect(() => {
-		add_btn_ref.current?.addEventListener('click', handle_add)
-		delete_btn_ref.current?.addEventListener('click', handle_delete)
-
-		return () => {
-			add_btn_ref.current?.removeEventListener('click', handle_add)
-			delete_btn_ref.current?.removeEventListener('click', handle_delete)
-		}
-	}, [props.DeletedSignal])
 
 	return (
 		<li
