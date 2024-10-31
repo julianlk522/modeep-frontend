@@ -76,15 +76,15 @@ const page_title = link.Summary ? `Tags for "${link.Summary}"` : `Link Tags`
 									})}
 								</ul>
 								<p>
-									submitted by{' '}
-									<a href={`/map/${tag.SubmittedBy}`}>
+									<span class="by">by{' '}</span>
+									<a class="submitted-by" href={`/map/${tag.SubmittedBy}`}>
 										{tag.SubmittedBy}
 									</a>
 								</p>
 								<CSRLastUpdated client:load LastUpdated={tag.LastUpdated} />
-								<p>
+								<p title={`This tag's lifespan overlap is ${tag.LifeSpanOverlap.toFixed(2)}%`} class="lifespan">
 									
-									lifespan: {tag.LifeSpanOverlap.toFixed(2)}%
+									{tag.LifeSpanOverlap.toFixed(2)}% overlap
 								</p>
 							</li>
 						))}
@@ -104,5 +104,8 @@ const page_title = link.Summary ? `Tags for "${link.Summary}"` : `Link Tags`
 	}
 	.tag:not(:last-child) {
 		margin-bottom: 2rem;
+	}
+	p.lifespan {
+		color: var(--text-muted);
 	}
 </style>

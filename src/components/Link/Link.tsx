@@ -237,16 +237,18 @@ export default function Link(props: Props) {
 			)}
 
 			<p>
-				submitted by{' '}
+				<span class='by'>by </span>
 				<a href={`/map/${submitted_by}`} class='submitted-by'>
 					{submitted_by}
-				</a>{' '}
-				on{' '}
-				{format_long_date(
-					submit_date_in_local_time
-						? submit_date_in_local_time
-						: submit_date
-				)}
+				</a>
+				<span class='submit-date'>
+					{' '}
+					{format_long_date(
+						submit_date_in_local_time
+							? submit_date_in_local_time
+							: submit_date
+					)}
+				</span>
 			</p>
 
 			{is_tag_page && has_one_tag ? null : (

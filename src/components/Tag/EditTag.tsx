@@ -165,7 +165,7 @@ export default function EditTag(props: Props) {
 			) : null}
 
 			{tag ? (
-				<p>last updated: {format_long_date(tag.LastUpdated)}</p>
+				<p class='last-updated'>{format_long_date(tag.LastUpdated)}</p>
 			) : editing ? null : (
 				<p>(not tagged)</p>
 			)}

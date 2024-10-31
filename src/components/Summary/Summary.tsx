@@ -102,16 +102,18 @@ export default function Summary(props: Props) {
 	}
 	return (
 		<li class='summary'>
-			"{text}"
+			<strong>"{text}"</strong>
 			<p>
-				submitted by{' '}
+				<span class='by'>by </span>
 				{submitted_by === 'Auto Summary' ? (
 					<span class='auto-summary'>Auto Summary</span>
 				) : (
-					<a href={`/map/${submitted_by}`}>{submitted_by}</a>
+					<a class='submitted-by' href={`/map/${submitted_by}`}>
+						{submitted_by}
+					</a>
 				)}
 			</p>
-			<p>last updated: {format_long_date(last_updated)}</p>
+			<p class='last-updated'>{format_long_date(last_updated)}</p>
 			{user !== submitted_by ? (
 				<button
 					title='Like summary'

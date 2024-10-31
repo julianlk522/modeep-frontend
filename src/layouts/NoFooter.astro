@@ -33,6 +33,7 @@ let user = Astro.cookies.get('user')?.value
 	<style is:global>
 		:root {
 			--text: hsl(0, 0%, 92%);
+			--text-muted: hsl(44deg 5% 90% / 85%);
 			--treasurey: hsl(44, 55%, 80%);
 			--treasurey-dark: hsl(44, 25%, 60%);
 			--sky: hsl(180, 33%, 82%);
@@ -175,6 +176,14 @@ let user = Astro.cookies.get('user')?.value
 			a {
 				color: red;
 			}
+		}
+
+		a.submitted-by {
+			color: var(--text);
+		}
+		span.by,
+		p.last-updated {
+			color: var(--text-muted);
 		}
 
 		@media (min-width: 400px) {
