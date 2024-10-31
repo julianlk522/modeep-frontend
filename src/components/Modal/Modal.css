@@ -1,5 +1,7 @@
 dialog.modal {
 	z-index: 1;
+	top: 50%;
+	transform: translateY(-50%);
 	max-width: 800px;
 	background-color: var(--treasurey);
 
