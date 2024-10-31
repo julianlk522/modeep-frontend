@@ -89,9 +89,7 @@ export default function Link(props: Props) {
 			? 'your tag'
 			: cats_from_user
 				? `${cats_from_user}'s tag`
-				: tag_count === 1
-					? `${submitted_by}'s tag`
-					: 'global tag'
+				: 'global tag'
 	tag_attribution += ` (${tag_count})`
 	const split_cats = cats.split(',')
 	const cats_endpoint =
@@ -320,7 +318,9 @@ export default function Link(props: Props) {
 				<p class='summaries-page-link'>
 					<a
 						title={`View summaries for this link (${summary_count} total), add or edit yours`}
-						href={`/summary/${id}`}>summaries ({summary_count})
+						href={`/summary/${id}`}
+					>
+						summaries ({summary_count})
 					</a>
 				</p>
 			)}
