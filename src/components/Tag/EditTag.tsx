@@ -172,7 +172,7 @@ export default function EditTag(props: Props) {
 
 			{show_delete_modal ? (
 				<Modal
-					Prompt={'Delete your tag?'}
+					Prompt={'Delete tag?'}
 					IsDeleteConfirmation
 					HandleDelete={handle_delete}
 					SetShowModal={set_show_delete_modal}

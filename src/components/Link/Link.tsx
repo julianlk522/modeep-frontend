@@ -448,7 +448,7 @@ export default function Link(props: Props) {
 
 					{show_delete_modal ? (
 						<Modal
-							Prompt={'Are you sure you want to delete'}
+							Prompt={'Delete'}
 							IsDeleteConfirmation
 							DeleteURL={url}
 							HandleDelete={handle_delete}
