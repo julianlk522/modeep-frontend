@@ -41,11 +41,7 @@ p.url {
 	overflow-wrap: anywhere;
 }
 
-span.submit-date,
-.summaries-page-link a:not(:visited),
-.summaries-page-link a:visited,
-div.tags a.tags-page-link:not(:visited),
-div.tags a.tags-page-link:visited {
+span.submit-date {
 	color: var(--text-muted);
 }
 
@@ -67,6 +63,13 @@ div.tags {
 			}
 		}
 	}
+}
+
+div.tags a.tags-page-link:not(:visited),
+div.tags a.tags-page-link:visited,
+.summaries-page-link a:not(:visited),
+.summaries-page-link a:visited {
+	color: var(--text);
 }
 
 .copy-cats-btn {
