@@ -1,0 +1,23 @@
+---
+
+interface Props {
+	MergedCats: string[]
+}
+
+let { MergedCats: merged_cats } = Astro.props
+if (merged_cats.length > 3) {
+    merged_cats = merged_cats.slice(0, 3).concat(`and ${merged_cats.length - 3} others`)
+}
+---
+
+<p id="merged-results-notice">Merging results for: {merged_cats.map((mc, i) => {
+    return <span>{i > 0 ? ', ' : ''}{mc}</span>
+})}</p>
+
+<style>
+    #merged-results-notice {
+        font-style: italic;
+        color: var(--text-muted);
+        margin: 0 0 1rem;
+    }
+</style>

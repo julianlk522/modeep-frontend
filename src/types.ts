@@ -43,6 +43,7 @@ type Link = {
 
 type PaginatedLinks = {
 	Links: Link[]
+	MergedCats?: string[]
 	NextPage: number
 }
 
@@ -72,6 +73,11 @@ type TagPage = {
 type CatCount = {
 	Category: string
 	Count: number
+}
+
+type MorePageCatCountsWithMergedCats = {
+	CatCounts: CatCount[]
+	MergedCats?: string[]
 }
 
 type Contributor = {
@@ -116,6 +122,7 @@ export type {
 	ErrorResponse,
 	FilteredTreasureMap,
 	Link,
+	MorePageCatCountsWithMergedCats,
 	PaginatedLinks,
 	Period,
 	Profile,

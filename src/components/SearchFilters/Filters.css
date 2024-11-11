@@ -1,5 +1,9 @@
-a#search-from-filters {
-	display: block;
-	width: fit-content;
-	margin-top: 0.5rem;
+section#search-filters {
+	padding-bottom: 1.5rem;
+
+	a#search-from-filters {
+		display: block;
+		width: fit-content;
+		margin-top: 0.5rem;
+	}
 }
