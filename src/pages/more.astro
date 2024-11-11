@@ -5,7 +5,7 @@ import ScrollUp from "../components/ScrollUp.astro";
 import SearchFilters from "../components/SearchFilters/Filters";
 import { CATS_ENDPOINT } from "../constants";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { Periods, type CatCount, type MorePageCatCountsWithMergedCats, type Period } from "../types";
+import { has_merged_cats_property, Periods, type CatCount, type MorePageCatCountsWithMergedCats, type Period } from "../types";
 import fetch_with_handle_redirect from "../util/fetch_with_handle_redirect";
 
 // Params
@@ -44,11 +44,11 @@ if (!counts_resp.Response || counts_resp.RedirectTo) {
 const counts: MorePageCatCountsWithMergedCats | CatCount[] = await counts_resp.Response.json()
 let top_cats: CatCount[] = []
 let merged_cats: string[] | undefined = undefined
-if (Array.isArray(counts)) {
-	top_cats = counts
-} else if (counts.CatCounts) {
-	top_cats = counts.CatCounts
+if (has_merged_cats_property(counts)) {
+	top_cats = counts.Counts
 	merged_cats = counts.MergedCats
+} else {
+	top_cats = counts
 }
 
 const page_title = (cats ? `${cats} (More)` : "More")

@@ -76,8 +76,14 @@ type CatCount = {
 }
 
 type MorePageCatCountsWithMergedCats = {
-	CatCounts: CatCount[]
+	Counts: CatCount[]
 	MergedCats?: string[]
+}
+
+function has_merged_cats_property(
+	obj: any
+): obj is MorePageCatCountsWithMergedCats {
+	return obj.MergedCats !== undefined
 }
 
 type Contributor = {
@@ -115,7 +121,13 @@ type TreasureMap = FilteredTreasureMap & { Profile: Profile }
 
 const tmap_sections = ['Submitted', 'Copied', 'Tagged'] as const
 
-export { Periods, SortMetrics, is_error_response, tmap_sections }
+export {
+	Periods,
+	SortMetrics,
+	has_merged_cats_property,
+	is_error_response,
+	tmap_sections,
+}
 export type {
 	CatCount,
 	Contributor,
