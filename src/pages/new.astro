@@ -1,6 +1,5 @@
 ---
 import NewLinks from '../components/Link/NewLinks.tsx'
-import MaroonedLinksTip from '../components/Modal/MaroonedLinksTip.astro'
 import ToolTip from '../components/Modal/ToolTip.tsx'
 import BaseLayout from '../layouts/BaseLayout.astro'
 
@@ -33,13 +32,6 @@ if (!token || !user) {
 				</li>
 				<li>50 links max per day</li>
 			</ul>
-		</section>
-
-		<section>
-			<h2>Tips</h2>
-			<ToolTip client:load Prompt={"Avoiding \"Marooned\" Links"}>
-				<MaroonedLinksTip />
-			</ToolTip>
 		</section>
 
 		<NewLinks client:load Token={token} User={user} />
