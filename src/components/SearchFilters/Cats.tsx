@@ -193,7 +193,7 @@ export default function SearchCats(props: Props) {
 			{addable ? (
 				<>
 					<label id='search-cats' for='cats'>
-						{abbreviated_cats_text ? 'Cats:' : 'Tag Cats:'}
+						Cats:
 					</label>
 					<input
 						type='text'

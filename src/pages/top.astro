@@ -211,6 +211,7 @@ const page_title = (cats ? cats : "Top") + (sort_by !== 'rating' ? " (Newest)" :
 						<TopLinks 
 							Links={links}
 							NSFW={nsfw}
+							Cats={cats ? encoded_cats : undefined}
 							Period={period}
 							SortBy={sort_by}
 							Page={page}
