@@ -78,6 +78,10 @@ div.tags a.tags-page-link:visited,
 	color: var(--text);
 }
 
+.like-btn {
+	margin-right: 3px;
+}
+
 .like-btn,
 .copy-btn {
 	border-radius: 2px;

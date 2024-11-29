@@ -170,12 +170,14 @@ if (links && links.length) {
 	}
 	top_contributors = await contributors_resp.Response.json()
 }
-
-const page_title = (cats ? cats : "Top") + (sort_by !== 'rating' ? " (Newest)" : " (Rating)")
+const cats_separated = cats ? cats.split(',') : []
+const has_many_cats = cats_separated.length > 3
+const cats_title_text = has_many_cats ? cats_separated.slice(0, 3).join(' + ') + '...' : cats_separated.join(' + ')
+const page_title = `${(sort_by !== 'rating' ? " Newest" : " Top Rated")} Links${cats ? ` for: ${cats_title_text}` : ''}`
 
 ---
 
-<BaseLayout Title='Top Links / Cats / Contributors'>
+<BaseLayout Title={page_title}>
 	<main>
 		<h1>{page_title}</h1>
 		
@@ -206,7 +208,7 @@ const page_title = (cats ? cats : "Top") + (sort_by !== 'rating' ? " (Newest)" :
 					<TopContributors Contributors={top_contributors} />
 
 					<section>
-						<h2>Top Links</h2>
+						<h2>Links</h2>
 
 						<TopLinks 
 							Links={links}
