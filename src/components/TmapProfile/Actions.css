@@ -1,0 +1,29 @@
+#profile-actions {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+
+	#new-pic-upload-label {
+		display: inline-block;
+		width: fit-content;
+		cursor: pointer;
+	}
+
+	button,
+	img {
+		padding: 0;
+	}
+}
+
+#profile-pic + #profile-actions {
+	flex-direction: column;
+	margin-left: 0.5rem;
+}
+
+@media (min-width: 680px) {
+	#profile-actions,
+	#profile-pic + #profile-actions {
+		flex-direction: row;
+		margin-left: 0;
+	}
+}

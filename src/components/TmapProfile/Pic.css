@@ -1,0 +1,13 @@
+div#profile-pic {
+	img#pfp {
+		display: block;
+		max-height: 150px;
+		width: auto;
+	}
+}
+
+@media (min-width: 680px) {
+	div#profile-pic {
+		margin-bottom: 0.5rem;
+	}
+}

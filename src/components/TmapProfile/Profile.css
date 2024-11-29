@@ -1,0 +1,20 @@
+section#profile {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+
+	> div {
+		display: flex;
+	}
+}
+
+@media (min-width: 680px) {
+	section#profile:has(> div #profile-pic) {
+		flex-direction: row;
+		gap: 1rem;
+
+		> div {
+			flex-direction: column;
+		}
+	}
+}

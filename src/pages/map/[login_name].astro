@@ -3,12 +3,10 @@ import Link from '../../components/Link/Link'
 import TopCats from '../../components/Rankings/TopCats.astro'
 import ScrollUp from '../../components/ScrollUp.astro'
 import TagCat from "../../components/Tag/TagCat"
-import AboutText from '../../components/Tmap/AboutText'
-import EditAbout from '../../components/Tmap/EditAbout'
-import ProfilePic from '../../components/Tmap/ProfilePic'
+import Profile from '../../components/TmapProfile/Profile'
 import { TMAP_ENDPOINT } from '../../constants'
 import BaseLayout from '../../layouts/BaseLayout.astro'
-import type { FilteredTreasureMap, Profile, SortMetric, TreasureMap } from '../../types'
+import * as types from '../../types'
 import { tmap_sections } from '../../types'
 import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
 import { format_short_date } from '../../util/format_date'
@@ -48,7 +46,7 @@ if (Astro.url.searchParams.get('nsfw') && Astro.url.searchParams.get('nsfw') ===
 }
 
 // sort_by
-let sort_by: SortMetric | undefined
+let sort_by: types.SortMetric | undefined
 const sort_by_params = Astro.url.searchParams.get('sort_by')
 const is_sorted_by_newest = sort_by_params === 'newest'
 if (is_sorted_by_newest) {
@@ -65,7 +63,7 @@ if (!is_sorted_by_newest) {
 const opposite_sort_URL = Astro.url.pathname + opposite_sort_search_params
 
 // Get Tmap
-let tmap: TreasureMap | FilteredTreasureMap
+let tmap: types.TreasureMap | types.FilteredTreasureMap
 let tmap_url = TMAP_ENDPOINT + `/${login_name}`
 if (cats) {
 	tmap_url += `?cats=${encoded_cats}`
@@ -101,13 +99,13 @@ tmap = await tmap_resp.Response.json()
 const used_sections = tmap_sections.filter((s) => tmap[s]?.length)
 
 // Display about if used (unfiltered only)
-let profile: Profile | undefined
+let profile: types.Profile | undefined
 let display_pfp = false
 let display_about = false
 let abbreviated_about: string | undefined
 
 if (!cats && tmap.hasOwnProperty('Profile')) {
-	profile = (tmap as TreasureMap).Profile
+	profile = (tmap as types.TreasureMap).Profile
 	const has_pfp = profile.PFP?.length > 0
 	display_pfp = has_pfp || is_signed_in_user
 
@@ -130,34 +128,14 @@ const nsfw_links_count = tmap.NSFWLinksCount
 
 		<!-- Profile  -->
 		{profile && (display_about || display_pfp) ? (
-			<section id="profile">
-				<ProfilePic 
-					client:load
-					LoginName={login_name} 
-					PFP={profile.PFP}
-					SignedInUser={user} 
-					Token={token} 
-				/>
-
-				{display_about ? 
-					is_signed_in_user ? 
-						<EditAbout
-							client:load 
-							Token={token} 
-							Initial={profile.About}
-						/>
-					: abbreviated_about 
-						?  <details>
-							<summary>
-								<AboutText About={abbreviated_about} />
-							</summary>
-							<AboutText About={profile.About} />
-						</details> 
-						: profile.About?.length > 0 ?
-							<AboutText About={profile.About} />
-						: null
-				: null}
-			</section>
+			<Profile
+				client:load
+				LoginName={login_name}
+				SignedInUser={user}
+				InitialAboutText={profile.About}
+				InitialPFP={profile.PFP}
+				Token={token}
+			/>
 		) : null}
 
 		{/* Overview */}
