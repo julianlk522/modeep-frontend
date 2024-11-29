@@ -61,7 +61,8 @@ let user = Astro.cookies.get('user')?.value
 			}
 		}
 		nav :is(#user-tmap-link, #login-link) {
-			float: right;
+			display: block;
+			margin-top: 1rem;
 		}
 		main {
 			margin: auto;
@@ -191,6 +192,12 @@ let user = Astro.cookies.get('user')?.value
 		@media (min-width: 400px) {
 			h2 {
 				font-size: 1.5rem;
+			}
+
+			nav :is(#user-tmap-link, #login-link) {
+				display: inline;
+				margin-top: 0;
+				float: right;
 			}
 		}
 
