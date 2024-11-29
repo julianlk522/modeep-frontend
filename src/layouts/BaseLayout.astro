@@ -12,5 +12,12 @@ const { Title: title } = Astro.props
 	<slot />
 	<footer>
 		<a href='/feedback'>Feedback</a>
+		<a href='/changes'>Changes</a>
 	</footer>
 </NoFooter>
+
+<style>
+	footer a:not(:last-of-type) {
+		margin-right: 3px;
+	}
+</style>
