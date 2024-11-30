@@ -22,12 +22,23 @@ let user = Astro.cookies.get('user')?.value
 			<a href='/about'>About</a>
 			<a href='/top'>Top</a>
 			<a href='/new'>Add Link</a>
-			{
-				user ? (
-				<a href=`/map/${user}` id="user-tmap-link">{user}</a>) : (<a href='/login' id="login-link">Login</a>)
-			}
+			{user ? (
+				<div id="user-links">
+					<a href=`/map/${user}` id="user-tmap-link">{user}</a>
+					<button id="logout-btn">Logout</button>
+				</div>
+			) : <a href='/login' id="login-link">Login</a>}
 		</nav>
 	</header>
+	<script>
+		const logout_btn = document.getElementById('logout-btn')
+		logout_btn?.addEventListener('click', (e) => {
+			e.preventDefault()
+			document.cookie = `token=; Path=/; Max-Age=0; SameSite=strict; Secure`
+			document.cookie = `user=; Path=/; Max-Age=0; SameSite=strict; Secure`
+			window.location.reload()
+		})
+	</script>
 	<body>
 		<slot />
 	</body>
@@ -46,8 +57,25 @@ let user = Astro.cookies.get('user')?.value
 			background: #13151a;
 			background-size: 224px;
 		}
-		header nav a:not(:last-of-type) {
-			margin-right: 3px;
+		header nav {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.5rem;
+
+			#login-link {
+				margin-left: auto;
+			}
+
+			#logout-btn {
+				background: none;
+				border: none;
+				cursor: pointer;
+				color: var(--text);
+				font-size: 1rem;
+				margin-top: 0;
+				padding: 0 0 0 calc(0.5rem - 4px);
+				text-decoration: underline;
+			}
 		}
 		nav,
 		footer {
@@ -59,10 +87,6 @@ let user = Astro.cookies.get('user')?.value
 			a:visited {
 				color: var(--text);
 			}
-		}
-		nav :is(#user-tmap-link, #login-link) {
-			display: block;
-			margin-top: 1rem;
 		}
 		main {
 			margin: auto;
@@ -193,11 +217,11 @@ let user = Astro.cookies.get('user')?.value
 			h2 {
 				font-size: 1.5rem;
 			}
+		}
 
-			nav :is(#user-tmap-link, #login-link) {
-				display: inline;
-				margin-top: 0;
-				float: right;
+		@media (min-width: 550px) {
+			header nav #user-links {
+				margin-left: auto;
 			}
 		}
 
