@@ -1,5 +1,6 @@
 ---
 import Link from '../../../components/Link/Link'
+import Pagination from '../../../components/Pagination.astro'
 import TopCats from '../../../components/Rankings/TopCats.astro'
 import ScrollUp from '../../../components/ScrollUp.astro'
 import TagCat from '../../../components/Tag/TagCat'
@@ -102,6 +103,10 @@ const links = tmap_section.Links
 
 // Display NSFW links count if > 0
 const nsfw_links_count = tmap_section.NSFWLinksCount
+
+// Pagination
+const next_page = tmap_section.NextPage
+const is_only_page = page === 1 && next_page === -1
 ---
 
 <BaseLayout Title={page_title}>
@@ -175,6 +180,16 @@ const nsfw_links_count = tmap_section.NSFWLinksCount
 		{links.length ? 
 			<section id={section} class='link-section'>
                 <h2>Links</h2>
+
+                {is_only_page ? null : <Pagination
+                    Cats={cats.length ? cats : undefined}
+                    SortBy={sort_by}
+                    Page={page ?? 1}
+                    NextPage={next_page}
+                    TmapSection={section as ("submitted" | "copied" | "tagged")}
+                    TmapOwner={login_name}
+                />}
+
                 <ol>
                     {links.map((link) => (
                         <Link
@@ -192,6 +207,15 @@ const nsfw_links_count = tmap_section.NSFWLinksCount
                         />
                     ))}
                 </ol>
+
+                {is_only_page || links.length <= 10 ? null : <Pagination
+                    Cats={cats}
+                    SortBy={sort_by}
+                    Page={page ?? 1}
+                    NextPage={next_page}
+                    TmapSection={section as ("submitted" | "copied" | "tagged")}
+                    TmapOwner={login_name}
+                />}
             </section>
 		: <section>
 			<p id="no-links">No links found.</p>

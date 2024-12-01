@@ -3,29 +3,63 @@ import type { Period, SortMetric } from '../types'
 
 interface Props {
 	Cats?: string
-	Period: Period
+	Period?: Period
 	SortBy?: SortMetric
 	Page: number
 	NextPage: number
+	TmapOwner?: string
+	TmapSection?: "submitted" | "copied" | "tagged"
 }
 
-const { Cats: cats, Period: period, SortBy: sort_by, Page: page, NextPage: next_page } = Astro.props
+const { Cats: cats, Period: period, SortBy: sort_by, Page: page, NextPage: next_page, TmapOwner: tmap_owner, TmapSection: tmap_section } = Astro.props
+
+let href_without_page = tmap_section ? `/map/${tmap_owner}/${tmap_section}` : '/top'
+let has_other_params = false
+
+const has_cats = cats !== undefined && cats.length
+const has_period = period && period !== 'all'
+const is_sort_by_newest = sort_by && sort_by === 'newest'
+
+if (has_period) {
+	href_without_page += `?period=${period}`
+	has_other_params = true
+}
+if (has_cats) {
+	if (has_other_params) {
+		href_without_page += `&cats=${cats}`
+	} else {
+		href_without_page += `?cats=${cats}`
+		has_other_params = true
+	}
+}
+if (is_sort_by_newest) {
+	if (has_other_params) {
+		href_without_page += `&sort_by=newest`
+	} else {
+		href_without_page += `?sort_by=newest`
+		has_other_params = true
+	}
+}
+
 const is_only_page = 
 	page === 1
 	&& next_page === -1
-const href_without_page = `/top${period !== 'all' ? `?period=${period}` : ''}${cats !== undefined ? period !== 'all' ? `&cats=${cats}` : `?cats=${cats}` : ''}${sort_by !== 'rating' ? period !== 'all' || cats !== undefined ? 'sort_by=newest' : '?sort_by=newest' : ''}`
+
+const first_page_href = href_without_page + (has_other_params ? `&page=1` : `?page=1`)
+const prev_page_href = href_without_page + (has_other_params ? `&page=${page - 1}` : `?page=${page - 1}`)
+const next_page_href = href_without_page + (has_other_params ? `&page=${next_page}` : `?page=${next_page}`)
 ---
 
 <nav class="pagination" style=`display: ${is_only_page ? 'none' : 'block'}`>
 	Page:
-	{page > 1 ? <a href={href_without_page + '&page=1'}>1</a> : null}
+	{page > 1 ? <a href={first_page_href}>1</a> : null}
 
 	{ page > 3 ? <span>...</span> : null}
 
 	{
 		page > 2 ? (
 			<span>
-				<a href={href_without_page + `&page=${page - 1}`}>{page - 1}</a>
+				<a href={prev_page_href}>{next_page - 1}</a>
 			</span>
 		) : null
 	}
@@ -36,7 +70,7 @@ const href_without_page = `/top${period !== 'all' ? `?period=${period}` : ''}${c
 
 	{
 		next_page > 0 ? (
-			<a href={href_without_page + ((cats !== undefined || period !== 'all' || sort_by !== 'rating') ? `&page=${next_page}` : `?page=${next_page}`)}>{next_page}</a>
+			<a href={next_page_href}>{next_page}</a>
 		) : null
 	}
 </nav>
