@@ -102,7 +102,6 @@ const used_sections = tmap_sections.filter((s) => tmap[s]?.length)
 let profile: types.Profile | undefined
 let display_pfp = false
 let display_about = false
-let abbreviated_about: string | undefined
 
 if (!cats && tmap.hasOwnProperty('Profile')) {
 	profile = (tmap as types.TreasureMap).Profile
@@ -111,8 +110,6 @@ if (!cats && tmap.hasOwnProperty('Profile')) {
 
 	const has_about = profile.About?.length > 0
 	display_about = has_about || is_signed_in_user
-
-	abbreviated_about = profile.About?.length > 200 ? `${profile.About.slice(0, 200)}...` : undefined
 }
 
 // Display NSFW links count if > 0
@@ -337,10 +334,6 @@ const nsfw_links_count = tmap.NSFWLinksCount
 			margin-left: auto;
 			padding: 0;
 		}
-	}
-
-	p#no-links {
-		margin-top: 0;
 	}
 
 	@media (min-width: 480px) {

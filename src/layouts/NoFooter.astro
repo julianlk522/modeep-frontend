@@ -190,6 +190,10 @@ let user = Astro.cookies.get('user')?.value
 			}
 		}
 
+		section:has(p#no-links) {
+			text-align: center;
+		}
+
 		#cat-list {
 			display: flex;
 			flex-wrap: wrap;
