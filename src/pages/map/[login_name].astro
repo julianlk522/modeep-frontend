@@ -209,7 +209,14 @@ const nsfw_links_count = tmap.NSFWLinksCount
 		{used_sections.length ? 
 			used_sections.map((s) => (
 				<section id={s} class='link-section'>
-					<h2>{s}</h2>
+					{tmap.SectionsWithMore?.length && tmap.SectionsWithMore?.includes(s) ? 
+						<div class="section-with-more">
+							<h2>{s}</h2>
+							<span class="see-all">
+								<a href={`/map/${login_name}/${s.toLowerCase()}${cats ? `?cats=${encoded_cats}` : ''}${sort_by ? cats ? `&sort_by=${sort_by}` : `?sort_by=${sort_by}` : ''}${nsfw ? sort_by ? '&nsfw=true' : '?nsfw=true' : ''}`}>See All</a>
+							</span>
+						</div>
+					: <h2>{s}</h2>}
 					<ol>
 						{tmap[s].map((link) => (
 							<Link
@@ -301,15 +308,26 @@ const nsfw_links_count = tmap.NSFWLinksCount
 		}
 	}
 
-	.link-section {
-		padding: 0 0 0.5rem;
+	section.link-section {
+		padding: 0 0 1rem;
 
-		h2 {
+		> .section-with-more h2 {
+			display: inline;
+		}
+
+		> h2,
+		> .section-with-more {
 			position: sticky;
 			top: 0px;
 			z-index: 1;
 			padding: 1rem 0;
 			background-color: #13151a;
+		}
+
+		.section-with-more span {
+			font-size: 0.9rem;
+			vertical-align: super;
+			margin-left: 0.5rem;
 		}
 
 		ol {

@@ -110,14 +110,22 @@ type SummaryPage = {
 type TmapLink = Link & { CatsFromUser?: boolean }
 
 type FilteredTreasureMap = {
-	NSFWLinksCount: number
-	Cats: CatCount[]
 	Submitted: TmapLink[]
 	Copied: TmapLink[]
 	Tagged: TmapLink[]
+	SectionsWithMore: string[]
+	Cats: CatCount[]
+	NSFWLinksCount: number
 }
 
 type TreasureMap = FilteredTreasureMap & { Profile: Profile }
+
+type TreasureMapSection = {
+	Links: TmapLink[]
+	Cats: CatCount[]
+	NSFWLinksCount: number
+	NextPage: number
+}
 
 const tmap_sections = ['Submitted', 'Copied', 'Tagged'] as const
 
@@ -145,4 +153,5 @@ export type {
 	Tag,
 	TagPage,
 	TreasureMap,
+	TreasureMapSection,
 }

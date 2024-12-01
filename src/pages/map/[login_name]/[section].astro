@@ -1,0 +1,215 @@
+---
+import Link from '../../../components/Link/Link'
+import TopCats from '../../../components/Rankings/TopCats.astro'
+import ScrollUp from '../../../components/ScrollUp.astro'
+import TagCat from '../../../components/Tag/TagCat'
+import { TMAP_ENDPOINT } from '../../../constants'
+import BaseLayout from '../../../layouts/BaseLayout.astro'
+import {
+type SortMetric,
+type TreasureMapSection
+} from '../../../types'
+import fetch_with_handle_redirect from '../../../util/fetch_with_handle_redirect'
+
+// Auth
+const token = Astro.cookies.get('token')?.value
+const user = Astro.cookies.get('user')?.value
+
+// Params
+// login_name
+const { login_name } = Astro.params
+if (!login_name) {
+	return Astro.redirect('/')
+}
+let page_title = `${login_name}'s Treasure Map`
+
+// section
+let section = Astro.params.section?.toLowerCase()
+if (!section || !['submitted', 'copied', 'tagged'].includes(section)) {
+    return Astro.redirect(`/map/${login_name}`)
+}
+
+// cats
+let cats = ""
+let cats_split: string[] = []
+if (Astro.url.searchParams.get('cats')) {
+	cats = Astro.url.searchParams.get('cats') as string
+    cats_split = cats.split(',')
+
+    if (cats.length) {
+		page_title += ' (Filtered)'
+	}
+}
+// Encode cats params reserved chars
+const encoded_cats = encodeURIComponent(cats)
+
+// nsfw
+let nsfw: boolean = false
+if (Astro.url.searchParams.get('nsfw') && Astro.url.searchParams.get('nsfw') === 'true') {
+	nsfw = true
+}
+
+// sort by
+let sort_by: SortMetric | undefined
+const sort_by_params = Astro.url.searchParams.get('sort_by')
+const is_sorted_by_newest = sort_by_params === 'newest'
+if (is_sorted_by_newest) {
+	sort_by = 'newest'
+}
+const has_cats_or_nsfw_params = cats || nsfw
+const sort_by_params_separator = has_cats_or_nsfw_params ? '&' : '?'
+
+let opposite_sort_search_params = `${cats ? '?cats=' + encoded_cats : ''}${nsfw ? cats ? '&nsfw=true' : '?nsfw=true' : ''}`
+if (!is_sorted_by_newest) {
+	opposite_sort_search_params += `${sort_by_params_separator}sort_by=newest`
+}
+const opposite_sort_URL = Astro.url.pathname + opposite_sort_search_params
+
+// page
+let page = 1
+if (Astro.url.searchParams.get('page')) {
+	page = parseInt(Astro.url.searchParams.get('page') as string)
+}
+
+// Get Tmap Section
+let tmap_section: TreasureMapSection
+let tmap_section_url = TMAP_ENDPOINT + `/${login_name}` + `?section=${section}`
+if (cats) {
+	tmap_section_url += `&cats=${encoded_cats}`
+}
+if (is_sorted_by_newest) {
+    tmap_section_url += `&sort_by=newest`
+}
+if (nsfw) {
+    tmap_section_url += `&nsfw=true`
+}
+if (page > 1) {
+    tmap_section_url += `&page=${page}`
+}
+
+const tmap_resp = token
+	? await fetch_with_handle_redirect(tmap_section_url, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
+	: await fetch_with_handle_redirect(tmap_section_url)
+if (!tmap_resp.Response || tmap_resp.RedirectTo) {
+	return Astro.redirect(tmap_resp.RedirectTo)
+}
+tmap_section = await tmap_resp.Response.json()
+const links = tmap_section.Links
+
+// Display NSFW links count if > 0
+const nsfw_links_count = tmap_section.NSFWLinksCount
+---
+
+<BaseLayout Title={page_title}>
+	<main>
+		<h1>{login_name}'s Treasure Map</h1>
+        <p class="subtitle">({section})</p>
+
+        <p id="see-all-sections"><a href={`/map/${login_name}${sort_by ? `?sort_by=${sort_by}` : ''}${nsfw ? sort_by ? '&nsfw=true' : '?nsfw=true' : ''}`}>See all sections</a></p>
+		
+		{links?.length ? <section>
+            <TopCats
+                TopCats={tmap_section.Cats}
+                CatsParams={encoded_cats}
+                SortBy={sort_by}
+                NSFW={nsfw}
+                IsTmapFromUser={login_name}
+                Mini
+            />
+        </section> : null}
+
+		{/* Config */}
+		{links?.length ? <section id='sort-and-filter'>
+			<h2>Sort and Filter</h2>
+
+			{/* Sort By */}
+			<p id="toggle-sort-by">Sort By: 
+				<a href={opposite_sort_URL}>{is_sorted_by_newest ? 'rating' : 'newest'}</a>
+			</p>
+
+			{/* NSFW */}
+			{nsfw_links_count 
+                ? <p id="nsfw-filter">NSFW links ({nsfw_links_count}):
+                    <span>
+                        {nsfw ? 
+                            <a href={`/map/${login_name}/${section}${cats ? `?cats=${encoded_cats}` : ''}${sort_by ? cats ? `&sort_by=${sort_by}` : `?sort_by=${sort_by}` : ''}`}>hide</a>
+                        : 
+                            <a href={`/map/${login_name}/${section}${cats ? `?cats=${encoded_cats}` : ''}${sort_by ? cats ? `&sort_by=${sort_by}` : `?sort_by=${sort_by}` : ''}${cats || sort_by ? `&nsfw=true` : '?nsfw=true'}`}>show</a>
+                        }
+                    </span> 
+                </p>
+                : null}
+
+            
+
+			{/* Cats */}
+			{cats ? <div id='cats-filter-container' class="flex">
+				<div id="cats-filter-actions">
+					<p id="cats-filter">Cats Filter:</p>
+					<span id='reset-cats-filter'>
+					<a href={`/map/${login_name}/${section}${sort_by ? `&sort_by=${sort_by}` : ''}${nsfw ? '&nsfw=true' : ''}`}>reset</a>
+					</span>
+					<p id="transfer-to-global-map">
+						<a href={`/top?cats=${encoded_cats}${sort_by ? `&sort_by=${sort_by}` : ''}${nsfw ? sort_by ? '&nsfw=true' : '?nsfw=true' : ''}`}>Transfer cats to Global Treasure Map</a>
+					</p>
+				</div>
+				<ul id='cat-list'>
+					{cats_split.length > 1 ? (
+						cats_split.map((cat) => {
+							return (
+								<TagCat Cat={cat} IsNSFW={cat === 'NSFW'} />
+							)
+						})
+					) : (
+						<TagCat Cat={cats_split[0]} IsNSFW={cats_split[0] === 'NSFW'} />
+					)}
+				</ul>
+			</div> : null}
+		</section> : null}
+
+		{/* Links */}
+		{links.length ? 
+			<section id={section} class='link-section'>
+                <h2>Links</h2>
+                <ol>
+                    {links.map((link) => (
+                        <Link
+                            client:load
+                            Link={link}
+                            NSFWCatLinks={nsfw}
+                            CatsFromUser={
+                                link.CatsFromUser
+                                    ? login_name
+                                    : undefined
+                            }
+                            IsTmapPage={true}
+                            Token={token}
+                            User={user}
+                        />
+                    ))}
+                </ol>
+            </section>
+		: <section>
+			<p id="no-links">No links found.</p>
+			<p>&macr;&bsol;&lowbar;&lpar;&#x30c4;&rpar;&lowbar;&sol;&macr;</p>
+		</section>}
+
+		<ScrollUp />
+	</main>
+</BaseLayout>
+
+<style>
+    h1:has(+ .subtitle) { 
+        margin-bottom: 0.5rem; 
+    }
+    p.subtitle {
+        text-align: center;
+    }
+    p#nsfw-filter {
+        margin-top: 0;
+    }
+</style>
