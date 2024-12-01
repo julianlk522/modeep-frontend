@@ -190,7 +190,7 @@ const is_only_page = page === 1 && next_page === -1
                     TmapOwner={login_name}
                 />}
 
-                <ol>
+                <ol id="top-links">
                     {links.map((link) => (
                         <Link
                             client:load
@@ -235,5 +235,12 @@ const is_only_page = page === 1 && next_page === -1
     }
     p#nsfw-filter {
         margin-top: 0;
+    }
+    #top-links {
+        max-width: calc(100% - 1rem);
+        margin: 0;
+        margin-top: 0.5rem;
+        margin-left: auto;
+        padding: 0;
     }
 </style>
