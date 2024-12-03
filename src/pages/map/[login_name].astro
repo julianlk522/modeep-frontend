@@ -208,7 +208,7 @@ const nsfw_links_count = tmap.NSFWLinksCount
 		{used_sections.length ? 
 			used_sections.map((s) => (
 				<section id={s} class='link-section'>
-					{tmap.SectionsWithMore?.length && tmap.SectionsWithMore?.includes(s) ? 
+					{tmap.SectionsWithMore?.length && tmap.SectionsWithMore?.includes(s.toLowerCase()) ? 
 						<div class="section-with-more">
 							<h2>{s}</h2>
 							<span class="see-all">
