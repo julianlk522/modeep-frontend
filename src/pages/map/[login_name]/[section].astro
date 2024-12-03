@@ -154,13 +154,15 @@ const is_only_page = page === 1 && next_page === -1
 			{/* Cats */}
 			{cats ? <div id='cats-filter-container' class="flex">
 				<div id="cats-filter-actions">
-					<p id="cats-filter">Cats Filter:</p>
-					<span id='reset-cats-filter'>
-					<a href={`/map/${login_name}/${section}${sort_by ? `&sort_by=${sort_by}` : ''}${nsfw ? '&nsfw=true' : ''}`}>reset</a>
-					</span>
-					<p id="transfer-to-global-map">
-						<a href={`/top?cats=${encoded_cats}${sort_by ? `&sort_by=${sort_by}` : ''}${nsfw ? sort_by ? '&nsfw=true' : '?nsfw=true' : ''}`}>Transfer cats to Global Treasure Map</a>
-					</p>
+					<p id="cats-filter">
+                        Cats Filter:
+                        <span id='clear-cats-filter'>
+                        <a href={`/map/${login_name}/${section}${sort_by ? `&sort_by=${sort_by}` : ''}${nsfw ? '&nsfw=true' : ''}`}>clear</a>
+                        </span>
+                        <p id="transfer-to-global-map">
+                            <a href={`/top?cats=${encoded_cats}${sort_by ? `&sort_by=${sort_by}` : ''}${nsfw ? sort_by ? '&nsfw=true' : '?nsfw=true' : ''}`}>Transfer cats to Global Treasure Map</a>
+                        </p>
+                    </p>
 				</div>
 				<ul id='cat-list'>
 					{cats_split.length > 1 ? (
@@ -233,6 +235,28 @@ const is_only_page = page === 1 && next_page === -1
     p.subtitle {
         text-align: center;
     }
+    #cats-filter-container {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 0.5rem;
+
+        #cats-filter-actions {
+            margin-right: 1rem;
+
+            #cats-filter {
+                margin-top: 1rem;
+            }
+        }
+
+        #transfer-to-global-map,
+        #clear-cats-filter {
+            margin: 0;
+        }
+
+        #cat-list {
+            margin-bottom: 0;
+        }
+    }
     p#nsfw-filter {
         margin-top: 0;
     }
@@ -243,4 +267,22 @@ const is_only_page = page === 1 && next_page === -1
         margin-left: auto;
         padding: 0;
     }
+
+    @media (min-width: 480px) {
+		section#sort-and-filter {
+			#cats-filter-container {
+				flex-direction: row;
+
+				#transfer-to-global-map,
+				#clear-cats-filter {
+					margin: 0;
+				}
+				
+				#cat-list {
+					margin: 0 auto;
+					align-content: center;
+				}
+			}
+		}
+	}
 </style>

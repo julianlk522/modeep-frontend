@@ -180,10 +180,12 @@ const nsfw_links_count = tmap.NSFWLinksCount
 			{/* Cats */}
 			{cats ? <div id='cats-filter-container' class="flex">
 				<div id="cats-filter-actions">
-					<p id="cats-filter">Cats Filter:</p>
-					<span id='reset-cats-filter'>
-					<a href={`/map/${login_name}${sort_by ? `?sort_by=${sort_by}` : ''}${nsfw ? sort_by ? '&nsfw=true' : '?nsfw=true' : ''}`}>reset</a>
-					</span>
+					<p id="cats-filter">
+						Cats Filter:
+						<span id='clear-cats-filter'>
+							<a href={`/map/${login_name}${sort_by ? `?sort_by=${sort_by}` : ''}${nsfw ? sort_by ? '&nsfw=true' : '?nsfw=true' : ''}`}>clear</a>
+						</span>	
+					</p>
 					<p id="transfer-to-global-map">
 						<a href={`/top?cats=${encoded_cats}${sort_by ? `&sort_by=${sort_by}` : ''}${nsfw ? sort_by ? '&nsfw=true' : '?nsfw=true' : ''}`}>Transfer cats to Global Treasure Map</a>
 					</p>
@@ -255,10 +257,6 @@ const nsfw_links_count = tmap.NSFWLinksCount
 	}
 
 	section#sort-and-filter {
-		p#nsfw-filter,
-		p#cats-filter {
-			display: inline;
-		}
 		#cats-filter-container {
 			display: flex;
 			flex-direction: column;
@@ -266,10 +264,14 @@ const nsfw_links_count = tmap.NSFWLinksCount
 
 			#cats-filter-actions {
 				margin-right: 1rem;
+
+				#cats-filter {
+					margin-top: 1rem;
+				}
 			}
 
 			#transfer-to-global-map,
-			#reset-cats-filter {
+			#clear-cats-filter {
 				margin: 0;
 			}
 
@@ -342,7 +344,7 @@ const nsfw_links_count = tmap.NSFWLinksCount
 				flex-direction: row;
 
 				#transfer-to-global-map,
-				#reset-cats-filter {
+				#clear-cats-filter {
 					margin: 0;
 				}
 				
