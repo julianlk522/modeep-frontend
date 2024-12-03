@@ -73,7 +73,7 @@ if (Astro.url.searchParams.get('page')) {
 }
 
 // Get Tmap Section
-let tmap_section: TreasureMapSection
+let section_data: TreasureMapSection
 let tmap_section_url = TMAP_ENDPOINT + `/${login_name}` + `?section=${section}`
 if (cats) {
 	tmap_section_url += `&cats=${encoded_cats}`
@@ -98,14 +98,14 @@ const tmap_resp = token
 if (!tmap_resp.Response || tmap_resp.RedirectTo) {
 	return Astro.redirect(tmap_resp.RedirectTo)
 }
-tmap_section = await tmap_resp.Response.json()
-const links = tmap_section.Links
+section_data = await tmap_resp.Response.json()
+const links = section_data.Links
 
 // Display NSFW links count if > 0
-const nsfw_links_count = tmap_section.NSFWLinksCount
+const nsfw_links_count = section_data.NSFWLinksCount
 
 // Pagination
-const next_page = tmap_section.NextPage
+const next_page = section_data.NextPage
 const is_only_page = page === 1 && next_page === -1
 ---
 
@@ -114,11 +114,14 @@ const is_only_page = page === 1 && next_page === -1
 		<h1>{login_name}'s Treasure Map</h1>
         <p class="subtitle">({section})</p>
 
-        <p id="see-all-sections"><a href={`/map/${login_name}${sort_by ? `?sort_by=${sort_by}` : ''}${nsfw ? sort_by ? '&nsfw=true' : '?nsfw=true' : ''}`}>See all sections</a></p>
+        <span id="see-all-sections">
+            <img src='../../back.svg' height={20} width={20} />
+            <a href={`/map/${login_name}${sort_by ? `?sort_by=${sort_by}` : ''}${nsfw ? sort_by ? '&nsfw=true' : '?nsfw=true' : ''}`}>All sections</a>
+        </span>
 		
 		{links?.length ? <section>
             <TopCats
-                TopCats={tmap_section.Cats}
+                TopCats={section_data.Cats}
                 CatsParams={encoded_cats}
                 SortBy={sort_by}
                 NSFW={nsfw}
@@ -233,9 +236,22 @@ const is_only_page = page === 1 && next_page === -1
     h1:has(+ .subtitle) { 
         margin-bottom: 0.5rem; 
     }
+
     p.subtitle {
         text-align: center;
     }
+
+    span#see-all-sections {
+        display: flex;
+        gap: 5px;
+        width: fit-content;
+        margin-bottom: 1rem;
+
+        img {
+            padding-top: 3px;
+        }
+    }
+
     #cats-filter-container {
         display: flex;
         flex-direction: column;
@@ -258,9 +274,11 @@ const is_only_page = page === 1 && next_page === -1
             margin-bottom: 0;
         }
     }
+
     p#nsfw-filter {
         margin-top: 0;
     }
+
     #top-links {
         max-width: calc(100% - 1rem);
         margin: 0;
