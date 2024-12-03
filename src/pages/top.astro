@@ -173,7 +173,7 @@ if (links && links.length) {
 const cats_separated = cats ? cats.split(',') : []
 const has_many_cats = cats_separated.length > 3
 const cats_title_text = has_many_cats ? cats_separated.slice(0, 3).join(' + ') + '...' : cats_separated.join(' + ')
-const page_title = `${(sort_by !== 'rating' ? " Newest" : " Top Rated")} Links${cats ? ` for: ${cats_title_text}` : ''}`
+const page_title = `${(sort_by !== 'rating' ? " Newest" : " Top Rated")}${cats ? `: ${cats_title_text}` : ''}`
 
 ---
 
