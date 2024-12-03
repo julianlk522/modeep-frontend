@@ -122,8 +122,9 @@ const is_only_page = page === 1 && next_page === -1
                 CatsParams={encoded_cats}
                 SortBy={sort_by}
                 NSFW={nsfw}
-                IsTmapFromUser={login_name}
                 Mini
+                IsTmapFromUser={login_name}
+                TmapSection={section as ("submitted" | "copied" | "tagged")}
             />
         </section> : null}
 

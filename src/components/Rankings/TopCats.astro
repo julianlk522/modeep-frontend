@@ -9,15 +9,17 @@ interface Props {
     SortBy?: SortMetric
     NSFW?: boolean
     More?: boolean
-    IsTmapFromUser?: string
     Mini?: boolean
+    IsTmapFromUser?: string
+    TmapSection?: "submitted" | "copied" | "tagged"
 }
 
-const { TopCats: top_cats, CatsParams: cats_params, Period: period, SortBy: sort_by, NSFW: nsfw, More: more, IsTmapFromUser: tmap_owner, Mini: mini } = Astro.props
+const { TopCats: top_cats, CatsParams: cats_params, Period: period, SortBy: sort_by, NSFW: nsfw, More: more, Mini: mini, IsTmapFromUser: tmap_owner, TmapSection: tmap_section } = Astro.props
 let list_classes = more ? 'more' : tmap_owner ? 'tmap' : ''
 if (mini) list_classes += ' mini'
 const is_subcats = cats_params ? true : false
-const endpoint = tmap_owner ? `/map/${tmap_owner}` : "/top"
+let endpoint = tmap_owner ? `/map/${tmap_owner}` : "/top"
+if (tmap_section) endpoint += `/${tmap_section}`
 ---
 
 {top_cats.length ? <>
