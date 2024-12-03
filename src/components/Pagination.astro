@@ -59,7 +59,7 @@ const next_page_href = href_without_page + (has_other_params ? `&page=${next_pag
 	{
 		page > 2 ? (
 			<span>
-				<a href={prev_page_href}>{next_page - 1}</a>
+				<a href={prev_page_href}>{page - 1}</a>
 			</span>
 		) : null
 	}
