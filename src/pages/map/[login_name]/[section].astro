@@ -190,6 +190,7 @@ const is_only_page = page === 1 && next_page === -1
                 {is_only_page ? null : <Pagination
                     Cats={cats.length ? cats : undefined}
                     SortBy={sort_by}
+                    HasNSFW={nsfw}
                     Page={page ?? 1}
                     NextPage={next_page}
                     TmapSection={section as ("submitted" | "copied" | "tagged")}
@@ -217,6 +218,7 @@ const is_only_page = page === 1 && next_page === -1
                 {is_only_page || links.length <= 10 ? null : <Pagination
                     Cats={cats}
                     SortBy={sort_by}
+                    HasNSFW={nsfw}
                     Page={page ?? 1}
                     NextPage={next_page}
                     TmapSection={section as ("submitted" | "copied" | "tagged")}
