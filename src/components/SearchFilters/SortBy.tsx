@@ -21,7 +21,6 @@ export default function SearchSortBy(props: Props) {
 			<select
 				name='sort-by'
 				id='sort-by'
-				defaultValue={sort_by}
 				value={sort_by}
 				onChange={handle_set_sort_by}
 			>

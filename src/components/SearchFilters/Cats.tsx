@@ -14,7 +14,6 @@ import TagCat from '../Tag/TagCat'
 import './Cats.css'
 
 interface Props {
-	AbbreviatedCatsText?: boolean
 	Addable?: boolean
 	Removable?: boolean
 	SelectedCats: string[]
@@ -24,7 +23,6 @@ interface Props {
 
 export default function SearchCats(props: Props) {
 	const {
-		AbbreviatedCatsText: abbreviated_cats_text,
 		Removable: removable,
 		SelectedCats: selected_cats,
 		SetSelectedCats: set_selected_cats,

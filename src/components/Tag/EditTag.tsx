@@ -143,7 +143,6 @@ export default function EditTag(props: Props) {
 				{editing && !only_tag ? (
 					<button
 						title='Delete tag'
-						alt='Delete Tag'
 						class='delete-tag-btn img-btn'
 						onClick={() => set_show_delete_modal(true)}
 					>
@@ -156,7 +155,6 @@ export default function EditTag(props: Props) {
 
 			{tag || editing ? (
 				<SearchCats
-					AbbreviatedCatsText
 					SelectedCats={cats}
 					SetSelectedCats={set_cats}
 					Addable={editing}

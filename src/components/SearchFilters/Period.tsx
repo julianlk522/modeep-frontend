@@ -21,7 +21,6 @@ export default function SearchPeriod(props: Props) {
 			<select
 				name='period'
 				id='period'
-				defaultValue={period}
 				value={period}
 				onChange={handle_set_period}
 			>
