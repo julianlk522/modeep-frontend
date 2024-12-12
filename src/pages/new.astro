@@ -1,6 +1,6 @@
 ---
-import NewLinks from '../components/Link/NewLinks.tsx'
-import ToolTip from '../components/Modal/ToolTip.tsx'
+import NewLinks from '../components/Link/NewLinks'
+import ToolTip from '../components/Modal/ToolTip'
 import BaseLayout from '../layouts/BaseLayout.astro'
 
 let token = Astro.cookies.get('token')?.value
@@ -17,9 +17,9 @@ if (!token || !user) {
 }
 ---
 
-<BaseLayout Title='Submit New Link(s)'>
+<BaseLayout Title='Add Link(s)'>
 	<main>
-		<h1>Submit New Links(s)</h1>
+		<h1>Add Links(s)</h1>
 		<section>
 			<h2>Rules</h2>
 			<ul>
