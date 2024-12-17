@@ -44,7 +44,7 @@ if (!get_links_resp.Response || get_links_resp.RedirectTo) {
 const data: PaginatedLinks = await get_links_resp.Response.json()
 const links = data.Links
 
-const other_periods = Periods.filter((other) => other !== 'month')
+const other_periods = links?.length ? Periods.filter((other) => other !== 'month') : ['year', 'all']
 ---
 
 <BaseLayout Title='FITM: share and discover the most treasured links across the web'>
@@ -72,12 +72,12 @@ const other_periods = Periods.filter((other) => other !== 'month')
 				}
 			</ol>
 
-			<TopLinks 
+			{links?.length ? <TopLinks 
 				Links={links}
 				NextPage={data.NextPage}
 				Token={token}
 				User={user}
-			/>
+			/> : <p>None :(</p>}
 		</section>
 
 		<ScrollUp />

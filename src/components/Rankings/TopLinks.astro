@@ -30,7 +30,7 @@ const is_only_page = page === 1 && next_page === -1
     />}
     
     <ol id='top-links' start={page ? (page - 1) * LINKS_PAGE_LIMIT + 1 : ''}>
-        {links.map((link) => (
+        {links?.map((link) => (
             <Link
                 client:load
                 Link={link}
@@ -45,7 +45,7 @@ const is_only_page = page === 1 && next_page === -1
         ))}
     </ol>
 
-    {is_only_page || links.length <= 10 ? null : <Pagination
+    {is_only_page || links?.length <= 10 ? null : <Pagination
         Cats={cats}
         Period={period ?? 'month'}
         SortBy={sort_by}
