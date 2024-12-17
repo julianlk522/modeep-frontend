@@ -1,16 +1,15 @@
 ---
-import { Image } from 'astro:assets'
-import cornucopia from '../../public/cornucopia.webp'
 import GlobalTagCalcDiagram from '../components/About/GlobalTagCalcDiagram.astro'
 import SearchDiagram from '../components/About/SearchDiagram.astro'
 import ScrollUp from '../components/ScrollUp.astro'
+import cornucopia from '../images/cornucopia.webp'
 import BaseLayout from '../layouts/BaseLayout.astro'
 ---
 
 <BaseLayout Title='About FITM'>
 	<main>
 		<h1>About</h1>
-		<Image id="cornucopia" src={cornucopia} title='The Internet is like a cornucopia. It has many flavors to enjoy.' alt='The Internet is like a cornucopia. It has many flavors to enjoy.' />
+		<img id="cornucopia" src={cornucopia.src} title='The Internet is like a cornucopia. It has many flavors to enjoy.' alt='The Internet is like a cornucopia. It has many flavors to enjoy.' />
 		<section>
 			<p>
 				The <strong>Flexible Internet Treasure Map (FITM)</strong>

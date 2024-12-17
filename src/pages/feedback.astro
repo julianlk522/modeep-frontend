@@ -1,6 +1,5 @@
 ---
-import { Image } from "astro:assets"
-import fitm_island from '../../public/fitm-island.webp'
+import fitm_island from '../images/fitm-island.webp'
 import NoFooter from "../layouts/NoFooter.astro"
 
 ---
@@ -14,7 +13,7 @@ import NoFooter from "../layouts/NoFooter.astro"
 			<p>Thanks for stopping by!</p>
 		</section>
 
-		<Image id="fitm-island" src={fitm_island} alt='an island with a chest of web treasure' />
+		<img id="fitm-island" src={fitm_island.src} alt='an island with a chest of web treasure' />
 	</main>
 </NoFooter>
 
