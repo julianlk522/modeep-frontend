@@ -11,10 +11,8 @@
 	},
 	"dependencies": {
 		"@astrojs/check": "^0.9.4",
-		"@astrojs/netlify": "^6.0.0",
 		"@astrojs/node": "^9.0.0",
 		"@astrojs/preact": "^4.0.0",
-		"@netlify/edge-functions": "^2.11.0",
 		"astro": "^5.0.4",
 		"jsonwebtoken": "^9.0.2",
 		"preact": "^10.22.0",
