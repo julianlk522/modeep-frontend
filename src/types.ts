@@ -83,7 +83,7 @@ type MorePageCatCountsWithMergedCats = {
 function has_merged_cats_property(
 	obj: any
 ): obj is MorePageCatCountsWithMergedCats {
-	return obj.MergedCats !== undefined
+	return obj?.MergedCats !== undefined
 }
 
 type Contributor = {
@@ -130,10 +130,10 @@ type TreasureMapSection = {
 const tmap_sections = ['Submitted', 'Copied', 'Tagged'] as const
 
 export {
-	Periods,
-	SortMetrics,
 	has_merged_cats_property,
 	is_error_response,
+	Periods,
+	SortMetrics,
 	tmap_sections,
 }
 export type {
