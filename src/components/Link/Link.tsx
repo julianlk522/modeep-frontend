@@ -23,7 +23,7 @@ interface Props {
 	IsSummaryPage?: boolean
 	IsTagPage?: boolean
 	IsTmapPage?: boolean
-	IsNewPage?: boolean
+	IsNewLinkPage?: boolean
 	SetNewLinkCats?: Dispatch<StateUpdater<string[]>>
 	NSFWCatLinks?: boolean
 	Token?: string
@@ -36,7 +36,7 @@ export default function Link(props: Props) {
 		IsSummaryPage: is_summary_page,
 		IsTagPage: is_tag_page,
 		IsTmapPage: is_tmap_page,
-		IsNewPage: is_new_page,
+		IsNewLinkPage: is_new_link_page,
 		SetNewLinkCats: set_new_link_cats,
 		NSFWCatLinks: nsfw_cat_links,
 		Token: token,
@@ -76,7 +76,7 @@ export default function Link(props: Props) {
 
 	// correct submitted_by to local time if newly created link
 	let submit_date_in_local_time = ''
-	if (is_new_page) {
+	if (is_new_link_page) {
 		const sd_utc = new Date(submit_date)
 		const tz_offset_millis = sd_utc.getTimezoneOffset() * 60000
 		submit_date_in_local_time = new Date(
@@ -84,13 +84,16 @@ export default function Link(props: Props) {
 		).toISOString()
 	}
 
-	let tag_attribution =
-		cats && user && cats_from_user === user
+	let tag_attribution = is_new_link_page
+		? 'tag'
+		: cats && user && cats_from_user === user
 			? 'your tag'
 			: cats_from_user
 				? `${cats_from_user}'s tag`
 				: 'global tag'
-	tag_attribution += ` (${tag_count})`
+	if (!is_new_link_page) {
+		tag_attribution += ` (${tag_count})`
+	}
 	const split_cats = cats.split(',')
 	const cats_endpoint =
 		is_tmap_page && cats_from_user ? `/map/${cats_from_user}` : '/top'
@@ -239,10 +242,9 @@ export default function Link(props: Props) {
 			<p>
 				<span class='by'>by </span>
 				<a href={`/map/${submitted_by}`} class='submitted-by'>
-					{submitted_by}
-				</a>
+					{is_your_link ? 'you' : submitted_by}
+				</a>{' '}
 				<span class='submit-date'>
-					{' '}
 					{format_long_date(
 						submit_date_in_local_time
 							? submit_date_in_local_time
@@ -324,7 +326,9 @@ export default function Link(props: Props) {
 						title={`View summaries for this link (${summary_count} total), add or edit yours`}
 						href={`/summary/${id}`}
 					>
-						summaries ({summary_count})
+						{is_new_link_page
+							? 'summary'
+							: `summaries (${summary_count})`}
 					</a>
 				</p>
 			)}
@@ -380,7 +384,11 @@ export default function Link(props: Props) {
 					</button>
 
 					<button
-						title='Copy link to treasure map'
+						title={
+							is_copied
+								? 'Uncopy link'
+								: 'Copy link to Treasure Map'
+						}
 						onClick={handle_copy}
 						class={`copy-btn${is_copied ? ' copied' : ''}`}
 					>

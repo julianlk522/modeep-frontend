@@ -1,4 +1,6 @@
 section#new-link {
+	padding-bottom: 1.5rem;
+
 	form input#submit-new-link {
 		display: block;
 		margin-top: 1rem;

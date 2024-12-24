@@ -163,7 +163,7 @@ export default function NewLinks(props: Props) {
 							<Link
 								key={link.ID}
 								Link={link}
-								IsNewPage
+								IsNewLinkPage
 								SetNewLinkCats={set_cats}
 								User={props.User}
 							/>

@@ -20,7 +20,7 @@ if (!token || !user) {
 <BaseLayout Title='Add Link(s)'>
 	<main>
 		<h1>Add Links(s)</h1>
-		<section>
+		<section id="rules">
 			<h2>Rules</h2>
 			<ul>
 				<li>Anything 
@@ -39,6 +39,10 @@ if (!token || !user) {
 </BaseLayout>
 
 <style>
+	section#rules ul {
+		margin-bottom: 0.5rem;
+	}
+
 	#example-cat {
 		display: inline-block;
 		height: 25px;
@@ -49,6 +53,7 @@ if (!token || !user) {
 		background-color: var(--danger);
 		font-weight: bold;
 	}
+
 	a {
 		font-weight: bold;
 	}

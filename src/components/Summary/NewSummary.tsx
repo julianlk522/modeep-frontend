@@ -68,12 +68,10 @@ export default function NewSummary(props: Props) {
 		<form onSubmit={async (e) => await handle_submit(e, token)}>
 			{error ? <p class='error'>{`Error: ${error}`}</p> : null}
 
-			<label for='summary'>
-				{summary_exists ? 'Update Summary' : 'Add Summary'}
-			</label>
-			<textarea id='summary' name='summary' rows={3} cols={50} />
+			<label for='summary'>Your Summary</label>
+			<textarea id='summary' name='summary' rows={3} cols={50} required />
 			<button id='submit-new-summary' type='submit'>
-				Submit
+				{summary_exists ? 'Update' : 'Submit'}
 			</button>
 		</form>
 	)

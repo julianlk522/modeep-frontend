@@ -209,15 +209,17 @@ export default function SearchCats(props: Props) {
 						onKeyPress={handle_enter}
 						value={snippet}
 					/>
+
 					<input
 						id='add-cat-filter'
-						title='Add cat'
+						title='Add cat filter'
 						type='submit'
-						value='Add'
+						value='Add Filter'
 						onClick={(e) => {
 							add_cat(e)
 							set_snippet('')
 						}}
+						disabled={!snippet}
 					/>
 				</>
 			) : null}
