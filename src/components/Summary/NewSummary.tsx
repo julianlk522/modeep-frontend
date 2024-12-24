@@ -60,6 +60,7 @@ export default function NewSummary(props: Props) {
 			return console.error('Whoops: ', new_summary_data)
 		}
 
+		form.reset()
 		return window.location.reload()
 	}
 
