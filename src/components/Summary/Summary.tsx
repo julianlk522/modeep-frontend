@@ -98,6 +98,12 @@ export default function Summary(props: Props) {
 			return console.error('Whoops: ', delete_data)
 		}
 
+		const textarea = document.getElementById(
+			'summary'
+		) as HTMLTextAreaElement
+		if (textarea) {
+			textarea.value = ''
+		}
 		return window.location.reload()
 	}
 
