@@ -100,6 +100,16 @@ export default function Summary(props: Props) {
 
 		return window.location.reload()
 	}
+
+	function copy_summary_to_textarea() {
+		const textarea = document.getElementById(
+			'summary'
+		) as HTMLTextAreaElement
+		if (textarea) {
+			textarea.value = text
+		}
+	}
+
 	return (
 		<li class='summary'>
 			<strong>"{text}"</strong>
@@ -132,6 +142,19 @@ export default function Summary(props: Props) {
 						onClick={handle_delete}
 					>
 						<img src='../../../delete.svg' height={20} width={20} />
+					</button>
+					<button
+						id='edit-summary-btn'
+						title='Edit summary'
+						class='img-btn'
+						onClick={copy_summary_to_textarea}
+					>
+						<img
+							src='../../../edit.svg'
+							height={20}
+							width={20}
+							alt='Edit summary'
+						/>
 					</button>
 					{error ? <p class='error'>{error}</p> : null}
 				</>
