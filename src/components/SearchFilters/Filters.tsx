@@ -15,18 +15,24 @@ interface Props {
 }
 
 export default function SearchFilters(props: Props) {
-	let endpoint = props.Endpoint ?? '/top'
+	const {
+		InitialPeriod: initial_period,
+		InitialCats: initial_cats,
+		InitialSortBy: initial_sort_by,
+		InitialNSFW: initial_nsfw,
+	} = props
 
-	const [period, set_period] = useState<Period>(props.InitialPeriod)
-	const [cats, set_cats] = useState<string[]>(props.InitialCats)
+	const [period, set_period] = useState<Period>(initial_period)
+	const [cats, set_cats] = useState<string[]>(initial_cats)
 
 	// only for links (/top)
 	const [sort_by, set_sort_by] = useState<SortMetric>(
-		props.InitialSortBy ?? 'rating'
+		initial_sort_by ?? 'rating'
 	)
-	const [nsfw, set_nsfw] = useState<boolean>(props.InitialNSFW ?? false)
+	const [nsfw, set_nsfw] = useState<boolean>(initial_nsfw ?? false)
 
 	// set search URL based on period and cats
+	let endpoint = props.Endpoint ?? '/top'
 	const base_URL = endpoint ?? '/top'
 	let search_URL = base_URL
 
@@ -61,6 +67,17 @@ export default function SearchFilters(props: Props) {
 		}
 	}
 
+	const has_changed_cats =
+		cats.length !== initial_cats.length ||
+		cats.some((cat) => !initial_cats.includes(cat))
+	const has_changed_filters =
+		endpoint === '/more'
+			? has_changed_cats || period !== initial_period
+			: has_changed_cats ||
+				period !== initial_period ||
+				sort_by !== initial_sort_by ||
+				nsfw !== initial_nsfw
+
 	return (
 		<section id='search-filters'>
 			<form>
@@ -68,7 +85,6 @@ export default function SearchFilters(props: Props) {
 
 				<SearchPeriod Period={period} SetPeriod={set_period} />
 
-				{/* only for links (/top) */}
 				{endpoint === '/top' ? (
 					<>
 						<SearchSortBy
@@ -81,9 +97,17 @@ export default function SearchFilters(props: Props) {
 
 				<SearchCats SelectedCats={cats} SetSelectedCats={set_cats} />
 
-				<a id='search-from-filters' href={search_URL}>
-					Search
-				</a>
+				{has_changed_filters ? (
+					<a id='search-from-filters' href={search_URL}>
+						<img
+							src='chest.webp'
+							alt='chest'
+							width={22}
+							height={20}
+						/>
+						Scour The Treasure Map
+					</a>
+				) : null}
 			</form>
 		</section>
 	)
