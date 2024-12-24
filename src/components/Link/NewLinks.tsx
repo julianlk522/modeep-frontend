@@ -112,7 +112,7 @@ export default function NewLinks(props: Props) {
 		} else {
 			new_link_data.TagCount = 1
 
-			set_submitted_links([...submitted_links, new_link_data])
+			set_submitted_links([new_link_data, ...submitted_links])
 			set_cats([])
 			set_error(undefined)
 			set_dupe_url(undefined)
