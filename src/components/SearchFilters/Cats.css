@@ -1,5 +1,9 @@
 input#add-cat-filter {
-	margin-left: 3px;
+	margin-left: 4px;
+}
+
+ol#cat-list li:has(input#clear-cat-filters) {
+	list-style: none;
 }
 
 ul#recommendations-list {

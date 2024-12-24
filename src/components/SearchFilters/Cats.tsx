@@ -232,6 +232,19 @@ export default function SearchCats(props: Props) {
 							DeletedSignal={deleted_cat}
 						/>
 					))}
+					{selected_cats.length > 1 ? (
+						<li>
+							<input
+								id='clear-cat-filters'
+								title='Clear cat filters'
+								type='submit'
+								value='Clear'
+								onClick={() => {
+									set_selected_cats([])
+								}}
+							/>
+						</li>
+					) : null}
 				</ol>
 			) : null}
 
