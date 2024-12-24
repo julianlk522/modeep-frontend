@@ -9,36 +9,38 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 <BaseLayout Title='About FITM'>
 	<main>
 		<h1>About</h1>
-		<img id="cornucopia" src={cornucopia.src} title='The Internet is like a cornucopia. It has many flavors to enjoy.' alt='The Internet is like a cornucopia. It has many flavors to enjoy.' />
+		<img id="cornucopia" src={cornucopia.src} title='There is a boundless spread of flavors to be found in the web. Whoever you are, there is much for you to enjoy.' />
 		<section>
 			<p>
 				The <strong>Flexible Internet Treasure Map (FITM)</strong>
-				is a system for pooling and organizing valuable Internet content. You can use it to share links that you think are worth knowing about, or to easily sort through other links that the community has shared.
+				is a dynamic database of valued Internet content. With it you can share links that are worth knowing and easily search existing archives. Its goal is to help everyone find more of what they love.
 			</p>
 
-			<p>It is <em>flexible</em> because links can be grouped and queried using a variety of properties to help you locate what you want.</p>
+			<p>It is <em>flexible</em> because links can be organized and queried using a variety of properties to help find perfect matches for your current wishes.</p>
+
 			<p>
-				<em>Treasure</em> is intentionally vague. This site is about sharing or
+				<em>Treasure</em> is intentionally vague. This place is meant for sharing and
 				discovering anything on the Internet that's worth sharing or
 				discovering.
 			</p>
 
 			<p>It is an attempted solution to
-				the challenges of high obscurity and resultingly low discoverability
-				of Internet greatness, both new and old. </p>
+				the challenges of high obscurity and poor discoverability
+				of Internet greatness, new and old.</p>
 		</section>
 
 		<section>
 			<h2>How FITM Works</h2>
 
 			<h3 id="cats" class="subsection">Cats?</h3>
-			<p>The term <em>"cats"</em> is used often here. It&apos;s a shorthand for <em><a href="#tags">tag categories</a></em>. Cats are also a <a href="https://en.wikipedia.org/wiki/I_Can_Has_Cheezburger%3F">historically prominent Internet symbol</a>, so it seems fitting that they'd help run FITM. Please don't be alarmed by mention of "stacking cats" or things of that nature. No animals were harmed in making this site.</p>
+			<p><em>"Cats"</em> are an important concept here. It&apos;s a shorthand for <em><a href="#tags">tag categories</a></em>. Cats are also a <a href="https://en.wikipedia.org/wiki/I_Can_Has_Cheezburger%3F">historically prominent Internet symbol</a>, so it seems fitting that they'd be a part of FITM. Don't be alarmed by mention of "stacking cats"; no animals were harmed in building this site.</p>
 
-			<p>Links submitted to FITM are tagged with 1+ cats. You can stack desired cats in
-			searches to quickly and reliably find pages that match some
-			theme(s). You can also specify other filters, like a time period (last day, week, month, or year) during which the returned links must have been posted, or whether you want to see anything tagged "<abbr title="Not Safe For Work">NSFW</abbr>". (NSFW is always opt-in.)</p>
+			<p>Links submitted to FITM are tagged with 1+ cats. You can apply cat filters in searches to easily and reliably find pages that match some
+			theme(s). All links returned in a search will have the cats you specify, and maybe also others.</p>
 
-			<p>The top (most used) cats will be listed along with returned links matching your desired parameters. Searches with cat filters return top <em>subcats</em>. In other words, the most used cats found across the subsection of links returned in your search, not including the ones you specified.</p>
+			<p>You can also filter results by time period (last day, week, month, or year) or whether you want to include results that are tagged "<abbr title="Not Safe For Work">NSFW</abbr>". (NSFW is always opt-in.)</p>
+
+			<p>The top (most used) cats are listed along with returned links that match your chosen constraints. Searches with cat filters return top <em>subcats</em>. These are the most used cats found throughout the returned links, not including the ones you specified.</p>
 
 			<SearchDiagram />
 
@@ -52,8 +54,8 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 
 			<h3 class="subsection">Summarize</h3>
 			<p>
-				Every added link has a summary page where any user can
-				submit their summary of its content. Summaries can be upvoted to help the most liked ones stay most visible.
+				Every link has a summary page where any user can
+				submit a description of its content. Summaries can be upvoted so the most liked ones stay most visible.
 			</p>
 			<p>
 				A link's top summary will be shown above its URL at all times to
@@ -70,66 +72,56 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 			<h3 class="subsection">Like</h3>
 			<p>
 				<strong>Liking</strong> is about improving discoverability via corroboration.
-				It's a way to vouch for the "goodness" (comprehensiveness, authenticity, hilarity,
-				etc.) of a link without needing to pin it to your Treasure Map and take up space there.
+				It's a way to vouch for a link's "goodness" (comprehensiveness, authenticity, hilarity, whatever).
 			</p>
 			<p>
-				Liking allows great content to filter to the top of searches,
-				so that everyone&mdash;even those who don't know to check your
-				Treasure Map&mdash;can find it easily.
+				Liking helps great content appear closer to the top of searches,
+				so anyone can find it easily.
 			</p>
 
 			<h3 id="tags" class="subsection">Tag</h3>
 			<p>
 				<strong>Tagging</strong> a link is about improving discoverability
-				via filtration. A tag is a list of categories, chosen by a user, that a certain link is thought to embody. It represents that user's interpretation of the link's content. Cats can be specified in searches to narrow results.
+				via filtration. A tag is a list of categories (cats) for a link, chosen by you. It's your interpretation of the topics that the link may be associated with, or terms that you expect someone interested in the link may search for with cat filters.
 			</p>
 			<p>
-				Obviously not everyone agrees on preferred categorizations of
-				various links. Each user is invited to tag any link however they
-				see fit.
-			</p>
-			<p>
-				Any <em>user-submitted tag</em>, i.e., a user's categorization(s) of some link,
-				dictates how that link will be indexed on <em>their</em> Treasure Map. By contrast, links are indexed using <em>global tags</em> in Global Treasure Map searches.
+				We need not agree on the most accurate cat(s) for all links. Each user's take matters, and can be found by viewing their Treasure Map.
 			</p>
 		</section>
 		<section>
-
 			<h3> The Global Treasure Map and Global Tags</h3>
 			<p>
-				Each link is also associated with a <em>global tag</em>,
-				which filters the results of searches made outside of a single
-				user's map (i.e., on the <a
-				href='/top'>Top</a
-			> and <a href='/more'>More</a> pages).
+				Any <em>user-submitted tag</em> (cats assigned to a link)
+				decides how the link is sorted on the tag author's Treasure Map. But every link also has a <em>global tag</em>,
+				which determines its sorting on the <a href='/top'>Top</a
+			> and <a href='/more'>More</a> pages.
 			</p>
 			<p><em>Global tags</em> are calculated automatically by the age of every
 			<em>user-submitted tag</em> and the frequency of each cat across
-			them. They're shown with each link. (Unless the link is viewed from a user's Treasure Map; then it will show <em>that</em> user's tag.) You can also see any link's top user-submitted tags on demand.</p>
+			them. They're shown with each link. (Unless, again, the link is viewed from a user's Treasure Map; then it will show <em>their</em> tag.) You can view any link's top user-submitted tags on demand.</p>
 
 			<p>Each user-submitted tag shows its <em>lifespan overlap percentage</em> (see <a href="#global-tag-calculation">Global Tag Calculation</a>), author, date of submission, and cats. Tags that have kept the same combination of cats for the greatest portion of the link's lifespan are ranked highest. Editing a tag's cats will reset it's lifespan overlap percentage.</p>
 
-			<p>To clarify, not only the cats contained in the top tag rankings may be assigned globally. If many recent tags contain the same cats which are not already present in the global tag, it's likely that those too will be assigned.</p>
+			<p>To clarify, a link's global cats will not necessarily be exclusive to its highest-ranked tags. If many newer tags contain some cats that are not already present in the global tag, it's likely that those too will soon be assigned.</p>
 
 			<p>This system is based on the assumption that cat interpretations that remain unedited
 			for a long time or that reappear across tags are most likely to be the best fits.</p>
 
-			<p>A long-unchanged tag could be bad (poorly representing its link), but if enough people disagree and submit alternative tags, their collective input will rule it out; the old tag's cats will be stripped from the link's global tag.</p>
+			<p>A long-unchanged tag could still be a poor representation, but if enough people disagree and submit alternative tags their collective input will nullify it; the old tag's cats will likely be removed from the link's global tag.</p>
 		</section>
 
 		<section>
-			<h2>What's the Point?</h2>
+			<h2>Why?</h2>
 			<p>What problems does FITM address that existing search or sharing tools don't?</p>
 			<h3 class="subsection">Search Engines</h3>
 			<p>
 				Search engines help with indexing the web,
-				but they don't think like people so they&apos;re limited in ability to understand your wishes and make useful recommendations. And they have some biases.
+				but they don't think like people so they struggle to grasp your wishes and make useful recommendations. And they have some biases.
 			</p>
 			<p>
-				Depending on your definition of quality, <abbr title="Search Engine Optimization">SEO</abbr> <a href="https://backlinko.com/google-ranking-factors#top-8">as we know it</a> may or may not be relevant.
+				Depending on your definition of quality, <abbr title="Search Engine Optimization">SEO</abbr> <a href="https://backlinko.com/google-ranking-factors#top-8">as we now know it</a> may or may not be relevant.
 				Great things on the web may be absent in search results because they're not aggressively stuffed with <a href="https://en.wikipedia.org/wiki/Keyword_research">keywords</a>, or they're not linked from many other pages, or they're not associated with an advertised company <a href="https://digitalbrandinginstitute.com/improve-brand-signals-better-seo#:~:text=What%20Are,Signals?">brand</a>. Or, maybe a site ranks highly given specific search terms but is otherwise hard to discover. How could you even know to search for something <a href="https://presidentialham.com/">like this</a>? (safe for work.) Internet users who care most
-				about result <em>novelty</em> don't necessarily benefit from these ranking metrics.
+				about result <em>novelty</em> don't really benefit from these ranking metrics.
 			</p>
 			<p>
 				Search engines also are incentivized to promote results from
@@ -137,26 +129,26 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 				feature, not a bug, depending on who you ask. Do ad budgets and marketing passion reliably produce high quality web content? If you're not sure about that, you may be in the right place. (You will never see ads on FITM).
 			</p>
 			<p>
-				Arguably, a simple enough proxy for a link's quality is the number of
-				<em>people</em> who decide, for one reason or another, to upvote it. It's then trivial to find good content by sorting on like count.
+				A simple-enough and reliable-enough proxy for a link's quality is the number of
+				<em>people</em> who decide, for any reason, to upvote it. Then it's easy to find good content by putting the most liked links at the top of searches.
 			</p>
 			<p>
-				But sorting by likes is not enough. That's why you can parameterize FITM searches with <em><a href="#cats">cat-stacking</a></em> and other filters. You can also order results by which are newest if you prefer that to the most-liked ones.
+				Sorting by likes is not enough, though. That's why you can parameterize FITM searches with <em><a href="#cats">cat-stacking</a></em> and other sorting and filtering.
 			</p>
 
 			<h3 class="subsection">Reddit</h3>
 			<p>
-				Some might argue that the goal of categorizing web content was achieved years ago by Reddit.
+				Some might argue that the goal of categorizing web content was achieved long ago by Reddit.
 			</p>
 			<p>
 				Reddit is an invaluable resource
-				and a blessing to the Internet. It's an inspiration to FITM. But they have different goals.
+				and a blessing. It's an inspiration to FITM. But they have different purposes.
 			</p>
 			<ul>
 				<li>
 					<p>
 						Reddit is
-						primarily a communication hub while FITM is primarily a resource hub. FITM is not meant for thematic
+						mainly a communication hub while FITM is mainly a resource hub. FITM is not meant for thematic
 						discussion, only link sharing and
 						discovery (with a few text submission actions in support of that goal: see <a href="#core-actions">Core Actions</a>).
 					</p>
@@ -164,8 +156,11 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 				<li>
 					<p>
 						Subreddits are communities defined by one key theme. But FITM aims, through cat-stacking, to serve anyone
-						interested in something spanning multiple specific themes. Most web
-						searches implicitly treat your terms like they're separated with an "OR" when maybe what you want is for them to be separated with "AND." History AND comedy AND music AND videos. That search could very quickly escort you to <a href="https://www.youtube.com/watch?v=qv6OOuPI5c0">this masterpiece</a>. (probably not safe for work.) You can be very specific and cut through potential recommendations that are not exactly what you want.
+						interested in something that spans multiple specific themes.
+					</p>
+					<p>
+						Most web
+						searches implicitly treat keywords like they're separated with "OR" when sometimes what you want is for them to be separated with "AND." History AND comedy AND music AND videos. That search could very quickly escort you to <a href="https://www.youtube.com/watch?v=qv6OOuPI5c0">this masterpiece</a>. (probably not safe for work.)
 					</p>
 				</li>
 			</ul>
@@ -187,7 +182,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 			<h3 id="retrieving-metadata" class="subsection">Retrieving Metadata</h3>
 			<p>FITM employs <em>very limited</em> use of automated website scraping in order to fetch metadata for submitted links. This includes a description (AKA "Auto Summary") and a preview image, which come from <a href="https://ogp.me/">Open Graph</a> properties and other meta tags in a page's HTML head. FITM metadata collection can be identified by requests coming from the <strong>FITM-Bot</strong> user agent.</p>
 
-			<p>A max of 1-3 automated requests go out to each URL added here (FITM-Bot tries a couple times with different protocol prefixes, e.g., "https://" and "http://", if the first request fails). The goal of this is ultimately to promote appreciation for good, public Internet sites by making them more visible. This automated scraping helps to cut down on link submission friction and pair links with eye-catching visuals.</p>
+			<p>A max of 1-3 automated requests go out to each URL added here (FITM-Bot tries a couple times with different protocol prefixes, e.g., "https://" and "http://", if the first request fails). This automated scraping helps to cut down on link submission friction and pair links with eye-catching visuals. The goal is ultimately to promote appreciation for good, public Internet sites by improving their visibility.</p>
 
 			<p><strong>Anyone can have their domain added to a non-scrape list upon request, with no further questions</strong>. Please send an email to <a href="mailto:fitm-contact@proton.me">fitm-contact@proton.me</a> if you'd like that. It would be an odd decision though. Bot traffic is miniscule, and the point of sites being on FITM is to help them get more visitors.</p>
 		</section>
