@@ -6,11 +6,13 @@ section#search-filters {
 		width: fit-content;
 		margin-top: 1rem;
 		padding: 5px 7px;
+		opacity: 0.25;
 		background-color: seagreen;
 		border-radius: 3px;
 		text-decoration: none;
 		font-weight: bold;
 		color: var(--text);
+		transition: opacity 0.05s ease-in;
 
 		img {
 			margin-right: 0.5rem;
@@ -18,7 +20,17 @@ section#search-filters {
 		}
 	}
 
-	a#search-from-filters:hover {
+	a#search-from-filters.filters-changed {
+		opacity: 1;
+	}
+
+	a#search-from-filters.filters-changed:hover {
 		opacity: 0.9;
+	}
+
+	@media (prefers-reduced-motion) {
+		a#search-from-filters {
+			transition: none;
+		}
 	}
 }

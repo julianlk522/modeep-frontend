@@ -97,17 +97,15 @@ export default function SearchFilters(props: Props) {
 
 				<SearchCats SelectedCats={cats} SetSelectedCats={set_cats} />
 
-				{has_changed_filters ? (
-					<a id='search-from-filters' href={search_URL}>
-						<img
-							src='chest.webp'
-							alt='chest'
-							width={22}
-							height={20}
-						/>
-						Scour The Treasure Map
-					</a>
-				) : null}
+				<a
+					id='search-from-filters'
+					title={has_changed_filters ? '' : 'Filters unchanged'}
+					class={has_changed_filters ? 'filters-changed' : ''}
+					href={search_URL}
+				>
+					<img src='chest.webp' alt='chest' width={22} height={20} />
+					Scour The Treasure Map
+				</a>
 			</form>
 		</section>
 	)

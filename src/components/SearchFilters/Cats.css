@@ -2,6 +2,10 @@ input#add-cat-filter {
 	margin-left: 4px;
 }
 
+input#add-cat-filter:disabled {
+	color: var(--text-muted);
+}
+
 ol#cat-list li:has(input#clear-cat-filters) {
 	list-style: none;
 }
