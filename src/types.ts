@@ -37,6 +37,7 @@ type Link = {
 	IsLiked?: boolean
 	LikeCount: number
 	IsCopied?: boolean
+	CopyCount: number
 	TagCount: number
 	ClickCount: number
 	ImgURL?: string

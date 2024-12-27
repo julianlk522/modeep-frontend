@@ -15,6 +15,7 @@ import {
 } from '../../util/login_redirect'
 import Modal from '../Modal/Modal'
 import './Link.css'
+import SameUserCopyCount from './SameUserCopyCount'
 import SameUserLikeCount from './SameUserLikeCount'
 
 interface Props {
@@ -61,6 +62,7 @@ export default function Link(props: Props) {
 	const [is_copied, set_is_copied] = useState(props.Link.IsCopied)
 	const [is_liked, set_is_liked] = useState(props.Link.IsLiked)
 	const [like_count, set_like_count] = useState(props.Link.LikeCount)
+	const [copy_count, set_copy_count] = useState(props.Link.CopyCount)
 	const [show_delete_modal, set_show_delete_modal] = useState(false)
 	const [img_url, set_img_url] = useState(saved_img_url)
 
@@ -171,7 +173,13 @@ export default function Link(props: Props) {
 			return console.error('Whoops: ', copy_data)
 		}
 
-		set_is_copied(is_copied ? false : true)
+		if (is_copied) {
+			set_is_copied(false)
+			set_copy_count((prev) => prev - 1)
+		} else {
+			set_is_copied(true)
+			set_copy_count((prev) => prev + 1)
+		}
 		return
 	}
 
@@ -455,8 +463,8 @@ export default function Link(props: Props) {
 											d='M19 2a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-2v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2V4a2 2 0 0 1 2-2zm-9 13H8a1 1 0 0 0-.117 1.993L8 17h2a1 1 0 0 0 .117-1.993zm9-11H9v2h6a2 2 0 0 1 2 2v8h2zm-7 7H8a1 1 0 1 0 0 2h4a1 1 0 1 0 0-2'
 										/>
 									</g>
-								</svg>
-								{' (Copied)'}
+								</svg>{' '}
+								({copy_count})
 							</>
 						) : (
 							<>
@@ -474,18 +482,24 @@ export default function Link(props: Props) {
 											d='M19 2a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-2v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2V4a2 2 0 0 1 2-2zm-4 6H5v12h10zm-5 7a1 1 0 1 1 0 2H8a1 1 0 1 1 0-2zm9-11H9v2h6a2 2 0 0 1 2 2v8h2zm-7 7a1 1 0 0 1 .117 1.993L12 13H8a1 1 0 0 1-.117-1.993L8 11z'
 										/>
 									</g>
-								</svg>
-								{' (Copy)'}
+								</svg>{' '}
+								({copy_count})
 							</>
 						)}
 					</button>
 				</>
 			) : (
-				<SameUserLikeCount LikeCount={like_count} />
+				<>
+					<SameUserLikeCount LikeCount={like_count} />
+					<SameUserCopyCount CopyCount={copy_count} />
+				</>
 			)}
 
 			{click_count > 0 ? (
-				<div title={`Clicked ${click_count} times`} id='click-count'>
+				<div
+					title={`${click_count} ${click_count === 1 ? 'click' : 'clicks'}`}
+					id='click-count'
+				>
 					<img src='../../click.svg' height={18} width={18} />
 					<span>{click_count}</span>
 				</div>

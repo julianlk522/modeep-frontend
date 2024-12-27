@@ -6,7 +6,10 @@ export default function SameUserLikeCount(props: Props) {
 	const like_count = props.LikeCount
 
 	return (
-		<div class='same-user-like-count'>
+		<div
+			title={`Liked by ${like_count} ${like_count === 1 ? 'person' : 'people'}`}
+			class='same-user-like-count'
+		>
 			{/* https://icon-sets.iconify.design/solar/like-outline/ */}
 			<svg
 				xmlns='http://www.w3.org/2000/svg'
