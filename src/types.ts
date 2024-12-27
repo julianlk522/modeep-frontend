@@ -34,11 +34,12 @@ type Link = {
 	Cats: string
 	Summary?: string
 	SummaryCount: number
-	TagCount: number
-	ImgURL?: string
-	LikeCount: number
 	IsLiked?: boolean
+	LikeCount: number
 	IsCopied?: boolean
+	TagCount: number
+	ClickCount: number
+	ImgURL?: string
 }
 
 type PaginatedLinks = {

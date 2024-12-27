@@ -10,6 +10,7 @@ const CATS_ENDPOINT = API_URL + '/cats'
 const CONTRIBUTORS_ENDPOINT = API_URL + '/contributors'
 const SUMMARIES_ENDPOINT = API_URL + '/summaries'
 const TAGS_ENDPOINT = API_URL + '/tags'
+const CLICKS_ENDPOINT = API_URL + '/click'
 
 const TMAP_ENDPOINT = API_URL + '/map'
 const TMAP_ABOUT_ENDPOINT = API_URL + '/about'
@@ -21,6 +22,7 @@ const LINKS_PAGE_LIMIT = 20
 export {
 	API_URL,
 	CATS_ENDPOINT,
+	CLICKS_ENDPOINT,
 	CONTRIBUTORS_ENDPOINT,
 	LINKS_ENDPOINT,
 	LINKS_PAGE_LIMIT,

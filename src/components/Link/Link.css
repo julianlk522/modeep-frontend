@@ -102,6 +102,20 @@ div.tags a.tags-page-link:visited,
 	margin-top: 1rem;
 }
 
+div#click-count {
+	display: inline-block;
+	margin-left: 4px;
+
+	img {
+		margin-bottom: -1px;
+	}
+
+	span {
+		position: relative;
+		top: -2px;
+	}
+}
+
 p,
 button,
 .same-user-like-count {

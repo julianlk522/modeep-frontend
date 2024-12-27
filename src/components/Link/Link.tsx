@@ -4,7 +4,7 @@ import {
 	type Dispatch,
 	type StateUpdater,
 } from 'preact/hooks'
-import { LINKS_ENDPOINT } from '../../constants'
+import { CLICKS_ENDPOINT, LINKS_ENDPOINT } from '../../constants'
 import * as types from '../../types'
 import { is_error_response } from '../../types'
 import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
@@ -51,6 +51,7 @@ export default function Link(props: Props) {
 		Summary: summary,
 		SummaryCount: summary_count,
 		TagCount: tag_count,
+		ClickCount: click_count,
 		ImgURL: saved_img_url,
 	} = props.Link
 
@@ -174,6 +175,22 @@ export default function Link(props: Props) {
 		return
 	}
 
+	async function handle_click(e: MouseEvent) {
+		e.preventDefault()
+
+		await fetch(CLICKS_ENDPOINT, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ link_id: id }),
+		})
+
+		if (e.button === 0) {
+			return (window.location.href = url)
+		}
+	}
+
 	const expected_delete_action_status = 205
 	async function handle_delete() {
 		if (!token) {
@@ -223,7 +240,20 @@ export default function Link(props: Props) {
 						width={100}
 					/>
 					<div>
-						<a href={url} class='url-anchor'>
+						<a
+							href={url}
+							class='url-anchor'
+							onClick={(e) => {
+								e.preventDefault()
+								handle_click(e)
+							}}
+							onMouseDown={(e) => {
+								// don't double-count left click
+								if (e.button === 0) return
+								e.preventDefault()
+								handle_click(e)
+							}}
+						>
 							<h3>{summary ? summary : url}</h3>
 						</a>
 						{summary ? <p class='url'>{url}</p> : null}
@@ -231,7 +261,20 @@ export default function Link(props: Props) {
 				</div>
 			) : (
 				<>
-					<a href={url} class='url-anchor'>
+					<a
+						href={url}
+						class='url-anchor'
+						onClick={(e) => {
+							e.preventDefault()
+							handle_click(e)
+						}}
+						onMouseDown={(e) => {
+							// don't double-count left click
+							if (e.button === 0) return
+							e.preventDefault()
+							handle_click(e)
+						}}
+					>
 						<h3>{summary ? summary : url}</h3>
 					</a>
 
@@ -440,6 +483,13 @@ export default function Link(props: Props) {
 			) : (
 				<SameUserLikeCount LikeCount={like_count} />
 			)}
+
+			{click_count > 0 ? (
+				<div title={`Clicked ${click_count} times`} id='click-count'>
+					<img src='../../click.svg' height={18} width={18} />
+					<span>{click_count}</span>
+				</div>
+			) : null}
 
 			{is_your_link ? (
 				<>
