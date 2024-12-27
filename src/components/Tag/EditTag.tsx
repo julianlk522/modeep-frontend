@@ -159,6 +159,7 @@ export default function EditTag(props: Props) {
 					SetSelectedCats={set_cats}
 					Addable={editing}
 					Removable={editing}
+					IsTagPage
 				/>
 			) : null}
 

@@ -16,6 +16,7 @@ import './Cats.css'
 interface Props {
 	Addable?: boolean
 	Removable?: boolean
+	IsTagPage?: boolean
 	SelectedCats: string[]
 	SetSelectedCats: Dispatch<StateUpdater<string[]>>
 	SubmittedLinks?: types.Link[]
@@ -24,6 +25,7 @@ interface Props {
 export default function SearchCats(props: Props) {
 	const {
 		Removable: removable,
+		IsTagPage: is_tag_page,
 		SelectedCats: selected_cats,
 		SetSelectedCats: set_selected_cats,
 	} = props
@@ -234,7 +236,7 @@ export default function SearchCats(props: Props) {
 							DeletedSignal={deleted_cat}
 						/>
 					))}
-					{selected_cats.length > 1 ? (
+					{!is_tag_page && selected_cats.length > 1 ? (
 						<li>
 							<input
 								id='clear-cat-filters'

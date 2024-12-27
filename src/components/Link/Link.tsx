@@ -241,7 +241,11 @@ export default function Link(props: Props) {
 
 			<p>
 				<span class='by'>by </span>
-				<a href={`/map/${submitted_by}`} class='submitted-by'>
+				<a
+					title={`View ${submitted_by}'s Treasure Map`}
+					href={`/map/${submitted_by}`}
+					class='submitted-by'
+				>
 					{is_your_link ? 'you' : submitted_by}
 				</a>{' '}
 				<span class='submit-date'>
@@ -326,7 +330,7 @@ export default function Link(props: Props) {
 						title={`View summaries for this link (${summary_count} total), add or edit yours`}
 						href={`/summary/${id}`}
 					>
-						{is_new_link_page
+						{summary_count === 1
 							? 'summary'
 							: `summaries (${summary_count})`}
 					</a>

@@ -99,7 +99,11 @@ export default function SearchFilters(props: Props) {
 
 				<a
 					id='search-from-filters'
-					title={has_changed_filters ? '' : 'Filters unchanged'}
+					title={
+						has_changed_filters
+							? ''
+							: 'Filters unchanged: scroll down to see returned links'
+					}
 					class={has_changed_filters ? 'filters-changed' : ''}
 					href={search_URL}
 				>

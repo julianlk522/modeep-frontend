@@ -128,7 +128,7 @@ export default function NewLinks(props: Props) {
 				<h2>New Link</h2>
 				{error ? (
 					<p class='error'>
-						{`Error: ${error}`}
+						{error}
 						{dupe_url ? (
 							<>
 								{' '}

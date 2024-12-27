@@ -42,13 +42,17 @@ if (tmap_section) endpoint += `/${tmap_section}`
             ))
         }
         {top_cats.length === LINKS_PAGE_LIMIT ? 
-            <li class="to-more"><a href={
-                is_subcats ? 
-                    `/more?cats=${cats_params}
-                    ${has_period 
+            <li class="to-more">
+                <a href={is_subcats ? 
+                    `/more?cats=${cats_params}${has_period 
                         ? `&period=${period}` 
                         : ''}` 
-                : `/more${has_period ? `?period=${period}` : ''}`}>more</a></li> 
+                : `/more${has_period ? 
+                    `?period=${period}` 
+                    : ''}`}>more
+                </a>
+                <img src='../../back.svg' height={20} width={20} />
+            </li> 
         : null}
     </ol>
 </> : is_subcats ? <p id="no-further-cats">No further subcats.</p> : null}
@@ -61,6 +65,17 @@ if (tmap_section) endpoint += `/${tmap_section}`
     }
     ol#top-cats.tmap {
         padding: 0.5rem;
+    }
+
+    li.to-more {
+        margin-top: 0.5rem;
+        font-weight: bold;
+
+        img {
+            transform: rotate(180deg);
+            margin-left: 3px;
+            margin-bottom: -6px;
+        }
     }
 
     p#no-further-cats {
