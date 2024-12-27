@@ -4,7 +4,7 @@ import {
 	type Dispatch,
 	type StateUpdater,
 } from 'preact/hooks'
-import { CLICKS_ENDPOINT, LINKS_ENDPOINT } from '../../constants'
+import { LINKS_ENDPOINT } from '../../constants'
 import * as types from '../../types'
 import { is_error_response } from '../../types'
 import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
@@ -17,6 +17,7 @@ import Modal from '../Modal/Modal'
 import './Link.css'
 import SameUserCopyCount from './SameUserCopyCount'
 import SameUserLikeCount from './SameUserLikeCount'
+import URLZone from './URLZone'
 
 interface Props {
 	Link: types.Link
@@ -183,22 +184,6 @@ export default function Link(props: Props) {
 		return
 	}
 
-	async function handle_click(e: MouseEvent) {
-		e.preventDefault()
-
-		await fetch(CLICKS_ENDPOINT, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ link_id: id }),
-		})
-
-		if (e.button === 0) {
-			return (window.location.href = url)
-		}
-	}
-
 	const expected_delete_action_status = 205
 	async function handle_delete() {
 		if (!token) {
@@ -247,47 +232,10 @@ export default function Link(props: Props) {
 						alt={summary ? summary : url}
 						width={100}
 					/>
-					<div>
-						<a
-							href={url}
-							class='url-anchor'
-							onClick={(e) => {
-								e.preventDefault()
-								handle_click(e)
-							}}
-							onMouseDown={(e) => {
-								// don't double-count left click
-								if (e.button === 0) return
-								e.preventDefault()
-								handle_click(e)
-							}}
-						>
-							<h3>{summary ? summary : url}</h3>
-						</a>
-						{summary ? <p class='url'>{url}</p> : null}
-					</div>
+					<URLZone link_id={id} url={url} summary={summary} />
 				</div>
 			) : (
-				<>
-					<a
-						href={url}
-						class='url-anchor'
-						onClick={(e) => {
-							e.preventDefault()
-							handle_click(e)
-						}}
-						onMouseDown={(e) => {
-							// don't double-count left click
-							if (e.button === 0) return
-							e.preventDefault()
-							handle_click(e)
-						}}
-					>
-						<h3>{summary ? summary : url}</h3>
-					</a>
-
-					{summary ? <p class='url'>{url}</p> : null}
-				</>
+				<URLZone link_id={id} url={url} summary={summary} />
 			)}
 
 			<p>

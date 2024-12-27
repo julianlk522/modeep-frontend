@@ -22,25 +22,6 @@ astro-island:first-of-type li.link {
 	}
 }
 
-a.url-anchor {
-	display: block;
-	width: fit-content;
-}
-
-a.url-anchor:visited {
-	color: var(--treasurey-dark);
-}
-
-p.url {
-	font-size: 0.9rem;
-	font-weight: bold;
-}
-
-a.url-anchor h3,
-p.url {
-	overflow-wrap: anywhere;
-}
-
 span.submit-date {
 	color: var(--text-muted);
 }
