@@ -63,6 +63,10 @@ div.tags a.tags-page-link:visited,
 	margin-right: 3px;
 }
 
+.copy-btn {
+	margin-left: 2px;
+}
+
 .like-btn,
 .copy-btn {
 	border-radius: 2px;
@@ -83,7 +87,7 @@ div.tags a.tags-page-link:visited,
 	margin-top: 1rem;
 }
 
-div#click-count {
+div.click-count {
 	display: inline-block;
 	margin-left: 5px;
 
@@ -94,6 +98,16 @@ div#click-count {
 	span {
 		position: relative;
 		top: -2px;
+	}
+}
+
+div.same-user-like-count + div.click-count {
+	img {
+		margin-bottom: -2px;
+	}
+
+	span {
+		top: -1px;
 	}
 }
 
