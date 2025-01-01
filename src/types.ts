@@ -108,6 +108,16 @@ type SummaryPage = {
 	Summaries: Summary[]
 }
 
+// TOTALS
+type Totals = {
+	Links: number
+	Clicks: number
+	Likes: number
+	Tags: number
+	Summaries: number
+	Contributors: number
+}
+
 // TREASURE MAP
 type TmapLink = Link & { CatsFromUser?: boolean }
 
@@ -154,6 +164,7 @@ export type {
 	SummaryPage,
 	Tag,
 	TagPage,
+	Totals,
 	TreasureMap,
 	TreasureMapSection,
 }

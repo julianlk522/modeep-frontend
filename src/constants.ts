@@ -11,6 +11,7 @@ const CONTRIBUTORS_ENDPOINT = API_URL + '/contributors'
 const SUMMARIES_ENDPOINT = API_URL + '/summaries'
 const TAGS_ENDPOINT = API_URL + '/tags'
 const CLICKS_ENDPOINT = API_URL + '/click'
+const TOTALS_ENDPOINT = API_URL + '/totals'
 
 const TMAP_ENDPOINT = API_URL + '/map'
 const TMAP_ABOUT_ENDPOINT = API_URL + '/about'
@@ -33,4 +34,5 @@ export {
 	TMAP_ABOUT_ENDPOINT,
 	TMAP_ENDPOINT,
 	TMAP_PFP_ENDPOINT,
+	TOTALS_ENDPOINT,
 }
