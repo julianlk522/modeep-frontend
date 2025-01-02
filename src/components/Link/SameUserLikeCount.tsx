@@ -13,8 +13,8 @@ export default function SameUserLikeCount(props: Props) {
 			{/* https://icon-sets.iconify.design/solar/like-outline/ */}
 			<svg
 				xmlns='http://www.w3.org/2000/svg'
-				width='1rem'
-				height='1rem'
+				width='18'
+				height='18'
 				viewBox='0 0 24 24'
 			>
 				<path
@@ -24,7 +24,7 @@ export default function SameUserLikeCount(props: Props) {
 					clip-rule='evenodd'
 				/>
 			</svg>{' '}
-			({like_count})
+			{like_count}
 		</div>
 	)
 }

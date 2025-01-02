@@ -8,14 +8,14 @@ export default function SameUserCopyCount(props: Props) {
 	return (
 		<div
 			title={`${copy_count} ${copy_count === 1 ? 'person' : 'people'} copied to their Treasure Map`}
-			style='margin-left: 0.5rem;'
-			class='same-user-like-count'
+			style='margin-left: 10px;'
+			class='same-user-copy-count'
 		>
 			{/* https://icon-sets.iconify.design/mingcute/copy-line/ */}
 			<svg
 				xmlns='http://www.w3.org/2000/svg'
-				width='1rem'
-				height='1rem'
+				width='18'
+				height='18'
 				viewBox='0 0 24 24'
 			>
 				<g fill='none'>
@@ -26,7 +26,7 @@ export default function SameUserCopyCount(props: Props) {
 					/>
 				</g>
 			</svg>{' '}
-			({copy_count})
+			{copy_count}
 		</div>
 	)
 }

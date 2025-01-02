@@ -1,5 +1,5 @@
 section#new-link {
-	padding-bottom: 1.5rem;
+	padding-bottom: 1rem;
 
 	form input#submit-new-link {
 		display: block;
@@ -21,6 +21,6 @@ section#new-link {
 
 @media (min-width: 768px) {
 	#submitted-links ol li:not(:first-of-type) {
-		margin-top: 2rem;
+		margin-top: 1.5rem;
 	}
 }

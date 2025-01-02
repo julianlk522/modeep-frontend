@@ -176,7 +176,7 @@ const nsfw_links_count = tmap.NSFWLinksCount
 				<p id="nsfw-filter">
 					NSFW links ({nsfw_links_count}):
 					<span>
-						{nsfw ? <a href={`/map/${login_name}${cats ? `?cats=${encoded_cats}` : ''}${sort_by ? cats ? `&sort_by=${sort_by}` : `?sort_by=${sort_by}` : ''}`}>hide</a> : <a href={`/map/${login_name}${cats ? `?cats=${encoded_cats}` : ''}${sort_by ? cats ? `&sort_by=${sort_by}` : `?sort_by=${sort_by}` : ''}${cats || sort_by ? `&nsfw=true` : '?nsfw=true'}`}>show</a>}
+						{nsfw ? <a href={`/map/${login_name}${cats ? `?cats=${encoded_cats}` : ''}${sort_by ? cats ? `&sort_by=${sort_by}` : `?sort_by=${sort_by}` : ''}`}>hide</a> : <a href={`/map/${login_name}${cats ? `?cats=${encoded_cats}` : ''}${sort_by ? cats ? `&sort_by=${sort_by}` : `?sort_by=${sort_by}` : ''}${cats || sort_by ? `&nsfw=true` : '?nsfw=true'}`}>unhide</a>}
 					</span>
 				</p>
 			: null}
@@ -316,7 +316,7 @@ const nsfw_links_count = tmap.NSFWLinksCount
 	}
 
 	section.link-section {
-		padding: 0 0 1rem;
+		padding: 0 0 0.5rem;
 
 		> .section-with-more h2 {
 			display: inline;

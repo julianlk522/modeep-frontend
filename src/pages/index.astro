@@ -56,10 +56,8 @@ const totals: Totals = await totals_resp.Response.json()
 
 <BaseLayout Title='FITM: share and discover the most treasured links across the web'>
 	<main>
-			<h1>FITM.online</h1>
-			<p id='subtitle'>a map of the web's treasures</p>
-
-			<h3 id="add-link"><a href={`/new`}>Add link</a></h3>
+		<h1>FITM.online</h1>
+		<p id='subtitle'>a map of the web's treasures</p>
 
 		<section>
 			<TopCats TopCats={top_cats} />
@@ -113,24 +111,29 @@ const totals: Totals = await totals_resp.Response.json()
 		opacity: 25%;
 		pointer-events: none;
 	}
+
 	h1 {
 		margin-bottom: 0.5rem;
 	}
+
 	p#subtitle {
 		background: hsla(180, 33%, 82%, 0.05);
 		padding: 3px;
 		margin-bottom: 1rem;
 	}
+
 	p#subtitle,
 	h3#add-link {
 		text-align: center;
 	}
+
 	#change-period {
 		display: flex;
 		list-style: none;
 		padding-inline-start: 1rem;
 		margin-top: 0;
 	}
+
 	h3#add-link,
 	ol#change-period {
 		a,
@@ -167,9 +170,15 @@ const totals: Totals = await totals_resp.Response.json()
 	li.period {
 		margin-right: 0.5rem;
 	}
+
 	li.period:last-of-type {
 		margin-right: 0;
 	}
+
+	section#top-links {
+		padding-bottom: 1rem;
+	}
+
 	@media screen and (min-width: 720px) {
 		#contributors-and-totals-flex-container {
 			display: flex;
@@ -181,4 +190,5 @@ const totals: Totals = await totals_resp.Response.json()
 			}
 		}
 	}
+
 </style>

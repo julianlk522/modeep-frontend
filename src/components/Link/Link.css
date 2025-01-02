@@ -80,7 +80,8 @@ div.tags a.tags-page-link:visited,
 
 .like-btn,
 .copy-btn,
-.same-user-like-count {
+div.same-user-like-count,
+div.same-user-copy-count {
 	display: inline-flex;
 	align-items: center;
 	gap: 3px;
@@ -89,25 +90,31 @@ div.tags a.tags-page-link:visited,
 
 div.click-count {
 	display: inline-block;
-	margin-left: 5px;
-
-	img {
-		margin-bottom: -1px;
-	}
+	margin-left: 8px;
 
 	span {
 		position: relative;
-		top: -2px;
+		top: -3px;
 	}
 }
 
-div.same-user-like-count + div.click-count {
+button.copy-btn + div.click-count {
 	img {
 		margin-bottom: -2px;
 	}
-
 	span {
 		top: -1px;
+	}
+}
+
+div.same-user-like-count,
+div.same-user-copy-count,
+div.click-count {
+	font-weight: bold;
+	color: var(--sky);
+
+	svg {
+		color: var(--text);
 	}
 }
 
@@ -129,7 +136,7 @@ button.delete-link-btn {
 
 @media (min-width: 768px) {
 	.link {
-		margin-top: 2rem;
+		margin-top: 1.5rem;
 	}
 
 	.preview {

@@ -42,7 +42,7 @@ if (tmap_section) endpoint += `/${tmap_section}`
             ))
         }
         {top_cats.length === LINKS_PAGE_LIMIT ? 
-            <li class="to-more">
+            <li id="to-more">
                 <a href={is_subcats ? 
                     `/more?cats=${cats_params}${has_period 
                         ? `&period=${period}` 
@@ -58,24 +58,26 @@ if (tmap_section) endpoint += `/${tmap_section}`
 </> : is_subcats ? <p id="no-further-cats">No further subcats.</p> : null}
 
 <style>
-    ol#top-cats {
-        li.to-more {
-			list-style-type: none;
-		}
-    }
-    ol#top-cats.tmap {
-        padding: 0.5rem;
-    }
-
-    li.to-more {
-        margin-top: 0.5rem;
+    ol#top-cats li#to-more {
+        list-style-type: none;
+        margin-top: auto;
+        margin-left: auto;
         font-weight: bold;
+
+        a {
+            /* prevent extended underline */
+            display: inline-block;
+        }
 
         img {
             transform: rotate(180deg);
             margin-left: 3px;
             margin-bottom: -6px;
         }
+    }
+
+    ol#top-cats.tmap {
+        padding: 0.5rem;
     }
 
     p#no-further-cats {
@@ -107,12 +109,14 @@ if (tmap_section) endpoint += `/${tmap_section}`
     }
     
     @media (min-width: 680px) {
-        ol#top-cats {
-            margin-bottom: 0;
+        ol#top-cats li {
+            padding-right: 2rem;
+        }
+    }
 
-            li {
-                padding-right: 2rem;
-            }
+    @media (min-width: 720px) {
+        ol#top-cats li#to-more {
+            margin-left: 0;
         }
     }
 

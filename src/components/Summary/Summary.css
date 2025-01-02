@@ -26,7 +26,7 @@ button#edit-summary-btn {
 
 @media (min-width: 768px) {
 	.summary {
-		margin-top: 2rem;
+		margin-top: 1.5rem;
 	}
 
 	button#delete-summary-btn,
