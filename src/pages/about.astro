@@ -11,18 +11,15 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 		<h1>About</h1>
 		<img id="cornucopia" src={cornucopia.src} title='There is a rich spread of flavors to be found in the web. Whoever you are, there is much for you to enjoy.' />
 		<section>
-			<h3 id="what-if">What if, online, you <em>only found things you love</em>?</h3>
-
 			<p>
 				The <strong>Flexible Internet Treasure Map (FITM)</strong>
-				is a dynamic database of valued Internet content. You can share links here that are worth knowing, or easily search known links. Its goal is to show everyone what they'll love most and skip the rest.
+				is a web content database and dynamic, censensus-driven ranking machine. On it you can share precious links or easily filter through already-shared ones. Its goal is to connect Internet users with more of what they love while skipping anything else.
 			</p>
 
-			<p>Links can be <em>flexibly</em> organized and searched using a variety of properties to help find the perfect matches for your wishes.</p>
+			<p>Links can be <em>flexibly</em> organized and browsed using a variety of properties as filters.</p>
 
 			<p>
-				<em>Treasure</em> is intentionally vague. This place is meant for sharing and
-				discovering anything on the Internet that's worth sharing or
+				<em>Treasure</em> is intentionally vague. You are encouraged to share or discover anything on the Internet that's worth sharing or
 				discovering.
 			</p>
 
@@ -37,12 +34,11 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 			<h3 id="cats" class="subsection">Cats?</h3>
 			<p><em>"Cats"</em> are an important concept here. It&apos;s a shorthand for <em><a href="#tags">tag categories</a></em>. Cats are also a <a href="https://en.wikipedia.org/wiki/I_Can_Has_Cheezburger%3F">historically prominent Internet symbol</a>, so it seems fitting that they'd be a part of FITM. Don't be alarmed by mention of "stacking cats"; no animals were harmed in creating this site.</p>
 
-			<p>Submitted links are tagged with 1+ cats. You can apply cat filters in searches to easily, reliably find pages that match some
-			theme(s). All links returned in a search will have the cats you specify, and likely others too.</p>
-
-			<p>You can also filter results by time period (last day, week, month, or year) or whether you want to include results that are tagged "<abbr title="Not Safe For Work">NSFW</abbr>". (NSFW is always opt-in.)</p>
+			<p>Submitted links are tagged with 1+ cats. You can apply cat filters in searches to request only links that match some theme(s). All links returned in a search will have the cats you specify and (likely some others).</p>
 
 			<p>The most common cats from the links returned by your search are listed along with them. Searches with cat filters return top <em>subcats</em>. These are the most common cats from the returned links, not including the ones you specified.</p>
+
+			<p>You can also filter results by time period (last day, week, month, or year) and choose whether you want results that are tagged "<abbr title="Not Safe For Work">NSFW</abbr>" included. NSFW is always opt-in; you won't see it unless you ask.</p>
 
 			<SearchDiagram />
 
@@ -113,26 +109,25 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 		</section>
 
 		<section>
-			<h2>Why?</h2>
-			<p>What problems does this solve that existing tools don't?</p>
+			<h2>Why Use It?</h2>
+
+			<p>The bottom line is that the astounding potential of the web to  improve our lives is nearly always wasted due to poor discoverability, but FITM can change that.</p>
+
 			<h3 class="subsection">Search Engines</h3>
 			<p>
-				Search engines help with indexing the web,
-				but they don't think like people so they struggle to grasp your wishes and make useful recommendations. And they have some biases.
+				They help index the web but they don't think like real people, and they're biased, so recommendations are a toss-up.
 			</p>
 			<p>
-				Depending on your definition of quality, <abbr title="Search Engine Optimization">SEO</abbr> <a href="https://backlinko.com/google-ranking-factors#top-8">as we now know it</a> may or may not be relevant.
-				Great things on the web may be absent in search results because they're not aggressively stuffed with <a href="https://en.wikipedia.org/wiki/Keyword_research">keywords</a>, or they're not linked from many other pages, or they're not associated with an advertised company <a href="https://digitalbrandinginstitute.com/improve-brand-signals-better-seo#:~:text=What%20Are,Signals?">brand</a>. Or, maybe a site ranks highly given specific search terms but is otherwise hard to discover. How could you even know to search for something <a href="https://presidentialham.com/">like this</a>? (safe for work.) Internet users who care most
-				about result <em>novelty</em> don't really benefit from these ranking metrics.
+				Depending on your definition of quality, <abbr title="Search Engine Optimization">SEO</abbr> <a href="https://backlinko.com/google-ranking-factors#top-8">these days</a> may or may not be relevant.
+				Great links may be absent in search results because they're not aggressively stuffed with <a href="https://en.wikipedia.org/wiki/Keyword_research">keywords</a>, or they're not associated with a known <a href="https://digitalbrandinginstitute.com/improve-brand-signals-better-seo#:~:text=What%20Are,Signals?">brand</a>. Or, maybe a site appears only if you search with the perfect combination of words but seldom otherwise. You can never find something <a href="https://presidentialham.com/">like this</a> (safe for work) unless you already know about it, which defeats some of the purpose of searching.
 			</p>
 			<p>
-				Search engines also are incentivized to promote results from
-				those who will pay for it. Maybe this is a
-				feature, not a bug, depending on who you ask. Do ad budgets and marketing passion reliably produce high quality web content? If you're not sure about that, you may be in the right place. (You will never see ads on FITM).
+				They're also are incentivized to promote results with connections to paying entities. Maybe it's a
+				feature, not a bug, depending on who you ask. Does marketing reliably signal "good" content? If you're not sure, you may be in the right place. (You will never see ads on FITM).
 			</p>
 			<p>
-				A simple-enough and reliable-enough proxy for a link's quality is the number of
-				<em>people</em> who decide, for any reason, to upvote it. Then it's easy to find good content by putting the most liked links at the top of searches.
+				A simple-enough, reliable-enough method to tell a link's "good"ness is the number of
+				<em>people</em> who decide, for any reason, to upvote it. Then it's easy to find good content by browsing the most liked things.
 			</p>
 			<p>
 				Sorting by likes is not enough, though. That's why you can also parameterize searches with <em><a href="#cats">cat-stacking</a></em> and other sorting and filtering first.
@@ -169,9 +164,9 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 		<section>
 			<h2>So, Show Off Your Treasure!</h2>
 
-			<p>Add one of your favorite links, give it a tag with some cats that you think are good fits, and give your online friends something new to enjoy today and forever after.</p>
+			<p>With the diverse input of many knowledgeable citizens of the Internet, we can build and enjoy a comprehensive, dependable recommendation machine powered by human consensus. The best of everything ever documented online, made easy for you to search to your heart's desire.</p>
 
-			<p>With help from keyboard warriors with varied tastes, we can enjoy a comprehensive, dependable recommendation machine powered by human consensus. The best of everything ever documented online, made easy for you to draw from to your heart's desire.</p>
+			<p>Add one of your favorite links, give it a tag with some cats that you think are good fits, and give your online friends something new to enjoy today and forever after.</p>
 		</section>
 
 		<section>
