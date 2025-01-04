@@ -4,7 +4,7 @@ import Pagination from '../../../components/Pagination.astro'
 import TopCats from '../../../components/Rankings/TopCats.astro'
 import ScrollUp from '../../../components/ScrollUp.astro'
 import TagCat from '../../../components/Tag/TagCat'
-import { TMAP_ENDPOINT } from '../../../constants'
+import { LINKS_PAGE_LIMIT, TMAP_ENDPOINT } from '../../../constants'
 import BaseLayout from '../../../layouts/BaseLayout.astro'
 import {
 type SortMetric,
@@ -197,7 +197,7 @@ const is_only_page = page === 1 && next_page === -1
                     TmapOwner={login_name}
                 />}
 
-                <ol id="top-links">
+                <ol id="top-links" start={page ? (page - 1) * LINKS_PAGE_LIMIT + 1 : ''}>
                     {links.map((link) => (
                         <Link
                             client:load
