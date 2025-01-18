@@ -23,35 +23,27 @@ export default function NewLinks(props: Props) {
 			return
 		}
 
-		// auto-populate YT cats if URL is YT link
+		// auto-populate YT cats if YT URL
+		let cats_to_be_added: string[] = []
+
+		// channel
 		if (
-			(val.includes('youtu.be') || val.includes('youtube.com')) &&
-			!cats.includes('YouTube')
+			val.includes('youtube.com/@') &&
+			!cats.includes('YouTube channels')
 		) {
-			const cats_to_be_added = ['YouTube']
-
-			// channel
-			if (
-				val.includes('youtube.com/@') &&
-				!cats.includes('YouTube channels')
-			) {
-				cats_to_be_added.push('YouTube channels')
-			}
-
-			// playlist
-			if (
-				val.includes('youtube.com/playlist?') &&
-				!cats.includes('YouTube playlists')
-			) {
-				cats_to_be_added.push('YouTube playlists')
-			}
-
-			set_cats(
-				[...cats, ...cats_to_be_added].sort((a, b) =>
-					a.localeCompare(b)
-				)
-			)
+			cats_to_be_added.push('YouTube channels')
 		}
+		// playlist
+		if (
+			val.includes('youtube.com/playlist?') &&
+			!cats.includes('YouTube playlists')
+		) {
+			cats_to_be_added.push('YouTube playlists')
+		}
+
+		set_cats(
+			[...cats, ...cats_to_be_added].sort((a, b) => a.localeCompare(b))
+		)
 	}
 
 	async function handle_submit(event: SubmitEvent) {
