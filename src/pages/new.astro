@@ -19,7 +19,10 @@ if (!token || !user) {
 
 <BaseLayout Title='Add Link(s)'>
 	<main>
-		<h1>Add Links(s)</h1>
+		<h1>Woah, What's That?</h1>
+
+		<NewLinks client:load Token={token} User={user} IsNewLinkPage />
+
 		<section id="rules">
 			<h2>Rules</h2>
 			<ul>
@@ -30,17 +33,20 @@ if (!token || !user) {
 					must be tagged with cat 
 					<span id="example-cat" class="cat">"NSFW"</span>
 				</li>
-				<li>50 links max per day</li>
+				<li>50 max per day</li>
+				<li>Please be respectful of the content owner's wishes. If they don't want it shared, don't share it.</li>
 			</ul>
 		</section>
-
-		<NewLinks client:load Token={token} User={user} />
 	</main>
 </BaseLayout>
 
 <style>
 	section#rules ul {
 		margin-bottom: 0.5rem;
+
+		li {
+			min-height: 2rem;
+		}
 	}
 
 	#example-cat {

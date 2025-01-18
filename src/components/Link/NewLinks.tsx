@@ -9,6 +9,7 @@ import './NewLinks.css'
 interface Props {
 	Token: string
 	User: string
+	IsNewLinkPage?: boolean
 }
 
 export default function NewLinks(props: Props) {
@@ -117,7 +118,7 @@ export default function NewLinks(props: Props) {
 	return (
 		<>
 			<section id='new-link'>
-				<h2>New Link</h2>
+				<h2>Link Details</h2>
 				{error ? (
 					<p class='error'>
 						{error}
@@ -143,6 +144,7 @@ export default function NewLinks(props: Props) {
 						SelectedCats={cats}
 						SetSelectedCats={set_cats}
 						SubmittedLinks={submitted_links}
+						IsNewLinkPage={props.IsNewLinkPage}
 					/>
 					<input id='submit-new-link' type='submit' value='Submit' />
 				</form>

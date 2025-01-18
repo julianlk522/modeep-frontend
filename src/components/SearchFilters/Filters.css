@@ -4,7 +4,7 @@ section#search-filters {
 	a#search-from-filters {
 		display: block;
 		width: fit-content;
-		margin-top: 1rem;
+		margin-top: 0.5rem;
 		padding: 5px 7px;
 		opacity: 0.25;
 		background-color: seagreen;

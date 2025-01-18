@@ -26,8 +26,8 @@ let endpoint = tmap_owner ? `/map/${tmap_owner}` : "/top"
 if (tmap_section) endpoint += `/${tmap_section}`
 ---
 
-{top_cats.length ? <>
-    <h2>Top {is_subcats ? "Subcats" : "Cats"}</h2>
+{top_cats.length && top_cats.length > 1 ? <>
+    <h2>Filter by {is_subcats ? "Subcats" : "Cats"}</h2>
     <ol id="top-cats" class={list_classes}>
         {
             top_cats.map((cat) => (

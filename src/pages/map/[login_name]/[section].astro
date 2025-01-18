@@ -147,7 +147,7 @@ const is_only_page = page === 1 && next_page === -1
                         {nsfw ? 
                             <a href={`/map/${login_name}/${section}${cats ? `?cats=${encoded_cats}` : ''}${sort_by ? cats ? `&sort_by=${sort_by}` : `?sort_by=${sort_by}` : ''}`}>hide</a>
                         : 
-                            <a href={`/map/${login_name}/${section}${cats ? `?cats=${encoded_cats}` : ''}${sort_by ? cats ? `&sort_by=${sort_by}` : `?sort_by=${sort_by}` : ''}${cats || sort_by ? `&nsfw=true` : '?nsfw=true'}`}>show</a>
+                            <a href={`/map/${login_name}/${section}${cats ? `?cats=${encoded_cats}` : ''}${sort_by ? cats ? `&sort_by=${sort_by}` : `?sort_by=${sort_by}` : ''}${cats || sort_by ? `&nsfw=true` : '?nsfw=true'}`}>unhide</a>
                         }
                     </span> 
                 </p>
