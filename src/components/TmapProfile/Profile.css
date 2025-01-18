@@ -1,20 +1,37 @@
 section#profile {
-	display: flex;
-	flex-direction: column;
-	gap: 0.5rem;
+	.profile-details-text {
+		font-size: 12px;
+		color: var(--text-muted);
+	}
 
-	> div {
+	#created-at {
+		margin-top: 0;
+		margin-bottom: 1rem;
+	}
+
+	> #profile-sections {
 		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+
+		> :first-child {
+			display: flex;
+		}
 	}
 }
 
 @media (min-width: 680px) {
-	section#profile:has(> div #profile-pic) {
+	#profile-sections:has(> div #profile-pic) {
 		flex-direction: row;
-		gap: 1rem;
+		gap: 1.5rem;
 
-		> div {
+		> :first-child {
 			flex-direction: column;
+		}
+
+		> * {
+			min-width: 100px;
+			max-width: 40%;
 		}
 	}
 }

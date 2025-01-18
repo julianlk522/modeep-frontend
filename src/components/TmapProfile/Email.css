@@ -1,0 +1,14 @@
+#profile-email {
+	margin: 1.5rem 0 0.5rem;
+
+	p {
+		margin: 0;
+	}
+}
+
+@media (min-width: 680px) {
+	#profile-email {
+		text-align: right;
+		margin: 0;
+	}
+}

@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function About(props: Props) {
-	const { Text: text, Editing: editing } = props
+	const { Text: text, SetText: set_text, Editing: editing } = props
 	const abbreviated =
 		text.length > 200 ? `${text.slice(0, 200)}...` : undefined
 
@@ -20,7 +20,7 @@ export default function About(props: Props) {
 				<textarea
 					name='about'
 					onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-						props.SetText(e.currentTarget.value)
+						set_text(e.currentTarget.value)
 					}
 					cols={80}
 					rows={8}

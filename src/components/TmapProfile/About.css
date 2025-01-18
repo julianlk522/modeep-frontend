@@ -2,4 +2,9 @@
 	display: flex;
 	flex-wrap: wrap;
 	overflow: scroll;
+
+	pre {
+		max-width: 100%;
+		word-wrap: break-word;
+	}
 }

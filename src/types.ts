@@ -20,8 +20,9 @@ type ResponseAndRedirect = {
 // USER
 type Profile = {
 	LoginName: string
-	About: string
 	PFP: string
+	About: string
+	Email: string
 	Created: string
 }
 

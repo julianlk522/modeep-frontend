@@ -9,7 +9,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import * as types from '../../types'
 import { tmap_sections } from '../../types'
 import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
-import { format_short_date } from '../../util/format_date'
 
 // Auth
 const token = Astro.cookies.get('token')?.value
@@ -118,10 +117,7 @@ const nsfw_links_count = tmap.NSFWLinksCount
 
 <BaseLayout Title={page_title}>
 	<main>
-		<h1>{login_name}'s Treasure Map</h1>
-		{profile ? <p id="profile-created">
-			created: {format_short_date(profile.Created)}
-		</p> : null}
+		<h1 class={profile ? 'has-profile' : ''}>{login_name}'s Treasure Map</h1>
 
 		<!-- Profile  -->
 		{profile && (display_about || display_pfp) ? (
@@ -129,13 +125,15 @@ const nsfw_links_count = tmap.NSFWLinksCount
 				client:load
 				LoginName={login_name}
 				SignedInUser={user}
-				InitialAboutText={profile.About}
+				CreatedAt={profile.Created}
 				InitialPFP={profile.PFP}
+				InitialAboutText={profile.About}
+				InitialEmailText={profile.Email}
 				Token={token}
 			/>
 		) : null}
 
-		{/* Overview */}
+		<!-- Overview -->
 		{used_sections.length ? 
 			<section id='overview' class='flex'>
 				<div>
@@ -162,7 +160,7 @@ const nsfw_links_count = tmap.NSFWLinksCount
 			</section> 
 		: null}
 
-		{/* Config */}
+		<!-- Config -->
 		{<section id='sort-and-filter'>
 			<h2>Sort and Filter</h2>
 
@@ -208,7 +206,7 @@ const nsfw_links_count = tmap.NSFWLinksCount
 			</div> : null}
 		</section>}
 
-		{/* Links Sections */}
+		<!-- Links Sections -->
 		{used_sections.length ? 
 			used_sections.map((s) => (
 				<section id={s} class='link-section'>
@@ -252,7 +250,7 @@ const nsfw_links_count = tmap.NSFWLinksCount
 	h1 {
 		text-align: left;
 	}
-	h1:has(+#profile-created) {
+	h1.has-profile {
 		margin-bottom: 0;
 	}
 

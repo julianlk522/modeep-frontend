@@ -3,10 +3,15 @@
 	align-items: center;
 	gap: 5px;
 
-	#new-pic-upload-label {
+	label#new-pic-upload-label {
 		display: inline-block;
 		width: fit-content;
 		cursor: pointer;
+	}
+
+	button#delete-pfp-btn {
+		margin-top: -5px;
+		margin-bottom: -2px;
 	}
 
 	button,
@@ -25,5 +30,13 @@
 	#profile-pic + #profile-actions {
 		flex-direction: row;
 		margin-left: 0;
+	}
+
+	button#delete-pfp-btn {
+		margin: 0;
+	}
+
+	button#edit-email-btn {
+		margin-left: 3px;
 	}
 }
