@@ -7,17 +7,19 @@ import NoFooter from "../layouts/NoFooter.astro"
         <h1>Important Updates</h1>
 
         <ul>
+          <li>
+            <strong>1-19-25</strong>: Added "Forgot Your Password?" email recovery flow
+            <ul>
+              <li>Set your prefered email inbox on your Treasure Map page profile</li>
+            </ul>
+          </li>
           <li><strong>12-3-24</strong>: Added Treasure Map section pages ("See All") for sections with 20+ links</li>
         </ul>
     </main>
-
-    <footer>
-		<a href='/feedback'>Feedback</a>
-    </footer>
 </NoFooter>
 
 <style>
-  ul {
+  ul:not(ul ul) {
     margin-top: 2rem;
   }
 </style>
