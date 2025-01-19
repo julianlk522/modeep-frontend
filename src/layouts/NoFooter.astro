@@ -50,11 +50,9 @@ let user = Astro.cookies.get('user')?.value
 			--treasurey-dark: hsl(44, 25%, 60%);
 			--sky: hsl(180, 33%, 82%);
 			--danger: hsl(360, 66%, 66%);
-		}
-		html {
 			font-family: system-ui, sans-serif;
+			font-size: 14px;
 			background: #13151a;
-			background-size: 224px;
 		}
 		header nav {
 			display: flex;
@@ -239,6 +237,5 @@ let user = Astro.cookies.get('user')?.value
 				max-width: calc(100% - 4rem);
 			}
 		}
-
 	</style>
 </html>
