@@ -42,14 +42,11 @@ import get_cookie from '../util/get_cookie'
 						document.cookie
 					)
 
-					// clear cookie
 					document.cookie =
 						'redirect_to=; max-age=0; SameSite=strict; Secure'
 
-					// redirect
 					window.location.href = redirect_to
 
-					// else go to home
 				} else {
 					window.location.href = '/'
 				}
@@ -84,7 +81,6 @@ import get_cookie from '../util/get_cookie'
 			const login_data = await login_resp.Response.json()
 
 			if (login_data.token) {
-				// set cookie
 				document.cookie = `token=${login_data.token}; max-age=14400; SameSite=strict; Secure`
 
 				// redirect
@@ -95,14 +91,11 @@ import get_cookie from '../util/get_cookie'
 						document.cookie
 					)
 
-					// clear cookie
 					document.cookie =
 						'redirect_to=; max-age=0; SameSite=strict; Secure'
 
-					// redirect
 					window.location.href = redirect_to
 
-				// else go to home
 				} else {
 					window.location.href = '/'
 				}
@@ -131,6 +124,8 @@ import get_cookie from '../util/get_cookie'
 				<input type='password' name='password' />
 				<input type='submit' value='Login' />
 			</form>
+
+			<a id='forgot-password' href="/forgot-password">Forgot Your Password?</a>
 		</section>
 
 		<section>
@@ -147,4 +142,9 @@ import get_cookie from '../util/get_cookie'
 	</main>
 </BaseLayout>
 
-<style></style>
+<style>
+	a#forgot-password {
+		display: inline-block;
+		margin-top: 1rem;
+	}
+</style>

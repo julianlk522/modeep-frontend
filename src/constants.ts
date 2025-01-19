@@ -4,6 +4,9 @@ const API_URL = 'https://api.fitm.online:1999'
 
 const SIGNUP_ENDPOINT = API_URL + '/signup'
 const LOGIN_ENDPOINT = API_URL + '/login'
+const SEND_PASSWORD_RESET_EMAIL_ENDPOINT =
+	API_URL + '/email-password-reset-link'
+const RESET_PASSWORD_ENDPOINT = API_URL + '/reset-password'
 
 const LINKS_ENDPOINT = API_URL + '/links'
 const CATS_ENDPOINT = API_URL + '/cats'
@@ -29,6 +32,8 @@ export {
 	LINKS_ENDPOINT,
 	LINKS_PAGE_LIMIT,
 	LOGIN_ENDPOINT,
+	RESET_PASSWORD_ENDPOINT,
+	SEND_PASSWORD_RESET_EMAIL_ENDPOINT,
 	SIGNUP_ENDPOINT,
 	SUMMARIES_ENDPOINT,
 	TAGS_ENDPOINT,
