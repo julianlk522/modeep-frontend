@@ -7,7 +7,7 @@ import SearchPeriod from './Period'
 import SearchSortBy from './SortBy'
 
 interface Props {
-	Endpoint?: '/top' | '/more'
+	Endpoint?: '/search' | '/more'
 	InitialPeriod: Period
 	InitialSortBy?: SortMetric
 	InitialNSFW?: boolean
@@ -25,15 +25,15 @@ export default function SearchFilters(props: Props) {
 	const [period, set_period] = useState<Period>(initial_period)
 	const [cats, set_cats] = useState<string[]>(initial_cats)
 
-	// only for links (/top)
+	// only for links (/search)
 	const [sort_by, set_sort_by] = useState<SortMetric>(
 		initial_sort_by ?? 'rating'
 	)
 	const [nsfw, set_nsfw] = useState<boolean>(initial_nsfw ?? false)
 
 	// set search URL based on period and cats
-	let endpoint = props.Endpoint ?? '/top'
-	const base_URL = endpoint ?? '/top'
+	let endpoint = props.Endpoint ?? '/search'
+	const base_URL = endpoint ?? '/search'
 	let search_URL = base_URL
 
 	if (cats.length) {
@@ -51,7 +51,7 @@ export default function SearchFilters(props: Props) {
 		}
 	}
 
-	// /top page endpoint only
+	// /search page endpoint only
 	if (sort_by && sort_by !== 'rating') {
 		if (cats.length || period !== 'all') {
 			search_URL += `&sort_by=${sort_by}`
@@ -85,7 +85,7 @@ export default function SearchFilters(props: Props) {
 
 				<SearchPeriod Period={period} SetPeriod={set_period} />
 
-				{endpoint === '/top' ? (
+				{endpoint === '/search' ? (
 					<>
 						<SearchSortBy
 							SortBy={sort_by}

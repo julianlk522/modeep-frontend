@@ -164,7 +164,7 @@ const is_only_page = page === 1 && next_page === -1
                         <a href={`/map/${login_name}/${section}${sort_by ? `&sort_by=${sort_by}` : ''}${nsfw ? '&nsfw=true' : ''}`}>clear</a>
                         </span>
                         <p id="transfer-to-global-map">
-                            <a href={`/top?cats=${encoded_cats}${sort_by ? `&sort_by=${sort_by}` : ''}${nsfw ? sort_by ? '&nsfw=true' : '?nsfw=true' : ''}`}>Transfer cats to Global Treasure Map</a>
+                            <a href={`/search?cats=${encoded_cats}${sort_by ? `&sort_by=${sort_by}` : ''}${nsfw ? sort_by ? '&nsfw=true' : '?nsfw=true' : ''}`}>Transfer cats to Global Treasure Map</a>
                         </p>
                     </p>
 				</div>

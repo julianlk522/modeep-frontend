@@ -60,7 +60,7 @@ export default function Link(props: Props) {
 
 	const is_your_link = user !== undefined && submitted_by === user
 	const cats_endpoint =
-		is_tmap_page && cats_from_user ? `/map/${cats_from_user}` : '/top'
+		is_tmap_page && cats_from_user ? `/map/${cats_from_user}` : '/search'
 	const split_cats = cats.split(',')
 	const has_one_tag = tag_count === 1
 

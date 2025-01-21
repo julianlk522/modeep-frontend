@@ -79,7 +79,7 @@ const totals: Totals = await totals_resp.Response.json()
 				{
 					other_periods.map((period) => (
 						<li class='period'>
-							<a href={`/top?period=${period}`}>{period}</a>
+							<a href={`/search?period=${period}`}>{period}</a>
 						</li>
 					))
 				}

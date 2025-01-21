@@ -14,7 +14,7 @@ interface Props {
 
 const { Cats: cats, Period: period, SortBy: sort_by, HasNSFW: nsfw, Page: page, NextPage: next_page, TmapOwner: tmap_owner, TmapSection: tmap_section } = Astro.props
 
-let href_without_page = tmap_section ? `/map/${tmap_owner}/${tmap_section}` : '/top'
+let href_without_page = tmap_section ? `/map/${tmap_owner}/${tmap_section}` : '/search'
 let has_other_params = false
 
 const has_cats = cats !== undefined && cats.length
