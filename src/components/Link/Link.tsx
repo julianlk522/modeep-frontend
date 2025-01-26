@@ -55,7 +55,7 @@ export default function Link(props: Props) {
 		SummaryCount: summary_count,
 		TagCount: tag_count,
 		ClickCount: click_count,
-		ImgURL: saved_img_url,
+		PreviewImgURL: saved_preview_img_url,
 	} = props.Link
 
 	const is_your_link = user !== undefined && submitted_by === user
@@ -80,18 +80,20 @@ export default function Link(props: Props) {
 	const [like_count, set_like_count] = useState(props.Link.LikeCount)
 	const [copy_count, set_copy_count] = useState(props.Link.CopyCount)
 	const [show_delete_modal, set_show_delete_modal] = useState(false)
-	const [img_url, set_img_url] = useState(saved_img_url)
+	const [preview_img_url, set_preview_img_url] = useState(
+		saved_preview_img_url
+	)
 
 	// hide preview image if URL fails to resolve
 	useEffect(() => {
-		if (saved_img_url) {
-			// use Image constructor so no CORS issues, even locally
+		if (saved_preview_img_url) {
+			// use Image constructor so no CORS issues, even during local dev
 			const img = new Image()
-			img.onload = () => set_img_url(saved_img_url)
-			img.onerror = () => set_img_url(undefined)
-			img.src = saved_img_url
+			img.onload = () => set_preview_img_url(saved_preview_img_url)
+			img.onerror = () => set_preview_img_url(undefined)
+			img.src = saved_preview_img_url
 		}
-	}, [saved_img_url])
+	}, [saved_preview_img_url])
 
 	const expected_like_or_copy_action_status = 204
 	async function handle_like() {
@@ -215,10 +217,10 @@ export default function Link(props: Props) {
 
 	return (
 		<li class={`link${is_summary_page || is_tag_page ? ' single' : ''}`}>
-			{img_url ? (
+			{preview_img_url ? (
 				<div class='preview'>
 					<img
-						src={img_url}
+						src={preview_img_url}
 						alt={summary ? summary : url}
 						width={100}
 					/>
