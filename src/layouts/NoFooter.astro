@@ -43,6 +43,13 @@ let user = Astro.cookies.get('user')?.value
 	</body>
 
 	<style is:global>
+		@font-face {
+			font-family: 'Orienta';
+			src: url('/fonts/Orienta-Regular.ttf');
+			font-weight: normal;
+			font-style: normal;
+			font-display: swap;
+		}
 		:root {
 			--text: hsl(0, 0%, 92%);
 			--text-muted: hsl(44deg 5% 90% / 85%);
@@ -50,7 +57,7 @@ let user = Astro.cookies.get('user')?.value
 			--treasurey-dark: hsl(44, 25%, 60%);
 			--sky: hsl(180, 33%, 82%);
 			--danger: hsl(360, 66%, 66%);
-			font-family: system-ui, sans-serif;
+			font-family: 'Orienta', sans-serif;
 			font-size: 14px;
 			background: #13151a;
 		}
@@ -231,6 +238,9 @@ let user = Astro.cookies.get('user')?.value
 		}
 
 		@media (min-width: 680px) {
+			header nav a {
+				font-size: 1.1rem;
+			}
 			main {
 				padding: 2rem;
 				padding-bottom: 1rem;
