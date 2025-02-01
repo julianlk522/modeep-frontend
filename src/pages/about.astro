@@ -1,6 +1,4 @@
 ---
-import GlobalTagCalcDiagram from '../components/About/GlobalTagCalcDiagram.astro'
-import SearchDiagram from '../components/About/SearchDiagram.astro'
 import ScrollUp from '../components/ScrollUp.astro'
 import cornucopia from '../images/cornucopia.webp'
 import BaseLayout from '../layouts/BaseLayout.astro'
@@ -9,7 +7,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 <BaseLayout Title='About FITM'>
 	<main>
 		<h1>About</h1>
-		<img id="cornucopia" src={cornucopia.src} title="The elaborate feast offered some flavor that every guest could enjoy." />
+		<img id="cornucopia" src={cornucopia.src} title="The elaborate feast offers all kinds of flavors. Every guest finds something to enjoy." />
 		<section>
 			<p>The web has profound potential to introduce knowledge, joy, curiosity, beauty, and meaning to its users. It ought to be easier to navigate.</p>
 
@@ -22,86 +20,10 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 			<p>
 				<em>Treasure</em> can mean anything, whatever is worth sharing and being found. FITM provides a template for recording and easily navigating such gems.
 			</p>
-		</section>
 
-		<section>
-			<h2>How FITM Works</h2>
-
-			<h3 id="cats" class="subsection">Cats?</h3>
-			<p><em>"Cats"</em> are an important concept here. It&apos;s a shorthand for <em><a href="#tags">tag categories</a></em>. Cats are also a <a href="https://en.wikipedia.org/wiki/I_Can_Has_Cheezburger%3F">historically prominent Internet symbol</a>, so it seems fitting that they'd be a part of FITM. Don't be alarmed by mention of "stacking cats"; no animals were harmed in making this.</p>
-
-			<p>Links submitted are tagged with cats. You can apply cat filters in searches to request only links that match some theme(s). All links returned in a search will have the cats you specify (and likely others too).</p>
-
-			<p>The most common cats from the links returned by your search are listed with them. Searches with cat filters applied return top <em>subcats</em>: the most common cats from the returned links, not including the ones you specified.</p>
-
-			<p>You can filter results by time period (last day, week, month, or year) and choose whether you want to include results that are tagged "<abbr title="Not Safe For Work">NSFW</abbr>". NSFW is always opt-in; you won't see it unless you request it.</p>
-
-			<SearchDiagram />
-
-			<h3 id="core-actions" class="subsection">Core Actions</h3>
-			<ol>
-				<li><strong>Summarize</strong></li>
-				<li><strong>Copy</strong></li>
-				<li><strong>Like</strong></li>
-				<li><strong>Tag</strong></li>
-			</ol>
-
-			<h3 class="subsection">Summarize</h3>
 			<p>
-				Every link has a summary page where any user can
-				submit a description of its content. Summaries can be upvoted so the most liked ones are most visible.
+				<a href="/about/how">How FITM Works</a>
 			</p>
-			<p>
-				A link's top summary will be shown above its URL at all times to
-				quickly give a sense for what it is.
-			</p>
-
-			<h3 class="subsection">Copy</h3>
-			<p>
-				<strong>Copying</strong> links to your Treasure Map improves
-				discoverability via proliferation. It allows you to easily find a
-				link again or let others find it by reading your Treasure Map.
-			</p>
-
-			<h3 class="subsection">Like</h3>
-			<p>
-				<strong>Liking</strong> improves discoverability via corroboration.
-				It's a way to vouch for a link's "goodness" (comprehensiveness, authenticity, hilarity, whatever).
-			</p>
-			<p>
-				Liking helps great content appear closer to the top of searches,
-				so anyone can find it easily.
-			</p>
-
-			<h3 id="tags" class="subsection">Tag</h3>
-			<p>
-				<strong>Tagging</strong> links improves discoverability
-				via filtration. A tag is a list of categories (cats) for a link, chosen by you. It's your interpretation of the topics that the link may be associated with, or terms that you expect someone interested in the link may search for.
-			</p>
-			<p>
-				We need not agree on the most accurate cat(s) for all links. Each user's take matters, and can be found by viewing their Treasure Map.
-			</p>
-		</section>
-		<section>
-			<h3> The Global Treasure Map and Global Tags</h3>
-			<p>
-				Any <em>user-submitted tag</em> (cats assigned to a link)
-				decides how the link is sorted on the tag author's Treasure Map. But every link also has a <em>global tag</em>,
-				which determines its sorting on the <a href='/search'>Top</a
-			> and <a href='/more'>More</a> pages.
-			</p>
-			<p><em>Global tags</em> are calculated automatically by the age of every
-			<em>user-submitted tag</em> and the frequency of each cat across
-			them. They're shown with each link. (Unless, again, the link is viewed from a user's Treasure Map; then it will show <em>their</em> tag.) You can view any link's top user-submitted tags on demand.</p>
-
-			<p>Each user-submitted tag shows its <em>lifespan overlap percentage</em> (see <a href="#global-tag-calculation">Global Tag Calculation</a>), author, date of submission, and cats. Tags that have kept the same combination of cats for the greatest portion of the link's lifespan are ranked highest. Editing a tag's cats will reset it's lifespan overlap percentage.</p>
-
-			<p>To clarify, a link's global cats will not necessarily be exclusive to its highest-ranked tags. If many newer tags contain some cats that are not already present in the global tag, it's likely that those too will soon be assigned.</p>
-
-			<p>This system is based on the assumption that cat interpretations that remain unedited
-			for a long time or that reappear across tags are most likely to be the best fits.</p>
-
-			<p>A long-unchanged tag could still be a poor representation, but if enough people disagree and submit alternative tags their collective input will nullify it; the old tag's cats will likely be removed from the link's global tag.</p>
 		</section>
 
 		<section>
@@ -112,38 +34,16 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 			<ul>
 				<li>Unbiased, relevant outputs. Link suggestions are ones real people liked the most, and all preferences are weighed equally. How new a link is doesn't change how often it appears, unless you deliberately enable a submit date filter.</li>
 
-				<li>Exact specificity about what material you get back. Matching <em>all</em>&mdash;not <em>any</em>&mdash; of your search terms. In exchange for not having an endless recommendation stream, you get sniper-like concentration on the most noteworthy handful.</li>
+				<li>Exact specificity about what material you encounter. Matching <em>all</em>&mdash;not <em>any</em>&mdash; of your search terms. In exchange for not having an endless recommendation stream, you get sniper-like concentration on the most noteworthy handful.</li>
 
-				<li>Low on user-to-user communication. FITM is more akin to a museum or a travel guide than to a bar. It's a distraction-free pipeline to access the documented world.</li>
+				<li>Little casual communication. FITM is more akin to a museum or a travel guide than to a bar. It's a distraction-free pipeline to access the documented world.</li>
 			</ul>
 		</section>
 
 		<section>
-			<h2>The World Wants to Hear From You</h2>
+			<h2>We Want to Hear From You</h2>
 
-			<p>Broad input helps many to discover and enjoy web treasures, including people who would never otherwise know of them.</p>
-
-			<p>Show off something great you've found!</p>
-		</section>
-
-		<section>
-			<h2>Additional Notes</h2>
-
-			<h3 id="global-tag-calculation" class="subsection">Global Tag Calculation</h3>
-			<p>Note: <a href="/feedback">constructive criticism welcomed</a> for this system.</p>
-			<p>For a cat to be added to link <code>L</code>'s global tags, it's <em>score</em> must be &ge;25% of the highest score among <code>L</code>'s cats.</p>
-			<p><em>Scores</em> for cat <code>C</code> of link <code>L</code> are calculated as the sum of scores from each occurrence of <code>C</code> in one of <code>L</code>'s tags. Each score is weighted by the number of cats in the tag containing the occurrence.</p>
-			<p>Weights for tag <code>T</code> are calculated as <em>lifespan overlap percentage</em> of <code>T</code>, divided by <code>T</code>'s number of cats. </p>
-			<p>Lifespan overlap percentage for tag <code>T</code> of link <code>L</code> is the percentage of <code>L</code>'s time on FITM that  <code>T</code> has remained in its current state since creation or last edit.</p>
-
-			<GlobalTagCalcDiagram />
-
-			<h3 id="retrieving-metadata" class="subsection">Retrieving Metadata</h3>
-			<p>FITM employs <em>very limited</em> use of automated website scraping to fetch <a href="https://ogp.me/">Open Graph</a> metadata for submitted links. These requests can be identified by the <strong>FITM-Bot</strong> user agent.</p>
-
-			<p>A max of 1-3 automated requests go out to each submitted URL (FITM-Bot tries different protocol prefixes, e.g., "https://" and "http://", if the first request fails). This automated scraping helps to cut down on link submission friction and pair links with eye-catching preview images. The goal is ultimately to promote appreciation for good, public Internet sites by improving their visibility.</p>
-
-			<p><strong>Anyone can have their domain added to a non-scrape list upon request, with no further questions</strong>. Please send an email to <a href="mailto:support@fitm.online">support@fitm.online</a> if you'd like that. It would be an odd decision though. The traffic is miniscule, and the point of sites being on FITM is to help them get more visitors. Wouldn't you want more visitors?</p>
+			<p>Broad input helps all kinds of people discover and enjoy web treasures. It doesn't matter how weird or specific your favorite links are. If you like them, someone else probably would too. So, show off something great you've found!</p>
 		</section>
 
 		<ScrollUp />
