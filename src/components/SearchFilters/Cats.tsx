@@ -16,15 +16,17 @@ import './Cats.css'
 interface Props {
 	Addable?: boolean
 	Removable?: boolean
+	IsNewLinkPage?: boolean
 	IsTagPage?: boolean
 	SelectedCats: string[]
-	SetSelectedCats: Dispatch<StateUpdater<string[]>>
 	SubmittedLinks?: types.Link[]
+	SetSelectedCats: Dispatch<StateUpdater<string[]>>
 }
 
 export default function SearchCats(props: Props) {
 	const {
 		Removable: removable,
+		IsNewLinkPage: is_new_link_page,
 		IsTagPage: is_tag_page,
 		SelectedCats: selected_cats,
 		SetSelectedCats: set_selected_cats,
@@ -211,7 +213,7 @@ export default function SearchCats(props: Props) {
 						onKeyPress={handle_enter}
 						value={snippet}
 						autocomplete={'off'}
-						autoFocus
+						autoFocus={!is_new_link_page}
 					/>
 
 					<input

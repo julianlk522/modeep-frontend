@@ -137,12 +137,14 @@ export default function NewLinks(props: Props) {
 						id='url'
 						name='url'
 						onInput={(e) => handle_url_change(e)}
+						autoFocus
 					/>
 
 					<SearchCats
 						SelectedCats={cats}
 						SetSelectedCats={set_cats}
 						SubmittedLinks={submitted_links}
+						IsNewLinkPage
 					/>
 
 					<label for='summary'>Summary (optional)</label>
