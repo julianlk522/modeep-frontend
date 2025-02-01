@@ -66,14 +66,14 @@ export default function NewLinks(props: Props) {
 
 		if (summary) {
 			resp_body = JSON.stringify({
-				url,
-				cats: cats.join(','),
-				summary,
+				URL: url,
+				Cats: cats.join(','),
+				Summary: summary,
 			})
 		} else {
 			resp_body = JSON.stringify({
-				url,
-				cats: cats.join(','),
+				URL: url,
+				Cats: cats.join(','),
 			})
 		}
 
