@@ -9,35 +9,32 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 <BaseLayout Title='About FITM'>
 	<main>
 		<h1>About</h1>
-		<img id="cornucopia" src={cornucopia.src} title='There is a rich spread of flavors to be found in this land. Whoever you are, there is so much for you to enjoy.' />
+		<img id="cornucopia" src={cornucopia.src} title="The elaborate feast offered some flavor that every guest could enjoy." />
 		<section>
-			<p>The web has astounding potential to introduce new knowledge, joy, curiosity, beauty, and meaning into life. Navigating it carefully enough to enjoy the benefits is not easy, but it could be easier.</p>
+			<p>The web has profound potential to introduce knowledge, joy, curiosity, beauty, and meaning to its users. It ought to be easier to navigate.</p>
 
 			<p>
-				The <strong>Flexible Internet Treasure Map (FITM)</strong>
-				is a web content database and dynamic, consensus-driven ranking machine. On it you can share precious links or quickly filter through already-shared ones. Its goal is to help Internet users find more of what they love.
+				The <strong>Flexible Internet Treasure Map (FITM)</strong> reveals treasured links documented by the public. Its mission is to help everyone find more of what they love by proliferating known favorites.
 			</p>
 
-			<p>Links can be <em>flexibly</em> organized according to associated categories and properties.</p>
+			<p>Consensus opinion decides how links are ranked, and they're <em>flexibly</em> organizable by associated categories and properties.</p>
 
 			<p>
-				What defines <em>Treasure</em> is up to you. You are encouraged to share or discover anything on the Internet that's worth sharing or discovering.
+				<em>Treasure</em> can mean anything, whatever is worth sharing and being found. FITM provides a template for recording and easily navigating such gems.
 			</p>
-
-			<p>It is an attempted solution to the challenges of high obscurity and poor discoverability of Internet greatness, new and old.</p>
 		</section>
 
 		<section>
 			<h2>How FITM Works</h2>
 
 			<h3 id="cats" class="subsection">Cats?</h3>
-			<p><em>"Cats"</em> are an important concept here. It&apos;s a shorthand for <em><a href="#tags">tag categories</a></em>. Cats are also a <a href="https://en.wikipedia.org/wiki/I_Can_Has_Cheezburger%3F">historically prominent Internet symbol</a>, so it seems fitting that they'd be a part of FITM. Don't be alarmed by mention of "stacking cats"; no animals were harmed in creating this site.</p>
+			<p><em>"Cats"</em> are an important concept here. It&apos;s a shorthand for <em><a href="#tags">tag categories</a></em>. Cats are also a <a href="https://en.wikipedia.org/wiki/I_Can_Has_Cheezburger%3F">historically prominent Internet symbol</a>, so it seems fitting that they'd be a part of FITM. Don't be alarmed by mention of "stacking cats"; no animals were harmed in making this.</p>
 
-			<p>Submitted links are tagged with 1+ cats. You can apply cat filters in searches to request only links that match some theme(s). All links returned in a search will have the cats you specify and (likely some others).</p>
+			<p>Links submitted are tagged with cats. You can apply cat filters in searches to request only links that match some theme(s). All links returned in a search will have the cats you specify (and likely others too).</p>
 
-			<p>The most common cats from the links returned by your search are listed along with them. Searches with cat filters return top <em>subcats</em>. These are the most common cats from the returned links, not including the ones you specified.</p>
+			<p>The most common cats from the links returned by your search are listed with them. Searches with cat filters applied return top <em>subcats</em>: the most common cats from the returned links, not including the ones you specified.</p>
 
-			<p>You can also filter results by time period (last day, week, month, or year) and choose whether you want results that are tagged "<abbr title="Not Safe For Work">NSFW</abbr>" included. NSFW is always opt-in; you won't see it unless you ask.</p>
+			<p>You can filter results by time period (last day, week, month, or year) and choose whether you want to include results that are tagged "<abbr title="Not Safe For Work">NSFW</abbr>". NSFW is always opt-in; you won't see it unless you request it.</p>
 
 			<SearchDiagram />
 
@@ -108,63 +105,25 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 		</section>
 
 		<section>
-			<h2>Why Use It?</h2>
+			<h2>Intended Benefits</h2>
 
-			<p>Compared to some traditional search methods...</p>
+			<p>Compared to other search methods...</p>
 
-			<h3 class="subsection">Search Engines</h3>
-			<p>
-				They help index the web but they don't think like real people, and they're biased, so recommendations are a toss-up.
-			</p>
-			<p>
-				Depending on your definition of quality, <abbr title="Search Engine Optimization">SEO</abbr> <a href="https://backlinko.com/google-ranking-factors#top-8">these days</a> may or may not be relevant.
-				Great links may be absent in search results because they're not aggressively stuffed with <a href="https://en.wikipedia.org/wiki/Keyword_research">keywords</a>, or they're not associated with a known <a href="https://digitalbrandinginstitute.com/improve-brand-signals-better-seo#:~:text=What%20Are,Signals?">brand</a>. Or, maybe a site appears only if you search with the perfect combination of words but seldom otherwise. You can never find something <a href="https://presidentialham.com/">like this</a> (safe for work) unless you already know about it, which defeats some of the purpose of searching.
-			</p>
-			<p>
-				They're also incentivized to promote results with connections to paying entities. Maybe it's a
-				feature, not a bug, depending on who you ask. Does marketing reliably signal "good" content? If you're not sure, you may be in the right place. (You will never see ads on FITM).
-			</p>
-			<p>
-				A simple-enough, reliable-enough method to tell a link's "good"ness is the number of
-				<em>people</em> who decide, for any reason, to upvote it. Then it's easy to find good content by browsing the most liked things.
-			</p>
-			<p>
-				Sorting by likes is not enough, though. That's why you can also parameterize searches with <em><a href="#cats">cat-stacking</a></em> and other sorting and filtering first.
-			</p>
-
-			<h3 class="subsection">Reddit</h3>
-			<p>
-				Reddit is an invaluable resource
-				and a blessing. As a pioneer platform in categorizing web content, it's an inspiration to FITM. But their purposes have important differences.
-			</p>
 			<ul>
-				<li>
-					<p>
-						Reddit is mainly a communication hub while FITM is more like a content database. It's not meant for thematic
-						discussion, only link sharing and
-						discovery. (With a few <a href="#core-actions">text submission actions</a> in support of that goal.)
-					</p>
-				</li>
-				<li>
-					<p>
-						Subreddits are communities defined by one main theme. But FITM helps you find anything that spans multiple particular themes through cat-stacking.
-					</p>
-					<p>
-						Most web
-						searches implicitly treat keywords like they're separated with "OR" when what you often want is for them to be separated with "AND." History AND comedy AND music AND videos. Anything that is <em>all</em> of those, please. That search might lead you directly to <a href="https://www.youtube.com/watch?v=qv6OOuPI5c0">this gem</a>. (NSFW but watch when you get home, you'll be glad you did.)
-					</p>
-				</li>
+				<li>Unbiased, relevant outputs. Link suggestions are ones real people liked the most, and all preferences are weighed equally. How new a link is doesn't change how often it appears, unless you deliberately enable a submit date filter.</li>
+
+				<li>Exact specificity about what material you get back. Matching <em>all</em>&mdash;not <em>any</em>&mdash; of your search terms. In exchange for not having an endless recommendation stream, you get sniper-like concentration on the most noteworthy handful.</li>
+
+				<li>Low on user-to-user communication. FITM is more akin to a museum or a travel guide than to a bar. It's a distraction-free pipeline to access the documented world.</li>
 			</ul>
 		</section>
 
 		<section>
-			<h2>Show Off Your Treasure!</h2>
+			<h2>The World Wants to Hear From You</h2>
 
-			<p>With diverse input from experienced Internet citizens like you,  the web's treasures can be widely celebrated and enjoyed, even by people who never would have known of them before.</p>
+			<p>Broad input helps many to discover and enjoy web treasures, including people who would never otherwise know of them.</p>
 
-			<p>Over time, this collection will come to represent the best of everything ever documented online, made easy to search from to your heart's desire.</p>
-
-			<p>So, add one of your favorite links and give your online friends something new to enjoy today and forever after.</p>
+			<p>Show off something great you've found!</p>
 		</section>
 
 		<section>
