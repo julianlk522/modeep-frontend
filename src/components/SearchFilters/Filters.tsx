@@ -81,7 +81,9 @@ export default function SearchFilters(props: Props) {
 	return (
 		<section id='search-filters'>
 			<form>
-				<h2>Search Filters</h2>
+				<h2>Filters</h2>
+
+				<SearchCats SelectedCats={cats} SetSelectedCats={set_cats} />
 
 				<SearchPeriod Period={period} SetPeriod={set_period} />
 
@@ -95,8 +97,6 @@ export default function SearchFilters(props: Props) {
 					</>
 				) : null}
 
-				<SearchCats SelectedCats={cats} SetSelectedCats={set_cats} />
-
 				<a
 					id='search-from-filters'
 					title={
@@ -107,7 +107,6 @@ export default function SearchFilters(props: Props) {
 					class={has_changed_filters ? 'filters-changed' : ''}
 					href={search_URL}
 				>
-					<img src='chest.webp' alt='chest' width={22} height={20} />
 					Scour The Treasure Map
 				</a>
 			</form>

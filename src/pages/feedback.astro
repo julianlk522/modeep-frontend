@@ -4,27 +4,31 @@ import NoFooter from "../layouts/NoFooter.astro"
 
 ---
 
-<NoFooter Title="Leave Feedback for FITM">
+<NoFooter Title="Leave Feedback">
 	<main>	
-		<section>
-			<h1>Feedback</h1>
-			<p>If you have an opinion about how FITM could be better, please email <a href='mailto:support@fitm.online'>support@fitm.online</a> to share it. </p>
-			<p>Your comments are appreciated and any suggestions will be considered in the next round of updates.</p>
-			<p>Thanks for stopping by!</p>
-		</section>
+		<h1>Feedback</h1>
 
-		<img id="fitm-island" src={fitm_island.src} alt='an island with a chest of web treasure' />
+		<img id="fitm-island" src={fitm_island.src} alt='FITM Island with Treasure Chest' />
+
+		<p>If you think something could be better, please email <a href='mailto:support@fitm.online'>support@fitm.online</a>.</p>
+		<p>All comments are appreciated and suggestions will be considered in the next round of updates.</p>
 	</main>
 </NoFooter>
 
 <style>
-	section {
-		padding: 1rem 0;
+	main > p {
+		text-align: center;
 	}
+
+	main > p:first-of-type {
+		margin-top: 2rem;
+	}
+
 	#fitm-island {
-		max-height: 350px;
+		max-height: 150px;
 		display: block;
 		margin: 1rem auto 0;
 		opacity: 50%;
+		margin-top: 2rem;
 	}
 </style>

@@ -56,8 +56,8 @@ const totals: Totals = await totals_resp.Response.json()
 
 <BaseLayout Title='FITM: Share and Discover Web Treasure'>
 	<main>
-		<h1>FITM.online</h1>
-		<p id='subtitle'>a map of the web's treasures</p>
+		<h1>Welcome Home, Good Hunter</h1>
+		<p id='subtitle'>What is it you desire?</p>
 
 		<section>
 			<TopCats TopCats={top_cats} />
@@ -98,20 +98,6 @@ const totals: Totals = await totals_resp.Response.json()
 </BaseLayout>
 
 <style>
-	html:before {
-		content: '';
-		width: 175px;
-		height: 162px;
-		position: absolute;
-		background-image: url(chest.webp);
-		background-size: 175px;
-		left: 50%;
-		transform: translatex(-50%);
-		top: 1em;
-		opacity: 25%;
-		pointer-events: none;
-	}
-
 	h1 {
 		margin-bottom: 0.5rem;
 	}

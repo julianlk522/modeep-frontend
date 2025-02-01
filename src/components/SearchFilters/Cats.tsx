@@ -16,7 +16,6 @@ import './Cats.css'
 interface Props {
 	Addable?: boolean
 	Removable?: boolean
-	IsNewLinkPage?: boolean
 	IsTagPage?: boolean
 	SelectedCats: string[]
 	SetSelectedCats: Dispatch<StateUpdater<string[]>>
@@ -26,7 +25,6 @@ interface Props {
 export default function SearchCats(props: Props) {
 	const {
 		Removable: removable,
-		IsNewLinkPage: is_new_link_page,
 		IsTagPage: is_tag_page,
 		SelectedCats: selected_cats,
 		SetSelectedCats: set_selected_cats,
@@ -212,18 +210,19 @@ export default function SearchCats(props: Props) {
 						}}
 						onKeyPress={handle_enter}
 						value={snippet}
+						autocomplete={'off'}
+						autoFocus
 					/>
 
 					<input
 						id='add-cat-filter'
 						title='Add cat filter'
 						type='submit'
-						value={is_new_link_page ? 'Add' : 'Add Filter'}
+						value='+'
 						onClick={(e) => {
 							add_cat(e)
 							set_snippet('')
 						}}
-						autocomplete={'off'}
 						disabled={!snippet}
 					/>
 				</>

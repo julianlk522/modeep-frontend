@@ -6,8 +6,10 @@ input#add-cat-filter:disabled {
 	color: var(--text-muted);
 }
 
-ol#cat-list li:has(input#clear-cat-filters) {
-	list-style: none;
+ol#cat-list {
+	li:has(input#clear-cat-filters) {
+		list-style: none;
+	}
 }
 
 ul#recommendations-list {
@@ -19,6 +21,9 @@ ul#recommendations-list {
 
 ol#cat-list,
 ul#recommendations-list {
-	margin-top: 0.5rem;
-	margin-bottom: 0;
+	margin: 0.5rem 0;
+}
+
+p.error {
+	margin-bottom: 0.5rem;
 }

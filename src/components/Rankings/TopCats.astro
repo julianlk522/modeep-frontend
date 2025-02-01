@@ -27,7 +27,7 @@ if (tmap_section) endpoint += `/${tmap_section}`
 ---
 
 {top_cats.length && top_cats.length > 1 ? <>
-    <h2>Filter by {is_subcats ? "Subcats" : "Cats"}</h2>
+    <h2>{is_subcats ? "Subcats" : "Cats"}</h2>
     <ol id="top-cats" class={list_classes}>
         {
             top_cats.map((cat) => (
