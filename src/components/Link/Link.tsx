@@ -8,7 +8,11 @@ import { LINKS_ENDPOINT } from '../../constants'
 import * as types from '../../types'
 import { is_error_response } from '../../types'
 import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
-import { get_local_time, get_units_ago } from '../../util/format_date'
+import {
+	format_long_date,
+	get_local_time,
+	get_units_ago,
+} from '../../util/format_date'
 import {
 	save_action_and_path_then_redirect_to_login,
 	save_path_then_redirect_to_login,
@@ -62,6 +66,8 @@ export default function Link(props: Props) {
 		is_tmap_page && cats_from_user ? `/map/${cats_from_user}` : '/search'
 	const split_cats = cats.split(',')
 	const has_one_tag = tag_count === 1
+	const should_display_full_date =
+		is_summary_page || is_tag_page || is_new_link_page
 
 	let tag_attribution = is_new_link_page
 		? 'tag'
@@ -238,11 +244,13 @@ export default function Link(props: Props) {
 					{is_your_link ? 'you' : submitted_by}
 				</a>{' '}
 				<span class='submit-date'>
-					{get_units_ago(
-						is_new_link_page
-							? get_local_time(submit_date)
-							: submit_date
-					)}
+					{should_display_full_date
+						? format_long_date(submit_date)
+						: get_units_ago(
+								is_new_link_page
+									? get_local_time(submit_date)
+									: submit_date
+							)}
 				</span>
 			</p>
 
