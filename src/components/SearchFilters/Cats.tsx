@@ -7,7 +7,7 @@ import {
 	type Dispatch,
 	type StateUpdater,
 } from 'preact/hooks'
-import { CATS_ENDPOINT } from '../../constants'
+import { CATS_ENDPOINT, MAX_CATS_PER_TAG } from '../../constants'
 import * as types from '../../types'
 import { type CatCount } from '../../types'
 import TagCat from '../Tag/TagCat'
@@ -32,6 +32,8 @@ export default function SearchCats(props: Props) {
 		SetSelectedCats: set_selected_cats,
 	} = props
 	const addable = props.Addable ?? true
+
+	const has_max_num_cats = selected_cats.length >= MAX_CATS_PER_TAG
 
 	const [error, set_error] = useState<string | undefined>(undefined)
 
@@ -156,9 +158,7 @@ export default function SearchCats(props: Props) {
 
 	function handle_enter(event: KeyboardEvent) {
 		if (event.key === 'Enter') {
-			event.preventDefault()
 			add_cat(event)
-			set_snippet('')
 		}
 	}
 
@@ -166,6 +166,11 @@ export default function SearchCats(props: Props) {
 		event.preventDefault()
 		if (!snippet) {
 			set_error('Input is empty')
+			return
+		}
+
+		if (has_max_num_cats) {
+			set_error('Maxiumum number of cats reached')
 			return
 		}
 
@@ -185,6 +190,8 @@ export default function SearchCats(props: Props) {
 			prev_selected_cats_ref.current = next
 			return next
 		})
+
+		set_snippet('')
 		set_error(undefined)
 
 		reset_timeout_and_fetch_new_recommendations()
@@ -218,14 +225,15 @@ export default function SearchCats(props: Props) {
 
 					<input
 						id='add-cat-filter'
-						title='Add cat filter'
+						title={
+							has_max_num_cats
+								? 'Maxiumum number of cats reached'
+								: 'Add cat filter'
+						}
 						type='submit'
 						value='+'
-						onClick={(e) => {
-							add_cat(e)
-							set_snippet('')
-						}}
-						disabled={!snippet}
+						onClick={add_cat}
+						disabled={!snippet || has_max_num_cats}
 					/>
 				</>
 			) : null}
