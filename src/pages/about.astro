@@ -1,5 +1,4 @@
 ---
-import ScrollUp from '../components/ScrollUp.astro'
 import cornucopia from '../images/cornucopia.webp'
 import BaseLayout from '../layouts/BaseLayout.astro'
 ---
@@ -9,7 +8,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 		<h1>About</h1>
 		<img id="cornucopia" src={cornucopia.src} title="The elaborate feast offers all kinds of flavors. Every guest finds something to enjoy." />
 		<section>
-			<p>The web has profound potential to introduce knowledge, joy, curiosity, beauty, and meaning to its users. It ought to be easier to navigate.</p>
+			<p>The web has profound potential to introduce knowledge, joy, curiosity, beauty, and meaning to its users. It ought to be easier to explore.</p>
 
 			<p>
 				The <strong>Flexible Internet Treasure Map (FITM)</strong> reveals treasured links documented by the public. Its mission is to help everyone find more of what they love by proliferating known favorites.
@@ -43,16 +42,16 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 		<section>
 			<h2>We Want to Hear From You</h2>
 
-			<p>Broad input helps all kinds of people discover and enjoy web treasures. It doesn't matter how weird or specific your favorite links are. If you like them, someone else probably would too. So, show off something great you've found!</p>
-		</section>
+			<p>Broad input helps all kinds of people discover and enjoy web treasures.</p>
 
-		<ScrollUp />
+			<p>So, show off something great you've found! If you like it, someone else probably would too.</p>
+		</section>
 	</main>
 </BaseLayout>
 
 <style>
 	section {
-		padding: 2rem 0;
+		padding: 1rem 0;
 	}
 
 	img {
@@ -64,39 +63,9 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 		max-height: 150px;
 	}
 
-	h3#what-if {
-		margin-bottom: 3rem;
-	}
-
-	img#search-diagram-narrow,
-	img#search-diagram {
-		margin-top: 2rem;
-		max-height: 500px;
-	}
-
-	img#search-diagram {
-		display: none;
-	}
-
-	.subsection {
-		margin-top: 2rem;
-	}
-
-	section h2 + h3.subsection {
-		margin-top: 0;
-	}
-
 	@media (min-width: 680px) {
 		img#cornucopia {
 			max-height: 200px;
-		}
-
-		img#search-diagram-narrow {
-			display: none;
-		}
-
-		img#search-diagram {
-			display: block;
 		}
 	}
 </style>

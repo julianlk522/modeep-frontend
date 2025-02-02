@@ -108,75 +108,76 @@ export default function EditTag(props: Props) {
 	}
 
 	return (
-		<form id='edit-tag' onSubmit={(e) => e.preventDefault()}>
-			<div id='user-tags-header-bar'>
-				<h2>Your Tag</h2>
-
-				<button
-					title={editing ? 'Save tag changes' : 'Edit tag'}
-					onClick={() => {
-						set_cats(cats.sort())
-
-						if (
-							editing &&
-							(cats.length !== initial_cats.length ||
-								cats.some((c, i) => c !== initial_cats[i]))
-						) {
-							confirm_changes()
-						}
-						set_editing((e) => !e)
-					}}
-					class='img-btn'
-				>
-					<img
-						src={
-							editing
-								? '../../../confirm.svg'
-								: '../../../edit.svg'
-						}
-						height={20}
-						width={20}
-						alt={editing ? 'Save Edits' : 'Edit Tag'}
-					/>
-				</button>
-
-				{editing && !only_tag ? (
+		<section id='edit-tag'>
+			<form onSubmit={(e) => e.preventDefault()}>
+				<div id='user-tags-header-bar'>
+					<h2>Your Tag</h2>
 					<button
-						title='Delete tag'
-						class='delete-tag-btn img-btn'
-						onClick={() => set_show_delete_modal(true)}
+						title={editing ? 'Save tag changes' : 'Edit tag'}
+						onClick={() => {
+							set_cats(cats.sort())
+							if (
+								editing &&
+								(cats.length !== initial_cats.length ||
+									cats.some((c, i) => c !== initial_cats[i]))
+							) {
+								confirm_changes()
+							}
+							set_editing((e) => !e)
+						}}
+						class='img-btn'
 					>
-						<img src='../../../delete.svg' height={20} width={20} />
+						<img
+							src={
+								editing
+									? '../../../confirm.svg'
+									: '../../../edit.svg'
+							}
+							height={20}
+							width={20}
+							alt={editing ? 'Save Edits' : 'Edit Tag'}
+						/>
 					</button>
+					{editing && !only_tag ? (
+						<button
+							title='Delete tag'
+							class='delete-tag-btn img-btn'
+							onClick={() => set_show_delete_modal(true)}
+						>
+							<img
+								src='../../../delete.svg'
+								height={20}
+								width={20}
+							/>
+						</button>
+					) : null}
+				</div>
+				{error ? <p class='error'>{error}</p> : null}
+				{tag || editing ? (
+					<SearchCats
+						SelectedCats={cats}
+						SetSelectedCats={set_cats}
+						Addable={editing}
+						Removable={editing}
+						IsTagPage
+					/>
 				) : null}
-			</div>
-
-			{error ? <p class='error'>{error}</p> : null}
-
-			{tag || editing ? (
-				<SearchCats
-					SelectedCats={cats}
-					SetSelectedCats={set_cats}
-					Addable={editing}
-					Removable={editing}
-					IsTagPage
-				/>
-			) : null}
-
-			{tag ? (
-				<p class='last-updated'>{format_long_date(tag.LastUpdated)}</p>
-			) : editing ? null : (
-				<p>(not tagged)</p>
-			)}
-
-			{show_delete_modal ? (
-				<Modal
-					Prompt={'Delete tag?'}
-					IsDeleteConfirmation
-					HandleDelete={handle_delete}
-					SetShowModal={set_show_delete_modal}
-				/>
-			) : null}
-		</form>
+				{tag ? (
+					<p class='last-updated'>
+						{format_long_date(tag.LastUpdated)}
+					</p>
+				) : editing ? null : (
+					<p>(not tagged)</p>
+				)}
+				{show_delete_modal ? (
+					<Modal
+						Prompt={'Delete tag?'}
+						IsDeleteConfirmation
+						HandleDelete={handle_delete}
+						SetShowModal={set_show_delete_modal}
+					/>
+				) : null}
+			</form>
+		</section>
 	)
 }

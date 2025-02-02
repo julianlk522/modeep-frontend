@@ -38,8 +38,9 @@ const page_title = link.Summary ? `Tags for "${link.Summary}"` : `Link Tags`
 		assign_login_redirect_handler()
 	</script>
 	<main>
+		<h1>Tags</h1>
+
 		<section>
-			<h2>Link:</h2>
 			<Link
 				client:load
 				Link={link}
@@ -84,7 +85,7 @@ const page_title = link.Summary ? `Tags for "${link.Summary}"` : `Link Tags`
 								<CSRLastUpdated client:load LastUpdated={tag.LastUpdated} />
 								<label for={`lifespan-${i}`}
 								title={`Lifespan overlap: ${tag.LifeSpanOverlap.toFixed(2)}%`} class="lifespan-label">
-									{tag.LifeSpanOverlap.toFixed(2)}%: 
+									{tag.LifeSpanOverlap.toFixed(2)}%
 								</label>
 								<progress id={`lifespan-${i}`} class="lifespan-bar" value={tag.LifeSpanOverlap} max="100"></progress>
 							</li>
@@ -97,8 +98,13 @@ const page_title = link.Summary ? `Tags for "${link.Summary}"` : `Link Tags`
 </BaseLayout>
 
 <style>
+	section h2 {
+		margin-top: 0.5rem;
+	}
+
 	ol#top-tags {
 		padding-inline-start: 0;
+		margin: 0.5rem 0;
 	}
 
 	#login-redirect-link {

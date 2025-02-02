@@ -1,3 +1,7 @@
+div#search-cats-container {
+	margin-top: 0.5rem;
+}
+
 input#add-cat-filter {
 	margin-left: 4px;
 }

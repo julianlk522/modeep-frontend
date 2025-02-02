@@ -209,7 +209,7 @@ const nsfw_links_count = tmap.NSFWLinksCount
 		<!-- Links Sections -->
 		{used_sections.length ? 
 			used_sections.map((s) => (
-				<section id={s} class='link-section'>
+				<section id={s} class='links-section'>
 					{tmap.SectionsWithMore?.length && tmap.SectionsWithMore?.includes(s.toLowerCase()) ? 
 						<div class="section-with-more">
 							<h2>{s}</h2>
@@ -258,7 +258,39 @@ const nsfw_links_count = tmap.NSFWLinksCount
 		margin: 0.5rem 0 1rem;
 	}
 
+	#profile {
+		padding-top: 0;
+
+		astro-island:has(div#profile-pic) + pre {
+			margin-top: 1rem;
+		}
+	}
+
+	#overview {
+		display: flex;
+		
+		div:has(#skip-to-link-section) {
+			margin: 0 auto;
+		}
+
+		#skip-to-link-section {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		#skip-to-link-section {
+			padding: 0.5rem;
+		}
+	}
+
 	section#sort-and-filter {
+		h2 {
+			margin-top: 0.5rem;
+		}
+		
+		padding: 1rem 0;
+
 		#nsfw-filter {
 			margin-top: 0;
 		}
@@ -287,37 +319,15 @@ const nsfw_links_count = tmap.NSFWLinksCount
 		}
 	}
 
-	#profile {
-		padding-top: 0;
-
-		astro-island:has(div#profile-pic) + pre {
-			margin-top: 1rem;
-		}
-	}
-
-	#overview {
-		display: flex;
-		
-		div:has(#skip-to-link-section) {
-			margin: 0 auto;
-		}
-
-		#skip-to-link-section {
-			list-style: none;
-			margin: 0;
-			padding: 0;
-		}
-
-		#skip-to-link-section {
-			padding: 0.5rem;
-		}
-	}
-
-	section.link-section {
-		padding: 0 0 0.5rem;
+	section.links-section {
+		padding: 0.5rem 0;
 
 		> .section-with-more h2 {
 			display: inline;
+		}
+
+		h2 {
+			margin-top: 0.5rem;
 		}
 
 		> h2,

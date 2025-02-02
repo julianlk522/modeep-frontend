@@ -113,11 +113,12 @@ const totals: Totals = await totals_resp.Response.json()
 		text-align: center;
 	}
 
-	#change-period {
+	ol#change-period {
 		display: flex;
 		list-style: none;
 		padding-inline-start: 1rem;
 		margin-top: 0;
+		margin-bottom: 1.5rem;
 	}
 
 	h3#add-link,
@@ -134,7 +135,11 @@ const totals: Totals = await totals_resp.Response.json()
 		}
 
 		#totals {
-			padding: 0.5rem 0 1rem;
+			h2 {
+				margin-top: 0.5rem;
+			}
+			
+			padding: 0.5rem 0;
 			border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 
 			p {
@@ -162,16 +167,15 @@ const totals: Totals = await totals_resp.Response.json()
 	}
 
 	section#top-links {
-		padding-bottom: 1rem;
+		padding: 1rem 0;
 	}
 
-	@media screen and (min-width: 720px) {
+	@media (min-width: 720px) {
 		#contributors-and-totals-flex-container {
 			display: flex;
 			justify-content: space-between;
 			#totals {
 				display: block;
-				padding-top: 1rem;
 				text-align: right;
 			}
 		}

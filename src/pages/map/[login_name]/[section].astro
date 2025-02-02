@@ -119,17 +119,19 @@ const is_only_page = page === 1 && next_page === -1
             <a href={`/map/${login_name}${sort_by ? `?sort_by=${sort_by}` : ''}${nsfw ? sort_by ? '&nsfw=true' : '?nsfw=true' : ''}`}>All sections</a>
         </span>
 		
-		{links?.length ? <section>
-            <TopCats
-                TopCats={section_data.Cats}
-                CatsParams={encoded_cats}
-                SortBy={sort_by}
-                NSFW={nsfw}
-                Mini
-                IsTmapFromUser={login_name}
-                TmapSection={section as ("submitted" | "copied" | "tagged")}
-            />
-        </section> : null}
+		{links?.length ? 
+            <section>
+                <TopCats
+                    TopCats={section_data.Cats}
+                    CatsParams={encoded_cats}
+                    SortBy={sort_by}
+                    NSFW={nsfw}
+                    Mini
+                    IsTmapFromUser={login_name}
+                    TmapSection={section as ("submitted" | "copied" | "tagged")}
+                />
+            </section> 
+        : null}
 
 		{/* Config */}
 		{links?.length ? <section id='sort-and-filter'>
@@ -184,7 +186,7 @@ const is_only_page = page === 1 && next_page === -1
 
 		{/* Links */}
 		{links.length ? 
-			<section id={section} class='link-section'>
+			<section id={`${section}-top-links`}>
                 <h2>Links</h2>
 
                 {is_only_page ? null : <Pagination
@@ -197,7 +199,7 @@ const is_only_page = page === 1 && next_page === -1
                     TmapOwner={login_name}
                 />}
 
-                <ol id="top-links" start={page ? (page - 1) * LINKS_PAGE_LIMIT + 1 : ''}>
+                <ol start={page ? (page - 1) * LINKS_PAGE_LIMIT + 1 : ''}>
                     {links.map((link) => (
                         <Link
                             client:load
@@ -248,10 +250,6 @@ const is_only_page = page === 1 && next_page === -1
         gap: 5px;
         width: fit-content;
         margin-bottom: 1rem;
-
-        img {
-            padding-top: 4px;
-        }
     }
 
     #cats-filter-container {
@@ -281,7 +279,7 @@ const is_only_page = page === 1 && next_page === -1
         margin-top: 0;
     }
 
-    #top-links {
+    ol {
         max-width: calc(100% - 1rem);
         margin: 0;
         margin-top: 0.5rem;

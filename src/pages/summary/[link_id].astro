@@ -94,9 +94,9 @@ const page_title = link.Summary ? `Summaries for "${link.Summary}"` : 'Link Summ
 			}
 		</section>
 
-		{summaries.length ? <section>
+		{summaries.length ? <section id="top-summaries">
 			<h2>Top Summaries</h2>
-			<ol id="top-summaries">
+			<ol>
 				{summaries.map((summary) => 
 					<Summary
 						client:load
@@ -124,9 +124,13 @@ const page_title = link.Summary ? `Summaries for "${link.Summary}"` : 'Link Summ
 		}
 	}
 
-	#top-summaries {
-		max-width: calc(100% - 1rem);
-		margin-left: auto;
-		padding-inline-start: 0;
+	section#top-summaries {
+		margin-top: 0.5rem;
+		
+		ol {
+			max-width: calc(100% - 1rem);
+			margin-left: auto;
+			padding-inline-start: 0;
+		}
 	}
 </style>
