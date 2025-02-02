@@ -66,7 +66,7 @@ const page_title = link.Summary ? `Tags for "${link.Summary}"` : `Link Tags`
 				<section>
 					<h2>Top Tags</h2>
 					<ol id="top-tags">
-						{tags.map((tag) => (
+						{tags.map((tag, i) => (
 							<li class='tag'>
 								<ul id='cat-list'>
 									{tag.Cats.split(',').map((tag) => {
@@ -82,10 +82,11 @@ const page_title = link.Summary ? `Tags for "${link.Summary}"` : `Link Tags`
 									</a>
 								</p>
 								<CSRLastUpdated client:load LastUpdated={tag.LastUpdated} />
-								<p title={`This tag's lifespan overlap is ${tag.LifeSpanOverlap.toFixed(2)}%`} class="lifespan">
-									
-									{tag.LifeSpanOverlap.toFixed(2)}% overlap
-								</p>
+								<label for={`lifespan-${i}`}
+								title={`Lifespan overlap: ${tag.LifeSpanOverlap.toFixed(2)}%`} class="lifespan-label">
+									{tag.LifeSpanOverlap.toFixed(2)}%: 
+								</label>
+								<progress id={`lifespan-${i}`} class="lifespan-bar" value={tag.LifeSpanOverlap} max="100"></progress>
 							</li>
 						))}
 					</ol>
@@ -99,13 +100,21 @@ const page_title = link.Summary ? `Tags for "${link.Summary}"` : `Link Tags`
 	ol#top-tags {
 		padding-inline-start: 0;
 	}
+
 	#login-redirect-link {
 		margin-top: 0;
 	}
+
 	.tag:not(:last-child) {
 		margin-bottom: 1.5rem;
 	}
-	p.lifespan {
-		color: var(--text-muted);
+
+	label.lifespan-label {
+		display: inline-block;
+		margin-top: 0.5rem;
+	}
+
+	progress {
+		accent-color: var(--treasurey-dark);
 	}
 </style>
