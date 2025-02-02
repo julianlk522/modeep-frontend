@@ -238,6 +238,20 @@ export default function SearchCats(props: Props) {
 				</>
 			) : null}
 
+			{non_selected_recommendations?.length ? (
+				<ul id='recommendations-list'>
+					{non_selected_recommendations.map((cat) => (
+						<TagCat
+							key={cat}
+							Cat={cat.Category}
+							Count={cat.Count}
+							Addable={true}
+							AddedSignal={added_cat}
+						/>
+					))}
+				</ul>
+			) : null}
+
 			{selected_cats.length ? (
 				<ol id='cat-list'>
 					{selected_cats.map((cat) => (
@@ -262,20 +276,6 @@ export default function SearchCats(props: Props) {
 						</li>
 					) : null}
 				</ol>
-			) : null}
-
-			{non_selected_recommendations?.length ? (
-				<ul id='recommendations-list'>
-					{non_selected_recommendations.map((cat) => (
-						<TagCat
-							key={cat}
-							Cat={cat.Category}
-							Count={cat.Count}
-							Addable={true}
-							AddedSignal={added_cat}
-						/>
-					))}
-				</ul>
 			) : null}
 
 			{error ? <p class='error'>{error}</p> : null}
