@@ -27,7 +27,6 @@ if (tmap_section) endpoint += `/${tmap_section}`
 ---
 
 {top_cats.length && top_cats.length > 1 ? <>
-    <h2>{is_subcats ? "Subcats" : "Cats"}</h2>
     <ol id="top-cats" class={list_classes}>
         {
             top_cats.map((cat) => (
@@ -58,10 +57,6 @@ if (tmap_section) endpoint += `/${tmap_section}`
 </> : is_subcats ? <p id="no-further-cats">No further subcats.</p> : null}
 
 <style>
-    h2 {
-        margin-top: 0.5rem;
-    }
-    
     ol#top-cats li#to-more {
         list-style-type: none;
         margin-top: auto;
@@ -76,7 +71,7 @@ if (tmap_section) endpoint += `/${tmap_section}`
         img {
             transform: rotate(180deg);
             margin-left: 3px;
-            margin-bottom: -6px;
+            margin-bottom: -5px;
         }
     }
 

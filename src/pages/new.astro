@@ -1,7 +1,7 @@
 ---
 import NewLinks from '../components/Link/NewLinks'
 import ToolTip from '../components/Modal/ToolTip'
-import BaseLayout from '../layouts/BaseLayout.astro'
+import NoFooter from '../layouts/NoFooter.astro'
 
 let token = Astro.cookies.get('token')?.value
 let user = Astro.cookies.get('user')?.value
@@ -17,9 +17,9 @@ if (!token || !user) {
 }
 ---
 
-<BaseLayout Title='Mark Treasure'>
+<NoFooter Title='Mark Treasure'>
 	<main>
-		<h1>What's That?</h1>
+		<h2>What's That?</h2>
 
 		<NewLinks client:load Token={token} User={user} IsNewLinkPage />
 
@@ -37,14 +37,18 @@ if (!token || !user) {
 			</ul>
 		</section>
 	</main>
-</BaseLayout>
+</NoFooter>
 
 <style>
-	section#rules ul {
-		margin: 0 0 0.5rem;
+	section#rules {
+		margin-top: 1.5rem;
+		
+		ul {
+			margin: 0 0 0.5rem;
 
-		li {
-			min-height: 2rem;
+			li {
+				min-height: 2rem;
+			}
 		}
 	}
 

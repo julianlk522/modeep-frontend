@@ -111,7 +111,7 @@ const is_only_page = page === 1 && next_page === -1
 
 <BaseLayout Title={page_title}>
 	<main>
-		<h1>{login_name}'s Treasure Map</h1>
+		<h1>{login_name}</h1>
         <p class="subtitle">({section})</p>
 
         <span id="see-all-sections">
@@ -187,8 +187,6 @@ const is_only_page = page === 1 && next_page === -1
 		{/* Links */}
 		{links.length ? 
 			<section id={`${section}-top-links`}>
-                <h2>Links</h2>
-
                 {is_only_page ? null : <Pagination
                     Cats={cats.length ? cats : undefined}
                     SortBy={sort_by}

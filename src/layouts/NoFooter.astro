@@ -69,6 +69,10 @@ let user = Astro.cookies.get('user')?.value
 			gap: 0.5rem;
 			align-items: center;
 
+			a {
+				text-decoration: underline;
+			}
+
 			a:has(img) {
 				margin-bottom: -5px;
 				margin-right: 2px;
@@ -132,6 +136,7 @@ let user = Astro.cookies.get('user')?.value
 		}
 		a {
 			color: var(--treasurey);
+			text-decoration: none;
 		}
 		form {
 			max-width: 100%;
@@ -145,7 +150,13 @@ let user = Astro.cookies.get('user')?.value
 				max-width: 100%;
 			}
 
-			label:is(#search-period, #search-sort-by, #search-cats, #search-nsfw) {
+			label:is(
+				#search-cats,
+				#search-url-contains,
+				#search-period, 
+				#search-sort-by,
+				#search-nsfw
+			) {
 				display: inline;
 
 				+ * {

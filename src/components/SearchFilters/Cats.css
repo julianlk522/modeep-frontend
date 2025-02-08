@@ -10,21 +10,21 @@ input#add-cat-filter:disabled {
 	color: var(--text-muted);
 }
 
-ol#cat-list {
+ul#cat-list {
 	li:has(input#clear-cat-filters) {
 		list-style: none;
 	}
 }
 
-ul#recommendations-list {
+ol#recommendations-list {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 5px;
 	padding: 0;
 }
 
-ol#cat-list,
-ul#recommendations-list {
+ul#cat-list,
+ol#recommendations-list {
 	margin: 0.5rem 0;
 }
 

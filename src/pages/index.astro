@@ -67,15 +67,13 @@ const totals: Totals = await totals_resp.Response.json()
 			<TopContributors Contributors={top_contributors} />
 
 			<div id="totals">
-				<h2>Stats</h2>
-				<p><span class="total">{totals.Links}</span> <span>Links from</span> <span class="total">{totals.Contributors}</span> <span>Contributors</span> <span>with</span> <span class="total">{totals.Clicks}</span> <span>Clicks</span></p>
+				<p><span class="total">{totals.Links}</span> <span>Links |</span> <span class="total">{totals.Clicks}</span> <span>Clicks |</span> <span class="total">{totals.Contributors}</span> <span>Contributors</span></p>
 				<p><span class="total">{totals.Likes}</span> <span>Likes |</span> <span class="total">{totals.Tags}</span> <span>Tags |</span> <span class="total">{totals.Summaries}</span> <span>Summaries</span></p>
 			</div>
 		</div>
 
 		<section id='top-links'>
-			<h2>Top Links This Month</h2>
-			<ol id='change-period'>
+			<ul id='change-period'>
 				{
 					other_periods.map((period) => (
 						<li class='period'>
@@ -83,7 +81,7 @@ const totals: Totals = await totals_resp.Response.json()
 						</li>
 					))
 				}
-			</ol>
+			</ul>
 
 			{links?.length ? <TopLinks 
 				Links={links}
@@ -113,7 +111,7 @@ const totals: Totals = await totals_resp.Response.json()
 		text-align: center;
 	}
 
-	ol#change-period {
+	ul#change-period {
 		display: flex;
 		list-style: none;
 		padding-inline-start: 1rem;
@@ -122,7 +120,7 @@ const totals: Totals = await totals_resp.Response.json()
 	}
 
 	h3#add-link,
-	ol#change-period {
+	ul#change-period {
 		a,
 		a:visited {
 			color: var(--text);
@@ -135,10 +133,6 @@ const totals: Totals = await totals_resp.Response.json()
 		}
 
 		#totals {
-			h2 {
-				margin-top: 0.5rem;
-			}
-			
 			padding: 0.5rem 0;
 			border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 

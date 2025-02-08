@@ -111,7 +111,6 @@ export default function EditTag(props: Props) {
 		<section id='edit-tag'>
 			<form onSubmit={(e) => e.preventDefault()}>
 				<div id='user-tags-header-bar'>
-					<h2>Your Tag</h2>
 					<button
 						title={editing ? 'Save tag changes' : 'Edit tag'}
 						onClick={() => {
@@ -138,6 +137,7 @@ export default function EditTag(props: Props) {
 							alt={editing ? 'Save Edits' : 'Edit Tag'}
 						/>
 					</button>
+
 					{editing && !only_tag ? (
 						<button
 							title='Delete tag'
@@ -152,7 +152,9 @@ export default function EditTag(props: Props) {
 						</button>
 					) : null}
 				</div>
+
 				{error ? <p class='error'>{error}</p> : null}
+
 				{tag || editing ? (
 					<SearchCats
 						SelectedCats={cats}

@@ -239,7 +239,7 @@ export default function SearchCats(props: Props) {
 			) : null}
 
 			{non_selected_recommendations?.length ? (
-				<ul id='recommendations-list'>
+				<ol id='recommendations-list'>
 					{non_selected_recommendations.map((cat) => (
 						<TagCat
 							key={cat}
@@ -249,11 +249,11 @@ export default function SearchCats(props: Props) {
 							AddedSignal={added_cat}
 						/>
 					))}
-				</ul>
+				</ol>
 			) : null}
 
 			{selected_cats.length ? (
-				<ol id='cat-list'>
+				<ul id='cat-list'>
 					{selected_cats.map((cat) => (
 						<TagCat
 							key={cat}
@@ -275,7 +275,7 @@ export default function SearchCats(props: Props) {
 							/>
 						</li>
 					) : null}
-				</ol>
+				</ul>
 			) : null}
 
 			{error ? <p class='error'>{error}</p> : null}

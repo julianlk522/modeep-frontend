@@ -100,8 +100,6 @@ export default function SearchFilters(props: Props) {
 	return (
 		<section id='search-filters'>
 			<form>
-				<h2>Filters</h2>
-
 				<SearchCats SelectedCats={cats} SetSelectedCats={set_cats} />
 
 				<SearchURLContains

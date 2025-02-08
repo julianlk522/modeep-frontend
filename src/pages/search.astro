@@ -206,8 +206,6 @@ const page_title = `${(sort_by !== 'rating' ? " Newest" : " Top Rated")}${cats ?
 
 <BaseLayout Title={page_title}>
 	<main>
-		<h1>{page_title}</h1>
-		
 		<SearchFilters 
 			client:load 
 			InitialCats={cats.length ? cats.split(',') : []}
@@ -236,8 +234,6 @@ const page_title = `${(sort_by !== 'rating' ? " Newest" : " Top Rated")}${cats ?
 					<TopContributors Contributors={top_contributors} />
 
 					<section id="links">
-						<h2>Links</h2>
-
 						<TopLinks 
 							Links={links}
 							NSFW={nsfw}

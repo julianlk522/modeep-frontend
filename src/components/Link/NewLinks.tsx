@@ -118,7 +118,6 @@ export default function NewLinks(props: Props) {
 	return (
 		<>
 			<section id='new-link'>
-				<h2>Link Details</h2>
 				{error ? (
 					<p class='error'>
 						{error}
@@ -155,7 +154,6 @@ export default function NewLinks(props: Props) {
 			</section>
 			{submitted_links.length ? (
 				<section id='submitted-links'>
-					<h2>Submitted</h2>
 					<ol>
 						{submitted_links.map((link) => (
 							<Link
