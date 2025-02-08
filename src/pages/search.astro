@@ -23,6 +23,20 @@ const token = Astro.cookies.get('token')?.value
 const user = Astro.cookies.get('user')?.value
 
 // Params
+// cats
+let cats = ""
+if (Astro.url.searchParams.get('cats')) {
+	cats = Astro.url.searchParams.get('cats') as string
+}
+// Encode cats params reserved chars
+const encoded_cats = encodeURIComponent(cats)
+
+// url contains
+let url_contains = ""
+if (Astro.url.searchParams.get('url_contains')) {
+	url_contains = Astro.url.searchParams.get('url_contains') as string
+}
+
 // period
 let period: Period = 'all'
 if (
@@ -33,6 +47,7 @@ if (
 ) {
 	period = Astro.url.searchParams.get('period') as Period
 }
+
 // sort by
 let sort_by: SortMetric = 'rating'
 if (
@@ -41,19 +56,13 @@ if (
 	)) {
 		sort_by = Astro.url.searchParams.get('sort_by') as SortMetric
 	}
-// cats
-let cats = ""
-if (Astro.url.searchParams.get('cats')) {
-	cats = Astro.url.searchParams.get('cats') as string
-}
-// Encode cats params reserved chars
-const encoded_cats = encodeURIComponent(cats)
 
 // nsfw
 let nsfw: boolean = false
 if (Astro.url.searchParams.get('nsfw') && Astro.url.searchParams.get('nsfw') === 'true') {
 	nsfw = true
 }
+
 // page
 let page = 1
 if (Astro.url.searchParams.get('page')) {
@@ -70,12 +79,23 @@ if (cats) {
 	has_cats = true
 	links_url += `?cats=${encoded_cats}`
 }
+// url contains
+let has_url_contains = false
+if (url_contains) {
+	has_url_contains = true
+
+	if (has_cats) {
+		links_url += `&url_contains=${url_contains}`
+	} else {
+		links_url += `?url_contains=${url_contains}`
+	}
+}
 // period
 let has_period = false
 if (period !== 'all') {
 	has_period = true
 
-	if (has_cats) {
+	if (has_cats || has_url_contains) {
 		links_url += `&period=${period}`
 	} else {
 		links_url += `?period=${period}`
@@ -86,7 +106,7 @@ let has_sort_by = false
 if (sort_by !== 'rating') {
 	has_sort_by = true
 
-	if (has_cats || has_period) {
+	if (has_cats || has_url_contains || has_period) {
 		links_url += `&sort_by=${sort_by}`
 	} else {
 		links_url += `?sort_by=${sort_by}`
@@ -96,14 +116,14 @@ if (sort_by !== 'rating') {
 let has_nsfw = false
 if (nsfw) {
 	has_nsfw = true
-	if (has_cats || has_period || has_sort_by) {
+	if (has_cats || has_url_contains || has_period || has_sort_by) {
 		links_url += `&nsfw=${nsfw}`
 	} else {
 		links_url += `?nsfw=${nsfw}`
 	}
 }
 // page
-if (has_cats || has_period || has_sort_by || has_nsfw) {
+if (has_cats || has_url_contains || has_period || has_sort_by || has_nsfw) {
 	links_url += `&page=${page}`
 } else {
 	links_url += `?page=${page}`
@@ -128,34 +148,41 @@ let top_subcats: CatCount[] = []
 // Top contributors
 let top_contributors: Contributor[] = []
 
-if (links && links.length) {
-
-	// Get cat(s) contributors and subcat counts
+if (links?.length) {
+	let cats_url = CATS_ENDPOINT
 	let contributors_url = CONTRIBUTORS_ENDPOINT
 
-	if (cats) {
-		contributors_url += `?cats=${encoded_cats}`
-		let subcats_url = CATS_ENDPOINT + `?cats=${encoded_cats}`
+	if (has_period) {
+		cats_url += `?period=${period}`
+		contributors_url += `?period=${period}`
+	}
 
-		if (period !== 'all') {
-			contributors_url += `&period=${period}`
-			subcats_url += `&period=${period}`
+	if (has_url_contains) {
+		if (has_period) {
+			cats_url += `&url_contains=${url_contains}`
+			contributors_url += `&url_contains=${url_contains}`
+		} else {
+			cats_url += `?url_contains=${url_contains}`
+			contributors_url += `?url_contains=${url_contains}`
+		}
+	}
+
+	if (has_cats) {
+		if (has_period || has_url_contains) {
+			cats_url += `&cats=${encoded_cats}`
+			contributors_url += `&cats=${encoded_cats}`
+		} else {
+			contributors_url += `?cats=${encoded_cats}`
+			cats_url += `?cats=${encoded_cats}`
 		}
 
-		const subcats_resp = await fetch_with_handle_redirect(subcats_url)
+		const subcats_resp = await fetch_with_handle_redirect(cats_url)
 		if (!subcats_resp.Response || subcats_resp.RedirectTo) {
 			return Astro.redirect(subcats_resp.RedirectTo)
 		}
 		top_subcats = await subcats_resp.Response.json()
 	
-	// Get cat counts
 	} else {
-		let cats_url = CATS_ENDPOINT
-		if (period !== 'all') {
-			contributors_url += `?period=${period}`
-			cats_url += `?period=${period}`
-		}
-
 		const top_cats_resp = await fetch_with_handle_redirect(cats_url)
 		if (!top_cats_resp.Response || top_cats_resp.RedirectTo) {
 			return Astro.redirect(top_cats_resp.RedirectTo)
@@ -183,9 +210,10 @@ const page_title = `${(sort_by !== 'rating' ? " Newest" : " Top Rated")}${cats ?
 		
 		<SearchFilters 
 			client:load 
+			InitialCats={cats.length ? cats.split(',') : []}
+			InitialURLContains={url_contains}
 			InitialPeriod={period}
 			InitialSortBy={sort_by}
-			InitialCats={cats.length ? cats.split(',') : []}
 			InitialNSFW={nsfw}
 		/>
 

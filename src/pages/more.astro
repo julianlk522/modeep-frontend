@@ -8,9 +8,20 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { has_merged_cats_property, Periods, type CatCount, type MorePageCatCountsWithMergedCats, type Period } from "../types";
 import fetch_with_handle_redirect from "../util/fetch_with_handle_redirect";
 
+let more_cats_url = CATS_ENDPOINT + "?more=true"
 // Params
-// period
+let cats = ""
+let url_contains = ""
 let period: Period = 'all'
+
+if (Astro.url.searchParams.get('cats')) {
+	cats = Astro.url.searchParams.get('cats') as string
+	more_cats_url += `&cats=${cats}`
+}
+if (Astro.url.searchParams.get('url_contains')) {
+	url_contains = Astro.url.searchParams.get('url_contains') as string
+	more_cats_url += `&url_contains=${url_contains}`
+}
 if (
 	Astro.url.searchParams.get('period') &&
 	(Periods as readonly string[]).includes(
@@ -18,25 +29,10 @@ if (
 	)
 ) {
 	period = Astro.url.searchParams.get('period') as Period
-}
-// cats
-let cats = ""
-if (Astro.url.searchParams.get('cats')) {
-	cats = Astro.url.searchParams.get('cats') as string
-}
-
-// Get (more) top cats
-let more_cats_url = CATS_ENDPOINT + "?more=true"
-// edit URL params accordingly
-// cats
-if (cats) {
-	more_cats_url += `&cats=${cats}`
-}
-// period
-if (period !== 'all') {
 	more_cats_url += `&period=${period}`
 }
 
+// Cat counts
 const counts_resp = await fetch_with_handle_redirect(more_cats_url)
 if (!counts_resp.Response || counts_resp.RedirectTo) {
 	return Astro.redirect(counts_resp.RedirectTo)
@@ -63,6 +59,7 @@ const page_title = (cats ? `${cats} (More)` : "More")
 			client:load 
 			InitialPeriod={period}
 			InitialCats={cats.length ? cats.split(',') : []}
+			InitialURLContains={url_contains}
 			Endpoint="/more"
 		/>
 

@@ -5,25 +5,30 @@ import './Filters.css'
 import SearchNSFW from './NSFW'
 import SearchPeriod from './Period'
 import SearchSortBy from './SortBy'
+import SearchURLContains from './URLContains'
 
 interface Props {
 	Endpoint?: '/search' | '/more'
+	InitialCats: string[]
+	InitialURLContains: string
 	InitialPeriod: Period
 	InitialSortBy?: SortMetric
 	InitialNSFW?: boolean
-	InitialCats: string[]
 }
 
 export default function SearchFilters(props: Props) {
 	const {
-		InitialPeriod: initial_period,
 		InitialCats: initial_cats,
+		InitialURLContains: initial_url_contains,
+		InitialPeriod: initial_period,
 		InitialSortBy: initial_sort_by,
 		InitialNSFW: initial_nsfw,
 	} = props
 
-	const [period, set_period] = useState<Period>(initial_period)
 	const [cats, set_cats] = useState<string[]>(initial_cats)
+	const [url_contains, set_url_contains] =
+		useState<string>(initial_url_contains)
+	const [period, set_period] = useState<Period>(initial_period)
 
 	// only for links (/search)
 	const [sort_by, set_sort_by] = useState<SortMetric>(
@@ -36,15 +41,27 @@ export default function SearchFilters(props: Props) {
 	const base_URL = endpoint ?? '/search'
 	let search_URL = base_URL
 
-	if (cats.length) {
+	const has_cats = cats.length > 0
+	if (has_cats) {
 		// encode reserved chars
 		const encoded_cats = cats
 			.map((cat) => encodeURIComponent(cat))
 			.join(',')
 		search_URL += `?cats=${encoded_cats}`
 	}
-	if (period !== 'all') {
-		if (cats.length) {
+
+	const has_url_contains = url_contains?.length
+	if (has_url_contains) {
+		if (has_cats) {
+			search_URL += `&url_contains=${url_contains}`
+		} else {
+			search_URL += `?url_contains=${url_contains}`
+		}
+	}
+
+	const has_period = period !== 'all'
+	if (has_period) {
+		if (has_cats || has_url_contains) {
 			search_URL += `&period=${period}`
 		} else {
 			search_URL += `?period=${period}`
@@ -52,15 +69,16 @@ export default function SearchFilters(props: Props) {
 	}
 
 	// /search page endpoint only
-	if (sort_by && sort_by !== 'rating') {
-		if (cats.length || period !== 'all') {
+	const sort_by_newest = sort_by && sort_by !== 'rating'
+	if (sort_by_newest) {
+		if (has_cats || has_url_contains || has_period) {
 			search_URL += `&sort_by=${sort_by}`
 		} else {
 			search_URL += `?sort_by=${sort_by}`
 		}
 	}
 	if (nsfw) {
-		if (cats.length || period !== 'all' || sort_by !== 'rating') {
+		if (has_cats || has_period || has_url_contains || sort_by_newest) {
 			search_URL += `&nsfw=true`
 		} else {
 			search_URL += `?nsfw=true`
@@ -72,10 +90,11 @@ export default function SearchFilters(props: Props) {
 		cats.some((cat) => !initial_cats.includes(cat))
 	const has_changed_filters =
 		endpoint === '/more'
-			? has_changed_cats || period !== initial_period
+			? has_changed_cats || has_url_contains || has_period
 			: has_changed_cats ||
-				period !== initial_period ||
-				sort_by !== initial_sort_by ||
+				has_url_contains ||
+				has_period ||
+				sort_by_newest ||
 				nsfw !== initial_nsfw
 
 	return (
@@ -84,6 +103,11 @@ export default function SearchFilters(props: Props) {
 				<h2>Filters</h2>
 
 				<SearchCats SelectedCats={cats} SetSelectedCats={set_cats} />
+
+				<SearchURLContains
+					URLContains={url_contains}
+					SetURLContains={set_url_contains}
+				/>
 
 				<SearchPeriod Period={period} SetPeriod={set_period} />
 
