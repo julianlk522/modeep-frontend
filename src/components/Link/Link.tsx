@@ -245,12 +245,8 @@ export default function Link(props: Props) {
 				</a>{' '}
 				<span class='submit-date'>
 					{should_display_full_date
-						? format_long_date(submit_date)
-						: get_units_ago(
-								is_new_link_page
-									? get_local_time(submit_date)
-									: submit_date
-							)}
+						? format_long_date(get_local_time(submit_date))
+						: get_units_ago(submit_date)}
 				</span>
 			</p>
 
