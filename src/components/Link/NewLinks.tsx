@@ -1,7 +1,6 @@
 import { useState } from 'preact/hooks'
 import { LINKS_ENDPOINT } from '../../constants'
 import * as types from '../../types'
-import { is_error_response } from '../../types'
 import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
 import SearchCats from '../SearchFilters/Cats'
 import Link from './Link'
@@ -9,7 +8,6 @@ import './NewLinks.css'
 interface Props {
 	Token: string
 	User: string
-	IsNewLinkPage?: boolean
 }
 
 export default function NewLinks(props: Props) {
@@ -88,10 +86,10 @@ export default function NewLinks(props: Props) {
 		if (!new_link_resp.Response || new_link_resp.RedirectTo) {
 			return (window.location.href = new_link_resp.RedirectTo ?? '/500')
 		}
+
 		let new_link_data: types.Link | types.ErrorResponse =
 			await new_link_resp.Response.json()
-
-		if (is_error_response(new_link_data)) {
+		if (types.is_error_response(new_link_data)) {
 			if (new_link_data.error.includes('already submitted')) {
 				const dupe_URL = new_link_data.error.split('See ')[1]
 				set_error(new_link_data.error.split('See ')[0])
@@ -161,6 +159,7 @@ export default function NewLinks(props: Props) {
 								Link={link}
 								IsNewLinkPage
 								SetNewLinkCats={set_cats}
+								Token={props.Token}
 								User={props.User}
 							/>
 						))}
