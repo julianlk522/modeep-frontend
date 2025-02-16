@@ -3,6 +3,7 @@ import TopCats from '../components/Rankings/TopCats.astro'
 import TopContributors from '../components/Rankings/TopContributors.astro'
 import TopLinks from '../components/Rankings/TopLinks.astro'
 import ScrollUp from '../components/ScrollUp.astro'
+import SearchCats from '../components/SearchFilters/Cats'
 import { CATS_ENDPOINT, CONTRIBUTORS_ENDPOINT, LINKS_ENDPOINT, TOTALS_ENDPOINT } from '../constants'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { Periods, type CatCount, type Contributor, type PaginatedLinks, type Totals } from '../types'
@@ -59,10 +60,7 @@ const totals: Totals = await totals_resp.Response.json()
 		<h1>Welcome Home, Good Hunter</h1>
 		<p id='subtitle'>What is it you desire?</p>
 
-		<div id="totals">
-			<p><span class="total">{totals.Links}</span> <span>Links |</span> <span class="total">{totals.Clicks}</span> <span>Clicks |</span> <span class="total">{totals.Contributors}</span> <span>Contributors</span></p>
-			<p><span class="total">{totals.Likes}</span> <span>Likes |</span> <span class="total">{totals.Tags}</span> <span>Tags |</span> <span class="total">{totals.Summaries}</span> <span>Summaries</span></p>
-		</div>
+		<SearchCats client:load SelectedCats={[]} SetSelectedCats={() => {}} IsHomePage />
 
 		<div id="rankings">
 			<section>
@@ -92,6 +90,11 @@ const totals: Totals = await totals_resp.Response.json()
 				User={user}
 			/> : <p>None :(</p>}
 		</section>
+
+		<div id="totals">
+			<p><span class="total">{totals.Links}</span> <span>Links |</span> <span class="total">{totals.Clicks}</span> <span>Clicks |</span> <span class="total">{totals.Contributors}</span> <span>Contributors</span></p>
+			<p><span class="total">{totals.Likes}</span> <span>Likes |</span> <span class="total">{totals.Tags}</span> <span>Tags |</span> <span class="total">{totals.Summaries}</span> <span>Summaries</span></p>
+		</div>
 
 		<ScrollUp />
 	</main>

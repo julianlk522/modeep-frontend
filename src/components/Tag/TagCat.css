@@ -7,6 +7,10 @@ li.cat {
 	background-color: var(--sky);
 	height: 25px;
 
+	a {
+		color: black;
+	}
+
 	p {
 		color: black;
 		font-weight: bold;

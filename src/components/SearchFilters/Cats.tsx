@@ -16,6 +16,7 @@ import './Cats.css'
 interface Props {
 	Addable?: boolean
 	Removable?: boolean
+	IsHomePage?: boolean
 	IsNewLinkPage?: boolean
 	IsTagPage?: boolean
 	SelectedCats: string[]
@@ -26,6 +27,7 @@ interface Props {
 export default function SearchCats(props: Props) {
 	const {
 		Removable: removable,
+		IsHomePage: is_home_page,
 		IsNewLinkPage: is_new_link_page,
 		IsTagPage: is_tag_page,
 		SelectedCats: selected_cats,
@@ -198,12 +200,14 @@ export default function SearchCats(props: Props) {
 	}
 
 	return (
-		<div id='search-cats-container'>
+		<div id='search-cats-container' class={is_home_page ? 'home' : ''}>
 			{addable ? (
 				<>
-					<label id='search-cats' for='cats'>
-						Cats:
-					</label>
+					{!is_home_page ? (
+						<label id='search-cats' for='cats'>
+							Cats:
+						</label>
+					) : null}
 					<input
 						type='text'
 						name='cats'
@@ -223,18 +227,20 @@ export default function SearchCats(props: Props) {
 						autoFocus={!is_new_link_page}
 					/>
 
-					<input
-						id='add-cat-filter'
-						title={
-							has_max_num_cats
-								? 'Maxiumum number of cats reached'
-								: 'Add cat filter'
-						}
-						type='submit'
-						value='+'
-						onClick={add_cat}
-						disabled={!snippet || has_max_num_cats}
-					/>
+					{!is_home_page ? (
+						<input
+							id='add-cat-filter'
+							title={
+								has_max_num_cats
+									? 'Maxiumum number of cats reached'
+									: 'Add cat filter'
+							}
+							type='submit'
+							value='+'
+							onClick={add_cat}
+							disabled={!snippet || has_max_num_cats}
+						/>
+					) : null}
 				</>
 			) : null}
 
@@ -245,8 +251,9 @@ export default function SearchCats(props: Props) {
 							key={cat}
 							Cat={cat.Category}
 							Count={cat.Count}
-							Addable={true}
+							Addable={!is_home_page}
 							AddedSignal={added_cat}
+							Clickable={is_home_page}
 						/>
 					))}
 				</ol>
