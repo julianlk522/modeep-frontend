@@ -27,7 +27,7 @@ if (tmap_section) endpoint += `/${tmap_section}`
 ---
 
 {top_cats.length && top_cats.length > 1 ? <>
-    <h2>Cats</h2>
+    <h2>{is_subcats ? 'Subcats' : 'Cats'}</h2>
     <ol id="top-cats" class={list_classes}>
         {
             top_cats.map((cat) => (
@@ -95,13 +95,6 @@ if (tmap_section) endpoint += `/${tmap_section}`
     @media (min-width: 480px) {
         ol#top-cats.more {
             max-height: 1280px;
-        }
-        ol#top-cats.tmap {
-            max-height: 300px;
-
-            li {
-                max-width: initial;
-            }
         }
     }
     

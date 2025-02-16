@@ -6,6 +6,10 @@
 	}
 }
 
+p#profile-email-note {
+	margin-top: 0.5rem;
+}
+
 @media (min-width: 680px) {
 	#profile-email {
 		text-align: right;
