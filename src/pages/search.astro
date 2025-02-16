@@ -218,20 +218,21 @@ const page_title = `${(sort_by !== 'rating' ? " Newest" : " Top Rated")}${cats ?
 		{
 			links && links.length ? (
 				<>
-					<section>
-						{data.MergedCats && data.MergedCats.length ? (
-							<MergedResultsNotice MergedCats={data.MergedCats} />
-						) : null}
-						<TopCats 
-							TopCats={top_subcats?.length ? top_subcats : top_cats}
-							CatsParams={encoded_cats}
-							Period={period}
-							SortBy={sort_by}
-							NSFW={nsfw}
-						/>
-					</section>
-
-					<TopContributors Contributors={top_contributors} />
+					<div id="rankings">
+						<section>
+							{data.MergedCats && data.MergedCats.length ? (
+								<MergedResultsNotice MergedCats={data.MergedCats} />
+							) : null}
+							<TopCats
+								TopCats={top_subcats?.length ? top_subcats : top_cats}
+								CatsParams={encoded_cats}
+								Period={period}
+								SortBy={sort_by}
+								NSFW={nsfw}
+							/>
+						</section>
+						<TopContributors Contributors={top_contributors} />
+					</div>
 
 					<section id="links">
 						<TopLinks 

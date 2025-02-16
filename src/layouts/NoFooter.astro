@@ -208,11 +208,15 @@ let user = Astro.cookies.get('user')?.value
 			margin: 0;
 			padding: 0.5rem 1rem;
 
+			/* keep list items aligned with their markers */
+			word-break: break-all;
+
 			li {
 				margin-right: 1rem;
 
-				a {
-					display: inline-block;
+				span {
+					/* keep counts on same line */
+					word-break: break-word;
 				}
 			}
 		}
@@ -242,6 +246,13 @@ let user = Astro.cookies.get('user')?.value
 		span.by,
 		p.last-updated {
 			color: var(--text-muted);
+		}
+
+		@media (min-width: 350px) {
+			div#rankings {
+				display: flex;
+				justify-content: space-evenly;
+			}
 		}
 
 		@media (min-width: 400px) {

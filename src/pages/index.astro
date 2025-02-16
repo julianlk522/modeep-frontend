@@ -59,21 +59,23 @@ const totals: Totals = await totals_resp.Response.json()
 		<h1>Welcome Home, Good Hunter</h1>
 		<p id='subtitle'>What is it you desire?</p>
 
-		<section>
-			<TopCats TopCats={top_cats} />
-		</section>
+		<div id="totals">
+			<p><span class="total">{totals.Links}</span> <span>Links |</span> <span class="total">{totals.Clicks}</span> <span>Clicks |</span> <span class="total">{totals.Contributors}</span> <span>Contributors</span></p>
+			<p><span class="total">{totals.Likes}</span> <span>Likes |</span> <span class="total">{totals.Tags}</span> <span>Tags |</span> <span class="total">{totals.Summaries}</span> <span>Summaries</span></p>
+		</div>
 
-		<div id="contributors-and-totals-flex-container">
+		<div id="rankings">
+			<section>
+				<TopCats TopCats={top_cats} />
+			</section>
 			<TopContributors Contributors={top_contributors} />
-
-			<div id="totals">
-				<p><span class="total">{totals.Links}</span> <span>Links |</span> <span class="total">{totals.Clicks}</span> <span>Clicks |</span> <span class="total">{totals.Contributors}</span> <span>Contributors</span></p>
-				<p><span class="total">{totals.Likes}</span> <span>Likes |</span> <span class="total">{totals.Tags}</span> <span>Tags |</span> <span class="total">{totals.Summaries}</span> <span>Summaries</span></p>
-			</div>
 		</div>
 
 		<section id='top-links'>
 			<ul id='change-period'>
+				<li>
+					Top links this month:
+				</li>
 				{
 					other_periods.map((period) => (
 						<li class='period'>
@@ -103,7 +105,7 @@ const totals: Totals = await totals_resp.Response.json()
 	p#subtitle {
 		background: hsla(180, 33%, 82%, 0.05);
 		padding: 3px;
-		margin-bottom: 1rem;
+		margin-bottom: 0.5rem;
 	}
 
 	p#subtitle,
@@ -117,6 +119,10 @@ const totals: Totals = await totals_resp.Response.json()
 		padding-inline-start: 1rem;
 		margin-top: 0;
 		margin-bottom: 1.5rem;
+
+		li:nth-of-type(2) {
+			margin-left: 1rem;
+		}
 	}
 
 	h3#add-link,
@@ -127,29 +133,23 @@ const totals: Totals = await totals_resp.Response.json()
 		}
 	}
 
-	#contributors-and-totals-flex-container {
-		section {
-			flex-grow: 1;
+	#totals {
+		padding: 0.5rem 0;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+		text-align: center;
+
+		p {
+			padding-left: 1rem;
 		}
 
-		#totals {
-			padding: 0.5rem 0;
-			border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-
-			p {
-				padding-left: 1rem;
-			}
-
-			.total {
-				font-weight: bold;
-				color: var(--sky);
-			}
-
-			span:not(.total) {
-				opacity: 0.85;
-			}
+		.total {
+			font-weight: bold;
+			color: var(--sky);
 		}
 
+		span:not(.total) {
+			opacity: 0.85;
+		}
 	}
 
 	li.period {
@@ -163,16 +163,4 @@ const totals: Totals = await totals_resp.Response.json()
 	section#top-links {
 		padding: 1rem 0;
 	}
-
-	@media (min-width: 720px) {
-		#contributors-and-totals-flex-container {
-			display: flex;
-			justify-content: space-between;
-			#totals {
-				display: block;
-				text-align: right;
-			}
-		}
-	}
-
 </style>
