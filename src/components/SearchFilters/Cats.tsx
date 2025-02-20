@@ -38,7 +38,6 @@ export default function SearchCats(props: Props) {
 	const has_max_num_cats = selected_cats.length >= MAX_CATS_PER_TAG
 
 	const [error, set_error] = useState<string | undefined>(undefined)
-
 	const [snippet, set_snippet] = useState<string>('')
 	const [recommended_cats, set_recommended_cats] = useState<
 		CatCount[] | undefined
@@ -225,6 +224,11 @@ export default function SearchCats(props: Props) {
 						value={snippet}
 						autocomplete={'off'}
 						autoFocus={!is_new_link_page}
+						placeholder={
+							selected_cats?.length
+								? ''
+								: 'Start typing for suggestions...'
+						}
 					/>
 
 					{!is_home_page ? (

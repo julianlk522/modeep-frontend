@@ -15,6 +15,11 @@ input#add-cat-filter:disabled {
 	color: var(--text-muted);
 }
 
+input::placeholder {
+	opacity: 0.8;
+	font-size: 0.85rem;
+}
+
 ul#cat-list {
 	li:has(input#clear-cat-filters) {
 		list-style: none;
