@@ -41,7 +41,7 @@ type Link = {
 	CopyCount: number
 	TagCount: number
 	ClickCount: number
-	PreviewImgURL?: string
+	PreviewImgFilename?: string
 }
 
 type PaginatedLinks = {

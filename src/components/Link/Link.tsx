@@ -4,7 +4,7 @@ import {
 	type Dispatch,
 	type StateUpdater,
 } from 'preact/hooks'
-import { LINKS_ENDPOINT } from '../../constants'
+import { LINK_PREVIEW_IMG_ENDPOINT, LINKS_ENDPOINT } from '../../constants'
 import * as types from '../../types'
 import { is_error_response } from '../../types'
 import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
@@ -58,7 +58,7 @@ export default function Link(props: Props) {
 		SummaryCount: summary_count,
 		TagCount: tag_count,
 		ClickCount: click_count,
-		PreviewImgURL: saved_preview_img_url,
+		PreviewImgFilename: saved_preview_img_filename,
 	} = props.Link
 
 	const is_your_link = user !== undefined && submitted_by === user
@@ -85,20 +85,38 @@ export default function Link(props: Props) {
 	const [like_count, set_like_count] = useState(props.Link.LikeCount)
 	const [copy_count, set_copy_count] = useState(props.Link.CopyCount)
 	const [show_delete_modal, set_show_delete_modal] = useState(false)
-	const [preview_img_url, set_preview_img_url] = useState(
-		saved_preview_img_url
+	const [preview_img_url, set_preview_img_url] = useState<string | undefined>(
+		undefined
 	)
 
-	// hide preview image if URL fails to resolve
+	// hide preview image if path fails to resolve
 	useEffect(() => {
-		if (saved_preview_img_url) {
-			// use Image constructor so no CORS issues, even during local dev
-			const img = new Image()
-			img.onload = () => set_preview_img_url(saved_preview_img_url)
-			img.onerror = () => set_preview_img_url(undefined)
-			img.src = saved_preview_img_url
+		async function get_preview_img() {
+			if (!saved_preview_img_filename) {
+				return
+			}
+
+			const img_resp = await fetch(
+				LINK_PREVIEW_IMG_ENDPOINT + `/${saved_preview_img_filename}`,
+				{
+					headers: {
+						'Content-Type': 'image/*',
+					},
+				}
+			)
+
+			if (img_resp.status > 399) {
+				console.error(img_resp)
+				return set_preview_img_url(undefined)
+			}
+
+			const img_blob = await img_resp.blob()
+			const img_url = URL.createObjectURL(img_blob)
+			set_preview_img_url(img_url)
 		}
-	}, [saved_preview_img_url])
+
+		get_preview_img()
+	}, [saved_preview_img_filename])
 
 	const expected_like_or_copy_action_status = 204
 	async function handle_like() {

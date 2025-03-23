@@ -9,6 +9,7 @@ const SEND_PASSWORD_RESET_EMAIL_ENDPOINT =
 const RESET_PASSWORD_ENDPOINT = API_URL + '/reset-password'
 
 const LINKS_ENDPOINT = API_URL + '/links'
+const LINK_PREVIEW_IMG_ENDPOINT = API_URL + '/pic/preview'
 const CATS_ENDPOINT = API_URL + '/cats'
 const CONTRIBUTORS_ENDPOINT = API_URL + '/contributors'
 const SUMMARIES_ENDPOINT = API_URL + '/summaries'
@@ -17,7 +18,7 @@ const CLICKS_ENDPOINT = API_URL + '/click'
 const TOTALS_ENDPOINT = API_URL + '/totals'
 
 const TMAP_ENDPOINT = API_URL + '/map'
-const TMAP_PFP_ENDPOINT = API_URL + '/pic'
+const TMAP_PFP_ENDPOINT = API_URL + '/pic/profile'
 const TMAP_ABOUT_ENDPOINT = API_URL + '/about'
 const TMAP_EMAIL_ENDPOINT = API_URL + '/email'
 
@@ -32,6 +33,7 @@ export {
 	CATS_PAGE_LIMIT,
 	CLICKS_ENDPOINT,
 	CONTRIBUTORS_ENDPOINT,
+	LINK_PREVIEW_IMG_ENDPOINT,
 	LINKS_ENDPOINT,
 	LINKS_PAGE_LIMIT,
 	LOGIN_ENDPOINT,
