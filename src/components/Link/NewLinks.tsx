@@ -13,7 +13,7 @@ interface Props {
 export default function NewLinks(props: Props) {
 	const [error, set_error] = useState<string | undefined>(undefined)
 	const [dupe_url, set_dupe_url] = useState<string | undefined>(undefined)
-	const [cats, set_cats] = useState<string[]>([])
+	const [selected_cats, set_selected_cats] = useState<string[]>([])
 	const [submitted_links, set_submitted_links] = useState<types.Link[]>([])
 
 	function handle_url_change(e: InputEvent) {
@@ -28,20 +28,22 @@ export default function NewLinks(props: Props) {
 		// channel
 		if (
 			val.includes('youtube.com/@') &&
-			!cats.includes('YouTube channels')
+			!selected_cats.includes('YouTube channels')
 		) {
 			cats_to_be_added.push('YouTube channels')
 		}
 		// playlist
 		if (
 			val.includes('youtube.com/playlist?') &&
-			!cats.includes('YouTube playlists')
+			!selected_cats.includes('YouTube playlists')
 		) {
 			cats_to_be_added.push('YouTube playlists')
 		}
 
-		set_cats(
-			[...cats, ...cats_to_be_added].sort((a, b) => a.localeCompare(b))
+		set_selected_cats(
+			[...selected_cats, ...cats_to_be_added].sort((a, b) =>
+				a.localeCompare(b)
+			)
 		)
 	}
 
@@ -53,7 +55,7 @@ export default function NewLinks(props: Props) {
 		if (!url) {
 			set_error('Missing URL')
 			return
-		} else if (!cats.length) {
+		} else if (!selected_cats.length) {
 			set_error('Missing tag')
 			return
 		}
@@ -65,13 +67,13 @@ export default function NewLinks(props: Props) {
 		if (summary) {
 			resp_body = JSON.stringify({
 				URL: url,
-				Cats: cats.join(','),
+				Cats: selected_cats.join(','),
 				Summary: summary,
 			})
 		} else {
 			resp_body = JSON.stringify({
 				URL: url,
-				Cats: cats.join(','),
+				Cats: selected_cats.join(','),
 			})
 		}
 
@@ -103,11 +105,12 @@ export default function NewLinks(props: Props) {
 		} else {
 			new_link_data.TagCount = 1
 
-			set_submitted_links([new_link_data, ...submitted_links])
-			set_cats([])
+			set_selected_cats([])
 			set_error(undefined)
 			set_dupe_url(undefined)
 			form.reset()
+
+			set_submitted_links([new_link_data, ...submitted_links])
 		}
 
 		return
@@ -138,8 +141,8 @@ export default function NewLinks(props: Props) {
 					/>
 
 					<SearchCats
-						SelectedCats={cats}
-						SetSelectedCats={set_cats}
+						SelectedCats={selected_cats}
+						SetSelectedCats={set_selected_cats}
 						SubmittedLinks={submitted_links}
 						IsNewLinkPage
 					/>
@@ -158,7 +161,7 @@ export default function NewLinks(props: Props) {
 								key={link.ID}
 								Link={link}
 								IsNewLinkPage
-								SetNewLinkCats={set_cats}
+								SetNewLinkCats={set_selected_cats}
 								Token={props.Token}
 								User={props.User}
 							/>

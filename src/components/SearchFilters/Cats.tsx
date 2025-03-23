@@ -20,8 +20,8 @@ interface Props {
 	IsNewLinkPage?: boolean
 	IsTagPage?: boolean
 	SelectedCats: string[]
-	SubmittedLinks?: types.Link[]
 	SetSelectedCats: Dispatch<StateUpdater<string[]>>
+	SubmittedLinks?: types.Link[]
 }
 
 export default function SearchCats(props: Props) {
@@ -33,15 +33,16 @@ export default function SearchCats(props: Props) {
 		SelectedCats: selected_cats,
 		SetSelectedCats: set_selected_cats,
 	} = props
+
 	const addable = props.Addable ?? true
 
 	const has_max_num_cats = selected_cats.length >= MAX_CATS_PER_TAG
 
-	const [error, set_error] = useState<string | undefined>(undefined)
-	const [snippet, set_snippet] = useState<string>('')
 	const [recommended_cats, set_recommended_cats] = useState<
 		CatCount[] | undefined
 	>(undefined)
+	const [snippet, set_snippet] = useState<string>('')
+	const [error, set_error] = useState<string | undefined>(undefined)
 
 	// only render recommendations-list if there are non-selected recommendations
 	const non_selected_recommendations = recommended_cats?.filter(
@@ -75,7 +76,7 @@ export default function SearchCats(props: Props) {
 			set_recommended_cats(spellfix_matches)
 			set_error(undefined)
 		} catch (error) {
-			set_recommended_cats([])
+			set_recommended_cats(undefined)
 			set_error(error instanceof Error ? error.message : String(error))
 		}
 	}, [snippet, selected_cats])
@@ -144,6 +145,7 @@ export default function SearchCats(props: Props) {
 		if (props.SubmittedLinks && props.SubmittedLinks.length) {
 			set_snippet('')
 		}
+		set_recommended_cats(undefined)
 	}, [props.SubmittedLinks])
 
 	// debounced fetch timeout
