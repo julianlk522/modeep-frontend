@@ -5,6 +5,7 @@ div#search-cats-container {
 div#search-cats-container.home {
 	width: fit-content;
 	margin: 0 auto;
+	text-align: center;
 }
 
 input#add-cat-filter {

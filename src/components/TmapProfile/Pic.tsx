@@ -25,7 +25,7 @@ export default function Pic(props: Props) {
 			// normal un-wrapped fetch here since pfp is optional
 			// no need for redirect
 			const pfp_resp = await fetch(TMAP_PFP_ENDPOINT + `/${file_name}`, {
-				headers: { 'Content-Type': 'image/png' },
+				headers: { 'Content-Type': 'image/*' },
 			})
 			if (pfp_resp.status > 399) {
 				return console.error(pfp_resp)

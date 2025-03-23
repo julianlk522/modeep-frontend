@@ -244,7 +244,7 @@ export default function Link(props: Props) {
 					<img
 						src={preview_img_url}
 						alt={summary ? summary : url}
-						width={100}
+						width={60}
 					/>
 					<URLZone link_id={id} url={url} summary={summary} />
 				</div>
