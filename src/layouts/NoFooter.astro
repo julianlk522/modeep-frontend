@@ -218,6 +218,13 @@ let user = Astro.cookies.get('user')?.value
 			}
 		}
 
+		#top-cats,
+		#top-contributors,
+		#profile-about details > pre {
+			overflow-y: scroll;
+			scrollbar-width: thin;
+		}
+
 		section:has(p#no-links) {
 			text-align: center;
 		}
