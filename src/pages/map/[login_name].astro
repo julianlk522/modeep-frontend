@@ -208,35 +208,40 @@ const nsfw_links_count = tmap.NSFWLinksCount
 
 		<!-- Links Sections -->
 		{used_sections.length ? 
-			used_sections.map((s) => (
-				<section id={s} class='links-section'>
-					{tmap.SectionsWithMore?.length && tmap.SectionsWithMore?.includes(s.toLowerCase()) ? 
-						<div class="section-with-more">
+			used_sections.map((s) => {
+				const is_section_with_more = tmap.SectionsWithMore?.length && tmap.SectionsWithMore?.includes(s.toLowerCase())
+
+				return (
+					<section id={s} class='links-section'>
+						<div class={is_section_with_more ?"section-with-more" : ""}>
 							<h2>{s}</h2>
-							<span class="see-all">
+							{is_section_with_more ? <span class="see-all">
 								<a href={`/map/${login_name}/${s.toLowerCase()}${cats ? `?cats=${encoded_cats}` : ''}${sort_by ? cats ? `&sort_by=${sort_by}` : `?sort_by=${sort_by}` : ''}${nsfw ? sort_by ? '&nsfw=true' : '?nsfw=true' : ''}`}>See All</a>
-							</span>
+							</span> : null}
+							<div class="tint"></div>
+							<div class="bg"></div>
 						</div>
-					: <h2>{s}</h2>}
-					<ol>
-						{tmap[s].map((link) => (
-							<Link
-								client:load
-								Link={link}
-								NSFWCatLinks={nsfw}
-								CatsFromUser={
-									link.CatsFromUser
-										? login_name
-										: undefined
-								}
-								IsTmapPage={true}
-								Token={token}
-								User={user}
-							/>
-						))}
-					</ol>
-				</section>
-			))
+
+						<ol>
+							{tmap[s].map((link) => (
+								<Link
+									client:load
+									Link={link}
+									NSFWCatLinks={nsfw}
+									CatsFromUser={
+										link.CatsFromUser
+											? login_name
+											: undefined
+									}
+									IsTmapPage={true}
+									Token={token}
+									User={user}
+								/>
+							))}
+						</ol>
+					</section>
+				)
+		})
 		: <section>
 			<p id="no-links">No links found.</p>
 			<p>&macr;&bsol;&lowbar;&lpar;&#x30c4;&rpar;&lowbar;&sol;&macr;</p>
@@ -320,29 +325,51 @@ const nsfw_links_count = tmap.NSFWLinksCount
 	}
 
 	section.links-section {
-		padding: 0.5rem 0;
+		padding: 0;
+
+		h2 {
+			color: var(--sky);
+		}
 
 		> .section-with-more h2 {
 			display: inline;
 		}
 
-		h2 {
-			margin-top: 0.5rem;
-		}
-
-		> h2,
-		> .section-with-more {
+		> div {
 			position: sticky;
 			top: 0px;
 			z-index: 1;
-			padding: 1rem 0;
-			background-color: #13151a;
+			padding: 1rem;
+
+			> .tint {
+				z-index: -1;
+				background: #c2e0e00d;
+			}
+
+			> .bg {
+				z-index: -2;
+				background-color: #13151a;
+			}
+
+			> :is(.tint, .bg) {
+				position: absolute;
+				top: 0;
+				left: -1.5rem;
+				width: 100vw;
+				height: 100%;
+			}
 		}
 
-		.section-with-more span {
-			font-size: 0.9rem;
-			vertical-align: super;
-			margin-left: 0.5rem;
+		> div.section-with-more {
+			span.see-all {
+				font-size: 0.9rem;
+				vertical-align: super;
+				margin-left: 0.5rem;
+
+				a {
+					vertical-align: sub;
+				}
+			}
 		}
 
 		ol {
@@ -372,6 +399,12 @@ const nsfw_links_count = tmap.NSFWLinksCount
 		}
 		#overview > * {
 			max-width: 50%;
+		}
+	}
+
+	@media (min-width: 680px) {
+		section.links-section > div > :is(.tint, .bg) {
+			left: calc(-1 *(100vw - 100%) / 2);
 		}
 	}
 </style>

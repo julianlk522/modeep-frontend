@@ -4,7 +4,7 @@
 }
 
 astro-island:first-of-type li.link {
-	margin-top: 0;
+	margin-top: 0.5rem;
 }
 
 .link.single {
