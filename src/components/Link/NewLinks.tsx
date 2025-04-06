@@ -104,6 +104,8 @@ export default function NewLinks(props: Props) {
 			return
 		} else {
 			new_link_data.TagCount = 1
+			new_link_data.LikeCount = 0
+			new_link_data.CopyCount = 0
 
 			set_selected_cats([])
 			set_error(undefined)
