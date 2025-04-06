@@ -332,9 +332,7 @@ export default function Link(props: Props) {
 						title={`View summaries for this link (${summary_count} total), add or edit yours`}
 						href={`/summary/${id}`}
 					>
-						{summary_count === 1
-							? 'summary'
-							: `summaries (${summary_count})`}
+						summaries ({summary_count})
 					</a>
 				</p>
 			)}
