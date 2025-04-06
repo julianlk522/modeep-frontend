@@ -81,21 +81,21 @@ div.tags a.tags-page-link:visited,
 .like-btn,
 .copy-btn,
 div.same-user-like-count,
-div.same-user-copy-count {
+div.same-user-copy-count,
+div.click-count {
 	display: inline-flex;
 	align-items: center;
 	gap: 3px;
-	margin-top: 1rem;
+	margin-top: 10px;
 }
 
-div.click-count {
-	display: inline-block;
-	margin-left: 8px;
+div.click-count span {
+	margin-left: -1px;
+}
 
-	span {
-		position: relative;
-		top: -3px;
-	}
+div.same-user-like-count + div.same-user-copy-count,
+:is(div.same-user-like-count, div.same-user-copy-count) + div.click-count {
+	margin-left: 8px;
 }
 
 button.copy-btn + div.click-count {

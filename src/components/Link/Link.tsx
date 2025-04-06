@@ -89,6 +89,10 @@ export default function Link(props: Props) {
 		undefined
 	)
 
+	const has_likes = like_count > 0
+	const has_copies = copy_count > 0
+	const has_clicks = click_count > 0
+
 	// hide preview image if path fails to resolve
 	useEffect(() => {
 		async function get_preview_img() {
@@ -337,7 +341,16 @@ export default function Link(props: Props) {
 				</p>
 			)}
 
-			{user !== submitted_by ? (
+			{!user || user === submitted_by ? (
+				<>
+					{has_likes ? (
+						<SameUserLikeCount LikeCount={like_count} />
+					) : null}
+					{has_copies ? (
+						<SameUserCopyCount CopyCount={copy_count} />
+					) : null}
+				</>
+			) : (
 				<>
 					<button
 						title={`${is_liked ? 'Unlike' : 'Like'} link (liked by ${like_count} ${like_count === 1 ? 'person' : 'people'})`}
@@ -389,14 +402,8 @@ export default function Link(props: Props) {
 						({copy_count})
 					</button>
 				</>
-			) : (
-				<>
-					<SameUserLikeCount LikeCount={like_count} />
-					<SameUserCopyCount CopyCount={copy_count} />
-				</>
 			)}
-
-			{click_count > 0 ? (
+			{has_clicks ? (
 				<div
 					title={`${click_count} ${click_count === 1 ? 'click' : 'clicks'}`}
 					class='click-count'

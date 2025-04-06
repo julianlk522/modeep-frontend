@@ -8,7 +8,6 @@ export default function SameUserCopyCount(props: Props) {
 	return (
 		<div
 			title={`${copy_count} ${copy_count === 1 ? 'person' : 'people'} copied to their Treasure Map`}
-			style='margin-left: 10px;'
 			class='same-user-copy-count'
 		>
 			{/* https://icon-sets.iconify.design/mingcute/copy-line/ */}
