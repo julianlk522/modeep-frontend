@@ -4,7 +4,7 @@ import { is_error_response } from '../../types'
 import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
 import { format_long_date } from '../../util/format_date'
 import { save_action_and_path_then_redirect_to_login } from '../../util/login_redirect'
-import SameUserLikeCount from '../Link/SameUserLikeCount'
+import StaticLikeCount from '../Link/StaticLikeCount'
 import './Summary.css'
 
 interface Props {
@@ -140,7 +140,7 @@ export default function Summary(props: Props) {
 				</button>
 			) : (
 				<>
-					<SameUserLikeCount LikeCount={like_count} />
+					<StaticLikeCount LikeCount={like_count} />
 					<button
 						title='Delete summary'
 						id='delete-summary-btn'

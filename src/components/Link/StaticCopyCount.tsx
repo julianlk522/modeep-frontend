@@ -2,7 +2,7 @@ interface Props {
 	CopyCount: number
 }
 
-export default function SameUserCopyCount(props: Props) {
+export default function StaticCopyCount(props: Props) {
 	const copy_count = props.CopyCount
 
 	return (

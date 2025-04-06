@@ -2,7 +2,7 @@ interface Props {
 	LikeCount: number
 }
 
-export default function SameUserLikeCount(props: Props) {
+export default function StaticLikeCount(props: Props) {
 	const like_count = props.LikeCount
 
 	return (

@@ -19,8 +19,8 @@ import {
 } from '../../util/login_redirect'
 import Modal from '../Modal/Modal'
 import './Link.css'
-import SameUserCopyCount from './SameUserCopyCount'
-import SameUserLikeCount from './SameUserLikeCount'
+import StaticCopyCount from './StaticCopyCount'
+import StaticLikeCount from './StaticLikeCount'
 import URLZone from './URLZone'
 
 interface Props {
@@ -344,10 +344,10 @@ export default function Link(props: Props) {
 			{!user || user === submitted_by ? (
 				<>
 					{has_likes ? (
-						<SameUserLikeCount LikeCount={like_count} />
+						<StaticLikeCount LikeCount={like_count} />
 					) : null}
 					{has_copies ? (
-						<SameUserCopyCount CopyCount={copy_count} />
+						<StaticCopyCount CopyCount={copy_count} />
 					) : null}
 				</>
 			) : (
