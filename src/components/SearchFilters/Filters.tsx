@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks'
+import { useEffect, useRef, useState } from 'preact/hooks'
 import type { Period, SortMetric } from '../../types'
 import SearchCats from './Cats'
 import './Filters.css'
@@ -97,27 +97,46 @@ export default function SearchFilters(props: Props) {
 				sort_by_newest ||
 				nsfw !== initial_nsfw
 
+	// search by pressing "Enter", but not while SearchCats is focused since
+	// Enter can be used to add cats
+	const enter_listener_ref = useRef<HTMLDivElement>(null)
+	const scour_anchor_ref = useRef<HTMLAnchorElement>(null)
+	useEffect(() => {
+		function handle_keydown(e: KeyboardEvent) {
+			if (e.key === 'Enter') {
+				scour_anchor_ref.current?.click()
+			}
+		}
+
+		if (enter_listener_ref.current) {
+			enter_listener_ref.current.addEventListener(
+				'keydown',
+				handle_keydown
+			)
+		}
+	}, [])
+
 	return (
 		<section id='search-filters'>
 			<form>
 				<SearchCats SelectedCats={cats} SetSelectedCats={set_cats} />
 
-				<SearchURLContains
-					URLContains={url_contains}
-					SetURLContains={set_url_contains}
-				/>
-
-				<SearchPeriod Period={period} SetPeriod={set_period} />
-
-				{endpoint === '/search' ? (
-					<>
-						<SearchSortBy
-							SortBy={sort_by}
-							SetSortBy={set_sort_by}
-						/>
-						<SearchNSFW NSFW={nsfw} SetNSFW={set_nsfw} />
-					</>
-				) : null}
+				<div id='enter-listener' ref={enter_listener_ref}>
+					<SearchURLContains
+						URLContains={url_contains}
+						SetURLContains={set_url_contains}
+					/>
+					<SearchPeriod Period={period} SetPeriod={set_period} />
+					{endpoint === '/search' ? (
+						<>
+							<SearchSortBy
+								SortBy={sort_by}
+								SetSortBy={set_sort_by}
+							/>
+							<SearchNSFW NSFW={nsfw} SetNSFW={set_nsfw} />
+						</>
+					) : null}
+				</div>
 
 				<a
 					id='search-from-filters'
@@ -128,6 +147,7 @@ export default function SearchFilters(props: Props) {
 					}
 					class={has_changed_filters ? 'filters-changed' : ''}
 					href={search_URL}
+					ref={scour_anchor_ref}
 				>
 					Scour The Treasure Map
 				</a>
