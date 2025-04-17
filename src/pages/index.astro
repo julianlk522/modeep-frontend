@@ -69,10 +69,10 @@ const totals: Totals = await totals_resp.Response.json()
 			<TopContributors Contributors={top_contributors} />
 		</div>
 
-		<section id='top-links'>
+		<section>
 			<ul id='change-period'>
 				<li>
-					Top links this month:
+					<h2>Top links (month):</h2>
 				</li>
 				{
 					other_periods.map((period) => (
@@ -82,7 +82,9 @@ const totals: Totals = await totals_resp.Response.json()
 					))
 				}
 			</ul>
+		</section>
 
+		<section id='top-links'>
 			{links?.length ? <TopLinks 
 				Links={links}
 				NextPage={data.NextPage}
@@ -112,15 +114,33 @@ const totals: Totals = await totals_resp.Response.json()
 		text-align: center;
 	}
 
+	section:has(ul#change-period) {
+		padding-top: 1rem;
+	}
+
 	ul#change-period {
 		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
 		list-style: none;
-		padding-inline-start: 1rem;
-		margin-top: 0;
-		margin-bottom: 1.5rem;
+		padding-inline-start: 0;
+		margin: 0;
+		font-weight: bold;
+
+		h2 {
+			whitespace: nowrap;
+		}
 
 		li:nth-of-type(2) {
-			margin-left: 1rem;
+			margin-left: 0.5rem;
+		}
+
+		li.period {
+			margin-right: 0.5rem;
+		}
+
+		li.period:last-of-type {
+			margin-right: 0;
 		}
 	}
 
@@ -141,14 +161,6 @@ const totals: Totals = await totals_resp.Response.json()
 		span:not(.total) {
 			opacity: 0.85;
 		}
-	}
-
-	li.period {
-		margin-right: 0.5rem;
-	}
-
-	li.period:last-of-type {
-		margin-right: 0;
 	}
 
 	section#top-links {

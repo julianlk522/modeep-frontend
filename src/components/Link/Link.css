@@ -30,6 +30,14 @@ div.tags {
 	max-width: calc(100% - 32px);
 	margin-top: 0.5rem;
 
+	a.tags-page-link {
+		color: var(--text);
+
+		span.tag-count {
+			color: var(--treasurey);
+		}
+	}
+
 	ul.cats {
 		list-style: none;
 		display: inline;
@@ -46,11 +54,8 @@ div.tags {
 	}
 }
 
-div.tags a.tags-page-link:not(:visited),
-div.tags a.tags-page-link:visited,
-.summaries-page-link a:not(:visited),
-.summaries-page-link a:visited {
-	color: var(--text);
+.summaries-page-link a {
+	color: var(--treasurey);
 }
 
 .copy-cats-btn {

@@ -197,24 +197,32 @@ let user = Astro.cookies.get('user')?.value
 			margin-top: 0.5rem;
 		}
 
-		#top-cats,
-		#top-contributors {
+		#rankings {
+			display: flex;
+			justify-content: space-evenly;
+			padding-top: 0.5rem;
+
+			section {
+				width: 100%;
+			}
+		}
+
+		:is(ol#top-cats,
+		ol#top-contributors) {
 			display: flex;
 			flex-direction: column;
 			list-style-position: inside;
 			margin: 0;
-			padding: 0.5rem 1rem;
+			padding: 0 1rem;
+			font-size: 0.9rem;
+			max-height: 5.5rem;
 
 			/* keep list items aligned with their markers */
 			word-break: break-all;
 
-			li {
-				margin-right: 1rem;
-
-				span {
-					/* keep counts on same line */
-					word-break: break-word;
-				}
+			li span {
+				/* keep counts on same line */
+				word-break: break-word;
 			}
 		}
 
@@ -244,24 +252,26 @@ let user = Astro.cookies.get('user')?.value
 			}
 		}
 
-		a.submitted-by {
-			color: var(--text);
-		}
 		span.by,
 		p.last-updated {
 			color: var(--text-muted);
 		}
 
 		@media (min-width: 350px) {
-			div#rankings {
-				display: flex;
-				justify-content: space-evenly;
+			ol#top-cats,
+			ol#top-contributors {
+				font-size: 1rem;
+				max-height: 6rem;
 			}
 		}
 
 		@media (min-width: 400px) {
 			h2 {
 				font-size: 1.5rem;
+			}
+
+			#rankings > section {
+				width: auto;
 			}
 		}
 

@@ -69,16 +69,12 @@ export default function Link(props: Props) {
 	const should_display_full_date =
 		is_summary_page || is_tag_page || is_new_link_page
 
-	let tag_attribution = is_new_link_page
-		? 'tag'
-		: cats && user && cats_from_user === user
+	let tag_attribution =
+		is_new_link_page || (cats && user && cats_from_user === user)
 			? 'your tag'
 			: cats_from_user
 				? `${cats_from_user}'s tag`
 				: 'global tag'
-	if (!is_new_link_page) {
-		tag_attribution += ` (${tag_count})`
-	}
 
 	const [is_copied, set_is_copied] = useState(props.Link.IsCopied)
 	const [is_liked, set_is_liked] = useState(props.Link.IsLiked)
@@ -274,13 +270,29 @@ export default function Link(props: Props) {
 
 			{is_tag_page && has_one_tag ? null : (
 				<div class='tags'>
-					<a
-						title={`View tags for this link (${tag_count} total), add or edit yours`}
-						class='tags-page-link'
-						href={`/tag/${id}`}
-					>
-						{tag_attribution}
-					</a>
+					{is_new_link_page ? (
+						<a
+							title={`View this link's tags (${tag_count} total)`}
+							class='tags-page-link'
+							href={`/tag/${id}`}
+						>
+							{tag_attribution}
+						</a>
+					) : (
+						<>
+							<span class='tag-attribution'>
+								{tag_attribution}
+							</span>
+							<a
+								title={`View this link's tags (${tag_count} total)`}
+								class='tags-page-link'
+								href={`/tag/${id}`}
+							>
+								<span class='tag-count'>{` (${tag_count})`}</span>
+							</a>
+						</>
+					)}
+
 					{': '}
 					<ul class='cats'>
 						{split_cats.map((cat, i) => (
@@ -332,11 +344,12 @@ export default function Link(props: Props) {
 
 			{is_summary_page ? null : (
 				<p class='summaries-page-link'>
+					<span>summaries</span>
 					<a
-						title={`View summaries for this link (${summary_count} total), add or edit yours`}
+						title={`View this link's summaries (${summary_count} total)`}
 						href={`/summary/${id}`}
 					>
-						summaries ({summary_count})
+						{` (${summary_count})`}
 					</a>
 				</p>
 			)}
