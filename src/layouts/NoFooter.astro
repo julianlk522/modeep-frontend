@@ -216,6 +216,7 @@ let user = Astro.cookies.get('user')?.value
 			padding: 0 1rem;
 			font-size: 0.9rem;
 			max-height: 5.5rem;
+			overflow: hidden;
 
 			/* keep list items aligned with their markers */
 			word-break: break-all;
@@ -224,6 +225,11 @@ let user = Astro.cookies.get('user')?.value
 				/* keep counts on same line */
 				word-break: break-word;
 			}
+		}
+
+		:is(ol#top-cats,
+		ol#top-contributors).scrollable {
+			overflow-y: scroll;
 		}
 
 		#top-cats,

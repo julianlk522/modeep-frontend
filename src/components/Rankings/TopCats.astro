@@ -1,5 +1,5 @@
 ---
-import { CATS_PAGE_LIMIT } from '../../constants'
+import { CATS_PAGE_LIMIT, MIN_LIST_ITEMS_FOR_SCROLLBAR } from '../../constants'
 import type { CatCount, Period, SortMetric } from '../../types'
 
 interface Props {
@@ -16,8 +16,9 @@ interface Props {
 
 const { TopCats: top_cats, CatsParams: cats_params, Period: period, SortBy: sort_by, NSFW: nsfw, More: more, Mini: mini, IsTmapFromUser: tmap_owner, TmapSection: tmap_section } = Astro.props
 
-let list_classes = more ? 'more' : tmap_owner ? 'tmap' : ''
-if (mini) list_classes += ' mini'
+let list_classes = more ? ['more'] : tmap_owner ? ['tmap'] : []
+if (mini) list_classes.push('mini')
+if (!more && top_cats?.length > MIN_LIST_ITEMS_FOR_SCROLLBAR) list_classes.push('scrollable')
 
 const is_subcats = cats_params ? true : false
 const has_period = period && period !== 'all'
@@ -26,9 +27,9 @@ let endpoint = tmap_owner ? `/map/${tmap_owner}` : "/search"
 if (tmap_section) endpoint += `/${tmap_section}`
 ---
 
-{top_cats.length && top_cats.length > 1 ? <>
+{top_cats?.length ? <>
     <h2 class={more ? 'more' : ''}>{is_subcats ? 'Top Subcats' : more ? 'More Cats' : 'Top Cats'}</h2>
-    <ol id="top-cats" class={list_classes}>
+    <ol id="top-cats" class={list_classes.join(' ')}>
         {
             top_cats.map((cat) => (
                 <li>
