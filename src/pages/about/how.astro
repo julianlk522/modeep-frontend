@@ -10,10 +10,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
         <h1>How FITM Works</h1>
 
         <section>
-            <h2 id="cats" class="subsection">Meow</h2>
-            <p><em>Cats</em> are an important FITM component. Their name is a shorthand for <em><a href="#tags">tag categories</a></em>. And as a <a href="https://en.wikipedia.org/wiki/I_Can_Has_Cheezburger%3F">classic Internet symbol</a>, cats seem well fitted to moderate a curated collection of links. Don't be alarmed by mention of "stacking cats"; no animals were harmed here.</p>
-            <p>Links submitted are tagged with cats, and you can specify in searches which cats the found links must have. All links from a search will have the specified cats (and likely others) in their tags.</p>
-            <p>The most common cats from the links found in a search are listed in order of frequency. Searches with cat filters applied return top <em>subcats</em>: the most common cats from returned links, not including the ones selected as filters. From these you can <em>stack cats</em> further: click a top cat or subcat to add it as a constraint, drilling deeper and more precisely into the original cross section of found links.</p>
+            <h2 id="cats" class="subsection">Meow?</h2>
+            <p><em>Cats</em> are an important FITM component. Their name is a shorthand for <em><a href="#tags">tag categories</a></em>. (And as a <a href="https://en.wikipedia.org/wiki/I_Can_Has_Cheezburger%3F">classic Internet symbol</a>, cats also seem well fitted to moderate a curated collection of webpages.) Don't be alarmed by talk of "stacking cats"; animals are wonderful and none were harmed making this tool.</p>
+
+            <p>When you mark a link as treasure (AKA submit it), you decide the best cats to describe it and submit them as a vote. Your vote influences the link's <em><a href="#global-tags">global tag</a></em>. And when searching, you can declare which cats must be present in the global tag of any found links.</p>
+
+            <p>The most common cats throughout links returned in a search are listed in order of frequency. Searches utilizing cat filters list out top <em>subcats</em>: the most common cats from found links that were <strong>not</strong> provided as filters.</p>
+
+			<p>Top cats or subcats can be stacked on existing filters to add specificity and rapidly concentrate on some certain material. Click a cat to add it to your constraints, drilling deeper and more precisely into the original cross section of links.</p>
         </section>
 
         <SearchDiagram />
@@ -29,11 +33,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
             <h3 class="subsection">Summarize</h3>
             <p>
                 Every link has a summary page where any user can
-                submit a description of its content. Summaries can be upvoted so the most liked ones are most visible.
+                offer their own description of its content. Summaries can be upvoted so the most liked ones are most visible.
             </p>
             <p>
                 A link's top summary will be shown above its URL at all times to
-                quickly give a sense for what it is.
+                quickly give a sense for what it contains.
             </p>
             <h3 class="subsection">Copy</h3>
             <p>
@@ -60,24 +64,22 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
             </p>
         </section>
 			
-		<section>
+		<section id="global-tags">
 			<h2> The Global Treasure Map and Global Tags</h2>
 			<p>
 				Any <em>user-submitted tag</em>
-				decides how the link is sorted on the tag author's Treasure Map. But every link also has a <em>global tag</em>,
-				which determines its sorting on the <a href='/search'>Search</a
+				decides how the link is sorted on it's author's Treasure Map. But every link also has a <em>global tag</em>,
+				which determines its placement on the <a href='/search'>Search</a
 			> and <a href='/more'>More</a> pages.
 			</p>
-			<p><em>Global tags</em> are calculated automatically by the age of every
-			<em>user-submitted tag</em> and the frequency of each cat across
+			<p><em>Global tags</em> are calculated automatically, based on user-submitted tags, according to: <strong>1)</strong> the age of every tag and <strong>2)</strong> the frequencies of cats between
 			them. They're shown with each link. (Unless, again, the link is viewed from a user's Treasure Map; then it will show <em>their</em> tag.) You can view any link's top user-submitted tags on demand.</p>
 
-			<p>Each user-submitted tag shows its <em>lifespan overlap percentage</em> (see <a href="#global-tag-calculation">Global Tag Calculation</a>), author, date of submission, and cats. Tags that have kept the same combination of cats for the greatest portion of the link's lifespan are ranked highest. Editing a tag's cats will reset it's lifespan overlap percentage.</p>
+			<p>Each user-submitted tag shows its <em><a href="#global-tag-calculation">lifespan overlap percentage</a></em>, author, date of submission, and cats. Tags that have kept the same combination of cats for the greatest portion of the link's lifespan are ranked highest. Editing a tag's cats will reset it's lifespan overlap percentage.</p>
 
-			<p>To clarify, a link's global cats will not necessarily be exclusive to its highest-ranked tags. If many newer tags contain some cats that are not already present in the global tag, it's likely that those too will soon be assigned.</p>
+			<p><strong>Note:</strong> a link's global cats will not necessarily resemble only its highest-ranked tags. If many newer tags contain some cats that are not already present in the global tag, it's likely that those will also be assigned.</p>
 
-			<p>This system is based on the assumption that cat interpretations that remain unedited
-			for a long time or that reappear across tags are most likely to be the best fits.</p>
+			<p>This system is based on the assumption that the best interpretations of various links' cats (most logical, most useful, etc.) will be those that <strong>1)</strong> reappear often across tags or <strong>2)</strong> remain unedited for a long time.</p>
 
 			<p>A long-unchanged tag could still be a poor representation, but if enough people disagree and submit alternative tags their collective input will nullify it; the old tag's cats will likely be removed from the link's global tag.</p>
 		</section>
