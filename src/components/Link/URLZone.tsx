@@ -2,12 +2,22 @@ import { CLICKS_ENDPOINT } from '../../constants'
 import './URLZone.css'
 
 interface Props {
-	link_id: string
-	url: string
-	summary?: string
+	Link_ID: string
+	URL: string
+	Summary?: string
+	SummaryCount: number
+	IsSummaryPage?: boolean
 }
 
-export default function URLZone({ link_id, url, summary }: Props) {
+export default function URLZone({
+	Link_ID: link_id,
+	URL: url,
+	Summary: summary,
+	SummaryCount: summary_count,
+	IsSummaryPage: is_summary_page,
+}: Props) {
+	const link_text = summary ? summary : url
+
 	async function handle_click(e: MouseEvent) {
 		e.preventDefault()
 
@@ -40,7 +50,20 @@ export default function URLZone({ link_id, url, summary }: Props) {
 					handle_click(e)
 				}}
 			>
-				<h3>{summary ? summary : url}</h3>
+				<h3>
+					{link_text}
+					{is_summary_page || summary_count === 0 ? null : (
+						<a
+							title={`View this link's summaries (${summary_count} total)`}
+							href={`/summary/${link_id}`}
+							class='summaries-page-link'
+						>
+							{` (`}
+							<span class='summary-count'>{summary_count}</span>
+							{`)`}
+						</a>
+					)}
+				</h3>
 			</a>
 			{summary ? <p class='url'>{url}</p> : null}
 		</div>

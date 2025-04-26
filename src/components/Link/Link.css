@@ -26,14 +26,14 @@ span.submit-date {
 	color: var(--text-muted);
 }
 
-div.tags {
+div.tag {
 	max-width: calc(100% - 32px);
 	margin-top: 0.5rem;
 
-	a.tags-page-link {
-		color: var(--text);
+	span.tag-count {
+		font-weight: bold;
 
-		span.tag-count {
+		span.tags-page-link {
 			color: var(--treasurey);
 		}
 	}
@@ -42,7 +42,6 @@ div.tags {
 		list-style: none;
 		display: inline;
 		padding-inline-start: 0;
-		margin-left: 3px;
 
 		li {
 			display: inline;
@@ -52,10 +51,6 @@ div.tags {
 			}
 		}
 	}
-}
-
-.summaries-page-link a {
-	color: var(--treasurey);
 }
 
 .copy-cats-btn {

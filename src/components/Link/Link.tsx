@@ -69,13 +69,6 @@ export default function Link(props: Props) {
 	const should_display_full_date =
 		is_summary_page || is_tag_page || is_new_link_page
 
-	let tag_attribution =
-		is_new_link_page || (cats && user && cats_from_user === user)
-			? 'your tag'
-			: cats_from_user
-				? `${cats_from_user}'s tag`
-				: 'global tag'
-
 	const [is_copied, set_is_copied] = useState(props.Link.IsCopied)
 	const [is_liked, set_is_liked] = useState(props.Link.IsLiked)
 	const [like_count, set_like_count] = useState(props.Link.LikeCount)
@@ -246,10 +239,22 @@ export default function Link(props: Props) {
 						alt={summary ? summary : url}
 						width={75}
 					/>
-					<URLZone link_id={id} url={url} summary={summary} />
+					<URLZone
+						Link_ID={id}
+						URL={url}
+						Summary={summary}
+						SummaryCount={summary_count}
+						IsSummaryPage={is_summary_page}
+					/>
 				</div>
 			) : (
-				<URLZone link_id={id} url={url} summary={summary} />
+				<URLZone
+					Link_ID={id}
+					URL={url}
+					Summary={summary}
+					SummaryCount={summary_count}
+					IsSummaryPage={is_summary_page}
+				/>
 			)}
 
 			<p>
@@ -269,31 +274,7 @@ export default function Link(props: Props) {
 			</p>
 
 			{is_tag_page && has_one_tag ? null : (
-				<div class='tags'>
-					{is_new_link_page ? (
-						<a
-							title={`View this link's tags (${tag_count} total)`}
-							class='tags-page-link'
-							href={`/tag/${id}`}
-						>
-							{tag_attribution}
-						</a>
-					) : (
-						<>
-							<span class='tag-attribution'>
-								{tag_attribution}
-							</span>
-							<a
-								title={`View this link's tags (${tag_count} total)`}
-								class='tags-page-link'
-								href={`/tag/${id}`}
-							>
-								<span class='tag-count'>{` (${tag_count})`}</span>
-							</a>
-						</>
-					)}
-
-					{': '}
+				<div class='tag'>
 					<ul class='cats'>
 						{split_cats.map((cat, i) => (
 							<li>
@@ -325,6 +306,18 @@ export default function Link(props: Props) {
 						))}
 					</ul>
 
+					<span class='tag-count'>
+						{' ('}
+						<a
+							title={`View this link's tags (${tag_count} total)`}
+							class='tags-page-link'
+							href={`/tag/${id}`}
+						>
+							<span class='tags-page-link'>{tag_count}</span>
+						</a>
+						{')'}
+					</span>
+
 					{set_new_link_cats ? (
 						<button
 							title='Copy cats to pending new link'
@@ -340,18 +333,6 @@ export default function Link(props: Props) {
 						</button>
 					) : null}
 				</div>
-			)}
-
-			{is_summary_page ? null : (
-				<p class='summaries-page-link'>
-					<span>summaries</span>
-					<a
-						title={`View this link's summaries (${summary_count} total)`}
-						href={`/summary/${id}`}
-					>
-						{` (${summary_count})`}
-					</a>
-				</p>
 			)}
 
 			{!user || user === submitted_by ? (
