@@ -18,6 +18,12 @@ export default function URLZone({
 }: Props) {
 	const link_text = summary ? summary : url
 
+	// Any links saved in the database should have a protocol
+	// but just in case they don't, this will ensure they go to the proper URL
+	// and not, e.g., "https://fitm.online/google.com"
+	const has_protocol = url.startsWith('http://') || url.startsWith('https://')
+	const url_with_protocol = has_protocol ? url : `https://${url}`
+
 	async function handle_click(e: MouseEvent) {
 		e.preventDefault()
 
@@ -36,35 +42,38 @@ export default function URLZone({
 
 	return (
 		<div>
-			<a
-				class='url-anchor'
-				href={url}
-				onClick={(e) => {
-					e.preventDefault()
-					handle_click(e)
-				}}
-				onMouseDown={(e) => {
-					// don't double-count left click
-					if (e.button === 0) return
-					e.preventDefault()
-					handle_click(e)
-				}}
-			>
-				<h3>
+			<h3>
+				<a
+					href={url_with_protocol}
+					onClick={(e) => {
+						e.preventDefault()
+						handle_click(e)
+					}}
+					class='url-link'
+					onMouseDown={(e) => {
+						// don't double-count left click
+						if (e.button === 0) return
+						e.preventDefault()
+						handle_click(e)
+					}}
+				>
 					{link_text}
-					{is_summary_page || summary_count === 0 ? null : (
+				</a>
+
+				{is_summary_page || summary_count === 0 ? null : (
+					<>
+						{` (`}
 						<a
 							title={`View this link's summaries (${summary_count} total)`}
 							href={`/summary/${link_id}`}
 							class='summaries-page-link'
 						>
-							{` (`}
 							<span class='summary-count'>{summary_count}</span>
-							{`)`}
 						</a>
-					)}
-				</h3>
-			</a>
+						{`)`}
+					</>
+				)}
+			</h3>
 			{summary ? <p class='url'>{url}</p> : null}
 		</div>
 	)

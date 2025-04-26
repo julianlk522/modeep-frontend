@@ -1,13 +1,10 @@
-a.url-anchor {
+h3 {
 	display: block;
 	width: fit-content;
-
-	h3 {
-		font-size: 1rem;
-	}
+	font-size: 1rem;
 }
 
-a.url-anchor:visited {
+h3 a.url-link:visited {
 	color: var(--treasurey-dark);
 }
 
@@ -24,13 +21,13 @@ p.url {
 	font-weight: bold;
 }
 
-a.url-anchor h3,
+h3,
 p.url {
 	overflow-wrap: anywhere;
 }
 
 @media (min-width: 768px) {
-	a.url-anchor h3 {
+	h3 {
 		font-size: 1.1rem;
 	}
 
