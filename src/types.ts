@@ -47,7 +47,7 @@ type Link = {
 type PaginatedLinks = {
 	Links: Link[]
 	MergedCats?: string[]
-	NextPage: number
+	PageCount: number
 }
 
 const Periods = ['day', 'week', 'month', 'year', 'all'] as const
@@ -137,10 +137,17 @@ type TreasureMapSection = {
 	Links: TmapLink[]
 	Cats: CatCount[]
 	NSFWLinksCount: number
-	NextPage: number
+	PageCount: number
 }
 
 const tmap_sections = ['Submitted', 'Copied', 'Tagged'] as const
+
+// PAGINATION
+type PaginationHrefOpts = {
+	BaseHref: string
+	Page: number
+	HasOtherParams: boolean
+}
 
 export {
 	has_merged_cats_property,
@@ -157,6 +164,7 @@ export type {
 	Link,
 	MorePageCatCountsWithMergedCats,
 	PaginatedLinks,
+	PaginationHrefOpts,
 	Period,
 	Profile,
 	ResponseAndRedirect,

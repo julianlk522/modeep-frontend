@@ -1,5 +1,6 @@
 ---
 import type { Period, SortMetric } from '../types'
+import get_paginated_href from '../util/pagination'
 
 interface Props {
 	Cats?: string
@@ -7,12 +8,12 @@ interface Props {
 	SortBy?: SortMetric
 	HasNSFW?: boolean
 	Page: number
-	NextPage: number
+	PageCount: number
 	TmapOwner?: string
 	TmapSection?: "submitted" | "copied" | "tagged"
 }
 
-const { Cats: cats, Period: period, SortBy: sort_by, HasNSFW: nsfw, Page: page, NextPage: next_page, TmapOwner: tmap_owner, TmapSection: tmap_section } = Astro.props
+const { Cats: cats, Period: period, SortBy: sort_by, HasNSFW: nsfw, Page: page, PageCount: page_count, TmapOwner: tmap_owner, TmapSection: tmap_section } = Astro.props
 
 let href_without_page = tmap_section ? `/map/${tmap_owner}/${tmap_section}` : '/search'
 let has_other_params = false
@@ -49,17 +50,17 @@ if (nsfw) {
 		has_other_params = true
 	}
 }
-
-const first_page_href = href_without_page + (has_other_params ? `&page=1` : `?page=1`)
-const prev_page_href = href_without_page + (has_other_params ? `&page=${page - 1}` : `?page=${page - 1}`)
-const next_page_href = href_without_page + (has_other_params ? `&page=${next_page}` : `?page=${next_page}`)
 ---
 
 <nav class="pagination">
-	{page === 1 ? <span>1</span> : null}
-
 	{page > 1 ? 
-		<a href={first_page_href}>1</a> 
+		<a href={
+			get_paginated_href({
+				BaseHref: href_without_page,
+				Page: 1,
+				HasOtherParams: has_other_params,
+			})
+		}>1</a> 
 		<>
 			{ page > 3 ? 
 				<span>...</span> 
@@ -71,21 +72,65 @@ const next_page_href = href_without_page + (has_other_params ? `&page=${next_pag
 	{
 		page > 2 ? (
 			<span>
-				<a href={prev_page_href}>{page - 1}</a>
+				<a href={
+					get_paginated_href({
+						BaseHref: href_without_page,
+						Page: page - 1,
+						HasOtherParams: has_other_params,
+					})
+				}>
+					{page - 1}
+				</a>
 				{' . '}
 			</span>
 		) : null
 	}
 
-	{page > 1 ? <span>{page}</span> : null}
+	<span>{page}</span>
 
 	{
-		next_page > 0 ? (
+		page_count > page ? (
 			<span>
 				{' . '}
-				<a href={next_page_href}>{next_page}</a>
+				<a href={
+					get_paginated_href({
+						BaseHref: href_without_page,
+						Page: page + 1,
+						HasOtherParams: has_other_params,
+					})
+				}>
+					{page + 1}
+				</a>
 			</span>
 		) : null
+	}
+
+	{
+		page_count > page + 1 ? 
+			<>
+				{page === 1 ? <>
+					{' . '}
+					<a href={
+						get_paginated_href({
+							BaseHref: href_without_page,
+							Page: page + 2,
+							HasOtherParams: has_other_params,
+						})
+					}>{page + 2}</a>
+				</> : null}
+
+				<span>
+					{page_count > page + 2 ? "..." : " . "}
+					<a href={
+						get_paginated_href({
+							BaseHref: href_without_page,
+							Page: page_count,
+							HasOtherParams: has_other_params,
+						})
+					}>{page_count}</a>
+				</span>
+			</>
+		: null
 	}
 </nav>
 

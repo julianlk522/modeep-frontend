@@ -84,11 +84,11 @@ const totals: Totals = await totals_resp.Response.json()
 			</ul>
 		</section>
 
-		<section id='top-links'>
+		<section>
 			{links?.length ? <TopLinks 
 				Links={links}
 				Page={1}
-				NextPage={data.NextPage}
+				PageCount={data.PageCount}
 				Token={token}
 				User={user}
 			/> : <p>None :(</p>}
@@ -160,7 +160,7 @@ const totals: Totals = await totals_resp.Response.json()
 		}
 	}
 
-	section#top-links {
-		padding: 1rem 0;
+	section:has(#top-links) {
+		padding-bottom: 0;
 	}
 </style>

@@ -105,8 +105,8 @@ const links = section_data.Links
 const nsfw_links_count = section_data.NSFWLinksCount
 
 // Pagination
-const next_page = section_data.NextPage
-const is_only_page = page === 1 && next_page === -1
+const page_count = section_data.PageCount
+const is_only_page = page === 1 && page_count === 1
 ---
 
 <BaseLayout Title={page_title}>
@@ -210,7 +210,7 @@ const is_only_page = page === 1 && next_page === -1
                     SortBy={sort_by}
                     HasNSFW={nsfw}
                     Page={page ?? 1}
-                    NextPage={next_page}
+                    PageCount={page_count}
                     TmapSection={section as ("submitted" | "copied" | "tagged")}
                     TmapOwner={login_name}
                 />}
