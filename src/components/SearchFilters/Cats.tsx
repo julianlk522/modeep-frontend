@@ -229,7 +229,7 @@ export default function SearchCats(props: Props) {
 						placeholder={
 							selected_cats?.length
 								? ''
-								: 'Start typing for suggestions...'
+								: 'Start typing for topic suggestions'
 						}
 					/>
 

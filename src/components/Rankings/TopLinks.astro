@@ -13,22 +13,14 @@ interface Props {
     Token?: string
     User?: string
     Page?: number
-    NextPage: number
+    NextPage?: number
 }
 const { Links: links, NSFW: nsfw, Cats: cats, Period: period, SortBy: sort_by, Page: page, NextPage: next_page, Token: token, User: user } = Astro.props
-const is_only_page = page === 1 && next_page === -1
+
+const is_only_page = (page === 1 && next_page === -1) || next_page === undefined
 ---
 
-<>
-    {is_only_page ? null : <Pagination
-        Cats={cats}
-        Period={period ?? 'month'}
-        SortBy={sort_by}
-        HasNSFW={nsfw}
-        Page={page ?? 1}
-        NextPage={next_page}
-    />}
-    
+<>    
     <ol id='top-links' start={page ? (page - 1) * LINKS_PAGE_LIMIT + 1 : ''}>
         {links?.map((link) => (
             <Link
@@ -41,7 +33,7 @@ const is_only_page = page === 1 && next_page === -1
         ))}
     </ol>
 
-    {is_only_page || links?.length <= 10 ? null : <Pagination
+    {is_only_page ? null : <Pagination
         Cats={cats}
         Period={period ?? 'month'}
         SortBy={sort_by}

@@ -45,6 +45,7 @@ export default function URLZone({
 			<h3>
 				<a
 					href={url_with_protocol}
+					title={summary ? summary : undefined}
 					onClick={(e) => {
 						e.preventDefault()
 						handle_click(e)

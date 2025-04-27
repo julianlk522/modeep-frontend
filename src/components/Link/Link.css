@@ -55,6 +55,7 @@ div.tag {
 
 .copy-cats-btn {
 	vertical-align: middle;
+	margin-top: -1px;
 	margin-left: 5px;
 	color: var(--sky);
 }

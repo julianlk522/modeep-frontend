@@ -8,8 +8,12 @@ div#search-cats-container.home {
 	text-align: center;
 }
 
+input#cats {
+	min-width: 190px;
+}
+
 input#add-cat-filter {
-	margin-left: 4px;
+	margin-left: 2px;
 }
 
 input#add-cat-filter:disabled {
@@ -19,6 +23,7 @@ input#add-cat-filter:disabled {
 input::placeholder {
 	opacity: 0.8;
 	font-size: 0.85rem;
+	text-align: center;
 }
 
 ul#cat-list {
