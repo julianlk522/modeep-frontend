@@ -87,6 +87,7 @@ const totals: Totals = await totals_resp.Response.json()
 		<section id='top-links'>
 			{links?.length ? <TopLinks 
 				Links={links}
+				Page={1}
 				NextPage={data.NextPage}
 				Token={token}
 				User={user}
