@@ -234,7 +234,7 @@ const page_title = `${(sort_by !== 'rating' ? " Newest" : " Top Rated")}${cats ?
 						<TopContributors Contributors={top_contributors} />
 					</div>
 
-					<section id="links">
+					<section>
 						<TopLinks 
 							Links={links}
 							NSFW={nsfw}
@@ -267,10 +267,6 @@ const page_title = `${(sort_by !== 'rating' ? " Newest" : " Top Rated")}${cats ?
 </BaseLayout>
 
 <style>
-	section#links h2 {
-		margin-top: 0.5rem;
-	}
-
 	p#no-links {
 		margin-top: 0;
 	}

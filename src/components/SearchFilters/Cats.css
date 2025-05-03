@@ -27,6 +27,8 @@ input::placeholder {
 }
 
 ul#cat-list {
+	display: flex;
+
 	li:has(input#clear-cat-filters) {
 		list-style: none;
 	}
@@ -34,9 +36,7 @@ ul#cat-list {
 
 ol#recommendations-list {
 	display: flex;
-	flex-wrap: wrap;
-	gap: 5px;
-	padding: 0;
+	justify-content: center;
 }
 
 ul#cat-list,

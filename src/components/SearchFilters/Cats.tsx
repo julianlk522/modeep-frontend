@@ -259,7 +259,11 @@ export default function SearchCats(props: Props) {
 							Count={cat.Count}
 							Addable={!is_home_page}
 							AddedSignal={added_cat}
-							Clickable={is_home_page}
+							Href={
+								is_home_page
+									? `/search?cats=${cat.Category}`
+									: undefined
+							}
 						/>
 					))}
 				</ol>

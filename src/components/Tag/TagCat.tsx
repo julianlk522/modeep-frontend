@@ -6,7 +6,8 @@ interface Props {
 	Removable?: boolean
 	AddedSignal?: Signal<string | undefined>
 	DeletedSignal?: Signal<string | undefined>
-	Clickable?: boolean
+	Mini?: boolean
+	Href?: string
 }
 
 import type { Signal } from '@preact/signals'
@@ -19,7 +20,8 @@ export default function TagCat(props: Props) {
 		IsNSFW: is_nsfw,
 		Addable: addable,
 		Removable: removable,
-		Clickable: clickable,
+		Mini: mini,
+		Href: href,
 	} = props
 	const add_btn_ref = useRef<HTMLButtonElement>(null)
 	const delete_btn_ref = useRef<HTMLButtonElement>(null)
@@ -64,20 +66,21 @@ export default function TagCat(props: Props) {
 	return (
 		<li
 			title={addable ? `Add cat '${cat}'` : ''}
-			class={`cat${addable ? ' addable' : ''}${is_nsfw ? ' nsfw' : ''}`}
+			class={`cat${addable ? ' addable' : ''}${is_nsfw ? ' nsfw' : ''}${mini ? ' mini' : ''}`}
 		>
-			{clickable ? (
-				<a href={`/search?cats=${cat}`}>{props.Cat}</a>
+			{href ? (
+				<a href={href}>{props.Cat}</a>
 			) : (
 				<>
 					<p>
 						{props.Cat}
 						{props.Count ? ` (${props.Count})` : ''}
 					</p>
+
 					{removable && props.DeletedSignal ? (
 						<button
 							ref={delete_btn_ref}
-							title='Remove cat'
+							title={`Remove '${cat}'`}
 							class='img-btn'
 						>
 							<img
@@ -89,7 +92,7 @@ export default function TagCat(props: Props) {
 					) : addable && props.AddedSignal ? (
 						<button
 							ref={add_btn_ref}
-							title='Add cat'
+							title={`Add '${cat}'`}
 							class='img-btn plus-btn'
 						>
 							<img

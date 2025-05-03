@@ -72,7 +72,7 @@ const totals: Totals = await totals_resp.Response.json()
 		<section>
 			<ul id='change-period'>
 				<li>
-					<h2>Top links (month):</h2>
+					<h2>Top Links (month):</h2>
 				</li>
 				{
 					other_periods.map((period) => (
@@ -142,12 +142,12 @@ const totals: Totals = await totals_resp.Response.json()
 	}
 
 	#totals {
-		padding: 0.5rem 0;
+		padding: 1rem 0;
 		border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 		text-align: center;
 
 		p {
-			padding-left: 1rem;
+			margin-top: 0;
 		}
 
 		.total {
@@ -158,9 +158,5 @@ const totals: Totals = await totals_resp.Response.json()
 		span:not(.total) {
 			opacity: 0.85;
 		}
-	}
-
-	section:has(#top-links) {
-		padding-bottom: 0;
 	}
 </style>

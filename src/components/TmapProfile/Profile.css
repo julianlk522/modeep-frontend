@@ -29,7 +29,7 @@ section#profile {
 			flex-direction: column;
 		}
 
-		> * {
+		> #profile-about {
 			min-width: 100px;
 			max-width: 40%;
 		}

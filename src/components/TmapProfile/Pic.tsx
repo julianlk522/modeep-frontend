@@ -45,7 +45,7 @@ export default function Pic(props: Props) {
 					src={url}
 					id='pfp'
 					alt={`${login_name}'s profile picture`}
-					width='150'
+					height='125'
 				/>
 			) : null}
 		</div>

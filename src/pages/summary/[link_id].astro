@@ -93,8 +93,8 @@ const page_title = link.Summary ? `Summaries for "${link.Summary}"` : 'Link Summ
 			}
 		</section>
 
-		{summaries.length ? <section id="top-summaries">
-			<ol>
+		{summaries.length ? <section>
+			<ol id="top-summaries">
 				{summaries.map((summary) => 
 					<Summary
 						client:load
@@ -114,6 +114,10 @@ const page_title = link.Summary ? `Summaries for "${link.Summary}"` : 'Link Summ
 </BaseLayout>
 
 <style>
+	section:has(li.link) {
+		padding-bottom: 1rem;
+	}
+
 	p#login-redirect-link {
 		margin-top: 0;
 
@@ -122,12 +126,10 @@ const page_title = link.Summary ? `Summaries for "${link.Summary}"` : 'Link Summ
 		}
 	}
 
-	section#top-summaries {		
-		ol {
-			max-width: calc(100% - 1rem);
-			margin-top: 0.5rem;
-			margin-left: auto;
-			padding-inline-start: 0;
-		}
+	section:has(ol#top-summaries) {		
+		max-width: calc(100% - 1rem);
+		margin-top: 0.5rem;
+		margin-left: auto;
+		padding-inline-start: 0;
 	}
 </style>

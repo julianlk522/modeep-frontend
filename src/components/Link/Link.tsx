@@ -18,6 +18,7 @@ import {
 	save_path_then_redirect_to_login,
 } from '../../util/login_redirect'
 import Modal from '../Modal/Modal'
+import TagCat from '../Tag/TagCat'
 import './Link.css'
 import StaticCopyCount from './StaticCopyCount'
 import StaticLikeCount from './StaticLikeCount'
@@ -277,32 +278,15 @@ export default function Link(props: Props) {
 				<div class='tag'>
 					<ul class='cats'>
 						{split_cats.map((cat, i) => (
-							<li>
-								{i === split_cats.length - 1 ? (
-									<a
-										class={cat === 'NSFW' ? 'nsfw' : ''}
-										href={
-											cats_endpoint +
-											`?cats=${encodeURIComponent(cat)}${nsfw_cat_links ? '&nsfw=true' : ''}`
-										}
-									>
-										{cat}
-									</a>
-								) : (
-									<>
-										<a
-											class={cat === 'NSFW' ? 'nsfw' : ''}
-											href={
-												cats_endpoint +
-												`?cats=${encodeURIComponent(cat)}${nsfw_cat_links ? '&nsfw=true' : ''}`
-											}
-										>
-											{cat}
-										</a>
-										,{' '}
-									</>
-								)}
-							</li>
+							<TagCat
+								Cat={cat}
+								IsNSFW={cat === 'NSFW'}
+								Mini
+								Href={
+									cats_endpoint +
+									`?cats=${encodeURIComponent(cat)}`
+								}
+							/>
 						))}
 					</ul>
 
@@ -402,7 +386,12 @@ export default function Link(props: Props) {
 					title={`${click_count} ${click_count === 1 ? 'click' : 'clicks'}`}
 					class='click-count'
 				>
-					<img src='../../click.svg' height={18} width={18} />
+					<img
+						src='../../click.svg'
+						alt='Clicks'
+						height={18}
+						width={18}
+					/>
 					<span>{click_count}</span>
 				</div>
 			) : null}

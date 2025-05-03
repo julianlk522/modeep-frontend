@@ -6,6 +6,7 @@ li.cat {
 	border-radius: 2px;
 	background-color: var(--sky);
 	height: 25px;
+	font-weight: bold;
 
 	a {
 		color: black;
@@ -26,9 +27,29 @@ li.cat {
 		padding-right: 0;
 	}
 }
+
+li.cat.mini {
+	height: 16px;
+	background-color: transparent;
+	border: 1px solid var(--sky-vague);
+
+	a {
+		color: var(--sky);
+	}
+}
+
+li.cat.mini:hover {
+	background-color: var(--sky);
+
+	a {
+		color: black;
+	}
+}
+
 li.cat.nsfw {
 	background-color: var(--danger);
 }
+
 li.cat.addable {
 	opacity: 0.4;
 }

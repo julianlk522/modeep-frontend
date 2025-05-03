@@ -31,6 +31,7 @@ div.tag {
 	margin-top: 0.5rem;
 
 	span.tag-count {
+		font-size: 1.1rem;
 		font-weight: bold;
 
 		span.tags-page-link {
@@ -39,16 +40,11 @@ div.tag {
 	}
 
 	ul.cats {
-		list-style: none;
-		display: inline;
-		padding-inline-start: 0;
+		display: inline-flex;
+		margin: 0;
 
-		li {
-			display: inline;
-
-			a.nsfw {
-				color: var(--danger);
-			}
+		li a.nsfw {
+			color: var(--danger);
 		}
 	}
 }
