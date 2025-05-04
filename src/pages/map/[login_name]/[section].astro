@@ -174,11 +174,11 @@ const is_only_page = page === 1 && page_count === 1
 					{cats_split.length > 1 ? (
 						cats_split.map((cat) => {
 							return (
-								<TagCat Cat={cat} IsNSFW={cat === 'NSFW'} />
+								<TagCat Cat={cat} IsNSFW={cat === 'NSFW'} Fat />
 							)
 						})
 					) : (
-						<TagCat Cat={cats_split[0]} IsNSFW={cats_split[0] === 'NSFW'} />
+						<TagCat Cat={cats_split[0]} IsNSFW={cats_split[0] === 'NSFW'} Fat />
 					)}
 				</ul>
 			</div> : null}
@@ -192,7 +192,6 @@ const is_only_page = page === 1 && page_count === 1
                         <Link
                             client:load
                             Link={link}
-                            NSFWCatLinks={nsfw}
                             CatsFromUser={
                                 link.CatsFromUser
                                     ? login_name

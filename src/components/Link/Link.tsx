@@ -32,7 +32,6 @@ interface Props {
 	IsTmapPage?: boolean
 	IsNewLinkPage?: boolean
 	SetNewLinkCats?: Dispatch<StateUpdater<string[]>>
-	NSFWCatLinks?: boolean
 	Token?: string
 	User?: string
 }
@@ -45,7 +44,6 @@ export default function Link(props: Props) {
 		IsTmapPage: is_tmap_page,
 		IsNewLinkPage: is_new_link_page,
 		SetNewLinkCats: set_new_link_cats,
-		NSFWCatLinks: nsfw_cat_links,
 		Token: token,
 		User: user,
 	} = props
@@ -281,26 +279,31 @@ export default function Link(props: Props) {
 							<TagCat
 								Cat={cat}
 								IsNSFW={cat === 'NSFW'}
-								Mini
 								Href={
 									cats_endpoint +
-									`?cats=${encodeURIComponent(cat)}`
+									`?cats=${encodeURIComponent(cat)}${cat === 'NSFW' ? `&nsfw=true` : ''}`
 								}
 							/>
 						))}
-					</ul>
 
-					<span class='tag-count'>
-						{' ('}
-						<a
-							title={`View this link's tags (${tag_count} total)`}
-							class='tags-page-link'
-							href={`/tag/${id}`}
-						>
-							<span class='tags-page-link'>{tag_count}</span>
-						</a>
-						{')'}
-					</span>
+						{is_tag_page ? (
+							<li class='tag-count'> ({tag_count})</li>
+						) : (
+							<li class='tag-count'>
+								{' ('}
+								<a
+									title={`View this link's tags (${tag_count} total)`}
+									class='tags-page-link'
+									href={`/tag/${id}`}
+								>
+									<span class='tags-page-link'>
+										{tag_count}
+									</span>
+								</a>
+								{')'}
+							</li>
+						)}
+					</ul>
 
 					{set_new_link_cats ? (
 						<button

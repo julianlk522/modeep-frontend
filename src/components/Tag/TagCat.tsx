@@ -6,7 +6,7 @@ interface Props {
 	Removable?: boolean
 	AddedSignal?: Signal<string | undefined>
 	DeletedSignal?: Signal<string | undefined>
-	Mini?: boolean
+	Fat?: boolean
 	Href?: string
 }
 
@@ -20,7 +20,7 @@ export default function TagCat(props: Props) {
 		IsNSFW: is_nsfw,
 		Addable: addable,
 		Removable: removable,
-		Mini: mini,
+		Fat: fat,
 		Href: href,
 	} = props
 	const add_btn_ref = useRef<HTMLButtonElement>(null)
@@ -66,12 +66,12 @@ export default function TagCat(props: Props) {
 	return (
 		<li
 			title={addable ? `Add cat '${cat}'` : ''}
-			class={`cat${addable ? ' addable' : ''}${is_nsfw ? ' nsfw' : ''}${mini ? ' mini' : ''}`}
+			class={`cat${addable ? ' addable' : ''}${is_nsfw ? ' nsfw' : ''}${fat ? ' fat' : ''}`}
 		>
 			{href ? (
 				<>
 					<a href={href}>{props.Cat}</a>
-					<span>{props.Count ? ` (${props.Count})` : ''}</span>
+					{props.Count ? <span>{` (${props.Count})`}</span> : null}
 				</>
 			) : (
 				<>

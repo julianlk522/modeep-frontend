@@ -1,12 +1,20 @@
 ---
-import type { CatCount, Contributor, Link } from "../../types";
+import type { CatCount, Contributor, Link, Period, SortMetric } from "../../types";
+import ScrollUp from "../ScrollUp.astro";
+import MergedResultsNotice from "./MergedResultsNotice.astro";
 import TopCats from "./TopCats.astro";
 import TopContributors from "./TopContributors.astro";
 import TopLinks from "./TopLinks.astro";
 
 interface Props {
     Links: Link[]
-    PageCount: number
+    NSFWParams?: boolean
+    CatsParams?: string
+    MergedCats?: string[]
+    PeriodParams?: Period
+    SortByParams?: SortMetric
+    PageParams?: number
+    PageCount?: number
     TopCats: CatCount[]
     TopContributors: Contributor[]
     Token?: string
@@ -14,19 +22,23 @@ interface Props {
     IsHomePage?: boolean
 }
 
-const { Links: links, PageCount: page_count, TopCats: top_cats, TopContributors: top_contributors, Token: token, User: user, IsHomePage: is_home_page } = Astro.props
+const { Links: links, NSFWParams: nsfw_params, CatsParams: cats_params, MergedCats: merged_cats, PeriodParams: period_params, SortByParams: sort_by_params, PageParams: page, PageCount: page_count, TopCats: top_cats, TopContributors: top_contributors, Token: token, User: user, IsHomePage: is_home_page  } = Astro.props
 
 const home_page_non_default_periods = ['day', 'week', 'year','all']
 ---
 
 <div id="rankings">
+    {merged_cats && merged_cats.length ? (
+        <MergedResultsNotice MergedCats={merged_cats} />
+    ) : null}
+
     <aside id="top-cats-and-contributors">
-        <TopCats TopCats={top_cats} />
+        <TopCats TopCats={top_cats} CatsParams={cats_params} Period={period_params} SortBy={sort_by_params} NSFW={nsfw_params} />
         <TopContributors Contributors={top_contributors} />
     </aside>
 
     <section>
-       {is_home_page ? <ul id='change-period'>
+    {is_home_page ? <ul id='change-period'>
             <li>
                 <h2>Top Links (month):</h2>
             </li>
@@ -37,22 +49,32 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
                     </li>
                 ))
             }
-        </ul> : null}
+        </ul> : <h2>Top Links</h2>}
 
         {links?.length ? <TopLinks 
             Links={links}
-            Page={1}
+            NSFW={nsfw_params}
+            Cats={cats_params}
+            Period={period_params}
+            SortBy={sort_by_params}
+            Page={page}
             PageCount={page_count}
             Token={token}
             User={user}
         /> : <p>None :(</p>}
     </section>
+
+    {links?.length > 5 
+        ? <ScrollUp /> 
+        : null
+    }
 </div>
 
 <style>
     #rankings {
 		display: flex;
 		flex-direction: column;
+        max-width: fit-content;
 
         aside#top-cats-and-contributors {
 			display: flex;
@@ -113,6 +135,9 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
             aside#top-cats-and-contributors {
                 flex-direction: column;
                 justify-content: start;
+                position: sticky;
+                top: 1rem;
+                height: min-content;
             }
         }
     }

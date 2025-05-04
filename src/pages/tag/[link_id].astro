@@ -3,7 +3,6 @@ import Link from '../../components/Link/Link'
 import EditTag from '../../components/Tag/EditTag'
 import TagCat from '../../components/Tag/TagCat'
 import { TAGS_ENDPOINT } from '../../constants'
-import BaseLayout from '../../layouts/BaseLayout.astro'
 import type { TagPage } from '../../types'
 import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
 import CSRLastUpdated from '../../components/Tag/CSRLastUpdated'
@@ -70,7 +69,7 @@ const page_title = link.Summary ? `Tags for "${link.Summary}"` : `Link Tags`
 								<ul id='cat-list'>
 									{tag.Cats.split(',').map((tag) => {
 										return (
-											<TagCat Cat={tag} />
+											<TagCat Cat={tag} Fat />
 										)
 									})}
 								</ul>

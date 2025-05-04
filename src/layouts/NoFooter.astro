@@ -252,11 +252,15 @@ let user = Astro.cookies.get('user')?.value
 		}
 
 		#cat-list,
+		#recommendations-list {
+			gap: 5px;
+		}
+
+		#cat-list,
 		#recommendations-list,
 		.cats {
 			flex-wrap: wrap;
 			padding: 0;
-			gap: 5px;
 		}
 
 		.error {

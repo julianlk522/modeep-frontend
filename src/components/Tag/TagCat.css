@@ -1,11 +1,32 @@
 li.cat {
+	display: inline;
+	list-style: none;
+	height: 16px;
+	font-weight: bold;
+
+	a {
+		color: var(--sky);
+		border: 1px solid var(--sky-vague);
+		border-radius: 2px;
+		padding: 0 5px;
+	}
+
+	a:hover {
+		color: black;
+		background-color: var(--sky);
+	}
+
+	span {
+		margin-left: 5px;
+	}
+}
+
+li.cat.fat {
 	display: flex;
 	align-items: center;
-	list-style: none;
-	font-weight: bold;
 	height: 25px;
 	background-color: var(--sky);
-	border-radius: 2px;
+	padding: 0 5px;
 
 	a {
 		color: black;
@@ -27,35 +48,15 @@ li.cat {
 	}
 }
 
-li.cat.mini {
-	display: inline;
-	height: 16px;
-	background-color: transparent;
-
-	a {
-		color: var(--sky);
-		border: 1px solid var(--sky-vague);
-		padding: 0 5px;
-	}
-
-	span {
-		margin-left: 5px;
-	}
-}
-
-li.cat.mini a:hover {
-	color: black;
-	background-color: var(--sky);
-}
-
 li.cat.nsfw a {
 	color: var(--danger);
 }
 
 li.cat.nsfw a:hover {
 	background-color: var(--danger);
+	color: black;
 }
 
-li.cat.addable {
+li.cat.fat.addable {
 	opacity: 0.4;
 }

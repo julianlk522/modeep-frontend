@@ -61,9 +61,43 @@ const totals: Totals = await totals_resp.Response.json()
 		<Rankings Links={links} PageCount={links_data.PageCount} TopCats={top_cats} TopContributors={top_contributors} Token={token} User={user} IsHomePage />
 
 		<div id="totals">
-			<p><span class="total">{totals.Links}</span> <span>Links</span> <span>•</span> <span class="total">{totals.Clicks}</span> <span>Clicks</span> <span>•</span> <span class="total">{totals.Likes}</span> <span>Likes</span></p>
+			<div class="row">
+				<div class="total">
+					<span class="number">{totals.Links}</span> 
+					<span class="category">Links</span>
+				</div> 
+				<span>•</span> 
 
-			<p><span class="total">{totals.Contributors}</span> <span>Treasure Hunters</span> <span>•</span> <span class="total">{totals.Tags}</span> <span>Tags</span> <span>•</span> <span class="total">{totals.Summaries}</span> <span>Summaries</span></p>
+				<div class="total">
+					<span class="number">{totals.Clicks}</span> 
+					<span class="category">Clicks</span>
+				</div> 
+				<span>•</span> 
+
+				<div class="total">
+					<span class="number">{totals.Likes}</span> 
+					<span class="category">Likes</span>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="total">
+					<span class="number">{totals.Contributors}</span>
+					<span class="category">Treasure Hunters</span>
+				</div>
+				<span>•</span>
+
+				<div class="total">
+					<span class="number">{totals.Tags}</span>
+					<span class="category">Tags</span>
+				</div>
+				<span>•</span>
+
+				<div class="total">
+					<span class="number">{totals.Summaries}</span>
+					<span class="category">Summaries</span>
+				</div>
+			</div>
 		</div>
 
 		<ScrollUp />
@@ -87,32 +121,37 @@ const totals: Totals = await totals_resp.Response.json()
 		border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 		text-align: center;
 
-		p {
+		div.row {
 			font-size: 0.9rem;
 			margin-top: 0;
 			display: flex;
-			gap: 2px;
 			justify-content: center;
-		}
+			gap: 2px;
 
-		.total {
-			font-weight: bold;
-			color: var(--sky);
-		}
+			div.total {
+				display: inline;
 
-		span:not(.total) {
-			opacity: 0.85;
+				span.number {
+					font-weight: bold;
+					color: var(--sky);	
+				}
+
+				span.category {
+					opacity: 0.85;
+					color: var(--text);
+				}
+			}
 		}
 	}
 
 	@media (min-width: 400px) {
-		#totals p {
+		#totals div.row {
 			gap: 4px;
 		}
 	}
 
 	@media (min-width: 680px) {
-		#totals p {
+		#totals div.row {
 			justify-content: flex-end;
 			gap: 8px;
 		}

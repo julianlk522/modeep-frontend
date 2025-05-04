@@ -26,7 +26,6 @@ const is_only_page = !page_count || (page === 1 && page_count === 1)
             <Link
                 client:load
                 Link={link}
-                NSFWCatLinks={nsfw}
                 Token={token}
                 User={user}
             />
@@ -45,13 +44,20 @@ const is_only_page = !page_count || (page === 1 && page_count === 1)
 
 <style>
     #top-links {
-        max-width: calc(100% - 1rem);
+        min-width: fit-content;
         margin: 0.5rem 0;
         margin-left: auto;
         padding: 0;
+        padding-inline-start: 1rem;
     }
 
     #top-links:has(+ nav.pagination) {
         margin-bottom: 0.5rem;
+    }
+
+    @media (min-width: 450px) {
+        #top-links {
+            padding-inline-start: 2rem;
+        }
     }
 </style>

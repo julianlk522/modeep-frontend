@@ -30,9 +30,11 @@ div.tag {
 	max-width: calc(100% - 32px);
 	margin-top: 0.5rem;
 
-	span.tag-count {
+	li.tag-count {
+		list-style: none;
 		font-size: 1.1rem;
 		font-weight: bold;
+		margin-left: 3px;
 
 		span.tags-page-link {
 			color: var(--treasurey);
@@ -41,6 +43,7 @@ div.tag {
 
 	ul.cats {
 		display: inline-flex;
+		gap: 2px;
 		margin: 0;
 
 		li a.nsfw {
@@ -96,12 +99,7 @@ div.same-user-like-count + div.same-user-copy-count,
 }
 
 button.copy-btn + div.click-count {
-	img {
-		margin-bottom: -2px;
-	}
-	span {
-		top: -1px;
-	}
+	margin-left: 2px;
 }
 
 div.same-user-like-count,

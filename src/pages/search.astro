@@ -1,9 +1,5 @@
 ---
-import MergedResultsNotice from '../components/Rankings/MergedResultsNotice.astro'
-import TopCats from '../components/Rankings/TopCats.astro'
-import TopContributors from '../components/Rankings/TopContributors.astro'
-import TopLinks from '../components/Rankings/TopLinks.astro'
-import ScrollUp from '../components/ScrollUp.astro'
+import Rankings from '../components/Rankings/Rankings.astro'
 import SearchFilters from '../components/SearchFilters/Filters'
 import { CATS_ENDPOINT, CONTRIBUTORS_ENDPOINT, LINKS_ENDPOINT } from '../constants'
 import BaseLayout from '../layouts/BaseLayout.astro'
@@ -217,44 +213,23 @@ const page_title = `${(sort_by !== 'rating' ? " Newest" : " Top Rated")}${cats ?
 
 		{
 			links && links.length ? (
-				<>
-					<aside id="rankings">
-						<section>
-							{data.MergedCats && data.MergedCats.length ? (
-								<MergedResultsNotice MergedCats={data.MergedCats} />
-							) : null}
-							<TopCats
-								TopCats={top_subcats?.length ? top_subcats : top_cats}
-								CatsParams={encoded_cats}
-								Period={period}
-								SortBy={sort_by}
-								NSFW={nsfw}
-							/>
-						</section>
-						<TopContributors Contributors={top_contributors} />
-					</aside>
-
-					<section>
-						<TopLinks 
-							Links={links}
-							NSFW={nsfw}
-							Cats={cats ? encoded_cats : undefined}
-							Period={period}
-							SortBy={sort_by}
-							Page={page}
-							PageCount={data.PageCount}
-							Token={token}
-							User={user}
-						/>
-					</section>
-
-					<ScrollUp />
-				</>
+				<Rankings
+					Links={links}
+					NSFWParams={nsfw}
+					CatsParams={encoded_cats}
+					PeriodParams={period}
+					SortByParams={sort_by}
+					PageParams={page}
+					TopCats={has_cats ? top_subcats : top_cats}
+					TopContributors={top_contributors}
+					Token={token}
+					User={user}
+				/>
 			) : (
 				<section>
 					<p id="no-links">No links found.</p>
 					<p>&macr;&bsol;&lowbar;&lpar;&#x30c4;&rpar;&lowbar;&sol;&macr;</p>
-					<p id="add-link"><a href={`/new`}>Add link</a></p>
+					<p id="add-link"><a href={`/new`}>Add something cool</a></p>
 					{user ? (
 						<p>
 							

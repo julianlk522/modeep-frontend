@@ -264,7 +264,6 @@ export default function SearchCats(props: Props) {
 									? `/search?cats=${cat.Category}`
 									: undefined
 							}
-							Mini={is_home_page}
 						/>
 					))}
 				</ol>
@@ -278,6 +277,7 @@ export default function SearchCats(props: Props) {
 							Cat={cat}
 							Removable={removable ?? true}
 							DeletedSignal={deleted_cat}
+							Fat
 						/>
 					))}
 					{!is_tag_page && selected_cats.length > 1 ? (
