@@ -1,6 +1,7 @@
 ---
 import { CATS_PAGE_LIMIT, MIN_LIST_ITEMS_FOR_SCROLLBAR } from '../../constants'
 import type { CatCount, Period, SortMetric } from '../../types'
+import TagCat from '../Tag/TagCat'
 
 interface Props {
     TopCats: CatCount[]
@@ -27,19 +28,18 @@ let endpoint = tmap_owner ? `/map/${tmap_owner}` : "/search"
 if (tmap_section) endpoint += `/${tmap_section}`
 ---
 
-{top_cats?.length ? <>
+{top_cats?.length ? <div>
     <h2 class={more ? 'more' : ''}>{is_subcats ? 'Top Subcats' : more ? 'More Cats' : 'Top Cats'}</h2>
     <ol id="top-cats" class={list_classes.join(' ')}>
         {
             top_cats.map((cat) => (
-                <li>
-                    <a
-                        href={endpoint + `?cats=${is_subcats ? cats_params + ',' + encodeURIComponent(cat.Category) : encodeURIComponent(cat.Category)}${has_period ? `&period=${period}` : ''}${sort_by && sort_by !== 'rating' ? `&sort_by=newest` : ''}${nsfw ? `&nsfw=true` : ''}`}
-                    >
-                        {cat.Category}
-                    </a>
-                    <span> ({cat.Count})</span>
-                </li>
+                <TagCat 
+                    Cat={cat.Category} 
+                    Count={cat.Count} 
+                    IsNSFW={cat.Category === 'NSFW'} 
+                    Mini 
+                    Href={endpoint + `?cats=${is_subcats ? cats_params + ',' + encodeURIComponent(cat.Category) : encodeURIComponent(cat.Category)}${has_period ? `&period=${period}` : ''}${sort_by && sort_by !== 'rating' ? `&sort_by=newest` : ''}${nsfw || cat.Category === 'NSFW' ? `&nsfw=true` : ''}`}
+                 />
             ))
         }
     </ol>
@@ -56,15 +56,23 @@ if (tmap_section) endpoint += `/${tmap_section}`
             <img src='../../back.svg' alt="Go to /more" height={18} width={18} />
         </span> 
     : null}
-</> : is_subcats ? <p id="no-further-cats">No further subcats.</p> : null}
+</div> : is_subcats ? <p id="no-further-cats">No further subcats.</p> : null}
 
 <style>
+    div:has(#top-cats) {
+        padding-bottom: 1rem;
+    }
+    
     h2 {
         padding-bottom: 0.5rem;
     }
     
     h2.more {
         margin-top: 0.5rem;
+    }
+
+    ol#top-cats {
+        gap: 3px;
     }
 
     ol#top-cats.more {
@@ -82,9 +90,10 @@ if (tmap_section) endpoint += `/${tmap_section}`
     }
 
     span#to-more {
+        display: block;
         list-style-type: none;
-        margin-top: 0.5rem;
-        margin-left: 1.5rem;
+        margin-top: 1rem;
+        margin-left: 1rem;
         font-size: 0.9rem;
         font-weight: bold;
 
@@ -106,17 +115,12 @@ if (tmap_section) endpoint += `/${tmap_section}`
 
     p#no-further-cats {
         margin-top: 0;
+        font-weight: bold;
     }
 
     @media (min-width: 350px) {
         span#to-more {
             font-size: 1rem;
-        }
-    }
-    
-    @media (min-width: 680px) {
-        ol#top-cats li {
-            padding-right: 2rem;
         }
     }
 </style>

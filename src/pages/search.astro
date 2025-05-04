@@ -218,7 +218,7 @@ const page_title = `${(sort_by !== 'rating' ? " Newest" : " Top Rated")}${cats ?
 		{
 			links && links.length ? (
 				<>
-					<div id="rankings">
+					<aside id="rankings">
 						<section>
 							{data.MergedCats && data.MergedCats.length ? (
 								<MergedResultsNotice MergedCats={data.MergedCats} />
@@ -232,7 +232,7 @@ const page_title = `${(sort_by !== 'rating' ? " Newest" : " Top Rated")}${cats ?
 							/>
 						</section>
 						<TopContributors Contributors={top_contributors} />
-					</div>
+					</aside>
 
 					<section>
 						<TopLinks 
@@ -267,6 +267,10 @@ const page_title = `${(sort_by !== 'rating' ? " Newest" : " Top Rated")}${cats ?
 </BaseLayout>
 
 <style>
+	aside#rankings:has(p#no-further-cats) {
+		padding: 0.5rem 0;
+	}
+
 	p#no-links {
 		margin-top: 0;
 	}

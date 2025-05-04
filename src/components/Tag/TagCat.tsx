@@ -69,7 +69,10 @@ export default function TagCat(props: Props) {
 			class={`cat${addable ? ' addable' : ''}${is_nsfw ? ' nsfw' : ''}${mini ? ' mini' : ''}`}
 		>
 			{href ? (
-				<a href={href}>{props.Cat}</a>
+				<>
+					<a href={href}>{props.Cat}</a>
+					<span>{props.Count ? ` (${props.Count})` : ''}</span>
+				</>
 			) : (
 				<>
 					<p>

@@ -264,6 +264,7 @@ export default function SearchCats(props: Props) {
 									? `/search?cats=${cat.Category}`
 									: undefined
 							}
+							Mini={is_home_page}
 						/>
 					))}
 				</ol>

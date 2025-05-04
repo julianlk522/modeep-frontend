@@ -1,0 +1,119 @@
+---
+import type { CatCount, Contributor, Link } from "../../types";
+import TopCats from "./TopCats.astro";
+import TopContributors from "./TopContributors.astro";
+import TopLinks from "./TopLinks.astro";
+
+interface Props {
+    Links: Link[]
+    PageCount: number
+    TopCats: CatCount[]
+    TopContributors: Contributor[]
+    Token?: string
+    User?: string
+    IsHomePage?: boolean
+}
+
+const { Links: links, PageCount: page_count, TopCats: top_cats, TopContributors: top_contributors, Token: token, User: user, IsHomePage: is_home_page } = Astro.props
+
+const home_page_non_default_periods = ['day', 'week', 'year','all']
+---
+
+<div id="rankings">
+    <aside id="top-cats-and-contributors">
+        <TopCats TopCats={top_cats} />
+        <TopContributors Contributors={top_contributors} />
+    </aside>
+
+    <section>
+       {is_home_page ? <ul id='change-period'>
+            <li>
+                <h2>Top Links (month):</h2>
+            </li>
+            {
+                home_page_non_default_periods.map((period) => (
+                    <li class='period'>
+                        <a href={`/search?period=${period}`}>{period}</a>
+                    </li>
+                ))
+            }
+        </ul> : null}
+
+        {links?.length ? <TopLinks 
+            Links={links}
+            Page={1}
+            PageCount={page_count}
+            Token={token}
+            User={user}
+        /> : <p>None :(</p>}
+    </section>
+</div>
+
+<style>
+    #rankings {
+		display: flex;
+		flex-direction: column;
+
+        aside#top-cats-and-contributors {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-evenly;
+			gap: 1rem;
+			min-width: fit-content;
+			padding: 0.5rem 0;
+
+			> div {
+				border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+				padding-bottom: 1rem;
+			}
+		}
+
+        section:has(ul#change-period) {
+            max-width: 800px;
+            padding-top: 1rem;
+        }
+
+        ul#change-period {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            list-style: none;
+            padding-inline-start: 0;
+            margin: 0;
+            margin-bottom: 1rem;
+            font-weight: bold;
+
+            li:nth-of-type(2) {
+                margin-left: 0.5rem;
+            }
+
+            li.period {
+                margin-right: 0.5rem;
+            }
+
+            li.period:last-of-type {
+                margin-right: 0;
+            }
+        }
+
+        /* had to put this here to increase specificity */
+        @media (min-width: 450px) {
+            aside#top-cats-and-contributors {
+                flex-direction: row;
+            }
+        }
+	}
+
+    @media (min-width: 680px) {
+        #rankings {
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 4rem;
+
+            aside#top-cats-and-contributors {
+                flex-direction: column;
+                justify-content: start;
+            }
+        }
+    }
+</style>

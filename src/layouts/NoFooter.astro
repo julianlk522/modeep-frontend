@@ -73,10 +73,6 @@ let user = Astro.cookies.get('user')?.value
 			align-items: center;
 			margin: 0 auto;
 
-			a {
-				text-decoration: underline;
-			}
-
 			a:has(img) {
 				margin-bottom: -5px;
 				margin-right: 2px;
@@ -94,12 +90,12 @@ let user = Astro.cookies.get('user')?.value
 				font-size: 1rem;
 				margin-top: 0;
 				padding: 0 0 0 calc(0.5rem - 4px);
-				text-decoration: underline;
 			}
 		}
 
 		footer {
 			margin: 0.5rem auto 0;
+			text-align: center;
 		}
 
 		header nav,
@@ -215,16 +211,6 @@ let user = Astro.cookies.get('user')?.value
 			cursor: pointer;
 		}
 
-		#rankings {
-			display: flex;
-			justify-content: space-evenly;
-			padding: 0.5rem 0;
-
-			section {
-				width: 100%;
-			}
-		}
-
 		:is(ol#top-cats,
 		ol#top-contributors) {
 			display: flex;
@@ -233,15 +219,11 @@ let user = Astro.cookies.get('user')?.value
 			margin: 0;
 			padding: 0 1rem;
 			font-size: 0.9rem;
-			max-height: 5.5rem;
+			max-height: 106px;
 			overflow: hidden;
 
-			/* keep list items aligned with their markers */
-			word-break: break-all;
-
 			li span {
-				/* keep counts on same line */
-				word-break: break-word;
+				float: right;
 			}
 		}
 
@@ -250,8 +232,8 @@ let user = Astro.cookies.get('user')?.value
 			overflow-y: scroll;
 		}
 
-		#top-cats,
-		#top-contributors,
+		ol#top-cats,
+		ol#top-contributors,
 		#profile-about details > pre {
 			overflow-y: scroll;
 			scrollbar-width: thin;
@@ -259,6 +241,10 @@ let user = Astro.cookies.get('user')?.value
 
 		section:has(p#no-links) {
 			text-align: center;
+		}
+
+		section:has(p#no-further-cats) {
+			padding: 0.5rem 0 1rem;
 		}
 
 		section:has(nav.pagination) {
@@ -287,21 +273,23 @@ let user = Astro.cookies.get('user')?.value
 			color: var(--text-muted);
 		}
 
+		:is(header nav,
+		footer) a,
+		#logout-btn {
+			text-decoration: underline;
+		}
+
 		@media (min-width: 350px) {
 			ol#top-cats,
 			ol#top-contributors {
 				font-size: 1rem;
-				max-height: 6rem;
+				max-height: 132px;
 			}
 		}
 
 		@media (min-width: 400px) {
 			h2 {
 				font-size: 1.5rem;
-			}
-
-			#rankings > section {
-				width: auto;
 			}
 		}
 
@@ -312,14 +300,26 @@ let user = Astro.cookies.get('user')?.value
 		}
 
 		@media (min-width: 680px) {
-			header nav a {
-				font-size: 1.1rem;
+			header nav {
+				a,
+				#logout-btn {
+					font-size: 1.1rem;
+				}
 			}
 
 			main {
 				padding: 2rem;
 				padding-bottom: 0;
 				max-width: calc(100% - 4rem);
+			}
+
+			footer {
+				text-align: left;
+			}
+
+			:is(ol#top-cats,
+			ol#top-contributors) {
+				max-height: 12.2rem;
 			}
 		}
 	</style>

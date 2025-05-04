@@ -8,7 +8,7 @@ interface Props {
 const contributors = Astro.props.Contributors
 ---
 
-<section>
+<div>
     <h2>Top Treasure Hunters</h2>
     <ol id="top-contributors" class={contributors?.length > MIN_LIST_ITEMS_FOR_SCROLLBAR ? 'scrollable' : ''}>
         {contributors.map(
@@ -28,7 +28,7 @@ const contributors = Astro.props.Contributors
             )
         )}
     </ol>
-</section>
+</div>
 
 <style>
     h2 {

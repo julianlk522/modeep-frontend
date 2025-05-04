@@ -1,7 +1,5 @@
 ---
-import TopCats from '../components/Rankings/TopCats.astro'
-import TopContributors from '../components/Rankings/TopContributors.astro'
-import TopLinks from '../components/Rankings/TopLinks.astro'
+import Rankings from '../components/Rankings/Rankings.astro'
 import ScrollUp from '../components/ScrollUp.astro'
 import SearchCats from '../components/SearchFilters/Cats'
 import { CATS_ENDPOINT, CONTRIBUTORS_ENDPOINT, LINKS_ENDPOINT, TOTALS_ENDPOINT } from '../constants'
@@ -42,10 +40,8 @@ const get_links_resp = await (token
 if (!get_links_resp.Response || get_links_resp.RedirectTo) {
 	return Astro.redirect(get_links_resp.RedirectTo)
 }
-const data: PaginatedLinks = await get_links_resp.Response.json()
-const links = data.Links
-
-const other_periods = links?.length ? Periods.filter((other) => other !== 'month') : ['year', 'all']
+const links_data: PaginatedLinks = await get_links_resp.Response.json()
+const links = links_data.Links
 
 // Get totals
 const totals_resp = await fetch_with_handle_redirect(TOTALS_ENDPOINT)
@@ -62,41 +58,12 @@ const totals: Totals = await totals_resp.Response.json()
 
 		<SearchCats client:load SelectedCats={[]} SetSelectedCats={() => {}} IsHomePage />
 
-		<div id="rankings">
-			<section>
-				<TopCats TopCats={top_cats} />
-			</section>
-			<TopContributors Contributors={top_contributors} />
-		</div>
-
-		<section>
-			<ul id='change-period'>
-				<li>
-					<h2>Top Links (month):</h2>
-				</li>
-				{
-					other_periods.map((period) => (
-						<li class='period'>
-							<a href={`/search?period=${period}`}>{period}</a>
-						</li>
-					))
-				}
-			</ul>
-		</section>
-
-		<section>
-			{links?.length ? <TopLinks 
-				Links={links}
-				Page={1}
-				PageCount={data.PageCount}
-				Token={token}
-				User={user}
-			/> : <p>None :(</p>}
-		</section>
+		<Rankings Links={links} PageCount={links_data.PageCount} TopCats={top_cats} TopContributors={top_contributors} Token={token} User={user} IsHomePage />
 
 		<div id="totals">
-			<p><span class="total">{totals.Links}</span> <span>Links |</span> <span class="total">{totals.Clicks}</span> <span>Clicks |</span> <span class="total">{totals.Contributors}</span> <span>Treasure Hunters</span></p>
-			<p><span class="total">{totals.Likes}</span> <span>Likes |</span> <span class="total">{totals.Tags}</span> <span>Tags |</span> <span class="total">{totals.Summaries}</span> <span>Summaries</span></p>
+			<p><span class="total">{totals.Links}</span> <span>Links</span> <span>•</span> <span class="total">{totals.Clicks}</span> <span>Clicks</span> <span>•</span> <span class="total">{totals.Likes}</span> <span>Likes</span></p>
+
+			<p><span class="total">{totals.Contributors}</span> <span>Treasure Hunters</span> <span>•</span> <span class="total">{totals.Tags}</span> <span>Tags</span> <span>•</span> <span class="total">{totals.Summaries}</span> <span>Summaries</span></p>
 		</div>
 
 		<ScrollUp />
@@ -115,39 +82,17 @@ const totals: Totals = await totals_resp.Response.json()
 		text-align: center;
 	}
 
-	section:has(ul#change-period) {
-		padding-top: 1rem;
-	}
-
-	ul#change-period {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		list-style: none;
-		padding-inline-start: 0;
-		margin: 0;
-		font-weight: bold;
-
-		li:nth-of-type(2) {
-			margin-left: 0.5rem;
-		}
-
-		li.period {
-			margin-right: 0.5rem;
-		}
-
-		li.period:last-of-type {
-			margin-right: 0;
-		}
-	}
-
 	#totals {
 		padding: 1rem 0;
 		border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 		text-align: center;
 
 		p {
+			font-size: 0.9rem;
 			margin-top: 0;
+			display: flex;
+			gap: 2px;
+			justify-content: center;
 		}
 
 		.total {
@@ -157,6 +102,19 @@ const totals: Totals = await totals_resp.Response.json()
 
 		span:not(.total) {
 			opacity: 0.85;
+		}
+	}
+
+	@media (min-width: 400px) {
+		#totals p {
+			gap: 4px;
+		}
+	}
+
+	@media (min-width: 680px) {
+		#totals p {
+			justify-content: flex-end;
+			gap: 8px;
 		}
 	}
 </style>
