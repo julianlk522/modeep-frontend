@@ -255,8 +255,12 @@ export default function SearchCats(props: Props) {
 					{non_selected_recommendations.map((cat) => (
 						<TagCat
 							key={cat}
-							Cat={cat.Category}
-							Count={cat.Count}
+							Cat={
+								is_home_page
+									? `${cat.Category} (${cat.Count})`
+									: cat.Category
+							}
+							Count={is_home_page ? undefined : cat.Count}
 							Addable={!is_home_page}
 							AddedSignal={added_cat}
 							Href={

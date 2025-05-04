@@ -1,6 +1,7 @@
 #profile-about {
 	display: flex;
 	flex-wrap: wrap;
+	margin-top: 0.5rem;
 
 	pre {
 		max-width: 100%;

@@ -6,7 +6,6 @@ li.cat {
 
 	a {
 		color: var(--sky);
-		border: 1px solid var(--sky-vague);
 		border-radius: 2px;
 		padding: 0 5px;
 	}
@@ -22,11 +21,10 @@ li.cat {
 }
 
 li.cat.fat {
-	display: flex;
-	align-items: center;
 	height: 25px;
 	background-color: var(--sky);
 	padding: 0 5px;
+	border-radius: 2px;
 
 	a {
 		color: black;
@@ -48,6 +46,17 @@ li.cat.fat {
 	}
 }
 
+li.cat.fat,
+li.cat.addable {
+	display: inline-flex;
+	align-items: center;
+}
+
+li.cat a,
+li.cat.addable {
+	border: 1px solid var(--sky-vague);
+}
+
 li.cat.nsfw a {
 	color: var(--danger);
 }
@@ -57,6 +66,19 @@ li.cat.nsfw a:hover {
 	color: black;
 }
 
-li.cat.fat.addable {
-	opacity: 0.4;
+li.cat.addable {
+	padding-left: 5px;
+
+	p {
+		margin-top: 0;
+	}
+}
+
+li.cat.addable:has(button:hover) {
+	color: black;
+	background-color: var(--sky);
+
+	button img {
+		filter: invert(1);
+	}
 }

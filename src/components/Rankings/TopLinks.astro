@@ -17,7 +17,7 @@ interface Props {
 }
 const { Links: links, NSFW: nsfw, Cats: cats, Period: period, SortBy: sort_by, Page: page, PageCount: page_count, Token: token, User: user } = Astro.props
 
-const is_only_page = !page_count || (page === 1 && page_count === 1)
+const is_only_page = !page || !page_count || (page === 1 && page_count === 1)
 ---
 
 <>    

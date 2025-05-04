@@ -65,7 +65,7 @@ export default function TagCat(props: Props) {
 
 	return (
 		<li
-			title={addable ? `Add cat '${cat}'` : ''}
+			title={addable ? `Add '${cat}' to cats filters` : ''}
 			class={`cat${addable ? ' addable' : ''}${is_nsfw ? ' nsfw' : ''}${fat ? ' fat' : ''}`}
 		>
 			{href ? (
@@ -95,7 +95,7 @@ export default function TagCat(props: Props) {
 					) : addable && props.AddedSignal ? (
 						<button
 							ref={add_btn_ref}
-							title={`Add '${cat}'`}
+							title={`Add '${cat}' to cats filters`}
 							class='img-btn plus-btn'
 						>
 							<img

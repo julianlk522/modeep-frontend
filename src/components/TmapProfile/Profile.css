@@ -6,13 +6,16 @@ section#profile {
 
 	#created-at {
 		margin-top: 0;
-		margin-bottom: 1rem;
+
+		span {
+			margin-right: 1ch;
+		}
 	}
 
 	> #profile-sections {
 		display: flex;
 		flex-direction: column;
-		gap: 0.5rem;
+		gap: 1rem;
 
 		> :first-child {
 			display: flex;
@@ -20,10 +23,14 @@ section#profile {
 	}
 }
 
+section#profile:has(#profile-pic) #created-at {
+	margin-bottom: 1rem;
+}
+
 @media (min-width: 680px) {
 	#profile-sections:has(> div #profile-pic) {
 		flex-direction: row;
-		gap: 1.5rem;
+		gap: 2rem;
 
 		> :first-child {
 			flex-direction: column;
@@ -31,7 +38,7 @@ section#profile {
 
 		> #profile-about {
 			min-width: 100px;
-			max-width: 40%;
+			max-width: 60%;
 		}
 	}
 }

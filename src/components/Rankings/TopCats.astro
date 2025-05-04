@@ -71,17 +71,13 @@ if (tmap_section) endpoint += `/${tmap_section}`
     }
 
     ol#top-cats {
-        padding-top: 1px;
+        padding: 1px 0 2px;
         gap: 3px;
     }
 
     ol#top-cats.more {
         flex-wrap: wrap;
         max-height: 850px;
-    }
-
-    ol#top-cats.tmap {
-        padding: 0.5rem;
     }
 
     ol#top-cats:has(+ span#to-more) {
@@ -110,7 +106,7 @@ if (tmap_section) endpoint += `/${tmap_section}`
     }
 
     ol#top-cats.tmap {
-        padding: 0.5rem 1rem;
+        padding-bottom: 0;
     }
 
     p#no-further-cats {

@@ -10,7 +10,7 @@ interface Props {
 	LoginName: string
 	SignedInUser?: string
 	CreatedAt: string
-	InitialPFP?: string
+	InitialPFPFileName?: string
 	InitialAboutText: string
 	InitialEmailText: string
 	Token?: string
@@ -21,7 +21,7 @@ export default function Profile(props: Props) {
 		LoginName: login_name,
 		SignedInUser: signed_in_user,
 		CreatedAt: created_at,
-		InitialPFP: initial_pfp,
+		InitialPFPFileName: initial_pfp_filename,
 		InitialAboutText: initial_about,
 		InitialEmailText: initial_email,
 		Token: token,
@@ -37,36 +37,38 @@ export default function Profile(props: Props) {
 	return (
 		<section id='profile'>
 			<p id='created-at'>
-				<span className='profile-details-text'>created</span>:{' '}
+				<span className='profile-details-text'>created:</span>
 				{format_short_date(created_at)}
 			</p>
 			<div id='profile-sections'>
-				<div>
-					{initial_pfp ? (
-						<Pic
-							FileName={initial_pfp}
-							LoginName={login_name}
-							URL={pic_url}
-							SetURL={set_pic_url}
-						/>
-					) : undefined}
+				{initial_pfp_filename || is_signed_in_user ? (
+					<div>
+						{initial_pfp_filename ? (
+							<Pic
+								FileName={initial_pfp_filename}
+								LoginName={login_name}
+								URL={pic_url}
+								SetURL={set_pic_url}
+							/>
+						) : undefined}
 
-					{is_signed_in_user ? (
-						<Actions
-							PicURL={pic_url}
-							SetPicURL={set_pic_url}
-							AboutText={about_text}
-							InitialAbout={initial_about}
-							IsEditingAbout={is_editing_about}
-							SetIsEditingAbout={set_is_editing_about}
-							EmailText={email_text}
-							InitialEmail={initial_email}
-							IsEditingEmail={is_editing_email}
-							SetIsEditingEmail={set_is_editing_email}
-							Token={token}
-						/>
-					) : null}
-				</div>
+						{is_signed_in_user ? (
+							<Actions
+								PicURL={pic_url}
+								SetPicURL={set_pic_url}
+								AboutText={about_text}
+								InitialAbout={initial_about}
+								IsEditingAbout={is_editing_about}
+								SetIsEditingAbout={set_is_editing_about}
+								EmailText={email_text}
+								InitialEmail={initial_email}
+								IsEditingEmail={is_editing_email}
+								SetIsEditingEmail={set_is_editing_email}
+								Token={token}
+							/>
+						) : null}
+					</div>
+				) : null}
 
 				{about_text?.length ? (
 					<About

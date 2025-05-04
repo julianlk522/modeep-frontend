@@ -12,7 +12,7 @@ interface Props {
 export default function About(props: Props) {
 	const { Text: text, SetText: set_text, Editing: editing } = props
 	const abbreviated =
-		text.length > 200 ? `${text.slice(0, 200)}...` : undefined
+		text.length >= 150 ? `${text.slice(0, 149)}...` : undefined
 
 	return (
 		<div id='profile-about'>
@@ -32,6 +32,7 @@ export default function About(props: Props) {
 					<summary>
 						<AboutText About={abbreviated} />
 					</summary>
+
 					<AboutText About={text} />
 				</details>
 			) : (

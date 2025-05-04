@@ -126,7 +126,7 @@ const nsfw_links_count = tmap.NSFWLinksCount
 				LoginName={login_name}
 				SignedInUser={user}
 				CreatedAt={profile.Created}
-				InitialPFP={profile.PFP}
+				InitialPFPFileName={profile.PFP}
 				InitialAboutText={profile.About}
 				InitialEmailText={profile.Email}
 				Token={token}
@@ -353,9 +353,16 @@ const nsfw_links_count = tmap.NSFWLinksCount
 			> :is(.tint, .bg) {
 				position: absolute;
 				top: 0;
-				left: -1.5rem;
+				left: -0.5rem;
 				width: 100vw;
 				height: 100%;
+			}
+
+			/* here for specificity */
+			@media (min-width: 350px) {
+				:is(.tint, .bg) {
+					left: -1.5rem;
+				}
 			}
 		}
 

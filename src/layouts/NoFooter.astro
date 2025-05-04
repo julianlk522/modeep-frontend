@@ -111,10 +111,8 @@ let user = Astro.cookies.get('user')?.value
 
 		main {
 			margin: auto;
-			padding: 0.5rem;
-			padding-bottom: 0;
 			width: 1080px;
-			max-width: calc(100% - 2rem);
+			max-width: 100%;
 			color: var(--text);
 		}
 
@@ -185,12 +183,26 @@ let user = Astro.cookies.get('user')?.value
 		details {
 			max-width: 100%;
 			margin-top: -7px;
+
+			summary pre {
+				display: inline;
+			}
+
+			summary::marker {
+				display: inline;
+				color: var(--treasurey-dark);
+			}
 		}
 
-		details[open] {
+		details[open] {			
+			> span,
 			summary pre { 
 				display: none;
 			}
+		}
+
+		details:not([open]) summary {
+			cursor: pointer;
 		}
 
 		pre {
@@ -284,6 +296,10 @@ let user = Astro.cookies.get('user')?.value
 		}
 
 		@media (min-width: 350px) {
+			main {
+				max-width: calc(100% - 2rem);
+			}
+
 			ol#top-cats,
 			ol#top-contributors {
 				font-size: 1rem;
