@@ -140,7 +140,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
         #rankings {
             flex-direction: row;
             justify-content: space-between;
-            gap: 6rem;
+            gap: 4rem;
 
             aside#top-cats-and-contributors {
                 flex-direction: column;
@@ -149,6 +149,12 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
                 top: 1rem;
                 height: min-content;
             }
+        }
+    }
+
+    @media (min-width: 786px) {
+        #rankings {
+            gap: 6rem;
         }
     }
 </style>
