@@ -32,6 +32,7 @@ export default function SearchCats(props: Props) {
 		IsTagPage: is_tag_page,
 		SelectedCats: selected_cats,
 		SetSelectedCats: set_selected_cats,
+		SubmittedLinks: submitted_links,
 	} = props
 
 	const addable = props.Addable ?? true
@@ -142,11 +143,11 @@ export default function SearchCats(props: Props) {
 	})
 
 	useEffect(() => {
-		if (props.SubmittedLinks && props.SubmittedLinks.length) {
+		if (submitted_links?.length) {
 			set_snippet('')
 		}
 		set_recommended_cats(undefined)
-	}, [props.SubmittedLinks])
+	}, [submitted_links])
 
 	// debounced fetch timeout
 	const DEBOUNCE_INTERVAL = 500
@@ -268,6 +269,7 @@ export default function SearchCats(props: Props) {
 									? `/search?cats=${cat.Category}`
 									: undefined
 							}
+							IsNewLinkPage={is_new_link_page}
 						/>
 					))}
 				</ol>

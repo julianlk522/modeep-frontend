@@ -16,7 +16,7 @@ interface Props {
     PageParams?: number
     PageCount?: number
     TopCats: CatCount[]
-    TopContributors: Contributor[]
+    TopContributors?: Contributor[]
     Token?: string
     User?: string
     IsHomePage?: boolean
@@ -27,7 +27,7 @@ const { Links: links, NSFWParams: nsfw_params, CatsParams: cats_params, MergedCa
 const home_page_non_default_periods = ['day', 'week', 'year','all']
 ---
 
-<div id="rankings">
+<div id="rankings" class={is_home_page ? 'home' : ''}>
     {merged_cats && merged_cats.length ? (
         <MergedResultsNotice MergedCats={merged_cats} />
     ) : null}
@@ -128,11 +128,19 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
         }
 	}
 
+    #rankings.home {
+        margin-top: 2rem;
+    }
+
+    #rankings:has(p#no-further-cats) {
+		padding: 0.5rem 0;
+	}
+
     @media (min-width: 680px) {
         #rankings {
             flex-direction: row;
             justify-content: space-between;
-            gap: 4rem;
+            gap: 6rem;
 
             aside#top-cats-and-contributors {
                 flex-direction: column;

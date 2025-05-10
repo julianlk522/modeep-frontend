@@ -38,6 +38,7 @@ if (tmap_section) endpoint += `/${tmap_section}`
                     Count={cat.Count} 
                     IsNSFW={cat.Category === 'NSFW'} 
                     Href={endpoint + `?cats=${is_subcats ? cats_params + ',' + encodeURIComponent(cat.Category) : encodeURIComponent(cat.Category)}${has_period ? `&period=${period}` : ''}${sort_by && sort_by !== 'rating' ? `&sort_by=newest` : ''}${nsfw || cat.Category === 'NSFW' ? `&nsfw=true` : ''}`}
+                    IsMorePage={more}
                  />
             ))
         }
@@ -62,22 +63,40 @@ if (tmap_section) endpoint += `/${tmap_section}`
         padding-bottom: 1rem;
     }
     
-    h2 {
-        padding-bottom: 0.5rem;
-    }
-    
     h2.more {
         margin-top: 0.5rem;
     }
 
     ol#top-cats {
-        padding: 1px 0 2px;
+        padding: 1px 0 0;
+        padding-inline-start: 1rem;
         gap: 3px;
+
+        li.cat {
+            list-style: unset;
+        }
+
+        li.cat::marker {
+            font-weight: normal;
+        }
     }
 
     ol#top-cats.more {
         flex-wrap: wrap;
         max-height: 850px;
+        overflow-y: hidden;
+
+        li.cat.more {
+            list-style: none;
+
+            span {
+                margin-right: 5px;
+            }
+        }
+    }
+
+    ol#top-cats.tmap {
+        padding-bottom: 0;
     }
 
     ol#top-cats:has(+ span#to-more) {
@@ -105,10 +124,6 @@ if (tmap_section) endpoint += `/${tmap_section}`
         }
     }
 
-    ol#top-cats.tmap {
-        padding-bottom: 0;
-    }
-
     p#no-further-cats {
         margin-top: 0;
         font-weight: bold;
@@ -117,6 +132,12 @@ if (tmap_section) endpoint += `/${tmap_section}`
     @media (min-width: 350px) {
         span#to-more {
             font-size: 1rem;
+        }
+    }
+
+    @media (min-width: 680px) {
+        ol#top-cats.tmap {
+            padding-bottom: 2px;
         }
     }
 </style>

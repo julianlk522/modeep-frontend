@@ -6,6 +6,7 @@ import './ToolTip.css'
 interface Props {
 	Prompt: string
 	children?: ComponentChildren
+	Title?: string
 }
 
 export default function ToolTip(props: Props) {
@@ -15,7 +16,7 @@ export default function ToolTip(props: Props) {
 		<>
 			<button
 				class='tip'
-				title='View more information'
+				title={props.Title ?? 'Click for more information'}
 				onClick={() => set_show_modal(!show_modal)}
 			>
 				{props.Prompt}

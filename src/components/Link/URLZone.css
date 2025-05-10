@@ -2,6 +2,7 @@ h3 {
 	display: block;
 	width: fit-content;
 	font-size: 1rem;
+	margin-bottom: 0 !important;
 }
 
 h3 a.url-link:visited {

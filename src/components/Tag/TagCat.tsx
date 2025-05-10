@@ -8,6 +8,8 @@ interface Props {
 	DeletedSignal?: Signal<string | undefined>
 	Fat?: boolean
 	Href?: string
+	IsNewLinkPage?: boolean
+	IsMorePage?: boolean
 }
 
 import type { Signal } from '@preact/signals'
@@ -22,6 +24,8 @@ export default function TagCat(props: Props) {
 		Removable: removable,
 		Fat: fat,
 		Href: href,
+		IsNewLinkPage: is_new_link_page,
+		IsMorePage: is_more_page,
 	} = props
 	const add_btn_ref = useRef<HTMLButtonElement>(null)
 	const delete_btn_ref = useRef<HTMLButtonElement>(null)
@@ -66,7 +70,7 @@ export default function TagCat(props: Props) {
 	return (
 		<li
 			title={addable ? `Add '${cat}' to cats filters` : ''}
-			class={`cat${addable ? ' addable' : ''}${is_nsfw ? ' nsfw' : ''}${fat ? ' fat' : ''}`}
+			class={`cat${addable ? ' addable' : ''}${is_nsfw ? ' nsfw' : ''}${fat ? ' fat' : ''}${is_more_page ? ' more' : ''}`}
 		>
 			{href ? (
 				<>
@@ -95,7 +99,11 @@ export default function TagCat(props: Props) {
 					) : addable && props.AddedSignal ? (
 						<button
 							ref={add_btn_ref}
-							title={`Add '${cat}' to cats filters`}
+							title={
+								is_new_link_page
+									? `Add '${cat}' to tag`
+									: `Add '${cat}' to cats filters`
+							}
 							class='img-btn plus-btn'
 						>
 							<img

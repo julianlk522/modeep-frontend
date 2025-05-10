@@ -1,8 +1,7 @@
 li.cat {
-	display: inline;
-	list-style: none;
 	height: 16px;
 	font-weight: bold;
+	list-style: none;
 
 	a {
 		color: var(--sky);
@@ -21,6 +20,7 @@ li.cat {
 }
 
 li.cat.fat {
+	display: inline;
 	height: 25px;
 	background-color: var(--sky);
 	padding: 0 5px;
