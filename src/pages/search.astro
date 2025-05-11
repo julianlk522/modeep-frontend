@@ -1,4 +1,5 @@
 ---
+import NoLinksFound from '../components/NoLinksFound.astro'
 import Rankings from '../components/Rankings/Rankings.astro'
 import SearchFilters from '../components/SearchFilters/Filters'
 import { CATS_ENDPOINT, CONTRIBUTORS_ENDPOINT, LINKS_ENDPOINT } from '../constants'
@@ -226,27 +227,8 @@ const page_title = `${(sort_by !== 'rating' ? " Newest" : " Top Rated")}${cats ?
 					User={user}
 				/>
 			) : (
-				<section>
-					<p id="no-links">No links found.</p>
-					<p>&macr;&bsol;&lowbar;&lpar;&#x30c4;&rpar;&lowbar;&sol;&macr;</p>
-					<p id="add-link"><a href={`/new`}>Add something cool</a></p>
-					{user ? (
-						<p>
-							
-						</p>
-					) : null}
-				</section>
+				<NoLinksFound AddLinkPrompt User={user} />
 			)
 		}
 	</main>
 </BaseLayout>
-
-<style>
-	p#no-links {
-		margin-top: 0;
-	}
-
-	p#add-link {
-		margin-top: 2rem;
-	}
-</style>

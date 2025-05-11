@@ -1,0 +1,25 @@
+---
+interface Props {
+    AddLinkPrompt?: boolean
+    User?: string
+}
+const { AddLinkPrompt:add_link_prompt, User: user } = Astro.props
+---
+
+<section>
+    <p id="no-links">No links found.</p>
+    <p>&macr;&bsol;&lowbar;&lpar;&#x30c4;&rpar;&lowbar;&sol;&macr;</p>
+    {add_link_prompt ? user ? <p id="add-link"><a href={`/new`}>Add something cool</a></p>
+        : <p id="add-link"><a href={`/login`}>Log in</a> to add something cool</p> : null}
+    
+</section>
+
+<style>
+	p#no-links {
+		margin-top: 0;
+	}
+
+	p#add-link {
+		margin-top: 2rem;
+	}
+</style>
