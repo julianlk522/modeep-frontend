@@ -1,11 +1,11 @@
-h3 {
+h3.link-title {
 	display: block;
 	width: fit-content;
 	font-size: 1rem;
 	margin-bottom: 0 !important;
 }
 
-h3 a.url-link:visited {
+h3.link-title a.url-link:visited {
 	color: var(--treasurey-dark);
 }
 
@@ -22,13 +22,13 @@ p.url {
 	font-weight: bold;
 }
 
-h3,
+h3.link-title,
 p.url {
 	overflow-wrap: anywhere;
 }
 
 @media (min-width: 768px) {
-	h3 {
+	h3.link-title {
 		font-size: 1.1rem;
 	}
 

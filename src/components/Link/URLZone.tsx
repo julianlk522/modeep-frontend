@@ -42,7 +42,7 @@ export default function URLZone({
 
 	return (
 		<div>
-			<h3>
+			<h3 class='link-title'>
 				<a
 					href={url_with_protocol}
 					title={summary ? summary : undefined}

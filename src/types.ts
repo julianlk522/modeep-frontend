@@ -173,6 +173,7 @@ export type {
 	SummaryPage,
 	Tag,
 	TagPage,
+	TmapLink,
 	Totals,
 	TreasureMap,
 	TreasureMapSection,

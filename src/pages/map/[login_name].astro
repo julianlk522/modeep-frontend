@@ -1,6 +1,5 @@
 ---
-import Link from '../../components/Link/Link'
-import TopCats from '../../components/Rankings/TopCats.astro'
+import Rankings from '../../components/Rankings/Rankings.astro'
 import ScrollUp from '../../components/ScrollUp.astro'
 import TagCat from "../../components/Tag/TagCat"
 import Profile from '../../components/TmapProfile/Profile'
@@ -37,6 +36,12 @@ if (Astro.url.searchParams.get('cats')) {
 }
 // Encode cats reserved chars
 const encoded_cats = encodeURIComponent(cats)
+
+// period
+let period: types.Period | undefined
+if (Astro.url.searchParams.get('period') && (types.Periods as readonly string[]).includes(Astro.url.searchParams.get('period') as types.Period)) {
+	period = Astro.url.searchParams.get('period') as types.Period
+}
 
 // nsfw
 let nsfw = false
@@ -133,33 +138,6 @@ const nsfw_links_count = tmap.NSFWLinksCount
 			/>
 		) : null}
 
-		<!-- Overview -->
-		{used_sections.length ? 
-			<section id='overview' class='flex'>
-				<div>
-					<TopCats
-						TopCats={tmap.Cats}
-						CatsParams={encoded_cats}
-						SortBy={sort_by}
-						NSFW={nsfw}
-						IsTmapFromUser={login_name}
-					/>
-				</div>
-				{used_sections.length > 1 ? <div id="skip-to-section-container">
-					<h2>Skip to Section</h2>
-					<ul id='skip-to-link-section'>
-						{
-							used_sections.map((s) => (
-								<li>
-									<a href={`#${s}`}>{s}</a>
-								</li>
-							))
-						}
-					</ul>
-				</div> : null}
-			</section> 
-		: null}
-
 		<!-- Config -->
 		{<section id='sort-and-filter'>
 			<h2>Sort and Filter</h2>
@@ -206,45 +184,18 @@ const nsfw_links_count = tmap.NSFWLinksCount
 			</div> : null}
 		</section>}
 
-		<!-- Links Sections -->
-		{used_sections.length ? 
-			used_sections.map((s) => {
-				const is_section_with_more = tmap.SectionsWithMore?.length && tmap.SectionsWithMore?.includes(s.toLowerCase())
-
-				return (
-					<section id={s} class='links-section'>
-						<div class={is_section_with_more ?"section-with-more" : ""}>
-							<h2>{s}</h2>
-							{is_section_with_more ? <span class="see-all">
-								<a href={`/map/${login_name}/${s.toLowerCase()}${cats ? `?cats=${encoded_cats}` : ''}${sort_by ? cats ? `&sort_by=${sort_by}` : `?sort_by=${sort_by}` : ''}${nsfw ? sort_by ? '&nsfw=true' : '?nsfw=true' : ''}`}>See All</a>
-							</span> : null}
-							<div class="tint"></div>
-							<div class="bg"></div>
-						</div>
-
-						<ol>
-							{tmap[s].map((link) => (
-								<Link
-									client:load
-									Link={link}
-									CatsFromUser={
-										link.CatsFromUser
-											? login_name
-											: undefined
-									}
-									IsTmapPage={true}
-									Token={token}
-									User={user}
-								/>
-							))}
-						</ol>
-					</section>
-				)
-		})
-		: <section>
-			<p id="no-links">No links found.</p>
-			<p>&macr;&bsol;&lowbar;&lpar;&#x30c4;&rpar;&lowbar;&sol;&macr;</p>
-		</section>}
+		<Rankings
+			Tmap={tmap}
+			IsTmapFromUser={login_name}
+			UsedTmapSections={used_sections}
+			TopCats={tmap.Cats}
+			CatsParams={encoded_cats}
+			PeriodParams={period}
+			NSFWParams={nsfw}
+			SortByParams={sort_by}
+			User={user}
+			Token={token}
+		/>
 
 		<ScrollUp />
 	</main>
@@ -270,30 +221,12 @@ const nsfw_links_count = tmap.NSFWLinksCount
 		}
 	}
 
-	#overview {
-		display: flex;
-		
-		div:has(#skip-to-link-section) {
-			margin: 0 auto;
-		}
-
-		#skip-to-link-section {
-			list-style-position: inside;
-			margin: 0;
-			padding: 0;
-		}
-
-		#skip-to-link-section {
-			padding: 0 0.5rem;
-		}
-	}
-
 	section#sort-and-filter {
 		h2 {
 			margin-top: 0.5rem;
 		}
 		
-		padding: 0.5rem 0 1rem;
+		padding: 0.5rem 0;
 
 		#nsfw-filter {
 			margin-top: 0;
@@ -323,70 +256,6 @@ const nsfw_links_count = tmap.NSFWLinksCount
 		}
 	}
 
-	section.links-section {
-		padding: 0;
-
-		h2 {
-			color: var(--sky);
-		}
-
-		> .section-with-more h2 {
-			display: inline;
-		}
-
-		> div {
-			position: sticky;
-			top: 0px;
-			z-index: 1;
-			padding: 0.5rem 0;
-
-			> .tint {
-				z-index: -1;
-				background: #c2e0e00d;
-			}
-
-			> .bg {
-				z-index: -2;
-				background-color: #13151a;
-			}
-
-			> :is(.tint, .bg) {
-				position: absolute;
-				top: 0;
-				left: -0.5rem;
-				width: 100vw;
-				height: 100%;
-			}
-
-			/* here for specificity */
-			@media (min-width: 350px) {
-				:is(.tint, .bg) {
-					left: -1.5rem;
-				}
-			}
-		}
-
-		> div.section-with-more {
-			span.see-all {
-				font-size: 0.9rem;
-				vertical-align: super;
-				margin-left: 0.5rem;
-
-				a {
-					vertical-align: sub;
-				}
-			}
-		}
-
-		ol {
-			max-width: calc(100% - 1rem);
-			margin-top: 0;
-			margin-bottom: 0.5rem;
-			margin-left: auto;
-			padding: 0;
-		}
-	}
-
 	@media (min-width: 480px) {
 		section#sort-and-filter {
 			#cats-filter-container {
@@ -402,15 +271,6 @@ const nsfw_links_count = tmap.NSFWLinksCount
 					align-content: center;
 				}
 			}
-		}
-		#overview > * {
-			max-width: 50%;
-		}
-	}
-
-	@media (min-width: 680px) {
-		section.links-section > div > :is(.tint, .bg) {
-			left: calc(-1 *(100vw - 100%) / 2);
 		}
 	}
 </style>

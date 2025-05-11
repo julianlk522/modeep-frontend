@@ -68,7 +68,7 @@ if (tmap_section) endpoint += `/${tmap_section}`
     }
 
     ol#top-cats {
-        padding: 1px 0 2px;
+        padding: 1px 0 0;
         padding-inline-start: 1rem;
         gap: 3px;
 
@@ -88,10 +88,6 @@ if (tmap_section) endpoint += `/${tmap_section}`
 
         li.cat.more {
             list-style: none;
-
-            span {
-                margin-right: 5px;
-            }
         }
     }
 
@@ -132,12 +128,6 @@ if (tmap_section) endpoint += `/${tmap_section}`
     @media (min-width: 350px) {
         span#to-more {
             font-size: 1rem;
-        }
-    }
-
-    @media (min-width: 680px) {
-        ol#top-cats.tmap {
-            padding-bottom: 2px;
         }
     }
 </style>

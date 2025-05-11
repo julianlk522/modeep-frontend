@@ -2,10 +2,16 @@
 import { LINKS_PAGE_LIMIT } from '../../constants'
 import * as types from '../../types'
 import Link from '../Link/Link'
+import NoLinksFound from '../NoLinksFound.astro'
 import Pagination from '../Pagination.astro'
 
 interface Props {
-    Links: types.Link[]
+    Links?: types.Link[]
+    Tmap?: types.TreasureMap | types.FilteredTreasureMap
+    TmapUsedSections?: ("Submitted" | "Copied" | "Tagged")[]
+    TmapOwner?: string
+    TmapSection?: "submitted" | "copied" | "tagged"
+    TmapSectionLinks?: types.TmapLink[]
     NSFW?: boolean
     Cats?: string
     Period?: types.Period
@@ -14,14 +20,31 @@ interface Props {
     User?: string
     Page?: number
     PageCount?: number
+
 }
-const { Links: links, NSFW: nsfw, Cats: cats, Period: period, SortBy: sort_by, Page: page, PageCount: page_count, Token: token, User: user } = Astro.props
+const {
+	Links: links, 
+	Tmap: tmap, 
+	TmapUsedSections: tmap_used_sections, 
+	TmapOwner: tmap_owner_login_name, 
+	TmapSection: tmap_section, 
+	TmapSectionLinks: tmap_section_links, 
+	NSFW: nsfw, 
+	Cats: cats, 
+	Period: period, 
+	SortBy: sort_by, 
+	Page: page, 
+	PageCount: page_count,
+	User: user, 
+	Token: token, 
+} = Astro.props
 
 const is_only_page = !page || !page_count || (page === 1 && page_count === 1)
 ---
 
 <>    
-    <ol id='top-links' start={page ? (page - 1) * LINKS_PAGE_LIMIT + 1 : ''}>
+    {links?.length ? 
+        <ol id='top-links' start={page ? (page - 1) * LINKS_PAGE_LIMIT + 1 : ''}>
         {links?.map((link) => (
             <Link
                 client:load
@@ -30,7 +53,65 @@ const is_only_page = !page || !page_count || (page === 1 && page_count === 1)
                 User={user}
             />
         ))}
-    </ol>
+        </ol>
+    : tmap ?
+        tmap_used_sections?.length ? 
+			tmap_used_sections.map((s: "Submitted" | "Copied" | "Tagged") => {
+				const is_section_with_more = tmap.SectionsWithMore?.length && tmap.SectionsWithMore?.includes(s.toLowerCase())
+
+				return (
+					<section id={s} class='links-section'>
+						<div class={is_section_with_more ?"section-with-more" : ""}>
+							<h2>{s}</h2>
+							{is_section_with_more ? <span class="see-all">
+								<a href={`/map/${tmap_owner_login_name}/${s.toLowerCase()}${cats ? `?cats=${cats}` : ''}${sort_by ? cats ? `&sort_by=${sort_by}` : `?sort_by=${sort_by}` : ''}${nsfw ? sort_by ? '&nsfw=true' : '?nsfw=true' : ''}`}>See All</a>
+							</span> : null}
+							<div class="bg"></div>
+						</div>
+
+						<ol>
+							{tmap[s].map((link) => (
+								<Link
+									client:load
+									Link={link}
+									CatsFromUser={
+										link.CatsFromUser
+											? tmap_owner_login_name
+											: undefined
+									}
+									IsTmapPage={true}
+									Token={token}
+									User={user}
+								/>
+							))}
+						</ol>
+					</section>
+				)
+		    })
+		: 
+            <NoLinksFound />
+    : tmap_section_links?.length ?
+        <section id={`${tmap_section}-links`}>
+            <ol start={page ? (page - 1) * LINKS_PAGE_LIMIT + 1 : ''}>
+                {tmap_section_links.map((link) => (
+                    <Link
+                        client:load
+                        Link={link}
+                        CatsFromUser={
+                            link.CatsFromUser
+                                ? tmap_owner_login_name
+                                : undefined
+                        }
+                        IsTmapPage={true}
+                        Token={token}
+                        User={user}
+                    />
+                ))}
+            </ol>
+        </section>
+    :
+        <NoLinksFound />
+    }
 
     {is_only_page ? null : <Pagination
         Cats={cats}
@@ -39,14 +120,15 @@ const is_only_page = !page || !page_count || (page === 1 && page_count === 1)
         HasNSFW={nsfw}
         Page={page ?? 1}
         PageCount={page_count}
+        TmapSection={tmap_section as ("submitted" | "copied" | "tagged")}
+        TmapOwner={tmap_owner_login_name}
     />}
 </>
 
 <style>
     #top-links {
         min-width: fit-content;
-        margin: 0.5rem 0;
-        margin-left: auto;
+        margin: 0 0 0.5rem auto;
         padding: 0;
         padding-inline-start: 1rem;
     }
@@ -55,9 +137,71 @@ const is_only_page = !page || !page_count || (page === 1 && page_count === 1)
         margin-bottom: 0.5rem;
     }
 
+    section.links-section {
+		padding: 0;
+		border-bottom: none;
+
+		h2 {
+			margin-bottom: 0;
+		}
+
+		> .section-with-more h2 {
+			display: inline
+		}
+
+		> div {
+			display: flex;
+			align-items: center;
+			position: sticky;
+			top: 0px;
+			z-index: 1;
+			padding: 1rem 0 0.5rem;
+
+			> .bg {
+				z-index: -2;
+				background-color: #13151a;
+				border-bottom: 2px dashed rgba(255, 255, 255, 0.15);
+				position: absolute;
+				top: 0;
+				left: -0.5rem;
+				width: calc(100% + 1rem);
+				height: 100%;
+			}
+
+			/* here for specificity */
+			@media (min-width: 350px) {
+				.bg {
+					left: -1.5rem;
+					width: calc(100% + 3rem);
+				}
+			}
+		}
+
+		> div.section-with-more {
+			span.see-all {
+				font-size: 0.9rem;
+				margin-left: 0.5rem;
+			}
+		}
+
+		ol {
+			max-width: calc(100% - 1rem);
+			margin-top: 0;
+			margin-bottom: 0.5rem;
+			margin-left: auto;
+			padding: 0;
+		}
+	}
+
     @media (min-width: 450px) {
         #top-links {
             padding-inline-start: 2rem;
         }
     }
+
+	@media (min-width: 680px) {
+		section.links-section > div {
+			padding-top: 1.5rem;
+		}
+	}
 </style>

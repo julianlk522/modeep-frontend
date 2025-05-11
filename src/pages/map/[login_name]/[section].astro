@@ -1,12 +1,11 @@
 ---
-import Link from '../../../components/Link/Link'
-import Pagination from '../../../components/Pagination.astro'
-import TopCats from '../../../components/Rankings/TopCats.astro'
+import Rankings from '../../../components/Rankings/Rankings.astro'
 import ScrollUp from '../../../components/ScrollUp.astro'
 import TagCat from '../../../components/Tag/TagCat'
-import { LINKS_PAGE_LIMIT, TMAP_ENDPOINT } from '../../../constants'
+import { TMAP_ENDPOINT } from '../../../constants'
 import BaseLayout from '../../../layouts/BaseLayout.astro'
 import {
+type Period,
 type SortMetric,
 type TreasureMapSection
 } from '../../../types'
@@ -43,6 +42,12 @@ if (Astro.url.searchParams.get('cats')) {
 }
 // Encode cats params reserved chars
 const encoded_cats = encodeURIComponent(cats)
+
+// period
+let period: Period | undefined
+if (Astro.url.searchParams.get('period')) {
+    period = Astro.url.searchParams.get('period') as Period
+}
 
 // nsfw
 let nsfw: boolean = false
@@ -118,20 +123,6 @@ const is_only_page = page === 1 && page_count === 1
             <img src='../../back.svg' height={18} width={18} />
             <a href={`/map/${login_name}${sort_by ? `?sort_by=${sort_by}` : ''}${nsfw ? sort_by ? '&nsfw=true' : '?nsfw=true' : ''}`}>All sections</a>
         </span>
-		
-		{links?.length ? 
-            <section>
-                <TopCats
-                    TopCats={section_data.Cats}
-                    CatsParams={encoded_cats}
-                    SortBy={sort_by}
-                    NSFW={nsfw}
-                    Mini
-                    IsTmapFromUser={login_name}
-                    TmapSection={section as ("submitted" | "copied" | "tagged")}
-                />
-            </section> 
-        : null}
 
 		{/* Config */}
 		{links?.length ? <section id='sort-and-filter'>
@@ -184,40 +175,20 @@ const is_only_page = page === 1 && page_count === 1
 			</div> : null}
 		</section> : null}
 
-		{/* Links */}
-		{links.length ? 
-			<section id={`${section}-top-links`}>
-                <ol start={page ? (page - 1) * LINKS_PAGE_LIMIT + 1 : ''}>
-                    {links.map((link) => (
-                        <Link
-                            client:load
-                            Link={link}
-                            CatsFromUser={
-                                link.CatsFromUser
-                                    ? login_name
-                                    : undefined
-                            }
-                            IsTmapPage={true}
-                            Token={token}
-                            User={user}
-                        />
-                    ))}
-                </ol>
-
-                {is_only_page ? null : <Pagination
-                    Cats={cats}
-                    SortBy={sort_by}
-                    HasNSFW={nsfw}
-                    Page={page ?? 1}
-                    PageCount={page_count}
-                    TmapSection={section as ("submitted" | "copied" | "tagged")}
-                    TmapOwner={login_name}
-                />}
-            </section>
-		: <section>
-			<p id="no-links">No links found.</p>
-			<p>&macr;&bsol;&lowbar;&lpar;&#x30c4;&rpar;&lowbar;&sol;&macr;</p>
-		</section>}
+		<Rankings
+            IsTmapFromUser={login_name}
+            TmapSection={section as ("submitted" | "copied" | "tagged")}
+            TmapSectionLinks={links}
+            TopCats={section_data.Cats}
+            CatsParams={encoded_cats}
+            PeriodParams={period}
+            NSFWParams={nsfw}
+            SortByParams={sort_by}
+            PageParams={page}
+            PageCount={page_count}
+            User={user}
+            Token={token}
+        />
 
 		<ScrollUp />
 	</main>
