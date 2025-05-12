@@ -8,11 +8,7 @@ import { LINK_PREVIEW_IMG_ENDPOINT, LINKS_ENDPOINT } from '../../constants'
 import * as types from '../../types'
 import { is_error_response } from '../../types'
 import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
-import {
-	format_long_date,
-	get_local_time,
-	get_units_ago,
-} from '../../util/format_date'
+import { format_long_date, get_units_ago } from '../../util/format_date'
 import {
 	save_action_and_path_then_redirect_to_login,
 	save_path_then_redirect_to_login,
@@ -267,7 +263,7 @@ export default function Link(props: Props) {
 				</a>{' '}
 				<span class='submit-date'>
 					{should_display_full_date
-						? format_long_date(get_local_time(submit_date))
+						? format_long_date(submit_date)
 						: get_units_ago(submit_date)}
 				</span>
 			</p>
