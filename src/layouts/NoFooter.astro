@@ -252,18 +252,6 @@ let user = Astro.cookies.get('user')?.value
 			scrollbar-width: thin;
 		}
 
-		section:has(p#no-links) {
-			text-align: center;
-		}
-
-		section:has(p#no-further-cats) {
-			padding: 0.5rem 0 1rem;
-		}
-
-		section:has(nav.pagination) {
-			padding-bottom: 0;
-		}
-
 		#cat-list,
 		#recommendations-list {
 			display: flex;
@@ -305,7 +293,7 @@ let user = Astro.cookies.get('user')?.value
 			ol#top-cats,
 			ol#top-contributors {
 				font-size: 1rem;
-				max-height: 132px;
+				max-height: 9.4rem;
 			}
 		}
 

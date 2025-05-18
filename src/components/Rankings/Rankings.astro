@@ -51,8 +51,6 @@ let multiple_tmap_sections: typeof tmap_sections[number][] = []
 if (tmap) {
     multiple_tmap_sections = tmap_sections.filter((s) => tmap[s]?.length)
 }
-
-const home_page_non_default_periods = ['day', 'week', 'year','all']
 ---
 
 <div id="rankings" class={is_home_page ? 'home' : ''}>
@@ -90,37 +88,23 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
         }
     </aside>
 
-    <section>
-        {is_home_page ? <ul id='change-period'>
-            <li>
-                <h2>This Month's Treasure:</h2>
-            </li>
-            {
-                home_page_non_default_periods.map((period) => (
-                    <li class='period'>
-                        <a href={`/search?period=${period}`}>{period}</a>
-                    </li>
-                ))
-            }
-        </ul> : null}
-
-        <TopLinks 
-            Links={links}
-            NSFW={nsfw_params}
-            Cats={cats_params}
-            Period={period_params}
-            SortBy={sort_by_params}
-            Page={page}
-            PageCount={page_count}
-            Tmap={tmap}
-            MultipleTmapSections={multiple_tmap_sections}
-            SingleTmapSection={single_tmap_section}
-            SingleTmapSectionName={single_tmap_section_name}
-            TmapOwner={tmap_owner}
-            Token={token}
-            User={user}
-        /> 
-    </section>
+  <TopLinks 
+        Links={links}
+        NSFW={nsfw_params}
+        Cats={cats_params}
+        Period={period_params}
+        SortBy={sort_by_params}
+        Page={page}
+        PageCount={page_count}
+        Tmap={tmap}
+        MultipleTmapSections={multiple_tmap_sections}
+        SingleTmapSection={single_tmap_section}
+        SingleTmapSectionName={single_tmap_section_name}
+        TmapOwner={tmap_owner}
+        IsHomePage={is_home_page}
+        Token={token}
+        User={user}
+    />
 
     {links && links.length > 5 
         ? <ScrollUp /> 
@@ -150,54 +134,23 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 
         ul#skip-to-link-section {
             margin-bottom: 0;
-        }
-
-        h2.top-links-header {
-            margin-bottom: 0;
-        }
-
-        h2.top-links-header.has-section-after {
-            font-size: 1.1rem;
-        }
-
-        section:has(ul#change-period) {
-            max-width: 800px;
-            padding-top: 1rem;
-        }
-
-        ul#change-period {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            list-style: none;
-            padding-inline-start: 0;
-            padding-bottom: 0.5rem;
-            margin: 0;
-            margin-bottom: 1rem;
-            font-weight: bold;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-
-            li h2 {
-                margin-bottom: 0;
-            }
-
-            li:nth-of-type(2) {
-                margin-left: 0.5rem;
-            }
-
-            li.period {
-                margin-right: 0.5rem;
-            }
-
-            li.period:last-of-type {
-                margin-right: 0;
-            }
+            padding-inline-start: 1.5rem;
         }
 
         /* had to put this here to increase specificity */
         @media (min-width: 450px) {
             aside#top-cats-and-contributors {
                 flex-direction: row;
+
+                > div {
+                    margin-top: 0;
+                }
+            }
+        }
+
+        @media (min-width: 680px) {
+            aside#top-cats-and-contributors {
+                align-items: unset;
             }
         }
 	}
@@ -232,7 +185,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
             }
 
             aside#top-cats-and-contributors.tmap {
-                margin-top: 1.5rem;
+                margin-top: 1rem;
             }
         }
     }

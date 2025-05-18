@@ -3,10 +3,6 @@
 	margin: 1rem 0 0;
 }
 
-astro-island:first-of-type li.link {
-	margin-top: 1rem;
-}
-
 .link.single {
 	list-style: none;
 }
@@ -126,6 +122,12 @@ button.delete-link-btn {
 	position: absolute;
 	right: 0;
 	bottom: 0;
+}
+
+@media (min-width: 680px) {
+	astro-island:first-of-type li.link {
+		margin-top: 0;
+	}
 }
 
 @media (min-width: 768px) {

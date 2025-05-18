@@ -38,7 +38,7 @@ let endpoint = tmap_owner ? `/map/${tmap_owner}` : "/search"
 if (single_tmap_section) endpoint += `/${single_tmap_section}`
 ---
 
-{top_cats?.length ? <div>
+{top_cats?.length ? <div id="top-cats-container" class={tmap_owner ? 'tmap' : ''}>
     <h2 class={more ? 'more' : ''}>{is_subcats ? 'Top Subcats' : more ? 'More Cats' : 'Top Cats'}</h2>
     <ol id="top-cats" class={top_cats_classes.join(' ')}>
         {
@@ -69,8 +69,12 @@ if (single_tmap_section) endpoint += `/${single_tmap_section}`
 </div> : is_subcats ? <p id="no-further-cats">No further subcats.</p> : null}
 
 <style>
-    div:has(#top-cats) {
+    #top-cats-container {
         padding-bottom: 1rem;
+    }
+
+    #top-cats-container.tmap:not(:has(+ #skip-to-section-container)) {
+        width: 100%;
     }
     
     h2.more {
@@ -136,7 +140,7 @@ if (single_tmap_section) endpoint += `/${single_tmap_section}`
 
     p#no-further-cats {
         margin-top: 0;
-        font-weight: bold;
+        align-self: center;
     }
 
     @media (min-width: 350px) {

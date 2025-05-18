@@ -11,15 +11,16 @@ interface Props {
     Cats?: string
     Period?: types.Period
     SortBy?: types.SortMetric
+    Page?: number
+    PageCount?: number
     Tmap?: types.TreasureMap | types.FilteredTreasureMap
     MultipleTmapSections?: typeof types.tmap_sections[number][]
     SingleTmapSection?: types.TmapLink[]
     SingleTmapSectionName?: typeof types.tmap_sections[number]
     TmapOwner?: string
-    Token?: string
+	IsHomePage?: boolean
     User?: string
-    Page?: number
-    PageCount?: number
+    Token?: string
 
 }
 const {
@@ -34,60 +35,102 @@ const {
 	MultipleTmapSections: multiple_tmap_sections, 
 	SingleTmapSection: single_tmap_section, 
 	SingleTmapSectionName: single_tmap_section_name, 
-	TmapOwner: tmap_owner_login_name, 
+	TmapOwner: tmap_owner_login_name,
+	IsHomePage: is_home_page,
 	User: user, 
 	Token: token, 
 } = Astro.props
 
 const is_only_page = !page || !page_count || (page === 1 && page_count === 1)
+const home_page_non_default_periods = ['day', 'week', 'year','all']
 ---
 
 <>    
     {links?.length ? 
-        <ol id='top-links' start={page ? (page - 1) * LINKS_PAGE_LIMIT + 1 : ''}>
-        {links?.map((link) => (
-            <Link
-                client:load
-                Link={link}
-                Token={token}
-                User={user}
-            />
-        ))}
-        </ol>
+		<section class="links-section search-page">
+			{is_home_page ? <ul id='change-period'>
+				<li>
+					<h2>This Month's Treasure:</h2>
+				</li>
+				{
+					home_page_non_default_periods.map((period) => (
+						<li class='period'>
+							<a href={`/search?period=${period}`}>{period}</a>
+						</li>
+					))
+				}
+			</ul> : null}
+
+			<ol id='top-links' start={page ? (page - 1) * LINKS_PAGE_LIMIT + 1 : ''}>
+				{links?.map((link) => (
+					<Link
+						client:load
+						Link={link}
+						Token={token}
+						User={user}
+					/>
+				))}
+       		</ol>
+
+			    {is_only_page ? null : <Pagination
+					Cats={cats}
+					Period={period ?? 'month'}
+					SortBy={sort_by}
+					HasNSFW={nsfw}
+					Page={page ?? 1}
+					PageCount={page_count}
+					SingleTmapSectionName={single_tmap_section_name}
+					TmapOwner={tmap_owner_login_name}
+				/>}
+		</section>
+
     : tmap ?
         multiple_tmap_sections?.length ? 
-			multiple_tmap_sections.map((s) => {
-				const is_section_with_more = tmap.SectionsWithMore?.length && tmap.SectionsWithMore?.includes(s.toLowerCase())
+			<div id="tmap-multiple-sections-container">
+				{multiple_tmap_sections.map((s) => {
+					const is_section_with_more = tmap.SectionsWithMore?.length && tmap.SectionsWithMore?.includes(s.toLowerCase())
 
-				return (
-					<section id={s.toLowerCase()} class='links-section'>
-						<div class={is_section_with_more ?"section-with-more" : ""}>
-							<h2>{s}</h2>
-							{is_section_with_more ? <span class="see-all">
-								<a href={`/map/${tmap_owner_login_name}/${s.toLowerCase()}${cats ? `?cats=${cats}` : ''}${sort_by ? cats ? `&sort_by=${sort_by}` : `?sort_by=${sort_by}` : ''}${nsfw ? sort_by ? '&nsfw=true' : '?nsfw=true' : ''}`}>See All</a>
-							</span> : null}
-							<div class="bg"></div>
-						</div>
+					return (
+						<section id={s.toLowerCase()} class='links-section'>
+							<div class={is_section_with_more ?"section-with-more" : ""}>
+								<h2>{s}</h2>
+								{is_section_with_more ? <span class="see-all">
+									<a href={`/map/${tmap_owner_login_name}/${s.toLowerCase()}${cats ? `?cats=${cats}` : ''}${sort_by ? cats ? `&sort_by=${sort_by}` : `?sort_by=${sort_by}` : ''}${nsfw ? sort_by ? '&nsfw=true' : '?nsfw=true' : ''}`}>See All</a>
+								</span> : null}
+								<div class="bg"></div>
+							</div>
 
-						<ol>
-							{tmap[s].map((link) => (
-								<Link
-									client:load
-									Link={link}
-									CatsFromUser={
-										link.CatsFromUser
-											? tmap_owner_login_name
-											: undefined
-									}
-									IsTmapPage={true}
-									Token={token}
-									User={user}
-								/>
-							))}
-						</ol>
-					</section>
-				)
-		    })
+							<ol>
+								{tmap[s].map((link) => (
+									<Link
+										client:load
+										Link={link}
+										CatsFromUser={
+											link.CatsFromUser
+												? tmap_owner_login_name
+												: undefined
+										}
+										IsTmapPage={true}
+										Token={token}
+										User={user}
+									/>
+								))}
+							</ol>
+
+							{is_only_page ? null : <Pagination
+								Cats={cats}
+								Period={period ?? 'month'}
+								SortBy={sort_by}
+								HasNSFW={nsfw}
+								Page={page ?? 1}
+								PageCount={page_count}
+								SingleTmapSectionName={single_tmap_section_name}
+								TmapOwner={tmap_owner_login_name}
+							/>}
+						</section>
+					)
+				})}
+			</div>
 		: 
             <NoLinksFound />
     : single_tmap_section?.length ?
@@ -108,21 +151,21 @@ const is_only_page = !page || !page_count || (page === 1 && page_count === 1)
                     />
                 ))}
             </ol>
+
+			{is_only_page ? null : <Pagination
+				Cats={cats}
+				Period={period ?? 'month'}
+				SortBy={sort_by}
+				HasNSFW={nsfw}
+				Page={page ?? 1}
+				PageCount={page_count}
+				SingleTmapSectionName={single_tmap_section_name}
+				TmapOwner={tmap_owner_login_name}
+			/>}
         </section>
     :
         <NoLinksFound />
     }
-
-    {is_only_page ? null : <Pagination
-        Cats={cats}
-        Period={period ?? 'month'}
-        SortBy={sort_by}
-        HasNSFW={nsfw}
-        Page={page ?? 1}
-        PageCount={page_count}
-        SingleTmapSectionName={single_tmap_section_name}
-        TmapOwner={tmap_owner_login_name}
-    />}
 </>
 
 <style>
@@ -138,12 +181,42 @@ const is_only_page = !page || !page_count || (page === 1 && page_count === 1)
     }
 
     section.links-section {
+		width: 100%;
 		padding: 0;
 		border-bottom: none;
 
 		h2 {
 			margin-bottom: 0;
 		}
+
+		ul#change-period {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            list-style: none;
+            padding-inline-start: 0;
+            padding-bottom: 0.5rem;
+            margin: 0;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+            li h2 {
+                margin-bottom: 0;
+            }
+
+            li:nth-of-type(2) {
+                margin-left: 0.5rem;
+            }
+
+            li.period {
+                margin-right: 0.5rem;
+            }
+
+            li.period:last-of-type {
+                margin-right: 0;
+            }
+        }
 
 		> .section-with-more h2 {
 			display: inline
@@ -155,7 +228,7 @@ const is_only_page = !page || !page_count || (page === 1 && page_count === 1)
 			position: sticky;
 			top: 0px;
 			z-index: 1;
-			padding: 1rem 0 0.5rem;
+			padding: 1.5rem 0 0.5rem;
 
 			> .bg {
 				z-index: -2;
@@ -193,6 +266,15 @@ const is_only_page = !page || !page_count || (page === 1 && page_count === 1)
 		}
 	}
 
+	#tmap-multiple-sections-container {
+		display: flex;
+		flex-direction: column;
+
+		> .links-section ol {
+			margin-top: 1rem;
+		}
+	}
+
     @media (min-width: 450px) {
         #top-links {
             padding-inline-start: 2rem;
@@ -200,8 +282,8 @@ const is_only_page = !page || !page_count || (page === 1 && page_count === 1)
     }
 
 	@media (min-width: 680px) {
-		section.links-section > div {
-			padding-top: 1.5rem;
+		section.links-section.search-page {
+			padding-top: 0.5rem;
 		}
 	}
 </style>

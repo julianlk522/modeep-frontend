@@ -5,6 +5,7 @@ import TagCat from '../../../components/Tag/TagCat'
 import { TMAP_ENDPOINT } from '../../../constants'
 import BaseLayout from '../../../layouts/BaseLayout.astro'
 import {
+tmap_sections,
 type Period,
 type SortMetric,
 type TreasureMapSection
@@ -24,8 +25,8 @@ if (!login_name) {
 let page_title = `${login_name}'s Treasure Map`
 
 // section
-let section = Astro.params.section?.toLowerCase()
-if (!section || !['submitted', 'copied', 'tagged'].includes(section)) {
+let section_name = Astro.params.section?.toLowerCase()
+if (!section_name || !tmap_sections.map((s) => s.toLowerCase()).includes(section_name)) {
     return Astro.redirect(`/map/${login_name}`)
 }
 
@@ -79,7 +80,7 @@ if (Astro.url.searchParams.get('page')) {
 
 // Get Tmap Section
 let section_data: TreasureMapSection
-let tmap_section_url = TMAP_ENDPOINT + `/${login_name}` + `?section=${section}`
+let tmap_section_url = TMAP_ENDPOINT + `/${login_name}` + `?section=${section_name}`
 if (cats) {
 	tmap_section_url += `&cats=${encoded_cats}`
 }
@@ -113,7 +114,7 @@ const nsfw_links_count = section_data.NSFWLinksCount
 <BaseLayout Title={page_title}>
 	<main>
 		<h1>{login_name}</h1>
-        <p class="subtitle">({section})</p>
+        <p class="subtitle">({section_name[0].toUpperCase() + section_name.slice(1)})</p>
 
         <span id="see-all-sections">
             <img src='../../back.svg' height={18} width={18} />
@@ -134,9 +135,9 @@ const nsfw_links_count = section_data.NSFWLinksCount
                 ? <p id="nsfw-filter">NSFW links ({nsfw_links_count}):
                     <span>
                         {nsfw ? 
-                            <a href={`/map/${login_name}/${section}${cats ? `?cats=${encoded_cats}` : ''}${sort_by ? cats ? `&sort_by=${sort_by}` : `?sort_by=${sort_by}` : ''}`}>hide</a>
+                            <a href={`/map/${login_name}/${section_name}${cats ? `?cats=${encoded_cats}` : ''}${sort_by ? cats ? `&sort_by=${sort_by}` : `?sort_by=${sort_by}` : ''}`}>hide</a>
                         : 
-                            <a href={`/map/${login_name}/${section}${cats ? `?cats=${encoded_cats}` : ''}${sort_by ? cats ? `&sort_by=${sort_by}` : `?sort_by=${sort_by}` : ''}${cats || sort_by ? `&nsfw=true` : '?nsfw=true'}`}>unhide</a>
+                            <a href={`/map/${login_name}/${section_name}${cats ? `?cats=${encoded_cats}` : ''}${sort_by ? cats ? `&sort_by=${sort_by}` : `?sort_by=${sort_by}` : ''}${cats || sort_by ? `&nsfw=true` : '?nsfw=true'}`}>unhide</a>
                         }
                     </span> 
                 </p>
@@ -150,7 +151,7 @@ const nsfw_links_count = section_data.NSFWLinksCount
 					<p id="cats-filter">
                         Cats Filter:
                         <span id='clear-cats-filter'>
-                        <a href={`/map/${login_name}/${section}${sort_by ? `&sort_by=${sort_by}` : ''}${nsfw ? '&nsfw=true' : ''}`}>clear</a>
+                        <a href={`/map/${login_name}/${section_name}${sort_by ? `&sort_by=${sort_by}` : ''}${nsfw ? '&nsfw=true' : ''}`}>clear</a>
                         </span>
                         <p id="transfer-to-global-map">
                             <a href={`/search?cats=${encoded_cats}${sort_by ? `&sort_by=${sort_by}` : ''}${nsfw ? sort_by ? '&nsfw=true' : '?nsfw=true' : ''}`}>Transfer cats to Global Treasure Map</a>
@@ -180,6 +181,7 @@ const nsfw_links_count = section_data.NSFWLinksCount
             PageCount={section_data.PageCount}
             TopCats={section_data.Cats}
             SingleTmapSection={single_tmap_section}
+            SingleTmapSectionName={section_name as typeof tmap_sections[number]}
             IsTmapFromUser={login_name}
             User={user}
             Token={token}

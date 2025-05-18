@@ -8,13 +8,15 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 		<h1>About</h1>
 		<img id="cornucopia" src={cornucopia.src} title="In this elaborate feast, every guest finds something delicious." />
 		<section>
-			<p><strong>The Internet rocks</strong>. Our precious treasure trove introduces new knowledge, joy, curiosity, beauty, and meaning to all manner of inhabitants all the time. But poor organization limits our opportunity and potential. It should be easy to find and enjoy all the best parts of this wild land.</p>
+			<p><strong>The Internet rocks</strong>.</p>
+
+			<p>Our precious treasure trove introduces new knowledge, joy, curiosity, beauty, and meaning to all manner of inhabitants all the time. But poor organization limits opportunities for potential satisfaction. It should be easy to find and enjoy all the best parts of this wild land.</p>
 
 			<p>
-				The <span id="fitm">Flexible Internet Treasure Map (FITM)</span> marks the hiding places of treasured links found by brave web wanderers. Its mission is to help everyone find more of what they love by documenting pathways to known favorites.
+				The <strong>Flexible Internet Treasure Map (FITM)</strong> marks the hiding places of treasured links found by brave web wanderers. Its mission is to help everyone find more of what they love by documenting pathways to known favorites.
 			</p>
 
-			<p>Links are ranked according to aggregate user feedback and can be flexibly arranged according to associated cat(egorie)s and other properties.</p>
+			<p>Links are ranked according to aggregate user feedback and can be flexibly arranged according to associated <a href="/about/how#cats">cat(egorie)s</a> and other properties.</p>
 
 			<p>
 				<em>Treasure</em> can mean anything with a URL. Whatever you think is worth knowing about. FITM provides a template for recording and retrieving any remarkable online item.
@@ -31,11 +33,11 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 			<p>Compared to other search methods...</p>
 
 			<ul>
-				<li><strong>Objective, relevant outputs.</strong> Links found in search results are ones real people liked the most, and all preferences are weighed equally. Factors like link age that sneakily influence other recommendation systems are ignored here unless explicitly engaged through filters.</li>
+				<li><strong>Objective, relevant recommendations.</strong> Links found in search results are ones real people liked the most. All preferences are weighed the same; FITM does not take bribes for content placement. Factors that sneakily influence other recommendation systems, like a link's age, are ignored unless explicitly opted into using filters.</li>
 
-				<li><strong>Highly specific searching.</strong> Matching <em>all</em>&mdash;not <em>any</em>&mdash; of your keywords (<a href="/about/how#cats">cats</a>). In exchange for not getting an endless recommendation stream, you get sniper-like concentration on the most noteworthy handful.</li>
+				<li><strong>High-specificity searches.</strong> Matching <em>all</em>&mdash;not <em>any</em>&mdash; of your keywords (cats). In exchange for not getting an endless recommendation stream, you get sniper-like concentration on the most noteworthy handful.</li>
 
-				<li><strong>No distractions.</strong> FITM is more like a library or art gallery than a bar&mdash;an efficient pipeline to access the documented world. No being inundated with pesky ads or other unsolicited garbage. You're encouraged to effortlessly locate specific material using specialized search tools, or to wander amid new ideas and explore what provokes interest. Either way, casual communication is not only <em>not necessary</em>, it would clutter and diminish the simple purity that makes FITM searches effective.</li>
+				<li><strong>No distractions.</strong> FITM is more like a library or art gallery than a bar&mdash;an efficient pipeline for accessing the documented world. No being inundated with pesky ads or other unsolicited fluff. You're encouraged to effortlessly locate specific material using specialized search tools, or to wander amid new ideas and explore what provokes interest. Either way, casual communication is not only <em>not necessary</em>, it would clutter and diminish the simple purity that makes FITM searches effective.</li>
 			</ul>
 		</section>
 
@@ -61,10 +63,6 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 
 	img#cornucopia {
 		max-height: 150px;
-	}
-
-	span#fitm {
-		font-weight: bold;
 	}
 
 	ul {
