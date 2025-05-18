@@ -39,18 +39,22 @@ assign_scrollup_btn_click_handler,
 		bottom: 1rem;
 		right: max(24px, calc((100% - min(100%, 1080px)) / 2));
 		z-index: 1;
+
+		svg {
+			width: 24px;
+			height: 24px;
+		}
+
+		p {
+			font-size: 0.9rem;
+			margin: 0;
+		}
 	}
-	#scroll-to-top svg {
-		width: 24px;
-		height: 24px;
-	}
-	#scroll-to-top p {
-		font-size: 0.9rem;
-		margin: 0;
-	}
+
 	#scroll-to-top:hover {
 		cursor: pointer;
 	}
+	
 	#scroll-to-top.visible {
 		display: flex;
 	}

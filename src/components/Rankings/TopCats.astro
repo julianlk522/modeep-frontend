@@ -1,36 +1,46 @@
 ---
 import { CATS_PAGE_LIMIT, MIN_LIST_ITEMS_FOR_SCROLLBAR } from '../../constants'
-import type { CatCount, Period, SortMetric } from '../../types'
+import type { CatCount, Period, SortMetric, tmap_sections } from '../../types'
 import TagCat from '../Tag/TagCat'
 
 interface Props {
-    TopCats: CatCount[]
     CatsParams?: string
-    Period?: Period
-    SortBy?: SortMetric
-    NSFW?: boolean
+    PeriodParams?: Period
+    SortByParams?: SortMetric
+    NSFWParams?: boolean
     More?: boolean
     Mini?: boolean
+    TopCats: CatCount[]
+    SingleTmapSection?: typeof tmap_sections[number]
     IsTmapFromUser?: string
-    TmapSection?: "submitted" | "copied" | "tagged"
 }
 
-const { TopCats: top_cats, CatsParams: cats_params, Period: period, SortBy: sort_by, NSFW: nsfw, More: more, Mini: mini, IsTmapFromUser: tmap_owner, TmapSection: tmap_section } = Astro.props
+const { 
+    CatsParams: cats_params, 
+    PeriodParams: period, 
+    SortByParams: sort_by, 
+    NSFWParams: nsfw, 
+    More: more, 
+    Mini: mini, 
+    TopCats: top_cats, 
+    SingleTmapSection: single_tmap_section,
+    IsTmapFromUser: tmap_owner, 
+} = Astro.props
 
-let list_classes = more ? ['more'] : tmap_owner ? ['tmap'] : []
-if (mini) list_classes.push('mini')
-if (!more && top_cats?.length > MIN_LIST_ITEMS_FOR_SCROLLBAR) list_classes.push('scrollable')
+let top_cats_classes = more ? ['more'] : tmap_owner ? ['tmap'] : []
+if (mini) top_cats_classes.push('mini')
+if (!more && top_cats?.length > MIN_LIST_ITEMS_FOR_SCROLLBAR) top_cats_classes.push('scrollable')
 
 const is_subcats = cats_params ? true : false
 const has_period = period && period !== 'all'
 
 let endpoint = tmap_owner ? `/map/${tmap_owner}` : "/search"
-if (tmap_section) endpoint += `/${tmap_section}`
+if (single_tmap_section) endpoint += `/${single_tmap_section}`
 ---
 
 {top_cats?.length ? <div>
     <h2 class={more ? 'more' : ''}>{is_subcats ? 'Top Subcats' : more ? 'More Cats' : 'Top Cats'}</h2>
-    <ol id="top-cats" class={list_classes.join(' ')}>
+    <ol id="top-cats" class={top_cats_classes.join(' ')}>
         {
             top_cats.map((cat) => (
                 <TagCat 
@@ -78,6 +88,10 @@ if (tmap_section) endpoint += `/${tmap_section}`
 
         li.cat::marker {
             font-weight: normal;
+        }
+
+        li.cat:last-child {
+            padding-bottom: 2px;
         }
     }
 

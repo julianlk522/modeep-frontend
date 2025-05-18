@@ -1,5 +1,5 @@
 ---
-import NoLinksFound from '../components/NoLinksFound.astro'
+import NoLinksFound from '../components/Rankings/NoLinksFound.astro'
 import Rankings from '../components/Rankings/Rankings.astro'
 import SearchFilters from '../components/SearchFilters/Filters'
 import { CATS_ENDPOINT, CONTRIBUTORS_ENDPOINT, LINKS_ENDPOINT } from '../constants'
@@ -221,6 +221,7 @@ const page_title = `${(sort_by !== 'rating' ? " Newest" : " Top Rated")}${cats ?
 					PeriodParams={period}
 					SortByParams={sort_by}
 					PageParams={page}
+					PageCount={data.PageCount}
 					TopCats={has_cats ? top_subcats : top_cats}
 					TopContributors={top_contributors}
 					Token={token}

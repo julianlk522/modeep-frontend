@@ -104,14 +104,10 @@ if (!tmap_resp.Response || tmap_resp.RedirectTo) {
 	return Astro.redirect(tmap_resp.RedirectTo)
 }
 section_data = await tmap_resp.Response.json()
-const links = section_data.Links
+const single_tmap_section = section_data.Links
 
 // Display NSFW links count if > 0
 const nsfw_links_count = section_data.NSFWLinksCount
-
-// Pagination
-const page_count = section_data.PageCount
-const is_only_page = page === 1 && page_count === 1
 ---
 
 <BaseLayout Title={page_title}>
@@ -125,7 +121,7 @@ const is_only_page = page === 1 && page_count === 1
         </span>
 
 		{/* Config */}
-		{links?.length ? <section id='sort-and-filter'>
+		{single_tmap_section?.length ? <section id='sort-and-filter'>
 			<h2>Sort and Filter</h2>
 
 			{/* Sort By */}
@@ -176,16 +172,15 @@ const is_only_page = page === 1 && page_count === 1
 		</section> : null}
 
 		<Rankings
-            IsTmapFromUser={login_name}
-            TmapSection={section as ("submitted" | "copied" | "tagged")}
-            TmapSectionLinks={links}
-            TopCats={section_data.Cats}
             CatsParams={encoded_cats}
             PeriodParams={period}
             NSFWParams={nsfw}
             SortByParams={sort_by}
             PageParams={page}
-            PageCount={page_count}
+            PageCount={section_data.PageCount}
+            TopCats={section_data.Cats}
+            SingleTmapSection={single_tmap_section}
+            IsTmapFromUser={login_name}
             User={user}
             Token={token}
         />

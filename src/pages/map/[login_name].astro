@@ -6,7 +6,6 @@ import Profile from '../../components/TmapProfile/Profile'
 import { TMAP_ENDPOINT } from '../../constants'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import * as types from '../../types'
-import { tmap_sections } from '../../types'
 import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
 
 // Auth
@@ -100,7 +99,6 @@ if (!tmap_resp.Response || tmap_resp.RedirectTo) {
 	return Astro.redirect(tmap_resp.RedirectTo)
 }
 tmap = await tmap_resp.Response.json()
-const used_sections = tmap_sections.filter((s) => tmap[s]?.length)
 
 // Display about if used (unfiltered only)
 let profile: types.Profile | undefined
@@ -185,14 +183,13 @@ const nsfw_links_count = tmap.NSFWLinksCount
 		</section>}
 
 		<Rankings
-			Tmap={tmap}
-			IsTmapFromUser={login_name}
-			UsedTmapSections={used_sections}
-			TopCats={tmap.Cats}
 			CatsParams={encoded_cats}
 			PeriodParams={period}
 			NSFWParams={nsfw}
 			SortByParams={sort_by}
+			TopCats={tmap.Cats}
+			Tmap={tmap}
+			IsTmapFromUser={login_name}
 			User={user}
 			Token={token}
 		/>

@@ -2,20 +2,20 @@
 import { LINKS_PAGE_LIMIT } from '../../constants'
 import * as types from '../../types'
 import Link from '../Link/Link'
-import NoLinksFound from '../NoLinksFound.astro'
 import Pagination from '../Pagination.astro'
+import NoLinksFound from './NoLinksFound.astro'
 
 interface Props {
     Links?: types.Link[]
-    Tmap?: types.TreasureMap | types.FilteredTreasureMap
-    TmapUsedSections?: ("Submitted" | "Copied" | "Tagged")[]
-    TmapOwner?: string
-    TmapSection?: "submitted" | "copied" | "tagged"
-    TmapSectionLinks?: types.TmapLink[]
     NSFW?: boolean
     Cats?: string
     Period?: types.Period
     SortBy?: types.SortMetric
+    Tmap?: types.TreasureMap | types.FilteredTreasureMap
+    MultipleTmapSections?: typeof types.tmap_sections[number][]
+    SingleTmapSection?: types.TmapLink[]
+    SingleTmapSectionName?: typeof types.tmap_sections[number]
+    TmapOwner?: string
     Token?: string
     User?: string
     Page?: number
@@ -24,17 +24,17 @@ interface Props {
 }
 const {
 	Links: links, 
-	Tmap: tmap, 
-	TmapUsedSections: tmap_used_sections, 
-	TmapOwner: tmap_owner_login_name, 
-	TmapSection: tmap_section, 
-	TmapSectionLinks: tmap_section_links, 
 	NSFW: nsfw, 
 	Cats: cats, 
 	Period: period, 
 	SortBy: sort_by, 
 	Page: page, 
 	PageCount: page_count,
+	Tmap: tmap, 
+	MultipleTmapSections: multiple_tmap_sections, 
+	SingleTmapSection: single_tmap_section, 
+	SingleTmapSectionName: single_tmap_section_name, 
+	TmapOwner: tmap_owner_login_name, 
 	User: user, 
 	Token: token, 
 } = Astro.props
@@ -55,12 +55,12 @@ const is_only_page = !page || !page_count || (page === 1 && page_count === 1)
         ))}
         </ol>
     : tmap ?
-        tmap_used_sections?.length ? 
-			tmap_used_sections.map((s: "Submitted" | "Copied" | "Tagged") => {
+        multiple_tmap_sections?.length ? 
+			multiple_tmap_sections.map((s) => {
 				const is_section_with_more = tmap.SectionsWithMore?.length && tmap.SectionsWithMore?.includes(s.toLowerCase())
 
 				return (
-					<section id={s} class='links-section'>
+					<section id={s.toLowerCase()} class='links-section'>
 						<div class={is_section_with_more ?"section-with-more" : ""}>
 							<h2>{s}</h2>
 							{is_section_with_more ? <span class="see-all">
@@ -90,19 +90,19 @@ const is_only_page = !page || !page_count || (page === 1 && page_count === 1)
 		    })
 		: 
             <NoLinksFound />
-    : tmap_section_links?.length ?
-        <section id={`${tmap_section}-links`}>
+    : single_tmap_section?.length ?
+        <section id={`${single_tmap_section_name?.toLowerCase()}-links`} class='links-section'>
             <ol start={page ? (page - 1) * LINKS_PAGE_LIMIT + 1 : ''}>
-                {tmap_section_links.map((link) => (
+                {single_tmap_section.map((link) => (
                     <Link
                         client:load
                         Link={link}
+                        IsTmapPage={true}
                         CatsFromUser={
                             link.CatsFromUser
                                 ? tmap_owner_login_name
                                 : undefined
                         }
-                        IsTmapPage={true}
                         Token={token}
                         User={user}
                     />
@@ -120,7 +120,7 @@ const is_only_page = !page || !page_count || (page === 1 && page_count === 1)
         HasNSFW={nsfw}
         Page={page ?? 1}
         PageCount={page_count}
-        TmapSection={tmap_section as ("submitted" | "copied" | "tagged")}
+        SingleTmapSectionName={single_tmap_section_name}
         TmapOwner={tmap_owner_login_name}
     />}
 </>

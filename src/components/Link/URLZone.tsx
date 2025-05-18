@@ -46,11 +46,12 @@ export default function URLZone({
 				<a
 					href={url_with_protocol}
 					title={summary ? summary : undefined}
+					class='url-link'
 					onClick={(e) => {
 						e.preventDefault()
 						handle_click(e)
 					}}
-					class='url-link'
+					// this is needed to handle middle clicks
 					onMouseDown={(e) => {
 						// don't double-count left click
 						if (e.button === 0) return

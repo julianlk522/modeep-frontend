@@ -1,5 +1,5 @@
 ---
-import type { Period, SortMetric } from '../types'
+import type { Period, SortMetric, tmap_sections } from '../types'
 import get_paginated_href from '../util/pagination'
 
 interface Props {
@@ -9,13 +9,22 @@ interface Props {
 	HasNSFW?: boolean
 	Page: number
 	PageCount: number
+	SingleTmapSectionName?: typeof tmap_sections[number]
 	TmapOwner?: string
-	TmapSection?: "submitted" | "copied" | "tagged"
 }
 
-const { Cats: cats, Period: period, SortBy: sort_by, HasNSFW: nsfw, Page: page, PageCount: page_count, TmapOwner: tmap_owner, TmapSection: tmap_section } = Astro.props
+const { 
+	Cats: cats, 
+	Period: period, 
+	SortBy: sort_by, 
+	HasNSFW: nsfw, 
+	Page: page, 
+	PageCount: page_count, 
+	SingleTmapSectionName: single_tmap_section_name,
+	TmapOwner: tmap_owner, 
+} = Astro.props
 
-let href_without_page = tmap_section ? `/map/${tmap_owner}/${tmap_section}` : '/search'
+let href_without_page = single_tmap_section_name ? `/map/${tmap_owner}/${single_tmap_section_name.toLowerCase}` : '/search'
 let has_other_params = false
 
 const has_cats = cats !== undefined && cats.length

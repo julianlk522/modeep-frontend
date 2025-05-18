@@ -224,8 +224,8 @@ let user = Astro.cookies.get('user')?.value
 			cursor: pointer;
 		}
 
-		:is(ol#top-cats,
-		ol#top-contributors) {
+		ol#top-cats,
+		ol#top-contributors {
 			display: flex;
 			flex-direction: column;
 			list-style-position: inside;
@@ -339,8 +339,8 @@ let user = Astro.cookies.get('user')?.value
 				text-align: left;
 			}
 
-			:is(ol#top-cats,
-			ol#top-contributors) {
+			ol#top-cats,
+			ol#top-contributors {
 				max-height: 12.2rem;
 			}
 		}

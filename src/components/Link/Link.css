@@ -27,7 +27,6 @@ span.submit-date {
 }
 
 div.tag {
-	max-width: calc(100% - 32px);
 	margin-top: 0.5rem;
 
 	li.tag-count {

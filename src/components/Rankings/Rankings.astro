@@ -18,23 +18,17 @@ interface Props {
     PageCount?: number
     TopCats: CatCount[]
     TopContributors?: Contributor[]
-    Token?: string
-    User?: string
     IsHomePage?: boolean
     Tmap?: TreasureMap | FilteredTreasureMap
+    SingleTmapSection?: TmapLink[]
+    SingleTmapSectionName?: typeof tmap_sections[number]
     IsTmapFromUser?: string
-    UsedTmapSections?: ("Submitted" | "Copied" | "Tagged")[]
-    TmapSection?: "submitted" | "copied" | "tagged"
-    TmapSectionLinks?: TmapLink[]
+    Token?: string
+    User?: string
 }
 
 const { 
     Links: links, 
-    Tmap: tmap, 
-    IsTmapFromUser: tmap_owner, 
-    UsedTmapSections: used_tmap_sections, 
-    TmapSection: tmap_section, 
-    TmapSectionLinks: tmap_section_links,
     NSFWParams: nsfw_params, 
     CatsParams: cats_params, 
     MergedCats: merged_cats, 
@@ -45,13 +39,17 @@ const {
     TopCats: top_cats, 
     TopContributors: top_contributors, 
     IsHomePage: is_home_page, 
+    Tmap: tmap, 
+    SingleTmapSection: single_tmap_section,
+    SingleTmapSectionName: single_tmap_section_name, 
+    IsTmapFromUser: tmap_owner, 
     User: user, 
     Token: token, 
 } = Astro.props
 
-let used_sections: any = []
+let multiple_tmap_sections: typeof tmap_sections[number][] = []
 if (tmap) {
-    used_sections = tmap_sections.filter((s) => tmap[s]?.length)
+    multiple_tmap_sections = tmap_sections.filter((s) => tmap[s]?.length)
 }
 
 const home_page_non_default_periods = ['day', 'week', 'year','all']
@@ -62,25 +60,25 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
         <MergedResultsNotice MergedCats={merged_cats} />
     ) : null}
 
-    <aside id="top-cats-and-contributors">
+    <aside id="top-cats-and-contributors" class={tmap || single_tmap_section ? 'tmap' : ''}>
         <TopCats 
             TopCats={top_cats} 
             CatsParams={cats_params} 
-            Period={period_params} 
-            SortBy={sort_by_params} 
-            NSFW={nsfw_params} 
+            PeriodParams={period_params} 
+            SortByParams={sort_by_params} 
+            NSFWParams={nsfw_params} 
             IsTmapFromUser={tmap_owner} 
-            TmapSection={tmap_section}
+            SingleTmapSection={single_tmap_section_name}
         />
         
-        {tmap_owner && used_tmap_sections?.length 
+        {multiple_tmap_sections && multiple_tmap_sections.length > 1 
             ? <div id="skip-to-section-container">
                 <h2>Skip to Section</h2>
                 <ul id='skip-to-link-section'>
                     {
-                        used_tmap_sections.map((s) => (
+                        multiple_tmap_sections.map((s) => (
                             <li>
-                                <a href={`#${s}`}>{s}</a>
+                                <a href={`#${s.toLowerCase()}`}>{s}</a>
                             </li>
                         ))
                     }
@@ -95,7 +93,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
     <section>
         {is_home_page ? <ul id='change-period'>
             <li>
-                <h2>Top Links (month):</h2>
+                <h2>This Month's Treasure:</h2>
             </li>
             {
                 home_page_non_default_periods.map((period) => (
@@ -104,24 +102,24 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
                     </li>
                 ))
             }
-        </ul> : <h2 class={`top-links-header${tmap && used_sections?.length ? ' has-section-after' : ''}`}>Top Links</h2>}
+        </ul> : null}
 
-        {links?.length || tmap || tmap_section ? <TopLinks 
+        <TopLinks 
             Links={links}
-            Tmap={tmap}
-            TmapUsedSections={used_sections}
-            TmapOwner={tmap_owner}
-            TmapSection={tmap_section}
-            TmapSectionLinks={tmap_section_links}
             NSFW={nsfw_params}
             Cats={cats_params}
             Period={period_params}
             SortBy={sort_by_params}
             Page={page}
             PageCount={page_count}
+            Tmap={tmap}
+            MultipleTmapSections={multiple_tmap_sections}
+            SingleTmapSection={single_tmap_section}
+            SingleTmapSectionName={single_tmap_section_name}
+            TmapOwner={tmap_owner}
             Token={token}
             User={user}
-        /> : <p>None :(</p>}
+        /> 
     </section>
 
     {links && links.length > 5 
@@ -134,7 +132,6 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
     #rankings {
 		display: flex;
 		flex-direction: column;
-        max-width: fit-content;
         padding-top: 0.5rem;
 
         aside#top-cats-and-contributors {
@@ -206,7 +203,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 	}
 
     #rankings.home {
-        margin-top: 1.5rem;
+        margin-top: 2rem;
     }
 
     #rankings:has(p#no-further-cats) {
@@ -224,7 +221,6 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
     @media (min-width: 680px) {
         #rankings {
             flex-direction: row;
-            justify-content: space-between;
             gap: 4rem;
 
             aside#top-cats-and-contributors {
@@ -233,6 +229,10 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
                 position: sticky;
                 top: 1rem;
                 height: min-content;
+            }
+
+            aside#top-cats-and-contributors.tmap {
+                margin-top: 1.5rem;
             }
         }
     }
