@@ -117,7 +117,7 @@ if (nsfw) {
 	{
 		page_count > page + 1 ? 
 			<>
-				{page === 1 ? <>
+				<span>
 					{' . '}
 					<a href={
 						get_paginated_href({
@@ -126,18 +126,20 @@ if (nsfw) {
 							HasOtherParams: has_other_params,
 						})
 					}>{page + 2}</a>
-				</> : null}
-
-				<span>
-					{page_count > page + 2 ? "..." : " . "}
-					<a href={
-						get_paginated_href({
-							BaseHref: href_without_page,
-							Page: page_count,
-							HasOtherParams: has_other_params,
-						})
-					}>{page_count}</a>
-				</span>
+				</span> 
+				{page_count > page + 2 ? 
+					<span>
+						{page_count > page + 3 ? <span> ... </span> : <span> . </span>}
+						<a href={
+							get_paginated_href({
+								BaseHref: href_without_page,
+								Page: page_count,
+								HasOtherParams: has_other_params,
+							})
+						}>{page_count}</a>
+					</span>	
+				: null
+				}
 			</>
 		: null
 	}
