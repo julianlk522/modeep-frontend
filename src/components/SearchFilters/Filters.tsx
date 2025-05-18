@@ -88,14 +88,13 @@ export default function SearchFilters(props: Props) {
 	const has_changed_cats =
 		cats.length !== initial_cats.length ||
 		cats.some((cat) => !initial_cats.includes(cat))
+
 	const has_changed_filters =
-		endpoint === '/more'
-			? has_changed_cats || has_url_contains || has_period
-			: has_changed_cats ||
-				has_url_contains ||
-				has_period ||
-				sort_by_newest ||
-				nsfw !== initial_nsfw
+		has_changed_cats ||
+		url_contains !== initial_url_contains ||
+		period !== initial_period ||
+		sort_by !== initial_sort_by ||
+		nsfw !== initial_nsfw
 
 	// search by pressing "Enter", but not while SearchCats is focused since
 	// Enter can be used to add cats
@@ -143,7 +142,7 @@ export default function SearchFilters(props: Props) {
 					title={
 						has_changed_filters
 							? ''
-							: 'Filters unchanged: scroll down to see returned links'
+							: 'Filters unchanged; scroll down to see returned links'
 					}
 					class={has_changed_filters ? 'filters-changed' : ''}
 					href={search_URL}

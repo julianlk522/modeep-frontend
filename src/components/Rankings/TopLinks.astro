@@ -134,7 +134,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 		: 
             <NoLinksFound />
     : single_tmap_section?.length ?
-        <section id={`${single_tmap_section_name?.toLowerCase()}-links`} class='links-section'>
+        <section id={`${single_tmap_section_name?.toLowerCase()}-links`} class='links-section single-tmap-section'>
             <ol start={page ? (page - 1) * LINKS_PAGE_LIMIT + 1 : ''}>
                 {single_tmap_section.map((link) => (
                     <Link
@@ -284,6 +284,10 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 	@media (min-width: 680px) {
 		section.links-section.search-page {
 			padding-top: 0.5rem;
+		}
+
+		section.links-section.single-tmap-section {
+			margin-top: 1.5rem;
 		}
 	}
 </style>
