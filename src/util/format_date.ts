@@ -20,6 +20,13 @@ export function format_short_date(date: string): string {
 	}).format(date_obj) // May 4, 2024
 }
 
+export function get_local_time(utc_date: string) {
+	const date = new Date(utc_date)
+	const tz_offset_millis = date.getTimezoneOffset() * 60000
+
+	return new Date(date.getTime() - tz_offset_millis).toISOString()
+}
+
 export function get_units_ago(date: string): string {
 	const date_obj = new Date(date)
 	const now = new Date()
