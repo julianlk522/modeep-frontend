@@ -15,12 +15,12 @@ section#new-link {
 	}
 }
 
-#submitted-links ol li:not(:first-of-type) {
+#submitted-links ol li.link:not(:first-of-type) {
 	margin-top: 1rem;
 }
 
 @media (min-width: 768px) {
-	#submitted-links ol li:not(:first-of-type) {
+	#submitted-links ol li.link:not(:first-of-type) {
 		margin-top: 1.5rem;
 	}
 }
