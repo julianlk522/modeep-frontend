@@ -120,9 +120,9 @@ export default function SearchCats(props: Props) {
 	// Listen for add / delete cat signals from TagCat
 	effect(() => {
 		if (added_cat.value?.length) {
-			const new_cat = added_cat.value
+			const to_add = added_cat.value
 			set_selected_cats((prev) => {
-				const next = [...prev, new_cat].sort((a, b) =>
+				const next = [...prev, to_add].sort((a, b) =>
 					a.localeCompare(b)
 				)
 				prev_selected_cats_ref.current = next
@@ -161,17 +161,14 @@ export default function SearchCats(props: Props) {
 	}
 
 	function handle_enter(event: KeyboardEvent) {
-		if (event.key === 'Enter') {
-			add_cat(event)
+		if (event.key === 'Enter' && snippet) {
+			event.stopPropagation()
+			return add_cat(event)
 		}
 	}
 
 	function add_cat(event: Event) {
 		event.preventDefault()
-		if (!snippet) {
-			set_error('Input is empty')
-			return
-		}
 
 		if (has_max_num_cats) {
 			set_error('Maxiumum number of cats reached')
@@ -179,7 +176,6 @@ export default function SearchCats(props: Props) {
 		}
 
 		let new_cat = snippet
-		// correct 'nsfw' to 'NSFW'
 		if (snippet === 'nsfw') {
 			new_cat = 'NSFW'
 		}
@@ -211,9 +207,17 @@ export default function SearchCats(props: Props) {
 						</label>
 					) : null}
 					<input
-						type='text'
-						name='cats'
 						id='cats'
+						name='cats'
+						type='text'
+						value={snippet}
+						autocomplete={'off'}
+						autoFocus={!is_new_link_page}
+						placeholder={
+							selected_cats?.length
+								? ''
+								: 'Start typing for topic suggestions'
+						}
 						onInput={(event) => {
 							// update selected cats ref so does not remain
 							// unsynced after deleting any from selected_cats,
@@ -223,15 +227,7 @@ export default function SearchCats(props: Props) {
 								(event.target as HTMLInputElement).value
 							)
 						}}
-						onKeyPress={handle_enter}
-						value={snippet}
-						autocomplete={'off'}
-						autoFocus={!is_new_link_page}
-						placeholder={
-							selected_cats?.length
-								? ''
-								: 'Start typing for topic suggestions'
-						}
+						onKeyDown={handle_enter}
 					/>
 
 					{!is_home_page ? (
@@ -242,9 +238,10 @@ export default function SearchCats(props: Props) {
 									? 'Maxiumum number of cats reached'
 									: 'Add cat filter'
 							}
-							type='submit'
+							type='button'
 							value='+'
 							onClick={add_cat}
+							onKeyDown={handle_enter}
 							disabled={!snippet || has_max_num_cats}
 						/>
 					) : null}
@@ -291,7 +288,7 @@ export default function SearchCats(props: Props) {
 							<input
 								id='clear-cat-filters'
 								title='Clear cat filters'
-								type='submit'
+								type='button'
 								value='Clear'
 								onClick={() => {
 									set_selected_cats([])

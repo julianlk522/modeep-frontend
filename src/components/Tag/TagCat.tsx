@@ -35,9 +35,15 @@ export default function TagCat(props: Props) {
 			return
 		}
 		add_btn_ref.current?.addEventListener('click', handle_add)
+		add_btn_ref.current?.addEventListener('keydown', (e) =>
+			e.stopPropagation()
+		)
 
 		return () => {
 			add_btn_ref.current?.removeEventListener('click', handle_add)
+			add_btn_ref.current?.removeEventListener('keydown', (e) =>
+				e.stopPropagation()
+			)
 		}
 	}, [addable])
 
@@ -54,9 +60,15 @@ export default function TagCat(props: Props) {
 		}
 
 		delete_btn_ref.current?.addEventListener('click', handle_delete)
+		delete_btn_ref.current?.addEventListener('keydown', (e) =>
+			e.stopPropagation()
+		)
 
 		return () => {
 			delete_btn_ref.current?.removeEventListener('click', handle_delete)
+			delete_btn_ref.current?.removeEventListener('keydown', (e) =>
+				e.stopPropagation()
+			)
 		}
 	}, [removable])
 
@@ -86,6 +98,11 @@ export default function TagCat(props: Props) {
 
 					{removable && props.DeletedSignal ? (
 						<button
+							// without type='button' the click event handler will
+							// go off even when you have the input field focused
+							// and hit "Enter" because it's treated as a form
+							// submission
+							type='button'
 							ref={delete_btn_ref}
 							title={`Remove '${cat}'`}
 							class='img-btn'
@@ -98,6 +115,7 @@ export default function TagCat(props: Props) {
 						</button>
 					) : addable && props.AddedSignal ? (
 						<button
+							type='button'
 							ref={add_btn_ref}
 							title={
 								is_new_link_page

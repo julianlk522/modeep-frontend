@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'preact/hooks'
+import { useCallback, useRef, useState } from 'preact/hooks'
 import type { Period, SortMetric } from '../../types'
 import SearchCats from './Cats'
 import './Filters.css'
@@ -96,46 +96,40 @@ export default function SearchFilters(props: Props) {
 		sort_by !== initial_sort_by ||
 		nsfw !== initial_nsfw
 
-	// search by pressing "Enter", but not while SearchCats is focused since
-	// Enter can be used to add cats
-	const enter_listener_ref = useRef<HTMLDivElement>(null)
+	// search by pressing "Enter"
+	// (propagation stopped within SearchCats if "Enter" is used to add a cat)
 	const scour_anchor_ref = useRef<HTMLAnchorElement>(null)
-	useEffect(() => {
-		function handle_keydown(e: KeyboardEvent) {
-			if (e.key === 'Enter') {
+
+	const handle_keydown = useCallback(
+		(e: KeyboardEvent) => {
+			if (e.key !== 'Enter') return
+
+			if (has_changed_filters) {
 				scour_anchor_ref.current?.click()
 			}
-		}
-
-		if (enter_listener_ref.current) {
-			enter_listener_ref.current.addEventListener(
-				'keydown',
-				handle_keydown
-			)
-		}
-	}, [])
+		},
+		[cats, initial_cats]
+	)
 
 	return (
 		<section id='search-filters'>
-			<form>
+			<form onKeyDown={handle_keydown}>
 				<SearchCats SelectedCats={cats} SetSelectedCats={set_cats} />
 
-				<div id='enter-listener' ref={enter_listener_ref}>
-					<SearchURLContains
-						URLContains={url_contains}
-						SetURLContains={set_url_contains}
-					/>
-					<SearchPeriod Period={period} SetPeriod={set_period} />
-					{endpoint === '/search' ? (
-						<>
-							<SearchSortBy
-								SortBy={sort_by}
-								SetSortBy={set_sort_by}
-							/>
-							<SearchNSFW NSFW={nsfw} SetNSFW={set_nsfw} />
-						</>
-					) : null}
-				</div>
+				<SearchURLContains
+					URLContains={url_contains}
+					SetURLContains={set_url_contains}
+				/>
+				<SearchPeriod Period={period} SetPeriod={set_period} />
+				{endpoint === '/search' ? (
+					<>
+						<SearchSortBy
+							SortBy={sort_by}
+							SetSortBy={set_sort_by}
+						/>
+						<SearchNSFW NSFW={nsfw} SetNSFW={set_nsfw} />
+					</>
+				) : null}
 
 				<a
 					id='search-from-filters'
