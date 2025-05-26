@@ -1,13 +1,14 @@
 interface Props {
 	LikeCount: number
+	EarliestLikers: string
 }
 
 export default function StaticLikeCount(props: Props) {
-	const like_count = props.LikeCount
+	const { LikeCount: like_count, EarliestLikers: earliest_likers } = props
 
 	return (
 		<div
-			title={`Liked by ${like_count} ${like_count === 1 ? 'person' : 'people'}`}
+			title={`${like_count} ${like_count === 1 ? 'like' : 'likes'}${like_count > 0 ? `: ${earliest_likers}` : ''}`}
 			class='same-user-like-count'
 		>
 			{/* https://icon-sets.iconify.design/solar/like-outline/ */}

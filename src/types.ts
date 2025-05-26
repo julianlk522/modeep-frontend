@@ -37,7 +37,9 @@ type Link = {
 	SummaryCount: number
 	IsLiked?: boolean
 	LikeCount: number
+	EarliestLikers: string
 	IsCopied?: boolean
+	EarliestCopiers: string
 	CopyCount: number
 	TagCount: number
 	ClickCount: number
@@ -101,6 +103,7 @@ type Summary = {
 	SubmittedBy: string
 	LastUpdated: string
 	LikeCount: number
+	EarliestLikers: string
 	IsLiked?: boolean
 }
 

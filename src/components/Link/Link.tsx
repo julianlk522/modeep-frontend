@@ -71,7 +71,13 @@ export default function Link(props: Props) {
 	const [is_copied, set_is_copied] = useState(props.Link.IsCopied)
 	const [is_liked, set_is_liked] = useState(props.Link.IsLiked)
 	const [like_count, set_like_count] = useState(props.Link.LikeCount)
+	const [earliest_likers, set_earliest_likers] = useState(
+		props.Link.EarliestLikers
+	)
 	const [copy_count, set_copy_count] = useState(props.Link.CopyCount)
+	const [earliest_copiers, set_earliest_copiers] = useState(
+		props.Link.EarliestCopiers
+	)
 	const [show_delete_modal, set_show_delete_modal] = useState(false)
 	const [preview_img_url, set_preview_img_url] = useState<string | undefined>(
 		undefined
@@ -144,9 +150,20 @@ export default function Link(props: Props) {
 		if (is_liked) {
 			set_is_liked(false)
 			set_like_count((prev) => prev - 1)
+			set_earliest_likers((prev) =>
+				prev
+					.split(', ')
+					.filter((liker: string) => liker !== user)
+					.join(', ')
+			)
 		} else {
 			set_is_liked(true)
 			set_like_count((prev) => prev + 1)
+
+			// TODO: replace magic number
+			if (like_count < 10) {
+				set_earliest_likers((prev) => prev + `, ${user}`)
+			}
 		}
 
 		return
@@ -185,9 +202,18 @@ export default function Link(props: Props) {
 		if (is_copied) {
 			set_is_copied(false)
 			set_copy_count((prev) => prev - 1)
+			set_earliest_copiers((prev) =>
+				prev
+					.split(', ')
+					.filter((copier: string) => copier !== user)
+					.join(', ')
+			)
 		} else {
 			set_is_copied(true)
 			set_copy_count((prev) => prev + 1)
+			if (copy_count < 10) {
+				set_earliest_copiers((prev) => prev + `, ${user}`)
+			}
 		}
 		return
 	}
@@ -327,16 +353,22 @@ export default function Link(props: Props) {
 			{!user || user === submitted_by ? (
 				<>
 					{has_likes ? (
-						<StaticLikeCount LikeCount={like_count} />
+						<StaticLikeCount
+							LikeCount={like_count}
+							EarliestLikers={earliest_likers}
+						/>
 					) : null}
 					{has_copies ? (
-						<StaticCopyCount CopyCount={copy_count} />
+						<StaticCopyCount
+							CopyCount={copy_count}
+							EarliestCopiers={earliest_copiers}
+						/>
 					) : null}
 				</>
 			) : (
 				<>
 					<button
-						title={`${is_liked ? 'Unlike' : 'Like'} link (liked by ${like_count} ${like_count === 1 ? 'person' : 'people'})`}
+						title={`${is_liked ? 'Unlike' : 'Like'} - (${like_count} ${like_count === 1 ? 'like' : 'likes'}${like_count > 0 ? `: ${earliest_likers}` : ''})`}
 						onClick={handle_like}
 						class={`like-btn${is_liked ? ' liked' : ''}`}
 					>
@@ -360,10 +392,8 @@ export default function Link(props: Props) {
 
 					<button
 						title={`${
-							is_copied
-								? 'Uncopy link'
-								: 'Copy to your Treasure Map'
-						} (copied by ${copy_count} ${copy_count === 1 ? 'person' : 'people'})`}
+							is_copied ? 'Uncopy' : 'Copy to treasure map'
+						} - (${copy_count} ${copy_count === 1 ? 'copy' : 'copies'}${copy_count > 0 ? `: ${earliest_copiers}` : ''})`}
 						onClick={handle_copy}
 						class={`copy-btn${is_copied ? ' copied' : ''}`}
 					>

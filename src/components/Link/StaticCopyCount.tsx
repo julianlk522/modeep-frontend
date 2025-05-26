@@ -1,13 +1,14 @@
 interface Props {
 	CopyCount: number
+	EarliestCopiers: string
 }
 
 export default function StaticCopyCount(props: Props) {
-	const copy_count = props.CopyCount
+	const { CopyCount: copy_count, EarliestCopiers: earliest_copiers } = props
 
 	return (
 		<div
-			title={`${copy_count} ${copy_count === 1 ? 'person' : 'people'} copied to their Treasure Map`}
+			title={`${copy_count} ${copy_count === 1 ? 'copy' : 'copies'}${copy_count > 0 ? `: ${earliest_copiers}` : ''}`}
 			class='same-user-copy-count'
 		>
 			{/* https://icon-sets.iconify.design/mingcute/copy-line/ */}

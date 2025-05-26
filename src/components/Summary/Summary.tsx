@@ -13,6 +13,7 @@ interface Props {
 	SubmittedBy: string
 	LastUpdated: string
 	LikeCount: number
+	EarliestLikers: string
 	IsLiked?: boolean
 	Token?: string
 	User?: string
@@ -30,6 +31,9 @@ export default function Summary(props: Props) {
 
 	const [is_liked, set_is_liked] = useState(props.IsLiked)
 	const [like_count, set_like_count] = useState(props.LikeCount)
+	const [earliest_likers, set_earliest_likers] = useState(
+		props.EarliestLikers
+	)
 	const [error, set_error] = useState<string | undefined>(undefined)
 
 	const like_api_url = SUMMARIES_ENDPOINT + `/${ID}/like`
@@ -63,9 +67,20 @@ export default function Summary(props: Props) {
 		if (is_liked) {
 			set_is_liked(false)
 			set_like_count((prev) => prev - 1)
+			set_earliest_likers((prev) =>
+				prev
+					.split(', ')
+					.filter((liker: string) => liker !== user)
+					.join(', ')
+			)
 		} else {
 			set_is_liked(true)
 			set_like_count((prev) => prev + 1)
+
+			// TODO: replace magic number
+			if (like_count < 10) {
+				set_earliest_likers((prev) => prev + `, ${user}`)
+			}
 		}
 		return
 	}
@@ -132,7 +147,9 @@ export default function Summary(props: Props) {
 			<p class='last-updated'>{format_long_date(last_updated)}</p>
 			{user !== submitted_by ? (
 				<button
-					title='Like summary'
+					title={`${is_liked ? 'Unlike' : 'Like'} - (${like_count} ${
+						like_count === 1 ? 'like' : 'likes'
+					}${like_count > 0 ? `: ${earliest_likers}` : ''})`}
 					onClick={handle_like}
 					class={`like-btn${is_liked ? ' liked' : ''}`}
 				>
@@ -140,7 +157,10 @@ export default function Summary(props: Props) {
 				</button>
 			) : (
 				<>
-					<StaticLikeCount LikeCount={like_count} />
+					<StaticLikeCount
+						LikeCount={like_count}
+						EarliestLikers={earliest_likers}
+					/>
 					<button
 						title='Delete summary'
 						id='delete-summary-btn'
