@@ -212,8 +212,8 @@ export default function Actions(props: Props) {
 				>
 					<img
 						src='../../../delete.svg'
-						height={20}
-						width={20}
+						height={22}
+						width={22}
 						alt='Remove profile pic'
 					/>
 				</button>
@@ -237,8 +237,8 @@ export default function Actions(props: Props) {
 				>
 					<img
 						src='../../../confirm.svg'
-						height={18}
-						width={18}
+						height={20}
+						width={20}
 						alt='Save Changes'
 					/>
 				</button>

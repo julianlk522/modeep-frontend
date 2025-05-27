@@ -37,9 +37,10 @@ export default function Profile(props: Props) {
 	return (
 		<section id='profile'>
 			<p id='created-at'>
-				<span className='profile-details-text'>created:</span>
-				{format_short_date(created_at)}
+				<span>Created:</span>
+				<strong>{format_short_date(created_at)}</strong>
 			</p>
+
 			<div id='profile-sections'>
 				{initial_pfp_filename || is_signed_in_user ? (
 					<div>

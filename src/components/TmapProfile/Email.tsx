@@ -13,7 +13,7 @@ export default function Email(props: Props) {
 
 	return (
 		<div id='profile-email'>
-			<span className='profile-details-text'>email: </span>
+			<span>Email: </span>
 
 			{editing ? (
 				<input
@@ -27,7 +27,7 @@ export default function Email(props: Props) {
 			) : text ? (
 				<strong>{text}</strong>
 			) : (
-				<strong className='profile-details-text'>not set</strong>
+				<strong>not set</strong>
 			)}
 			<p id='profile-email-note' class='profile-details-text'>
 				Only you can see your email. It is recommended to set one in

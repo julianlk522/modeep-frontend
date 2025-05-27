@@ -248,6 +248,13 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 					width: calc(100% + 3rem);
 				}
 			}
+
+			@media (min-width: 680px) {
+				.bg {
+					left: -1rem;
+					width: calc(100% + 1rem);
+				}
+			}
 		}
 
 		> div.section-with-more {
@@ -269,6 +276,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 	#tmap-multiple-sections-container {
 		display: flex;
 		flex-direction: column;
+		width: 100%;
 
 		> .links-section ol {
 			margin-top: 1rem;

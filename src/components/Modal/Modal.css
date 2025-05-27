@@ -1,9 +1,11 @@
 dialog.modal {
-	z-index: 1;
 	top: 50%;
 	transform: translateY(-50%);
 	max-width: 800px;
 	background-color: var(--treasurey);
+	/* this has to be 2 or else the black bar hiding behind tmap section headers
+	will cover it */
+	z-index: 2;
 
 	button.ok-btn {
 		display: block;

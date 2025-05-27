@@ -102,17 +102,10 @@ tmap = await tmap_resp.Response.json()
 
 // Display about if used (unfiltered only)
 let profile: types.Profile | undefined
-let display_pfp = false
-let display_about = false
-
 if (!cats && tmap.hasOwnProperty('Profile')) {
 	profile = (tmap as types.TreasureMap).Profile
-	const has_pfp = profile.PFP?.length > 0
-	display_pfp = has_pfp || is_signed_in_user
-
-	const has_about = profile.About?.length > 0
-	display_about = has_about || is_signed_in_user
 }
+
 
 // Display NSFW links count if > 0
 const nsfw_links_count = tmap.NSFWLinksCount
@@ -123,7 +116,7 @@ const nsfw_links_count = tmap.NSFWLinksCount
 		<h1 class={profile ? 'has-profile' : ''}>{login_name}</h1>
 
 		<!-- Profile  -->
-		{profile && (display_about || display_pfp) ? (
+		{profile ? (
 			<Profile
 				client:load
 				LoginName={login_name}
@@ -219,12 +212,12 @@ const nsfw_links_count = tmap.NSFWLinksCount
 	}
 
 	section#sort-and-filter {
-		h2 {
-			margin-top: 0.5rem;
-		}
-		
 		padding: 0.5rem 0;
 
+		h2 {
+			margin: 0.5rem 0;
+		}
+		
 		#nsfw-filter {
 			margin-top: 0;
 		}

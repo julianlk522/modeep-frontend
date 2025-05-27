@@ -1,11 +1,14 @@
 #profile-about {
 	display: flex;
 	flex-wrap: wrap;
-	margin-top: 0.5rem;
+	margin-top: 0;
 
 	pre {
-		max-width: 100%;
-		max-height: 10rem;
 		word-wrap: break-word;
+	}
+
+	pre,
+	textarea {
+		max-width: 100%;
 	}
 }
