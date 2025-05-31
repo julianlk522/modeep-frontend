@@ -18,10 +18,9 @@ const { login_name } = Astro.params
 if (!login_name) {
 	return Astro.redirect('/')
 }
-const is_signed_in_user = login_name === user
 let page_title = `${login_name}'s Treasure Map`
 
-// config
+// Config
 // cats
 let cats = ""
 let cats_split: string[] = []

@@ -303,13 +303,15 @@ export default function Link(props: Props) {
 			{is_tag_page && has_one_tag ? null : (
 				<div class='tag'>
 					<ul class='cats'>
-						{split_cats.map((cat, i) => (
+						{split_cats.map((cat) => (
 							<TagCat
 								Cat={cat}
 								IsNSFW={cat === 'NSFW'}
 								Href={
 									cats_endpoint +
-									`?cats=${encodeURIComponent(cat)}${cat === 'NSFW' ? `&nsfw=true` : ''}`
+									`?cats=${encodeURIComponent(cat)}${
+										cat === 'NSFW' ? `&nsfw=true` : ''
+									}`
 								}
 							/>
 						))}
