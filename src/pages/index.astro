@@ -58,7 +58,16 @@ const totals: Totals = await totals_resp.Response.json()
 
 		<SearchCats client:load SelectedCats={[]} SetSelectedCats={() => {}} IsHomePage />
 
-		<Rankings Links={links} PageCount={links_data.PageCount} TopCats={top_cats} TopContributors={top_contributors} Token={token} User={user} IsHomePage />
+		<Rankings 
+			Links={links}
+			PageParams={1}
+			PageCount={links_data.PageCount} 
+			TopCats={top_cats} 
+			TopContributors={top_contributors} 
+			Token={token} 
+			User={user} 
+			IsHomePage
+		/>
 
 		<div id="totals">
 			<div class="row">
