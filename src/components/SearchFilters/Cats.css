@@ -35,6 +35,7 @@ ul#cat-list {
 
 	li:has(input#clear-cat-filters) {
 		list-style: none;
+		align-self: center;
 	}
 }
 

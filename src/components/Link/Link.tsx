@@ -370,7 +370,11 @@ export default function Link(props: Props) {
 			) : (
 				<>
 					<button
-						title={`${is_liked ? 'Unlike' : 'Like'} - (${like_count} ${like_count === 1 ? 'like' : 'likes'}${like_count > 0 ? `: ${earliest_likers}` : ''})`}
+						title={`${
+							is_liked ? 'Unlike' : 'Like'
+						} - (${like_count} ${
+							like_count === 1 ? 'like' : 'likes'
+						}${like_count > 0 ? `: ${earliest_likers}` : ''})`}
 						onClick={handle_like}
 						class={`like-btn${is_liked ? ' liked' : ''}`}
 					>
@@ -395,7 +399,9 @@ export default function Link(props: Props) {
 					<button
 						title={`${
 							is_copied ? 'Uncopy' : 'Copy to treasure map'
-						} - (${copy_count} ${copy_count === 1 ? 'copy' : 'copies'}${copy_count > 0 ? `: ${earliest_copiers}` : ''})`}
+						} - (${copy_count} ${
+							copy_count === 1 ? 'copy' : 'copies'
+						}${copy_count > 0 ? `: ${earliest_copiers}` : ''})`}
 						onClick={handle_copy}
 						class={`copy-btn${is_copied ? ' copied' : ''}`}
 					>
@@ -420,7 +426,9 @@ export default function Link(props: Props) {
 			)}
 			{has_clicks ? (
 				<div
-					title={`${click_count} ${click_count === 1 ? 'click' : 'clicks'}`}
+					title={`${click_count} ${
+						click_count === 1 ? 'click' : 'clicks'
+					}`}
 					class='click-count'
 				>
 					<img

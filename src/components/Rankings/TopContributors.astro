@@ -34,5 +34,21 @@ const contributors = Astro.props.Contributors
     ol#top-contributors {
         padding: 0;
         padding-inline-start: 1rem;
+
+        li {
+            height: 16px;
+        }
+    }
+
+    @media (min-width: 350px) {
+        ol#top-contributors {
+            max-height: 98px;
+        }
+    }
+
+    @media (min-width: 680px) {
+        ol#top-contributors {
+            max-height: 240px;
+        }
     }
 </style>

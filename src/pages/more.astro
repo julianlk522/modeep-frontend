@@ -1,5 +1,6 @@
 ---
 import MergedResultsNotice from "../components/Rankings/MergedResultsNotice.astro";
+import NoLinksFound from "../components/Rankings/NoLinksFound.astro";
 import TopCats from "../components/Rankings/TopCats.astro";
 import ScrollUp from "../components/ScrollUp.astro";
 import SearchFilters from "../components/SearchFilters/Filters";
@@ -53,8 +54,8 @@ if (has_merged_cats_property(counts)) {
     <main>
 		<SearchFilters 
 			client:load 
-			InitialPeriod={period}
 			InitialCats={cats.length ? cats.split(',') : []}
+			InitialPeriod={period}
 			InitialURLContains={url_contains}
 			Endpoint="/more"
 		/>
@@ -69,7 +70,7 @@ if (has_merged_cats_property(counts)) {
 				PeriodParams={period}
 				More
 		   />
-        </section> : cats ? <p>No further subcats.</p> : <p>Drat, no links submitted during this period.</p>}
+        </section> : cats ? <p>No further subcats.</p> : <NoLinksFound />}
         <ScrollUp />
     </main>
 </BaseLayout>

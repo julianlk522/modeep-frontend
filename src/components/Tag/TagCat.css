@@ -1,6 +1,5 @@
 li.cat {
 	height: 16px;
-	font-weight: bold;
 	list-style: none;
 
 	a {
@@ -12,6 +11,7 @@ li.cat {
 	a:hover {
 		color: black;
 		background-color: var(--sky);
+		font-weight: bold;
 	}
 
 	span {

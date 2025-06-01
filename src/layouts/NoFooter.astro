@@ -232,7 +232,7 @@ let user = Astro.cookies.get('user')?.value
 			margin: 0;
 			padding: 0 1rem;
 			font-size: 0.9rem;
-			max-height: 106px;
+			max-height: 88px;
 			overflow: hidden;
 
 			li span {
@@ -246,8 +246,6 @@ let user = Astro.cookies.get('user')?.value
 			overflow-y: scroll;
 		}
 
-		ol#top-cats,
-		ol#top-contributors,
 		#profile-about details > pre {
 			overflow-y: scroll;
 			scrollbar-width: thin;
@@ -294,7 +292,6 @@ let user = Astro.cookies.get('user')?.value
 			ol#top-cats,
 			ol#top-contributors {
 				font-size: 1rem;
-				max-height: 9.4rem;
 			}
 		}
 
@@ -326,11 +323,6 @@ let user = Astro.cookies.get('user')?.value
 
 			footer {
 				text-align: left;
-			}
-
-			ol#top-cats,
-			ol#top-contributors {
-				max-height: 12.2rem;
 			}
 		}
 	</style>

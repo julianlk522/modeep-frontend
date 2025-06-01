@@ -206,6 +206,7 @@ export default function SearchCats(props: Props) {
 							Cats:
 						</label>
 					) : null}
+
 					<input
 						id='cats'
 						name='cats'
