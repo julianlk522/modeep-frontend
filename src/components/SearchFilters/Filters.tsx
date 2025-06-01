@@ -108,7 +108,7 @@ export default function SearchFilters(props: Props) {
 				scour_anchor_ref.current?.click()
 			}
 		},
-		[cats, initial_cats]
+		[has_changed_filters]
 	)
 
 	return (
