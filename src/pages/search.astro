@@ -145,7 +145,13 @@ let top_subcats: CatCount[] = []
 // Top contributors
 let top_contributors: Contributor[] = []
 
-if (links?.length) {
+if (!links?.length) {
+	if (page > 1) {
+		const redirect_url = new URL(Astro.url)
+		redirect_url.searchParams.delete('page')
+		return Astro.redirect(redirect_url)
+	}
+} else {
 	let cats_url = CATS_ENDPOINT
 	let contributors_url = CONTRIBUTORS_ENDPOINT
 
@@ -206,8 +212,8 @@ const page_title = `${(sort_by !== 'rating' ? " Newest" : " Top Rated")}${cats ?
 		<SearchFilters 
 			client:load 
 			InitialCats={cats.length ? cats.split(',') : []}
-			InitialURLContains={url_contains}
 			InitialPeriod={period}
+			InitialURLContains={url_contains}
 			InitialSortBy={sort_by}
 			InitialNSFW={nsfw}
 		/>
