@@ -24,7 +24,7 @@ const {
 	TmapOwner: tmap_owner, 
 } = Astro.props
 
-let href_without_page = single_tmap_section_name ? `/map/${tmap_owner}/${single_tmap_section_name.toLowerCase}` : '/search'
+let href_without_page = single_tmap_section_name ? `/map/${tmap_owner}/${single_tmap_section_name.toLowerCase()}` : '/search'
 let has_other_params = false
 
 const has_cats = cats !== undefined && cats.length
