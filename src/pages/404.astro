@@ -3,8 +3,22 @@ import NoFooter from '../layouts/NoFooter.astro'
 ---
 
 <NoFooter Title='Page Not Found'>
-<main>
-    <h1>404 Page not found</h1>
-    <p><a href="/">Go home</a></p>
-</main>
+    <main>
+        <h1>404 Page not found</h1>
+        <p>
+            <a id="go-home" title="Go home" href="/">
+                <img src='../../back.svg' height={18} width={18} />
+                Go home
+            </a>
+        </p>
+    </main>
 </NoFooter>
+
+<style>
+    a#go-home {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        width: fit-content;
+    }
+</style>

@@ -42,12 +42,13 @@ const {
 } = Astro.props
 
 const is_only_page = !page || !page_count || (page === 1 && page_count === 1)
+const is_your_tmap = tmap_owner_login_name !== undefined && user == tmap_owner_login_name
 const home_page_non_default_periods = ['day', 'week', 'year','all']
 ---
 
 <>    
     {links?.length ? 
-		<section class="links-section search-page">
+		<section class="links-section">
 			{is_home_page ? <ul id='change-period'>
 				<li>
 					<h2>This Month's Treasure:</h2>
@@ -132,7 +133,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 				})}
 			</div>
 		: 
-            <NoLinksFound />
+            <NoLinksFound AddSomethingPrompt={is_your_tmap} />
     : single_tmap_section?.length ?
         <section id={`${single_tmap_section_name?.toLowerCase()}-links`} class='links-section single-tmap-section'>
             <ol start={page ? (page - 1) * LINKS_PAGE_LIMIT + 1 : ''}>
@@ -164,7 +165,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 			/>}
         </section>
     :
-        <NoLinksFound />
+        <NoLinksFound AddSomethingPrompt={is_your_tmap} />
     }
 </>
 
@@ -233,7 +234,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 			> .bg {
 				z-index: -2;
 				background-color: #13151a;
-				border-bottom: 2px dashed rgba(255, 255, 255, 0.15);
+				border-bottom: 2px dashed rgba(255, 255, 255, 0.1);
 				position: absolute;
 				top: 0;
 				left: -0.5rem;
@@ -290,7 +291,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
     }
 
 	@media (min-width: 680px) {
-		section.links-section.search-page {
+		section.links-section {
 			padding-top: 0.5rem;
 		}
 

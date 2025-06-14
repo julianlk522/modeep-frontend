@@ -51,6 +51,8 @@ let multiple_tmap_sections: typeof tmap_sections[number][] = []
 if (tmap) {
     multiple_tmap_sections = tmap_sections.filter((s) => tmap[s]?.length)
 }
+
+const no_links_found = links && links.length === 0 || tmap && multiple_tmap_sections.length === 0
 ---
 
 <div id="rankings" class={is_home_page ? 'home' : ''}>
@@ -58,35 +60,41 @@ if (tmap) {
         <MergedResultsNotice MergedCats={merged_cats} />
     ) : null}
 
-    <aside id="top-cats-and-contributors" class={tmap || single_tmap_section ? 'tmap' : ''}>
-        <TopCats 
-            TopCats={top_cats} 
-            CatsParams={cats_params} 
-            PeriodParams={period_params} 
-            SortByParams={sort_by_params} 
-            NSFWParams={nsfw_params} 
-            IsTmapFromUser={tmap_owner} 
-            SingleTmapSection={single_tmap_section_name}
-        />
-        
-        {multiple_tmap_sections && multiple_tmap_sections.length > 1 
-            ? <div id="skip-to-section-container">
-                <h2>Skip to Section</h2>
-                <ul id='skip-to-link-section'>
-                    {
-                        multiple_tmap_sections.map((s) => (
-                            <li>
-                                <a href={`#${s.toLowerCase()}`}>{s}</a>
-                            </li>
-                        ))
-                    }
-                </ul>
-            </div> 
-            : top_contributors 
-                ? <TopContributors Contributors={top_contributors} /> 
-                : null
-        }
-    </aside>
+    {no_links_found 
+        ? null 
+        : <aside id="top-cats-and-contributors" class={tmap || single_tmap_section 
+            ? 'tmap' 
+            : ''
+        }>        
+            {multiple_tmap_sections && multiple_tmap_sections.length > 1 
+                ? <div id="skip-to-section-container">
+                    <h2>Go to Section</h2>
+                    <ul id='skip-to-link-section'>
+                        {
+                            multiple_tmap_sections.map((s) => (
+                                <li>
+                                    <a href={`#${s.toLowerCase()}`}>{s}</a>
+                                </li>
+                            ))
+                        }
+                    </ul>
+                </div> 
+                : top_contributors 
+                    ? <TopContributors Contributors={top_contributors} /> 
+                    : null
+            }
+
+            <TopCats 
+                TopCats={top_cats} 
+                CatsParams={cats_params} 
+                PeriodParams={period_params} 
+                SortByParams={sort_by_params} 
+                NSFWParams={nsfw_params} 
+                IsTmapFromUser={tmap_owner} 
+                SingleTmapSection={single_tmap_section_name}
+            />
+        </aside>
+    }
 
   <TopLinks 
         Links={links}

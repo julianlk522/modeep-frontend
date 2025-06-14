@@ -1,4 +1,8 @@
 ---
+interface Props {
+    AddSomethingPrompt?: boolean
+}
+
 ---
 
 <section>
@@ -6,9 +10,7 @@
 
     <p>&macr;&bsol;&lowbar;&lpar;&#x30c4;&rpar;&lowbar;&sol;&macr;</p>
     
-     <p id="add-link">
-        <a href={`/new`}>Add something cool</a>
-    </p>
+    {Astro.props.AddSomethingPrompt && <p id="add-link"><a href="/new">Add something cool</a></p>}
 </section>
 
 <style>
@@ -17,6 +19,7 @@
         flex-direction: column;
         justify-content: center;
         min-height: 150px;
+        width: 100%;
         text-align: center;
     }
 
