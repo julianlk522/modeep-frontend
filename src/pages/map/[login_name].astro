@@ -1,7 +1,7 @@
 ---
 import Rankings from '../../components/Rankings/Rankings.astro'
 import ScrollUp from '../../components/ScrollUp.astro'
-import TagCat from "../../components/Tag/TagCat"
+import SearchFilters from '../../components/SearchFilters/Filters'
 import Profile from '../../components/TmapProfile/Profile'
 import { TMAP_ENDPOINT } from '../../constants'
 import BaseLayout from '../../layouts/BaseLayout.astro'
@@ -36,8 +36,13 @@ if (Astro.url.searchParams.get('cats')) {
 const encoded_cats = encodeURIComponent(cats)
 
 // period
-let period: types.Period | undefined
-if (Astro.url.searchParams.get('period') && (types.Periods as readonly string[]).includes(Astro.url.searchParams.get('period') as types.Period)) {
+let period: types.Period = 'all'
+if (
+	Astro.url.searchParams.get('period') &&
+	(types.Periods as readonly string[]).includes(
+		Astro.url.searchParams.get('period') as types.Period
+	)
+) {
 	period = Astro.url.searchParams.get('period') as types.Period
 }
 
@@ -48,21 +53,18 @@ if (Astro.url.searchParams.get('nsfw') && Astro.url.searchParams.get('nsfw') ===
 }
 
 // sort_by
-let sort_by: types.SortMetric | undefined
+let sort_by: types.SortMetric = 'rating'
 const sort_by_params = Astro.url.searchParams.get('sort_by')
 const is_sorted_by_newest = sort_by_params === 'newest'
 if (is_sorted_by_newest) {
 	sort_by = 'newest'
 }
 
-const has_cats_or_nsfw_params = cats || nsfw
-const sort_by_params_separator = has_cats_or_nsfw_params ? '&' : '?'
-
-let opposite_sort_search_params = `${cats ? '?cats=' + encoded_cats : ''}${nsfw ? cats? '&nsfw=true' : '?nsfw=true' : ''}`
-if (!is_sorted_by_newest) {
-	opposite_sort_search_params += `${sort_by_params_separator}sort_by=newest`
+// url contains
+let url_contains = ""
+if (Astro.url.searchParams.get('url_contains')) {
+	url_contains = Astro.url.searchParams.get('url_contains') as string
 }
-const opposite_sort_URL = Astro.url.pathname + opposite_sort_search_params
 
 // Get Tmap
 let tmap: types.TreasureMap | types.FilteredTreasureMap
@@ -71,8 +73,24 @@ if (cats) {
 	tmap_url += `?cats=${encoded_cats}`
 }
 
-if (is_sorted_by_newest) {
+if (period) {
 	if (cats) {
+		tmap_url += `&period=${period}`
+	} else {
+		tmap_url += `?period=${period}`
+	}
+}
+
+if (url_contains) {
+	if (cats || period) {
+		tmap_url += `&url_contains=${url_contains}`
+	} else {
+		tmap_url += `?url_contains=${url_contains}`
+	}
+}
+
+if (is_sorted_by_newest) {
+	if (cats || period || url_contains) {
 		tmap_url += `&sort_by=newest`
 	} else {
 		tmap_url += `?sort_by=newest`
@@ -80,7 +98,7 @@ if (is_sorted_by_newest) {
 }
 
 if (nsfw) {
-	if (cats || sort_by) {
+	if (cats || period || url_contains || is_sorted_by_newest) {
 		tmap_url += `&nsfw=true`
 	} else {
 		tmap_url += `?nsfw=true`
@@ -104,20 +122,15 @@ let profile: types.Profile | undefined
 if (!cats && tmap.hasOwnProperty('Profile')) {
 	profile = (tmap as types.TreasureMap).Profile
 }
-
-
-// Display NSFW links count if > 0
-const nsfw_links_count = tmap.NSFWLinksCount
 ---
 
 <BaseLayout Title={page_title}>
 	<main>
 		<h1 class={profile ? 'has-profile' : ''}>{login_name}</h1>
 
-		<!-- Profile  -->
 		{profile ? (
 			<Profile
-				client:load
+				client:idle
 				LoginName={login_name}
 				SignedInUser={user}
 				CreatedAt={profile.Created}
@@ -128,51 +141,17 @@ const nsfw_links_count = tmap.NSFWLinksCount
 			/>
 		) : null}
 
-		<!-- Config -->
-		{<section id='sort-and-filter'>
-			<h2>Sort and Filter</h2>
-
-			{/* Sort By */}
-			<p id="toggle-sort-by">Sort By: 
-				<a href={opposite_sort_URL}>{is_sorted_by_newest ? 'rating' : 'newest'}</a>
-			</p>
-
-			{/* NSFW */}
-			{nsfw_links_count ? 
-				<p id="nsfw-filter">
-					NSFW links ({nsfw_links_count}):
-					<span>
-						{nsfw ? <a href={`/map/${login_name}${cats ? `?cats=${encoded_cats}` : ''}${sort_by ? cats ? `&sort_by=${sort_by}` : `?sort_by=${sort_by}` : ''}`}>hide</a> : <a href={`/map/${login_name}${cats ? `?cats=${encoded_cats}` : ''}${sort_by ? cats ? `&sort_by=${sort_by}` : `?sort_by=${sort_by}` : ''}${cats || sort_by ? `&nsfw=true` : '?nsfw=true'}`}>unhide</a>}
-					</span>
-				</p>
-			: null}
-
-			{/* Cats */}
-			{cats ? <div id='cats-filter-container' class="flex">
-				<div id="cats-filter-actions">
-					<p id="cats-filter">
-						Cats Filter:
-						<span id='clear-cats-filter'>
-							<a href={`/map/${login_name}${sort_by ? `?sort_by=${sort_by}` : ''}${nsfw ? sort_by ? '&nsfw=true' : '?nsfw=true' : ''}`}>clear</a>
-						</span>	
-					</p>
-					<p id="transfer-to-global-map">
-						<a href={`/search?cats=${encoded_cats}${sort_by ? `&sort_by=${sort_by}` : ''}${nsfw ? sort_by ? '&nsfw=true' : '?nsfw=true' : ''}`}>Transfer cats to Global Treasure Map</a>
-					</p>
-				</div>
-				<ul id='cat-list'>
-					{cats_split.length > 1 ? (
-						cats_split.map((cat) => {
-							return (
-								<TagCat Cat={cat} IsNSFW={cat === 'NSFW'} Fat />
-							)
-						})
-					) : (
-						<TagCat Cat={cats_split[0]} IsNSFW={cats_split[0] === 'NSFW'} Fat />
-					)}
-				</ul>
-			</div> : null}
-		</section>}
+		<SearchFilters
+			client:load 
+			Endpoint={"/map"}
+			TmapOwnerLoginName={login_name}
+			TmapNSFWLinksCount={tmap.NSFWLinksCount}
+			InitialCats={cats_split}
+			InitialPeriod={period}
+			InitialURLContains={url_contains}
+			InitialSortBy={sort_by}
+			InitialNSFW={nsfw}
+		/>
 
 		<Rankings
 			CatsParams={encoded_cats}
@@ -207,59 +186,6 @@ const nsfw_links_count = tmap.NSFWLinksCount
 
 		astro-island:has(div#profile-pic) + pre {
 			margin-top: 1rem;
-		}
-	}
-
-	section#sort-and-filter {
-		padding: 0.5rem 0;
-
-		h2 {
-			margin: 0.5rem 0;
-		}
-		
-		#nsfw-filter {
-			margin-top: 0;
-		}
-		
-		#cats-filter-container {
-			display: flex;
-			flex-direction: column;
-			margin-bottom: 0.5rem;
-
-			#cats-filter-actions {
-				margin-right: 1rem;
-
-				#cats-filter {
-					margin-top: 1rem;
-				}
-			}
-
-			#transfer-to-global-map,
-			#clear-cats-filter {
-				margin: 0;
-			}
-
-			#cat-list {
-				margin-bottom: 0;
-			}
-		}
-	}
-
-	@media (min-width: 480px) {
-		section#sort-and-filter {
-			#cats-filter-container {
-				flex-direction: row;
-
-				#transfer-to-global-map,
-				#clear-cats-filter {
-					margin: 0;
-				}
-				
-				#cat-list {
-					margin: 0 auto;
-					align-content: center;
-				}
-			}
 		}
 	}
 </style>

@@ -1,0 +1,7 @@
+#search-nsfw-container {
+	margin-top: 5px;
+
+	input#nsfw {
+		margin-bottom: 0;
+	}
+}

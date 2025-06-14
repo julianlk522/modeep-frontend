@@ -95,7 +95,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 							<div class={is_section_with_more ?"section-with-more" : ""}>
 								<h2>{s}</h2>
 								{is_section_with_more ? <span class="see-all">
-									<a href={`/map/${tmap_owner_login_name}/${s.toLowerCase()}${cats ? `?cats=${cats}` : ''}${sort_by ? cats ? `&sort_by=${sort_by}` : `?sort_by=${sort_by}` : ''}${nsfw ? sort_by ? '&nsfw=true' : '?nsfw=true' : ''}`}>See All</a>
+									<a href={Astro.url.href.replace(`/map/${tmap_owner_login_name}`, `/map/${tmap_owner_login_name}/${s.toLowerCase()}`)}>See All</a>
 								</span> : null}
 								<div class="bg"></div>
 							</div>
