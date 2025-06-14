@@ -76,13 +76,12 @@ if (Astro.url.searchParams.get('nsfw') && Astro.url.searchParams.get('nsfw') ===
     tmap_section_url += `&nsfw=true`
 }
 
-// sort by
-let sort_by: SortMetric | undefined
+// sort_by
+let sort_by: SortMetric = 'rating'
 const sort_by_params = Astro.url.searchParams.get('sort_by')
 const is_sorted_by_newest = sort_by_params === 'newest'
 if (is_sorted_by_newest) {
 	sort_by = 'newest'
-    tmap_section_url += `&sort_by=newest`
 }
 
 // page
