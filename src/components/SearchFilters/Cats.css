@@ -9,7 +9,7 @@ div#search-cats-container.home {
 }
 
 div#search-cats-container.home:not(:has(ol#recommendations-list)) {
-	margin-bottom: 1rem;
+	margin-bottom: 0.5rem;
 }
 
 input#cats {

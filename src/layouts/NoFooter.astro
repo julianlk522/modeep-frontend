@@ -121,7 +121,7 @@ let user = Astro.cookies.get('user')?.value
 			font-weight: 700;
 			line-height: 1;
 			text-align: center;
-			margin-bottom: 1rem;
+			margin: 1rem 0;
 		}
 
 		h2, h3, h4, h5, h6 {
@@ -299,12 +299,10 @@ let user = Astro.cookies.get('user')?.value
 			h2 {
 				font-size: 1.5rem;
 			}
-		}
 
-		@media (min-width: 480px) {
 			header nav #user-links {
 				margin-left: auto;
-			}
+			}	
 		}
 
 		@media (min-width: 680px) {

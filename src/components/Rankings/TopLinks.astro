@@ -53,7 +53,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 		<section class="links-section">
 			{is_home_page ? <ul id='change-period'>
 				<li>
-					<h2>This Month's Treasure:</h2>
+					<h2>Treasure This Month:</h2>
 				</li>
 				{
 					home_page_non_default_periods.map((period) => (
@@ -132,6 +132,10 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
                     />
                 ))}
             </ol>
+        </section>
+    :
+        <NoLinksFound AddSomethingPrompt={is_your_tmap} />
+    }
 
 	{ is_only_page 
 		? null 
