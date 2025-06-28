@@ -4,8 +4,57 @@ import type { Contributor } from '../../types'
 
 interface Props {
     Contributors: Contributor[]
+    CatsParams?: string
+    PeriodParams?: string
+    SortByParams?: string
+    NSFWParams?: boolean
+    URLContainsParams?: string
 }
-const contributors = Astro.props.Contributors
+const {
+    Contributors: contributors,
+    CatsParams: cats,
+    PeriodParams: period,
+    SortByParams: sort_by,
+    NSFWParams: nsfw,
+    URLContainsParams: url_contains,
+} = Astro.props
+
+let href_suffix = ''
+if (cats) {
+    href_suffix += `?cats=${cats}`
+}
+
+if (period) {
+    if (cats) {
+        href_suffix += `&period=${period}`
+    } else {
+        href_suffix += `?period=${period}`
+    }
+}
+
+if (sort_by) {
+    if (period || cats) {
+        href_suffix += `&sort_by=${sort_by}`
+    } else {
+        href_suffix += `?sort_by=${sort_by}`
+    }
+}
+
+if (nsfw) {
+    if (period || cats || sort_by) {
+        href_suffix += `&nsfw=${nsfw}`
+    } else {
+        href_suffix += `?nsfw=${nsfw}`
+    }
+}
+
+if (url_contains) {
+    if (period || cats || sort_by || nsfw) {
+        href_suffix += `&url_contains=${url_contains}`
+    } else {
+        href_suffix += `?url_contains=${url_contains}`
+    }
+}
 ---
 
 <div>
@@ -16,7 +65,7 @@ const contributors = Astro.props.Contributors
                 <li>
                     <strong>
                         <a
-                            href={`/map/${c.LoginName}`}
+                            href={`/map/${c.LoginName}${href_suffix}`}
                         >
                             {c.LoginName}
                         </a>
