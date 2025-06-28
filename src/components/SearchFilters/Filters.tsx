@@ -126,13 +126,20 @@ export default function SearchFilters(props: Props) {
 			<form onKeyDown={handle_keydown}>
 				<SearchCats SelectedCats={cats} SetSelectedCats={set_cats} />
 
-				{cats.length && endpoint === '/map' && tmap_owner_login_name ? (
+				{cats.length && endpoint === '/map' ? (
 					<p id='transfer-to-global-map'>
 						<a
-							href={search_url.replace(
-								'map/' + tmap_owner_login_name,
-								'search'
-							)}
+							href={
+								single_tmap_section_name
+									? search_url.replace(
+											`/map/${tmap_owner_login_name}/${single_tmap_section_name?.toLowerCase()}`,
+											'/search'
+									  )
+									: search_url.replace(
+											`/map/${tmap_owner_login_name}`,
+											'/search'
+									  )
+							}
 						>
 							Transfer cats to Global Treasure Map
 						</a>
