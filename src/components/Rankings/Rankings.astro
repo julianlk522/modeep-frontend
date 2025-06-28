@@ -14,6 +14,7 @@ interface Props {
     MergedCats?: string[]
     PeriodParams?: Period
     SortByParams?: SortMetric
+    URLContainsParams?: string
     PageParams?: number
     PageCount?: number
     TopCats: CatCount[]
@@ -34,6 +35,7 @@ const {
     MergedCats: merged_cats, 
     PeriodParams: period_params, 
     SortByParams: sort_by_params, 
+    URLContainsParams: url_contains_params,
     PageParams: page, 
     PageCount: page_count, 
     TopCats: top_cats, 
@@ -80,7 +82,14 @@ const no_links_found = links && links.length === 0 || tmap && multiple_tmap_sect
                     </ul>
                 </div> 
                 : top_contributors 
-                    ? <TopContributors Contributors={top_contributors} /> 
+                    ? <TopContributors 
+                        Contributors={top_contributors}
+                        CatsParams={cats_params}
+                        PeriodParams={period_params}
+                        SortByParams={sort_by_params}
+                        NSFWParams={nsfw_params}
+                        URLContainsParams={url_contains_params}    
+                    /> 
                     : null
             }
 
@@ -90,6 +99,7 @@ const no_links_found = links && links.length === 0 || tmap && multiple_tmap_sect
                 PeriodParams={period_params} 
                 SortByParams={sort_by_params} 
                 NSFWParams={nsfw_params} 
+                URLContainsParams={url_contains_params}
                 IsTmapFromUser={tmap_owner} 
                 SingleTmapSection={single_tmap_section_name}
             />
@@ -102,6 +112,7 @@ const no_links_found = links && links.length === 0 || tmap && multiple_tmap_sect
         Cats={cats_params}
         Period={period_params}
         SortBy={sort_by_params}
+        URLContains={url_contains_params}
         Page={page}
         PageCount={page_count}
         Tmap={tmap}

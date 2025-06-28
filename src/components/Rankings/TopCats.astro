@@ -4,25 +4,27 @@ import type { CatCount, Period, SortMetric, tmap_sections } from '../../types'
 import TagCat from '../Tag/TagCat'
 
 interface Props {
+    TopCats: CatCount[]
     CatsParams?: string
     PeriodParams?: Period
     SortByParams?: SortMetric
     NSFWParams?: boolean
+    URLContainsParams?: string
     More?: boolean
     Mini?: boolean
-    TopCats: CatCount[]
     SingleTmapSection?: typeof tmap_sections[number]
     IsTmapFromUser?: string
 }
 
 const { 
+    TopCats: top_cats, 
     CatsParams: cats_params, 
     PeriodParams: period, 
     SortByParams: sort_by, 
     NSFWParams: nsfw, 
+    URLContainsParams: url_contains,
     More: more, 
     Mini: mini, 
-    TopCats: top_cats, 
     SingleTmapSection: single_tmap_section,
     IsTmapFromUser: tmap_owner, 
 } = Astro.props
@@ -47,7 +49,7 @@ if (single_tmap_section) endpoint += `/${single_tmap_section}`
                     Cat={cat.Category} 
                     Count={cat.Count} 
                     IsNSFW={cat.Category === 'NSFW'} 
-                    Href={endpoint + `?cats=${is_subcats ? cats_params + ',' + encodeURIComponent(cat.Category) : encodeURIComponent(cat.Category)}${has_period ? `&period=${period}` : ''}${sort_by && sort_by !== 'rating' ? `&sort_by=newest` : ''}${nsfw || cat.Category === 'NSFW' ? `&nsfw=true` : ''}`}
+                    Href={endpoint + `?cats=${is_subcats ? cats_params + ',' + encodeURIComponent(cat.Category) : encodeURIComponent(cat.Category)}${has_period ? `&period=${period}` : ''}${sort_by && sort_by !== 'rating' ? `&sort_by=newest` : ''}${nsfw || cat.Category === 'NSFW' ? `&nsfw=true` : ''}${url_contains ? `&url_contains=${url_contains}` : ''}`}
                     IsMorePage={more}
                  />
             ))

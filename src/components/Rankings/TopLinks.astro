@@ -11,6 +11,7 @@ interface Props {
     Cats?: string
     Period?: types.Period
     SortBy?: types.SortMetric
+	URLContains?: string
     Page?: number
     PageCount?: number
     Tmap?: types.TreasureMap | types.FilteredTreasureMap
@@ -29,6 +30,7 @@ const {
 	Cats: cats, 
 	Period: period, 
 	SortBy: sort_by, 
+	URLContains: url_contains,
 	Page: page, 
 	PageCount: page_count,
 	Tmap: tmap, 
@@ -72,17 +74,6 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 					/>
 				))}
        		</ol>
-
-			    {is_only_page ? null : <Pagination
-					Cats={cats}
-					Period={period ?? 'month'}
-					SortBy={sort_by}
-					HasNSFW={nsfw}
-					Page={page ?? 1}
-					PageCount={page_count}
-					SingleTmapSectionName={single_tmap_section_name}
-					TmapOwner={tmap_owner_login_name}
-				/>}
 		</section>
 
     : tmap ?
@@ -117,17 +108,6 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 									/>
 								))}
 							</ol>
-
-							{is_only_page ? null : <Pagination
-								Cats={cats}
-								Period={period ?? 'month'}
-								SortBy={sort_by}
-								HasNSFW={nsfw}
-								Page={page ?? 1}
-								PageCount={page_count}
-								SingleTmapSectionName={single_tmap_section_name}
-								TmapOwner={tmap_owner_login_name}
-							/>}
 						</section>
 					)
 				})}
@@ -153,20 +133,20 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
                 ))}
             </ol>
 
-			{is_only_page ? null : <Pagination
-				Cats={cats}
-				Period={period ?? 'month'}
-				SortBy={sort_by}
-				HasNSFW={nsfw}
-				Page={page ?? 1}
-				PageCount={page_count}
-				SingleTmapSectionName={single_tmap_section_name}
-				TmapOwner={tmap_owner_login_name}
-			/>}
-        </section>
-    :
-        <NoLinksFound AddSomethingPrompt={is_your_tmap} />
-    }
+	{ is_only_page 
+		? null 
+		: <Pagination
+			Cats={cats}
+			Period={period ?? 'month'}
+			SortBy={sort_by}
+			HasNSFW={nsfw}
+			URLContains={url_contains}
+			Page={page ?? 1}
+			PageCount={page_count}
+			SingleTmapSectionName={single_tmap_section_name}
+			TmapOwner={tmap_owner_login_name}
+		/>
+	}
 </>
 
 <style>
