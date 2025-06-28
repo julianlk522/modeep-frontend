@@ -8,13 +8,13 @@ export default async function fetch_with_handle_redirect(
 		switch (resp.status) {
 			// unauthorized
 			case 401:
-				return { Response: undefined, RedirectTo: '/login' }
+				return { Response: resp, RedirectTo: '/login' }
 			// not found
 			case 404:
 				return { Response: undefined, RedirectTo: '/404' }
 			// rate limited
 			case 429:
-				return { Response: undefined, RedirectTo: '/rate-limit' }
+				return { Response: resp, RedirectTo: '/rate-limit' }
 			// server error
 			case 500:
 				return { Response: undefined, RedirectTo: '/500' }
