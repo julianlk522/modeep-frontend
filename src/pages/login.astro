@@ -5,15 +5,19 @@ import NoFooter from '../layouts/NoFooter.astro'
 <NoFooter Title='Sign Up or Log In to FITM'>
 	<script>
 		import { LOGIN_ENDPOINT, SIGNUP_ENDPOINT } from '../constants'
+import { is_error_response } from '../types'
 import fetch_with_handle_redirect from '../util/fetch_with_handle_redirect'
 import get_cookie from '../util/get_cookie'
+
+		const login_error = document.getElementById('login-error')
+		const signup_error = document.getElementById('signup-error')
 
 		async function handle_signup(event: SubmitEvent) {
 			event.preventDefault()
 			const form = event.target as HTMLFormElement
-			const formData = new FormData(form)
-			const signup_name = formData.get('signup_name')
-			const password = formData.get('password')
+			const form_data = new FormData(form)
+			const signup_name = form_data.get('signup_name')
+			const password = form_data.get('password')
 
 			const signup_resp = await fetch_with_handle_redirect(SIGNUP_ENDPOINT, {
 				method: 'POST',
@@ -25,10 +29,17 @@ import get_cookie from '../util/get_cookie'
 					password,
 				}),
 			})
+
 			if (!signup_resp.Response || signup_resp.RedirectTo) {
 				return window.location.href = signup_resp.RedirectTo ?? '/500'
 			}
+
 			const signup_data = await signup_resp.Response.json()
+			if (is_error_response(signup_data) && signup_error) {
+				signup_error.innerHTML = signup_data.error
+				signup_error.style.display = 'block'
+				return
+			}
 
 			if (signup_data.token) {
 				// set cookie
@@ -51,7 +62,7 @@ import get_cookie from '../util/get_cookie'
 					window.location.href = '/'
 				}
 			} else {
-				alert(signup_data.error)
+				alert('Something went wrong')
 			}
 
 			return
@@ -60,9 +71,9 @@ import get_cookie from '../util/get_cookie'
 		async function handle_login(event: SubmitEvent) {
 			event.preventDefault()
 			const form = event.target as HTMLFormElement
-			const formData = new FormData(form)
-			const login_name = formData.get('login_name')
-			const password = formData.get('password')
+			const form_data = new FormData(form)
+			const login_name = form_data.get('login_name')
+			const password = form_data.get('password')
 
 			const login_resp = await fetch_with_handle_redirect(LOGIN_ENDPOINT, {
 				method: 'POST',
@@ -79,6 +90,11 @@ import get_cookie from '../util/get_cookie'
 				return window.location.href = login_resp.RedirectTo ?? '/500'
 			}
 			const login_data = await login_resp.Response.json()
+			if (is_error_response(login_data) && login_error) {
+					login_error.innerHTML = login_data.error
+					login_error.style.display = 'block'
+					return
+				}
 
 			if (login_data.token) {
 				document.cookie = `token=${login_data.token}; max-age=14400; SameSite=strict; Secure`
@@ -100,7 +116,7 @@ import get_cookie from '../util/get_cookie'
 					window.location.href = '/'
 				}
 			} else {
-				alert(login_data.error)
+				alert('Something went wrong')
 			}
 
 			return
@@ -116,12 +132,13 @@ import get_cookie from '../util/get_cookie'
 	<main>
 		<section>
 			<h2>Log In</h2>
+			<p id="login-error" class="error"></p>
 			<form id='login'>
 				<label for='login_name'>Name</label>
-				<input type='text' name='login_name' />
+				<input type='text' name='login_name' required />
 				<br />
 				<label for='password'>Password</label>
-				<input type='password' name='password' />
+				<input type='password' name='password' required />
 				<input type='submit' value='Log in' />
 			</form>
 
@@ -130,12 +147,13 @@ import get_cookie from '../util/get_cookie'
 
 		<section>
 			<h2>Sign Up</h2>
+			<p id="signup-error" class="error"></p>
 			<form id='signup'>
 				<label for='signup_name'>Name</label>
-				<input type='text' name='signup_name' />
+				<input type='text' name='signup_name' required />
 				<br />
 				<label for='password'>Password</label>
-				<input type='password' name='password' />
+				<input type='password' name='password' required />
 				<input type='submit' value='Sign up' />
 			</form>
 		</section>
@@ -143,6 +161,24 @@ import get_cookie from '../util/get_cookie'
 </NoFooter>
 
 <style>
+	h2 {
+		margin-bottom: 0;
+	}
+
+	p.error {
+		display: none;
+		color: red;
+		margin-top: 0;
+	}
+
+	p.error.visible {
+		display: block;
+	}
+
+	form {
+		margin-top: 1rem;
+	}
+
 	a#forgot-password {
 		display: inline-block;
 		margin-top: 1rem;
