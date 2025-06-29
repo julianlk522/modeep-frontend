@@ -48,7 +48,29 @@ const is_your_tmap = tmap_owner_login_name !== undefined && user == tmap_owner_l
 const home_page_non_default_periods = ['day', 'week', 'year','all']
 ---
 
-<>    
+<>   
+	<script>
+		const section_header_areas = document.querySelectorAll('.links-section > div')
+
+		for (let i = 0; i < section_header_areas.length; i++) {
+			section_header_areas[i].addEventListener('click', (e) => {
+				e.stopPropagation()
+				toggle_section_expansion(section_header_areas[i])
+			})
+		}
+
+		function toggle_section_expansion(header_area: Element) {	
+			const ol_elem = header_area?.nextElementSibling
+			const img_elem = header_area?.firstElementChild
+
+			img_elem?.classList.toggle('collapsed')
+			ol_elem?.classList.toggle('collapsed')
+
+			img_elem?.setAttribute('alt', img_elem.classList.contains('collapsed') ? 'Section is collapsed' : 'Section is expanded')
+			
+		}
+	</script>
+
     {links?.length ? 
 		<section class="links-section">
 			{is_home_page ? <ul id='change-period'>
@@ -85,10 +107,20 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 					return (
 						<section id={s.toLowerCase()} class='links-section'>
 							<div class={is_section_with_more ?"section-with-more" : ""}>
+								<img 
+									class='section-expansion-arrow' 
+									src='../../back.svg' 
+									alt="Section is expanded" 
+									height={20} 
+									width={20}
+								/>
+
 								<h2>{s}</h2>
+
 								{is_section_with_more ? <span class="see-all">
 									<a href={Astro.url.href.replace(`/map/${tmap_owner_login_name}`, `/map/${tmap_owner_login_name}/${s.toLowerCase()}`)}>See All</a>
 								</span> : null}
+
 								<div class="bg"></div>
 							</div>
 
@@ -169,6 +201,19 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 		width: 100%;
 		padding: 0;
 		border-bottom: none;
+
+		img.section-expansion-arrow {
+			background: none;
+			margin-left: -0.5rem;
+			margin-right: 0.25rem;
+			rotate: -90deg;
+			opacity: 0.9;
+		}
+
+		img.section-expansion-arrow.collapsed {
+			opacity: 0.25;
+			rotate: 180deg;
+		} 
 
 		h2 {
 			margin-bottom: 0;
@@ -256,6 +301,11 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 			margin-left: auto;
 			padding: 0;
 		}
+
+		ol.collapsed {
+			max-height: 0;
+			overflow: hidden;
+		}
 	}
 
 	#tmap-multiple-sections-container {
@@ -277,6 +327,10 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 	@media (min-width: 680px) {
 		section.links-section {
 			padding-top: 0.5rem;
+
+			img.section-expansion-arrow {
+				margin-left: -0.75rem;
+			}
 		}
 
 		section.links-section.single-tmap-section {

@@ -68,30 +68,17 @@ const no_links_found = links && links.length === 0 || tmap && multiple_tmap_sect
             ? 'tmap' 
             : ''
         }>        
-            {multiple_tmap_sections && multiple_tmap_sections.length > 1 
-                ? <div id="skip-to-section-container">
-                    <h2>Go to Section</h2>
-                    <ul id='skip-to-link-section'>
-                        {
-                            multiple_tmap_sections.map((s) => (
-                                <li>
-                                    <a href={`#${s.toLowerCase()}`}>{s}</a>
-                                </li>
-                            ))
-                        }
-                    </ul>
-                </div> 
-                : top_contributors 
-                    ? <TopContributors 
-                        Contributors={top_contributors}
-                        CatsParams={cats_params}
-                        PeriodParams={period_params}
-                        SortByParams={sort_by_params}
-                        NSFWParams={nsfw_params}
-                        URLContainsParams={url_contains_params}    
-                    /> 
-                    : null
-            }
+            {top_contributors 
+                ? <TopContributors 
+                    Contributors={top_contributors}
+                    CatsParams={cats_params}
+                    PeriodParams={period_params}
+                    SortByParams={sort_by_params}
+                    NSFWParams={nsfw_params}
+                    URLContainsParams={url_contains_params}    
+                /> 
+                : null
+            } 
 
             <TopCats 
                 TopCats={top_cats} 
@@ -151,11 +138,6 @@ const no_links_found = links && links.length === 0 || tmap && multiple_tmap_sect
 			}
 		}
 
-        ul#skip-to-link-section {
-            margin-bottom: 0;
-            padding-inline-start: 1.5rem;
-        }
-
         /* had to put this here to increase specificity */
         @media (min-width: 480px) {
             aside#top-cats-and-contributors {
@@ -200,7 +182,7 @@ const no_links_found = links && links.length === 0 || tmap && multiple_tmap_sect
             }
 
             aside#top-cats-and-contributors.tmap {
-                margin-top: 1rem;
+                margin-top: 1.5rem;
             }
         }
     }
