@@ -48,7 +48,7 @@ const is_your_tmap = tmap_owner_login_name !== undefined && user == tmap_owner_l
 const home_page_non_default_periods = ['day', 'week', 'year','all']
 ---
 
-<>   
+<div id='top-links'>   
 	<script>
 		const section_header_areas = document.querySelectorAll('.links-section > div')
 
@@ -66,7 +66,10 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 			img_elem?.classList.toggle('collapsed')
 			ol_elem?.classList.toggle('collapsed')
 
-			img_elem?.setAttribute('alt', img_elem.classList.contains('collapsed') ? 'Section is collapsed' : 'Section is expanded')
+			const new_img_alt_text = img_elem?.classList.contains('collapsed') 
+				? 'Section is collapsed' 
+				: 'Section is expanded'
+			img_elem?.setAttribute('alt', new_img_alt_text)
 			
 		}
 	</script>
@@ -86,7 +89,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 				}
 			</ul> : null}
 
-			<ol id='top-links' start={page ? (page - 1) * LINKS_PAGE_LIMIT + 1 : ''}>
+			<ol start={page ? (page - 1) * LINKS_PAGE_LIMIT + 1 : ''}>
 				{links?.map((link) => (
 					<Link
 						client:load
@@ -183,20 +186,9 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 			TmapOwner={tmap_owner_login_name}
 		/>
 	}
-</>
+</div>
 
 <style>
-    #top-links {
-        min-width: fit-content;
-        margin: 0 0 0.5rem auto;
-        padding: 0;
-        padding-inline-start: 1rem;
-    }
-
-    #top-links:has(+ nav.pagination) {
-        margin-bottom: 0.5rem;
-    }
-
     section.links-section {
 		width: 100%;
 		padding: 0;
@@ -279,6 +271,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 				}
 			}
 
+
 			@media (min-width: 680px) {
 				.bg {
 					left: -1rem;
@@ -295,11 +288,15 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 		}
 
 		ol {
+			min-width: fit-content;
 			max-width: calc(100% - 1rem);
-			margin-top: 0;
-			margin-bottom: 0.5rem;
-			margin-left: auto;
+			margin: 0 0 0.5rem auto;
 			padding: 0;
+			padding-inline-start: 1rem;
+		}
+
+		ol:has(+ nav.pagination) {
+			margin-bottom: 0.5rem;
 		}
 
 		ol.collapsed {
@@ -318,11 +315,11 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 		}
 	}
 
-    @media (min-width: 450px) {
-        #top-links {
-            padding-inline-start: 2rem;
-        }
-    }
+	@media (min-width: 450px) {
+		section.links-section ol {
+			padding-inline-start: 2rem;
+		}
+	}
 
 	@media (min-width: 680px) {
 		section.links-section {
