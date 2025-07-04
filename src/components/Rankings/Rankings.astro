@@ -30,12 +30,12 @@ interface Props {
 
 const { 
     Links: links, 
-    NSFWParams: nsfw_params, 
-    CatsParams: cats_params, 
+    NSFWParams: nsfw, 
+    CatsParams: cats, 
     MergedCats: merged_cats, 
-    PeriodParams: period_params, 
-    SortByParams: sort_by_params, 
-    URLContainsParams: url_contains_params,
+    PeriodParams: period, 
+    SortByParams: sort_by, 
+    URLContainsParams: url_contains,
     PageParams: page, 
     PageCount: page_count, 
     TopCats: top_cats, 
@@ -71,22 +71,22 @@ const no_links_found = links && links.length === 0 || tmap && multiple_tmap_sect
             {top_contributors 
                 ? <TopContributors 
                     Contributors={top_contributors}
-                    CatsParams={cats_params}
-                    PeriodParams={period_params}
-                    SortByParams={sort_by_params}
-                    NSFWParams={nsfw_params}
-                    URLContainsParams={url_contains_params}    
+                    CatsParams={cats}
+                    PeriodParams={period}
+                    SortByParams={sort_by}
+                    NSFWParams={nsfw}
+                    URLContainsParams={url_contains}    
                 /> 
                 : null
             } 
 
             <TopCats 
                 TopCats={top_cats} 
-                CatsParams={cats_params} 
-                PeriodParams={period_params} 
-                SortByParams={sort_by_params} 
-                NSFWParams={nsfw_params} 
-                URLContainsParams={url_contains_params}
+                CatsParams={cats} 
+                PeriodParams={period} 
+                SortByParams={sort_by} 
+                NSFWParams={nsfw} 
+                URLContainsParams={url_contains}
                 IsTmapFromUser={tmap_owner} 
                 SingleTmapSection={single_tmap_section_name}
             />
@@ -95,11 +95,11 @@ const no_links_found = links && links.length === 0 || tmap && multiple_tmap_sect
 
   <TopLinks 
         Links={links}
-        NSFW={nsfw_params}
-        Cats={cats_params}
-        Period={period_params}
-        SortBy={sort_by_params}
-        URLContains={url_contains_params}
+        NSFW={nsfw}
+        Cats={cats}
+        Period={period}
+        SortBy={sort_by}
+        URLContains={url_contains}
         Page={page}
         PageCount={page_count}
         Tmap={tmap}
