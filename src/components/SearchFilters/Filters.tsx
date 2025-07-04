@@ -41,58 +41,32 @@ export default function SearchFilters(props: Props) {
 	)
 	const [nsfw, set_nsfw] = useState<boolean>(initial_nsfw ?? false)
 
-	// set search URL based on period and cats
-	let base_url = endpoint
-		? endpoint === '/map'
-			? single_tmap_section_name
-				? `/map/${tmap_owner_login_name}/${single_tmap_section_name.toLowerCase()}`
-				: `/map/${tmap_owner_login_name}`
-			: endpoint
-		: '/search'
-	let search_url = base_url
+	// Params
+	const params = new URLSearchParams()
 
 	const has_cats = cats.length > 0
 	if (has_cats) {
-		// encode reserved chars
-		const encoded_cats = cats
-			.map((cat) => encodeURIComponent(cat))
-			.join(',')
-		search_url += `?cats=${encoded_cats}`
+		params.set('cats', cats.join(','))
 	}
 
 	const has_url_contains = url_contains?.length
 	if (has_url_contains) {
-		if (has_cats) {
-			search_url += `&url_contains=${url_contains}`
-		} else {
-			search_url += `?url_contains=${url_contains}`
-		}
+		params.set('url_contains', url_contains)
 	}
 
 	const has_period = period !== 'all'
 	if (has_period) {
-		if (has_cats || has_url_contains) {
-			search_url += `&period=${period}`
-		} else {
-			search_url += `?period=${period}`
-		}
+		params.set('period', period)
 	}
 
 	// /search page endpoint only
 	const sort_by_newest = sort_by && sort_by !== 'rating'
 	if (sort_by_newest) {
-		if (has_cats || has_url_contains || has_period) {
-			search_url += `&sort_by=${sort_by}`
-		} else {
-			search_url += `?sort_by=${sort_by}`
-		}
+		params.set('sort_by', sort_by)
 	}
+
 	if (nsfw) {
-		if (has_cats || has_period || has_url_contains || sort_by_newest) {
-			search_url += `&nsfw=true`
-		} else {
-			search_url += `?nsfw=true`
-		}
+		params.set('nsfw', 'true')
 	}
 
 	const has_changed_cats =
@@ -105,6 +79,17 @@ export default function SearchFilters(props: Props) {
 		period !== initial_period ||
 		sort_by !== initial_sort_by ||
 		nsfw !== initial_nsfw
+
+	let base_url = endpoint
+		? endpoint === '/map'
+			? single_tmap_section_name
+				? `/map/${tmap_owner_login_name}/${single_tmap_section_name.toLowerCase()}`
+				: `/map/${tmap_owner_login_name}`
+			: endpoint
+		: '/search'
+	const search_url = params.toString()
+		? `${base_url}?${params.toString()}`
+		: base_url
 
 	// search by pressing "Enter"
 	// (propagation stopped within SearchCats if "Enter" is used to add a cat)
