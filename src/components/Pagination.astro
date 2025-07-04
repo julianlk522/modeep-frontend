@@ -26,64 +26,42 @@ const {
 	TmapOwner: tmap_owner, 
 } = Astro.props
 
-let href_without_page = single_tmap_section_name ? `/map/${tmap_owner}/${single_tmap_section_name.toLowerCase()}` : '/search'
-let has_other_params = false
-
-const has_cats = cats !== undefined && cats.length
-const has_period = period && period !== 'all'
-const is_sort_by_newest = sort_by && sort_by === 'newest'
-const has_url_contains = url_contains && url_contains.length
-
-if (has_period) {
-	href_without_page += `?period=${period}`
-	has_other_params = true
+const params = new URLSearchParams()
+if (cats !== undefined && cats.length) {
+	params.set('cats', cats)
 }
-if (has_cats) {
-	if (has_other_params) {
-		href_without_page += `&cats=${cats}`
-	} else {
-		href_without_page += `?cats=${cats}`
-		has_other_params = true
-	}
+if (period && period !== 'all') {
+	params.set('period', period)
 }
-if (is_sort_by_newest) {
-	if (has_other_params) {
-		href_without_page += `&sort_by=newest`
-	} else {
-		href_without_page += `?sort_by=newest`
-		has_other_params = true
-	}
+if (sort_by && sort_by !== 'rating') {
+	params.set('sort_by', sort_by)
 }
 if (nsfw) {
-	if (has_other_params) {
-		href_without_page += `&nsfw=true`
-	} else {
-		href_without_page += `?nsfw=true`
-		has_other_params = true
-	}
+	params.set('nsfw', 'true')
 }
-if (has_url_contains) {
-	if (has_other_params) {
-		href_without_page += `&url_contains=${url_contains}`
-	} else {
-		href_without_page += `?url_contains=${url_contains}`
-		has_other_params = true
-	}
+if (url_contains && url_contains.length) {
+	params.set('url_contains', url_contains)
 }
+
+let base_href = single_tmap_section_name 
+	? `/map/${tmap_owner}/${single_tmap_section_name.toLowerCase()}` 
+	: '/search'
+
 ---
 
 <nav class="pagination">
 	{page > 1 ? 
-		<a href={
-			get_paginated_href({
-				BaseHref: href_without_page,
-				Page: 1,
-				HasOtherParams: has_other_params,
-			})
-		}>1</a> 
 		<>
-			{ page > 3 ? 
-				<span>...</span> 
+			<a href={
+				get_paginated_href({
+					BaseHref: base_href,
+					OtherParams: params,
+					Page: 1,
+				})
+			}>1</a>
+
+			{ page > 3 ?
+				<span>...</span>
 			: <span> . </span>
 			}
 		</>
@@ -94,9 +72,9 @@ if (has_url_contains) {
 			<span>
 				<a href={
 					get_paginated_href({
-						BaseHref: href_without_page,
+						BaseHref: base_href,
+						OtherParams: params,
 						Page: page - 1,
-						HasOtherParams: has_other_params,
 					})
 				}>
 					{page - 1}
@@ -114,9 +92,9 @@ if (has_url_contains) {
 				{' . '}
 				<a href={
 					get_paginated_href({
-						BaseHref: href_without_page,
+						BaseHref: base_href,
+						OtherParams: params,
 						Page: page + 1,
-						HasOtherParams: has_other_params,
 					})
 				}>
 					{page + 1}
@@ -132,25 +110,29 @@ if (has_url_contains) {
 					{' . '}
 					<a href={
 						get_paginated_href({
-							BaseHref: href_without_page,
+							BaseHref: base_href,
+							OtherParams: params,
 							Page: page + 2,
-							HasOtherParams: has_other_params,
 						})
 					}>{page + 2}</a>
 				</span> 
 				{page_count > page + 2 ? 
 					<span>
-						{page_count > page + 3 ? <span> ... </span> : <span> . </span>}
+						{page_count > page + 3 
+							? <span> ... </span> 
+							: <span> . </span>
+						}
 						<a href={
 							get_paginated_href({
-								BaseHref: href_without_page,
+								BaseHref: base_href,
+								OtherParams: params,
 								Page: page_count,
-								HasOtherParams: has_other_params,
 							})
-						}>{page_count}</a>
-					</span>	
-				: null
-				}
+						}>
+							{page_count}
+						</a>
+					</span>
+				: null}
 			</>
 		: null
 	}

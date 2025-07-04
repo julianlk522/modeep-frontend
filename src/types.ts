@@ -149,7 +149,7 @@ const tmap_sections = ['Submitted', 'Copied', 'Tagged'] as const
 type PaginationHrefOpts = {
 	BaseHref: string
 	Page: number
-	HasOtherParams: boolean
+	OtherParams: URLSearchParams
 }
 
 export {
