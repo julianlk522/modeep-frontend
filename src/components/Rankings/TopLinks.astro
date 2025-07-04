@@ -74,7 +74,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 		}
 	</script>
 
-    {links?.length ? 
+    {is_home_page || links?.length ? 
 		<section class="links-section">
 			{is_home_page ? <ul id='change-period'>
 				<li>
@@ -89,19 +89,22 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 				}
 			</ul> : null}
 
-			<ol start={page ? (page - 1) * LINKS_PAGE_LIMIT + 1 : ''}>
-				{links?.map((link) => (
-					<Link
-						client:load
-						Link={link}
-						Token={token}
-						User={user}
-					/>
-				))}
-       		</ol>
+			{links?.length ? 
+				<ol start={page ? (page - 1) * LINKS_PAGE_LIMIT + 1 : ''}>
+					{links?.map((link) => (
+						<Link
+							client:load
+							Link={link}
+							Token={token}
+							User={user}
+						/>
+					))}
+				</ol>
+			:
+				<NoLinksFound AddSomethingPrompt />
+			}
 		</section>
-
-    : tmap ?
+	: tmap ?
         multiple_tmap_sections?.length ? 
 			<div id="tmap-multiple-sections-container">
 				{multiple_tmap_sections.map((s) => {
