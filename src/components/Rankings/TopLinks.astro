@@ -43,7 +43,7 @@ const {
 	Token: token, 
 } = Astro.props
 
-const is_only_page = !page || !page_count || (page === 1 && page_count === 1)
+const is_only_page = !page || !page_count || (page === 1 && page_count < 2)
 const is_your_tmap = tmap_owner_login_name !== undefined && user == tmap_owner_login_name
 const home_page_non_default_periods = ['day', 'week', 'year','all']
 ---
