@@ -13,97 +13,59 @@ const token = Astro.cookies.get('token')?.value
 const user = Astro.cookies.get('user')?.value
 
 // Params
-// login_name
 const { login_name } = Astro.params
 if (!login_name) {
 	return Astro.redirect('/')
 }
-let page_title = `${login_name}'s Treasure Map`
 
-// Config
+const params = Astro.url.searchParams
+
 // cats
-let cats = ""
-let cats_split: string[] = []
-if (Astro.url.searchParams.get('cats')) {
-	cats = Astro.url.searchParams.get('cats') as string
-	cats_split = cats.split(',')
+let cats = ''
+let encoded_cats = ''
+if (params.get('cats')) {
+	// raw for visual display
+	cats = params.get('cats') as string
 
-	if (cats.length) {
-		page_title += ' (Filtered)'
-	}
+	// encode cats reserved chars for URL
+	encoded_cats = encodeURIComponent(cats)
+	params.set('cats', encoded_cats)
 }
-// Encode cats reserved chars
-const encoded_cats = encodeURIComponent(cats)
+
+// url contains
+let url_contains = ""
+if (params.get('url_contains')) {
+	url_contains = params.get('url_contains') as string
+}
 
 // period
 let period: types.Period = 'all'
 if (
-	Astro.url.searchParams.get('period') &&
+	params.get('period') &&
 	(types.Periods as readonly string[]).includes(
-		Astro.url.searchParams.get('period') as types.Period
+		params.get('period') as types.Period
 	)
 ) {
-	period = Astro.url.searchParams.get('period') as types.Period
-}
-
-// nsfw
-let nsfw = false
-if (Astro.url.searchParams.get('nsfw') && Astro.url.searchParams.get('nsfw') === 'true') {
-	nsfw = true
+	period = params.get('period') as types.Period
 }
 
 // sort_by
 let sort_by: types.SortMetric = 'rating'
-const sort_by_params = Astro.url.searchParams.get('sort_by')
+const sort_by_params = params.get('sort_by')
 const is_sorted_by_newest = sort_by_params === 'newest'
 if (is_sorted_by_newest) {
 	sort_by = 'newest'
 }
 
-// url contains
-let url_contains = ""
-if (Astro.url.searchParams.get('url_contains')) {
-	url_contains = Astro.url.searchParams.get('url_contains') as string
+// nsfw
+let nsfw = false
+if (params.get('nsfw') && params.get('nsfw') === 'true') {
+	nsfw = true
 }
 
-// Get Tmap
-let tmap: types.TreasureMap | types.FilteredTreasureMap
-let tmap_url = TMAP_ENDPOINT + `/${login_name}`
-if (cats) {
-	tmap_url += `?cats=${encoded_cats}`
-}
-
-if (period) {
-	if (cats) {
-		tmap_url += `&period=${period}`
-	} else {
-		tmap_url += `?period=${period}`
-	}
-}
-
-if (url_contains) {
-	if (cats || period) {
-		tmap_url += `&url_contains=${url_contains}`
-	} else {
-		tmap_url += `?url_contains=${url_contains}`
-	}
-}
-
-if (is_sorted_by_newest) {
-	if (cats || period || url_contains) {
-		tmap_url += `&sort_by=newest`
-	} else {
-		tmap_url += `?sort_by=newest`
-	}
-}
-
-if (nsfw) {
-	if (cats || period || url_contains || is_sorted_by_newest) {
-		tmap_url += `&nsfw=true`
-	} else {
-		tmap_url += `?nsfw=true`
-	}
-}
+// Fetch Tmap
+const href_suffix = params.size ? `?${params.toString()}` : ''
+let tmap_url = TMAP_ENDPOINT + `/${login_name}` + href_suffix
 
 const tmap_resp = token
 	? await fetch_with_handle_redirect(tmap_url, {
@@ -115,7 +77,16 @@ const tmap_resp = token
 if (!tmap_resp.Response || tmap_resp.RedirectTo) {
 	return Astro.redirect(tmap_resp.RedirectTo)
 }
-tmap = await tmap_resp.Response.json()
+const tmap: types.TreasureMap | types.FilteredTreasureMap = await tmap_resp.Response.json()
+
+// Page title
+let page_title = `${login_name}'s Treasure Map`
+
+const cats_split: string[] = cats ? cats.split(',') : []
+if (cats_split.length) {
+	page_title += ' (Filtered)'
+}
+
 
 // Display about if used (unfiltered only)
 let profile: types.Profile | undefined
