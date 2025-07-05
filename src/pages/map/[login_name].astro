@@ -22,14 +22,8 @@ const params = Astro.url.searchParams
 
 // cats
 let cats = ''
-let encoded_cats = ''
 if (params.get('cats')) {
-	// raw for visual display
 	cats = params.get('cats') as string
-
-	// encode cats reserved chars for URL
-	encoded_cats = encodeURIComponent(cats)
-	params.set('cats', encoded_cats)
 }
 
 // url contains
@@ -125,7 +119,7 @@ if (!cats && tmap.hasOwnProperty('Profile')) {
 		/>
 
 		<Rankings
-			CatsParams={encoded_cats}
+			CatsParams={cats}
 			PeriodParams={period}
 			NSFWParams={nsfw}
 			SortByParams={sort_by}

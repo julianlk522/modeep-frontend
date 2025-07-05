@@ -23,14 +23,8 @@ const user = Astro.cookies.get('user')?.value
 const params = Astro.url.searchParams
 // cats
 let cats = ""
-let encoded_cats = ""
 if (params.get('cats')) {
-	// raw for visual display
 	cats = params.get('cats') as string
-
-	// encoded for use in URLs
-	encoded_cats = encodeURIComponent(cats)
-	params.set('cats', encoded_cats)
 }
 
 
@@ -157,7 +151,7 @@ const page_title = `${(sort_by !== 'rating' ? " Newest" : " Top Rated")}${cats ?
 				<Rankings
 					Links={links}
 					NSFWParams={nsfw}
-					CatsParams={encoded_cats}
+					CatsParams={cats}
 					PeriodParams={period}
 					SortByParams={sort_by}
 					URLContainsParams={url_contains}
