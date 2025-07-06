@@ -81,6 +81,7 @@ if (!get_links_resp.Response || get_links_resp.RedirectTo) {
 }
 const data: PaginatedLinks = await get_links_resp.Response.json()
 const links = data.Links
+const merged_cats = data.MergedCats
 
 if (!links?.length) {
 	if (page > 1) {
@@ -146,25 +147,24 @@ const page_title = `${(sort_by !== 'rating' ? " Newest" : " Top Rated")}${cats ?
 			InitialNSFW={nsfw}
 		/>
 
-		{
-			links && links.length ? (
-				<Rankings
-					Links={links}
-					NSFWParams={nsfw}
-					CatsParams={cats}
-					PeriodParams={period}
-					SortByParams={sort_by}
-					URLContainsParams={url_contains}
-					PageParams={page}
-					PageCount={data.PageCount}
-					TopCats={cats ? top_subcats : top_cats}
-					TopContributors={top_contributors}
-					Token={token}
-					User={user}
-				/>
-			) : (
-				<NoLinksFound AddSomethingPrompt />
-			)
-		}
+		{links && links.length ? (
+			<Rankings
+				Links={links}
+				MergedCats={merged_cats}
+				NSFWParams={nsfw}
+				CatsParams={cats}
+				PeriodParams={period}
+				SortByParams={sort_by}
+				URLContainsParams={url_contains}
+				PageParams={page}
+				PageCount={data.PageCount}
+				TopCats={cats ? top_subcats : top_cats}
+				TopContributors={top_contributors}
+				Token={token}
+				User={user}
+			/>
+		) : (
+			<NoLinksFound AddSomethingPrompt />
+		)}
 	</main>
 </BaseLayout>

@@ -3,10 +3,12 @@ import { LINKS_PAGE_LIMIT } from '../../constants'
 import * as types from '../../types'
 import Link from '../Link/Link'
 import Pagination from '../Pagination.astro'
+import MergedResultsNotice from './MergedResultsNotice.astro'
 import NoLinksFound from './NoLinksFound.astro'
 
 interface Props {
     Links?: types.Link[]
+	MergedCats?: string[]
     NSFW?: boolean
     Cats?: string
     Period?: types.Period
@@ -26,6 +28,7 @@ interface Props {
 }
 const {
 	Links: links, 
+	MergedCats: merged_cats,
 	NSFW: nsfw, 
 	Cats: cats, 
 	Period: period, 
@@ -88,6 +91,10 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 					))
 				}
 			</ul> : null}
+
+			{merged_cats && merged_cats.length ? (
+				<MergedResultsNotice MergedCats={merged_cats} />
+			) : null}
 
 			{links?.length ? 
 				<ol start={page ? (page - 1) * LINKS_PAGE_LIMIT + 1 : ''}>

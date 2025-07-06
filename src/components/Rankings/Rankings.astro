@@ -2,7 +2,6 @@
 import type { CatCount, Contributor, FilteredTreasureMap, Link, Period, SortMetric, TmapLink, TreasureMap } from "../../types";
 import { tmap_sections } from "../../types";
 import ScrollUp from "../ScrollUp.astro";
-import MergedResultsNotice from "./MergedResultsNotice.astro";
 import TopCats from "./TopCats.astro";
 import TopContributors from "./TopContributors.astro";
 import TopLinks from "./TopLinks.astro";
@@ -58,10 +57,6 @@ const no_links_found = links && links.length === 0 || tmap && multiple_tmap_sect
 ---
 
 <div id="rankings" class={is_home_page ? 'home' : ''}>
-    {merged_cats && merged_cats.length ? (
-        <MergedResultsNotice MergedCats={merged_cats} />
-    ) : null}
-
     {no_links_found 
         ? null 
         : <aside id="top-cats-and-contributors" class={tmap || single_tmap_section 
@@ -95,6 +90,7 @@ const no_links_found = links && links.length === 0 || tmap && multiple_tmap_sect
 
   <TopLinks 
         Links={links}
+        MergedCats={merged_cats}
         NSFW={nsfw}
         Cats={cats}
         Period={period}

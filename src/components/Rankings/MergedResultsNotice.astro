@@ -11,13 +11,29 @@ if (merged_cats.length > 3) {
 ---
 
 <p id="merged-results-notice">Merging results for: {merged_cats.map((mc, i) => {
-    return <span>{i > 0 ? ', ' : ''}{mc}</span>
+    return <span class="merged-cat">{i > 0 ? ', ' : ''}{mc}</span>
 })}</p>
 
 <style>
     #merged-results-notice {
         font-style: italic;
         color: var(--text-muted);
-        margin: 0 0 1rem;
+        margin: 0 0 1rem 1rem;
+
+        .merged-cat {
+            font-weight: bold;
+        }
+    }
+
+    @media (min-width: 450px) {
+        #merged-results-notice {
+            margin-left: 1.75rem;
+        }
+    }
+
+    @media (min-width: 480px) {
+        #merged-results-notice {
+            margin-left: 2rem;
+        }
     }
 </style>
