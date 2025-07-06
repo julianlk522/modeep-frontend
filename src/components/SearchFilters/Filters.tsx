@@ -40,6 +40,7 @@ export default function SearchFilters(props: Props) {
 		initial_sort_by ?? 'rating'
 	)
 	const [nsfw, set_nsfw] = useState<boolean>(initial_nsfw ?? false)
+	const [is_collapsed, set_is_collapsed] = useState<boolean>(true)
 
 	// Params
 	const params = new URLSearchParams()
@@ -107,7 +108,20 @@ export default function SearchFilters(props: Props) {
 	)
 
 	return (
-		<section id='search-filters'>
+		<section id='search-filters' class={is_collapsed ? 'collapsed' : ''}>
+			<div
+				id='search-filters-header'
+				onClick={() => set_is_collapsed(!is_collapsed)}
+			>
+				<img
+					id='filters-expansion-arrow'
+					src='../../back.svg'
+					alt='Filters are expanded'
+					height={20}
+					width={20}
+				/>
+				<h3>Filters</h3>
+			</div>
 			<form onKeyDown={handle_keydown}>
 				<SearchCats SelectedCats={cats} SetSelectedCats={set_cats} />
 
@@ -165,6 +179,10 @@ export default function SearchFilters(props: Props) {
 					{single_tmap_section_name ? ' section' : ''}
 				</a>
 			</form>
+			<div
+				id='lower-expansion-toggle-clickable-zone'
+				onClick={() => set_is_collapsed(!is_collapsed)}
+			></div>
 		</section>
 	)
 }

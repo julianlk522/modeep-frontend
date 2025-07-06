@@ -5,9 +5,3 @@ div#profile-pic {
 		width: auto;
 	}
 }
-
-@media (min-width: 680px) {
-	div#profile-pic {
-		margin-bottom: 0.5rem;
-	}
-}
