@@ -204,23 +204,6 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 		padding: 0;
 		border-bottom: none;
 
-		img.section-expansion-arrow {
-			background: none;
-			margin-left: -0.5rem;
-			margin-right: 0.25rem;
-			rotate: -90deg;
-			opacity: 0.9;
-		}
-
-		img.section-expansion-arrow.collapsed {
-			opacity: 0.25;
-			rotate: 180deg;
-		} 
-
-		h2 {
-			margin-bottom: 0;
-		}
-
 		ul#change-period {
             display: flex;
             flex-wrap: wrap;
@@ -259,13 +242,31 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 			align-items: center;
 			position: sticky;
 			top: 0px;
-			z-index: 1;
 			padding: 1.5rem 0 0.5rem;
+			z-index: 1;
+			cursor: pointer;
+
+			img.section-expansion-arrow {
+				background: none;
+				margin-left: -0.25rem;
+				margin-right: 0.25rem;
+				rotate: -90deg;
+				opacity: 0.9;
+			}
+
+			img.section-expansion-arrow.collapsed {
+				opacity: 0.25;
+				rotate: 180deg;
+			} 
+
+			h2 {
+				margin-bottom: 0;
+			}
 
 			> .bg {
 				z-index: -2;
 				background-color: #13151a;
-				border-bottom: 2px dashed rgba(255, 255, 255, 0.1);
+				border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 				position: absolute;
 				top: 0;
 				left: -0.5rem;
@@ -275,6 +276,10 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 
 			/* here for specificity */
 			@media (min-width: 350px) {
+				img.section-expansion-arrow {
+					margin-left: -0.75rem;
+					margin-right: 0.25rem;
+				}
 				.bg {
 					left: -1.5rem;
 					width: calc(100% + 3rem);

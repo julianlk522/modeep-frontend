@@ -9,7 +9,6 @@ import {
 } from 'preact/hooks'
 import { CATS_ENDPOINT, MAX_CATS_PER_TAG } from '../../constants'
 import * as types from '../../types'
-import { type CatCount } from '../../types'
 import TagCat from '../Tag/TagCat'
 import './Cats.css'
 
@@ -40,7 +39,7 @@ export default function SearchCats(props: Props) {
 	const has_max_num_cats = selected_cats.length >= MAX_CATS_PER_TAG
 
 	const [recommended_cats, set_recommended_cats] = useState<
-		CatCount[] | undefined
+		types.CatCount[] | undefined
 	>(undefined)
 	const [snippet, set_snippet] = useState<string>('')
 	const [error, set_error] = useState<string | undefined>(undefined)
@@ -72,7 +71,7 @@ export default function SearchCats(props: Props) {
 				throw new Error('API request failed')
 			}
 
-			const spellfix_matches: CatCount[] =
+			const spellfix_matches: types.CatCount[] =
 				await spellfix_matches_resp.json()
 			set_recommended_cats(spellfix_matches)
 			set_error(undefined)

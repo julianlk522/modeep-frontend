@@ -56,7 +56,7 @@ export default function NewLinks(props: Props) {
 			set_error('Missing URL')
 			return
 		} else if (!selected_cats.length) {
-			set_error('Missing tag')
+			set_error('Missing tag (you might need to hit the plus button)')
 			return
 		}
 
