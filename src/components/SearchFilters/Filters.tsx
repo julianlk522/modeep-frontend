@@ -40,7 +40,6 @@ export default function SearchFilters(props: Props) {
 		initial_sort_by ?? 'rating'
 	)
 	const [nsfw, set_nsfw] = useState<boolean>(initial_nsfw ?? false)
-	const [is_collapsed, set_is_collapsed] = useState<boolean>(true)
 
 	// Params
 	const params = new URLSearchParams()
@@ -107,11 +106,22 @@ export default function SearchFilters(props: Props) {
 		[has_changed_filters]
 	)
 
+	function toggle_search_filters_collapsed() {
+		document.documentElement.classList.toggle('search-filters-collapsed')
+
+		const is_collaped = document.documentElement.classList.contains(
+			'search-filters-collapsed'
+		)
+			? 'true'
+			: 'false'
+		localStorage.setItem('collapse_search_filters_initially', is_collaped)
+	}
+
 	return (
-		<section id='search-filters' class={is_collapsed ? 'collapsed' : ''}>
+		<section id='search-filters'>
 			<div
 				id='search-filters-header'
-				onClick={() => set_is_collapsed(!is_collapsed)}
+				onClick={toggle_search_filters_collapsed}
 			>
 				<img
 					id='filters-expansion-arrow'
@@ -133,11 +143,11 @@ export default function SearchFilters(props: Props) {
 									? search_url.replace(
 											`/map/${tmap_owner_login_name}/${single_tmap_section_name?.toLowerCase()}`,
 											'/search'
-									  )
+										)
 									: search_url.replace(
 											`/map/${tmap_owner_login_name}`,
 											'/search'
-									  )
+										)
 							}
 						>
 							Transfer cats to Global Treasure Map
@@ -181,7 +191,7 @@ export default function SearchFilters(props: Props) {
 			</form>
 			<div
 				id='lower-expansion-toggle-clickable-zone'
-				onClick={() => set_is_collapsed(!is_collapsed)}
+				onClick={toggle_search_filters_collapsed}
 			></div>
 		</section>
 	)

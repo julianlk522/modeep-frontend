@@ -72,7 +72,7 @@ section#search-filters {
 	}
 }
 
-section#search-filters.collapsed {
+html.search-filters-collapsed section#search-filters {
 	padding-bottom: 0;
 
 	#search-filters-header {
