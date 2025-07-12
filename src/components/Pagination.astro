@@ -9,7 +9,7 @@ interface Props {
 	HasNSFW?: boolean
 	URLContains?: string
 	Page: number
-	PageCount: number
+	Pages: number
 	SingleTmapSectionName?: typeof tmap_sections[number]
 	TmapOwner?: string
 }
@@ -21,7 +21,7 @@ const {
 	HasNSFW: nsfw, 
 	URLContains: url_contains,
 	Page: page, 
-	PageCount: page_count, 
+	Pages: pages, 
 	SingleTmapSectionName: single_tmap_section_name,
 	TmapOwner: tmap_owner, 
 } = Astro.props
@@ -87,7 +87,7 @@ let base_href = single_tmap_section_name
 	<span>{page}</span>
 
 	{
-		page_count > page ? (
+		pages > page ? (
 			<span>
 				{' . '}
 				<a href={
@@ -104,7 +104,7 @@ let base_href = single_tmap_section_name
 	}
 
 	{
-		page_count > page + 1 ? 
+		pages > page + 1 ? 
 			<>
 				<span>
 					{' . '}
@@ -116,9 +116,9 @@ let base_href = single_tmap_section_name
 						})
 					}>{page + 2}</a>
 				</span> 
-				{page_count > page + 2 ? 
+				{pages > page + 2 ? 
 					<span>
-						{page_count > page + 3 
+						{pages > page + 3 
 							? <span> ... </span> 
 							: <span> . </span>
 						}
@@ -126,10 +126,10 @@ let base_href = single_tmap_section_name
 							get_paginated_href({
 								BaseHref: base_href,
 								OtherParams: params,
-								Page: page_count,
+								Page: pages,
 							})
 						}>
-							{page_count}
+							{pages}
 						</a>
 					</span>
 				: null}

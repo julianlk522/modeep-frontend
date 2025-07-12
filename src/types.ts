@@ -49,7 +49,7 @@ type Link = {
 type PaginatedLinks = {
 	Links: Link[]
 	MergedCats?: string[]
-	PageCount: number
+	Pages: number
 }
 
 const Periods = ['day', 'week', 'month', 'year', 'all'] as const
@@ -140,7 +140,7 @@ type TreasureMapSection = {
 	Links: TmapLink[]
 	Cats: CatCount[]
 	NSFWLinksCount: number
-	PageCount: number
+	Pages: number
 }
 
 const tmap_sections = ['Submitted', 'Copied', 'Tagged'] as const

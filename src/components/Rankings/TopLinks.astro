@@ -15,7 +15,7 @@ interface Props {
     SortBy?: types.SortMetric
 	URLContains?: string
     Page?: number
-    PageCount?: number
+    Pages?: number
     Tmap?: types.TreasureMap | types.FilteredTreasureMap
     MultipleTmapSections?: typeof types.tmap_sections[number][]
     SingleTmapSection?: types.TmapLink[]
@@ -35,7 +35,7 @@ const {
 	SortBy: sort_by, 
 	URLContains: url_contains,
 	Page: page, 
-	PageCount: page_count,
+	Pages: pages,
 	Tmap: tmap, 
 	MultipleTmapSections: multiple_tmap_sections, 
 	SingleTmapSection: single_tmap_section, 
@@ -46,7 +46,7 @@ const {
 	Token: token, 
 } = Astro.props
 
-const is_only_page = !page || !page_count || (page === 1 && page_count < 2)
+const is_only_page = !page || !pages || (page === 1 && pages < 2)
 const is_your_tmap = tmap_owner_login_name !== undefined && user == tmap_owner_login_name
 const home_page_non_default_periods = ['day', 'week', 'year','all']
 ---
@@ -191,7 +191,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 			HasNSFW={nsfw}
 			URLContains={url_contains}
 			Page={page ?? 1}
-			PageCount={page_count}
+			Pages={pages}
 			SingleTmapSectionName={single_tmap_section_name}
 			TmapOwner={tmap_owner_login_name}
 		/>

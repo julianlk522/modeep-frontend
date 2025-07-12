@@ -15,7 +15,7 @@ interface Props {
     SortByParams?: SortMetric
     URLContainsParams?: string
     PageParams?: number
-    PageCount?: number
+    Pages?: number
     TopCats: CatCount[]
     TopContributors?: Contributor[]
     IsHomePage?: boolean
@@ -36,7 +36,7 @@ const {
     SortByParams: sort_by, 
     URLContainsParams: url_contains,
     PageParams: page, 
-    PageCount: page_count, 
+    Pages: pages, 
     TopCats: top_cats, 
     TopContributors: top_contributors, 
     IsHomePage: is_home_page, 
@@ -97,7 +97,7 @@ const no_links_found = links && links.length === 0 || tmap && multiple_tmap_sect
         SortBy={sort_by}
         URLContains={url_contains}
         Page={page}
-        PageCount={page_count}
+        Pages={pages}
         Tmap={tmap}
         MultipleTmapSections={multiple_tmap_sections}
         SingleTmapSection={single_tmap_section}
