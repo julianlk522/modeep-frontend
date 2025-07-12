@@ -4,6 +4,7 @@ import NoLinksFound from "../components/Rankings/NoLinksFound.astro";
 import TopCats from "../components/Rankings/TopCats.astro";
 import ScrollUp from "../components/ScrollUp.astro";
 import SearchFilters from "../components/SearchFilters/Filters";
+import LocalStorageLoader from "../components/SearchFilters/LocalStorageLoader.astro";
 import { CATS_ENDPOINT } from "../constants";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { has_merged_cats_property, Periods, type CatCount, type MorePageCatCountsWithMergedCats, type Period } from "../types";
@@ -52,6 +53,7 @@ if (has_merged_cats_property(counts)) {
 ---
 
 <BaseLayout Title="More">
+	<LocalStorageLoader />
     <main>
 		<SearchFilters 
 			client:load 

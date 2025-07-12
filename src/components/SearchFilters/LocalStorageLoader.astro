@@ -1,0 +1,4 @@
+<script is:inline>
+    const search_filters_collapsed_cache = localStorage.getItem('collapse_search_filters_initially') ? JSON.parse(localStorage.getItem('collapse_search_filters_initially')) : undefined
+    document.documentElement.classList.toggle('search-filters-collapsed', search_filters_collapsed_cache)
+</script>

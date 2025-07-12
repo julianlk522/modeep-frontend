@@ -2,6 +2,7 @@
 import NoLinksFound from '../components/Rankings/NoLinksFound.astro'
 import Rankings from '../components/Rankings/Rankings.astro'
 import SearchFilters from '../components/SearchFilters/Filters'
+import LocalStorageLoader from '../components/SearchFilters/LocalStorageLoader.astro'
 import { CATS_ENDPOINT, CONTRIBUTORS_ENDPOINT, LINKS_ENDPOINT } from '../constants'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import {
@@ -137,6 +138,7 @@ const page_title = `${(sort_by !== 'rating' ? " Newest" : " Top Rated")}${cats ?
 ---
 
 <BaseLayout Title={page_title}>
+	<LocalStorageLoader />
 	<main>
 		<SearchFilters 
 			client:load 

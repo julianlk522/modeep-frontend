@@ -2,6 +2,7 @@
 import Rankings from '../../components/Rankings/Rankings.astro'
 import ScrollUp from '../../components/ScrollUp.astro'
 import SearchFilters from '../../components/SearchFilters/Filters'
+import LocalStorageLoader from '../../components/SearchFilters/LocalStorageLoader.astro'
 import Profile from '../../components/TmapProfile/Profile'
 import { TMAP_ENDPOINT } from '../../constants'
 import BaseLayout from '../../layouts/BaseLayout.astro'
@@ -90,6 +91,7 @@ if (!cats && tmap.hasOwnProperty('Profile')) {
 ---
 
 <BaseLayout Title={page_title}>
+	<LocalStorageLoader />
 	<main>
 		<h1 class={profile ? 'has-profile' : ''}>{login_name}</h1>
 

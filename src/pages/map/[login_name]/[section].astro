@@ -2,6 +2,7 @@
 import Rankings from '../../../components/Rankings/Rankings.astro'
 import ScrollUp from '../../../components/ScrollUp.astro'
 import SearchFilters from '../../../components/SearchFilters/Filters'
+import LocalStorageLoader from '../../../components/SearchFilters/LocalStorageLoader.astro'
 import { TMAP_ENDPOINT } from '../../../constants'
 import BaseLayout from '../../../layouts/BaseLayout.astro'
 import {
@@ -101,6 +102,7 @@ if (cats_split.length) {
 ---
 
 <BaseLayout Title={page_title}>
+    <LocalStorageLoader />
 	<main>
 		<h1>{login_name}</h1>
         <p class="subtitle">({section_name[0].toUpperCase() + section_name.slice(1)})</p>
