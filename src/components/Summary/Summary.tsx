@@ -36,6 +36,8 @@ export default function Summary(props: Props) {
 	)
 	const [error, set_error] = useState<string | undefined>(undefined)
 
+	const is_your_summary = submitted_by === user
+
 	const like_api_url = SUMMARIES_ENDPOINT + `/${ID}/like`
 
 	const expected_like_action_status = 204
@@ -140,7 +142,7 @@ export default function Summary(props: Props) {
 					<span class='auto-summary'>Auto Summary</span>
 				) : (
 					<a class='submitted-by' href={`/map/${submitted_by}`}>
-						{submitted_by}
+						{is_your_summary ? 'you' : submitted_by}
 					</a>
 				)}
 			</p>
