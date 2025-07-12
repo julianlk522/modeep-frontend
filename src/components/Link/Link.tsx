@@ -322,7 +322,7 @@ export default function Link(props: Props) {
 							<li class='tag-count'>
 								{' ('}
 								<a
-									title={`View this link's tags (${tag_count} total)`}
+									title={`View this link's tags (${tag_count}) or add/edit yours`}
 									class='tags-page-link'
 									href={`/tag/${id}`}
 								>
