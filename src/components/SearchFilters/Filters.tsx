@@ -11,12 +11,12 @@ interface Props {
 	Endpoint?: '/search' | '/more' | '/map'
 	TmapOwnerLoginName?: string
 	SingleTmapSectionName?: (typeof tmap_sections)[number]
-	TmapNSFWLinksCount?: number
+	NSFWLinks?: number
 	InitialCats: string[]
 	InitialURLContains: string
 	InitialPeriod: Period
-	InitialSortBy?: SortMetric
-	InitialNSFW?: boolean
+	InitialSortBy: SortMetric
+	InitialNSFW: boolean
 }
 
 export default function SearchFilters(props: Props) {
@@ -24,7 +24,7 @@ export default function SearchFilters(props: Props) {
 		Endpoint: endpoint,
 		TmapOwnerLoginName: tmap_owner_login_name,
 		SingleTmapSectionName: single_tmap_section_name,
-		TmapNSFWLinksCount: tmap_nsfw_links_count,
+		NSFWLinks: nsfw_links,
 		InitialCats: initial_cats,
 		InitialURLContains: initial_url_contains,
 		InitialPeriod: initial_period,
@@ -167,7 +167,7 @@ export default function SearchFilters(props: Props) {
 				<SearchNSFW
 					NSFW={nsfw}
 					SetNSFW={set_nsfw}
-					TmapNSFWLinksCount={tmap_nsfw_links_count}
+					NSFWLinks={nsfw_links}
 				/>
 
 				<a

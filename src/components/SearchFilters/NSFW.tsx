@@ -6,20 +6,21 @@ import './NSFW.css'
 interface Props {
 	NSFW: boolean
 	SetNSFW: Dispatch<StateUpdater<boolean>>
-	TmapNSFWLinksCount?: number
+	NSFWLinks?: number
 }
 
 export default function SearchNSFW(props: Props) {
-	const {
-		NSFW: nsfw,
-		SetNSFW: set_nsfw,
-		TmapNSFWLinksCount: tmap_nsfw_links_count,
-	} = props
+	const { NSFW: nsfw, SetNSFW: set_nsfw, NSFWLinks: nsfw_links } = props
 
 	return (
 		<div id='search-nsfw-container'>
 			<label id='search-nsfw' for='nsfw'>
-				NSFW {tmap_nsfw_links_count ? `(${tmap_nsfw_links_count})` : ''}
+				NSFW{' '}
+				{nsfw_links ? (
+					<span id='nsfw-link-count'>{`(${nsfw_links})`}</span>
+				) : (
+					''
+				)}
 			</label>
 			<input
 				type='checkbox'

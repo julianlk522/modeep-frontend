@@ -48,6 +48,7 @@ type Link = {
 
 type PaginatedLinks = {
 	Links: Link[]
+	NSFWLinks: number
 	MergedCats?: string[]
 	Pages: number
 }
