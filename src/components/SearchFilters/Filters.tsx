@@ -162,13 +162,20 @@ export default function SearchFilters(props: Props) {
 
 				<SearchPeriod Period={period} SetPeriod={set_period} />
 
-				<SearchSortBy SortBy={sort_by} SetSortBy={set_sort_by} />
+				{endpoint !== '/more' ? (
+					<>
+						<SearchSortBy
+							SortBy={sort_by}
+							SetSortBy={set_sort_by}
+						/>
 
-				<SearchNSFW
-					NSFW={nsfw}
-					SetNSFW={set_nsfw}
-					NSFWLinks={nsfw_links}
-				/>
+						<SearchNSFW
+							NSFW={nsfw}
+							SetNSFW={set_nsfw}
+							NSFWLinks={nsfw_links}
+						/>
+					</>
+				) : null}
 
 				<a
 					id='search-from-filters'
