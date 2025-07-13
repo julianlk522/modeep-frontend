@@ -1,10 +1,11 @@
 section#search-filters {
-	padding-bottom: 0;
+	padding: 0;
 
 	#search-filters-header {
 		display: flex;
 		align-items: center;
-		margin-bottom: 1px;
+		padding-top: 1rem;
+		padding-bottom: 1px;
 		cursor: pointer;
 
 		img#filters-expansion-arrow {
@@ -17,7 +18,7 @@ section#search-filters {
 			opacity: 0.25;
 		}
 
-		h3 {
+		h2 {
 			margin-bottom: 0;
 		}
 	}
@@ -61,7 +62,7 @@ section#search-filters {
 
 	#lower-expansion-toggle-clickable-zone {
 		display: block;
-		height: 0.5rem;
+		height: 1rem;
 		cursor: pointer;
 	}
 

@@ -1,5 +1,15 @@
 #search-nsfw-container {
-	margin-top: 5px;
+	display: flex;
+	align-items: center;
+	margin-top: 3px;
+
+	label#search-nsfw {
+		display: inline;
+
+		span#nsfw-link-count {
+			font-weight: bold;
+		}
+	}
 
 	input#nsfw {
 		margin-bottom: 0;

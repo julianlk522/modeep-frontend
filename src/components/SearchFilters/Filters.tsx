@@ -130,7 +130,7 @@ export default function SearchFilters(props: Props) {
 					height={20}
 					width={20}
 				/>
-				<h3>Filters</h3>
+				<h2>Filters</h2>
 			</div>
 			<form onKeyDown={handle_keydown}>
 				<SearchCats SelectedCats={cats} SetSelectedCats={set_cats} />

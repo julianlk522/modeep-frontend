@@ -106,10 +106,9 @@ if (!links?.length) {
 	}
 }
 
-// cats, contributors
+// cats
 let top_cats: CatCount[] = []
 let top_subcats: CatCount[] = []
-let top_contributors: Contributor[] = []
 
 const params_minus_page = new URLSearchParams()
 for (const [key, value] of params.entries()) {
@@ -137,6 +136,9 @@ if (cats) {
 	top_cats = await top_cats_resp.Response.json()
 }
 
+// contributors
+let top_contributors: Contributor[] = []
+
 const contributors_resp = await fetch_with_handle_redirect(contributors_url)
 if (!contributors_resp.Response || contributors_resp.RedirectTo) {
 	return Astro.redirect(contributors_resp.RedirectTo)
@@ -148,7 +150,6 @@ const cats_separated = cats ? cats.split(',') : []
 const has_many_cats = cats_separated.length > 3
 const cats_title_text = has_many_cats ? cats_separated.slice(0, 3).join(' + ') + '...' : cats_separated.join(' + ')
 const page_title = `${(sort_by !== 'rating' ? " Newest" : " Top Rated")}${cats ? `: ${cats_title_text}` : ''}`
-
 ---
 
 <BaseLayout Title={page_title}>

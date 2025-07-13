@@ -6,7 +6,6 @@ import {
 } from 'preact/hooks'
 import { LINK_PREVIEW_IMG_ENDPOINT, LINKS_ENDPOINT } from '../../constants'
 import * as types from '../../types'
-import { is_error_response } from '../../types'
 import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
 import {
 	format_long_date,
@@ -144,7 +143,7 @@ export default function Link(props: Props) {
 			resp.Response.status !== expected_like_or_copy_action_status
 		) {
 			const like_data = await resp.Response.json()
-			if (is_error_response(like_data)) {
+			if (types.is_error_response(like_data)) {
 				return console.error('Whoops: ', like_data.error)
 			}
 			return console.error('Whoops: ', like_data)
@@ -196,7 +195,7 @@ export default function Link(props: Props) {
 			resp.Response.status !== expected_like_or_copy_action_status
 		) {
 			const copy_data = await resp.Response.json()
-			if (is_error_response(copy_data)) {
+			if (types.is_error_response(copy_data)) {
 				return console.error('Whoops: ', copy_data.error)
 			}
 			return console.error('Whoops: ', copy_data)
@@ -244,7 +243,7 @@ export default function Link(props: Props) {
 			delete_resp.Response.status !== expected_delete_action_status
 		) {
 			const delete_data = await delete_resp.Response.json()
-			if (is_error_response(await delete_data)) {
+			if (types.is_error_response(await delete_data)) {
 				return console.error('Whoops: ', delete_data.error)
 			}
 			return console.error('Whoops: ', delete_resp.Response)
