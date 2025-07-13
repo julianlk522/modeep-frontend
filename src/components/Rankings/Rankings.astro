@@ -1,5 +1,5 @@
 ---
-import type { CatCount, Contributor, FilteredTreasureMap, Link, Period, SortMetric, TmapLink, TreasureMap } from "../../types";
+import type { CatCount, Contributor, FilteredTreasureMap, Link, TmapLink, TreasureMap, URLParams } from "../../types";
 import { tmap_sections } from "../../types";
 import ScrollUp from "../ScrollUp.astro";
 import TopCats from "./TopCats.astro";
@@ -8,20 +8,15 @@ import TopLinks from "./TopLinks.astro";
 
 interface Props {
     Links?: Link[]
-    NSFWParams?: boolean
-    CatsParams?: string
-    MergedCats?: string[]
-    PeriodParams?: Period
-    SortByParams?: SortMetric
-    URLContainsParams?: string
-    PageParams?: number
+    URLParams: URLParams
     Pages?: number
     TopCats: CatCount[]
     TopContributors?: Contributor[]
-    IsHomePage?: boolean
+    MergedCats?: string[]
     Tmap?: TreasureMap | FilteredTreasureMap
     SingleTmapSection?: TmapLink[]
     SingleTmapSectionName?: typeof tmap_sections[number]
+    IsHomePage?: boolean
     IsTmapFromUser?: string
     Token?: string
     User?: string
@@ -29,20 +24,15 @@ interface Props {
 
 const { 
     Links: links, 
-    NSFWParams: nsfw, 
-    CatsParams: cats, 
-    MergedCats: merged_cats, 
-    PeriodParams: period, 
-    SortByParams: sort_by, 
-    URLContainsParams: url_contains,
-    PageParams: page, 
+    URLParams: url_params,
     Pages: pages, 
     TopCats: top_cats, 
     TopContributors: top_contributors, 
-    IsHomePage: is_home_page, 
+    MergedCats: merged_cats,
     Tmap: tmap, 
     SingleTmapSection: single_tmap_section,
     SingleTmapSectionName: single_tmap_section_name, 
+    IsHomePage: is_home_page, 
     IsTmapFromUser: tmap_owner, 
     User: user, 
     Token: token, 
@@ -66,22 +56,14 @@ const no_links_found = links && links.length === 0 || tmap && multiple_tmap_sect
             {top_contributors 
                 ? <TopContributors 
                     Contributors={top_contributors}
-                    CatsParams={cats}
-                    PeriodParams={period}
-                    SortByParams={sort_by}
-                    NSFWParams={nsfw}
-                    URLContainsParams={url_contains}    
+                    URLParams={url_params}    
                 /> 
                 : null
             } 
 
             <TopCats 
                 TopCats={top_cats} 
-                CatsParams={cats} 
-                PeriodParams={period} 
-                SortByParams={sort_by} 
-                NSFWParams={nsfw} 
-                URLContainsParams={url_contains}
+                URLParams={url_params}
                 IsTmapFromUser={tmap_owner} 
                 SingleTmapSection={single_tmap_section_name}
             />
@@ -90,13 +72,8 @@ const no_links_found = links && links.length === 0 || tmap && multiple_tmap_sect
 
   <TopLinks 
         Links={links}
+        URLParams={url_params}
         MergedCats={merged_cats}
-        NSFW={nsfw}
-        Cats={cats}
-        Period={period}
-        SortBy={sort_by}
-        URLContains={url_contains}
-        Page={page}
         Pages={pages}
         Tmap={tmap}
         MultipleTmapSections={multiple_tmap_sections}

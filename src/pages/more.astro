@@ -35,6 +35,12 @@ if (
 	more_cats_url += `&period=${period}`
 }
 
+const url_params = {
+	Cats: cats,
+	Period: period,
+	URLContains: url_contains,
+}
+
 // Cat counts
 const counts_resp = await fetch_with_handle_redirect(more_cats_url)
 if (!counts_resp.Response || counts_resp.RedirectTo) {
@@ -69,8 +75,7 @@ if (has_merged_cats_property(counts)) {
 			) : null}
            <TopCats 
 				TopCats={top_cats}
-				CatsParams={cats}
-				PeriodParams={period}
+				URLParams={url_params}
 				More
 		   />
         </section> : cats ? <p>No further subcats.</p> : <NoLinksFound />}

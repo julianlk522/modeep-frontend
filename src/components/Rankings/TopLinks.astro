@@ -2,20 +2,16 @@
 import { LINKS_PAGE_LIMIT } from '../../constants'
 import * as types from '../../types'
 import Link from '../Link/Link'
+import get_cats_url_params from '../Link/util/params'
 import Pagination from '../Pagination.astro'
 import MergedResultsNotice from './MergedResultsNotice.astro'
 import NoLinksFound from './NoLinksFound.astro'
 
 interface Props {
     Links?: types.Link[]
-	MergedCats?: string[]
-    NSFW?: boolean
-    Cats?: string
-    Period?: types.Period
-    SortBy?: types.SortMetric
-	URLContains?: string
-    Page?: number
+	URLParams: types.URLParams
     Pages?: number
+	MergedCats?: string[]
     Tmap?: types.TreasureMap | types.FilteredTreasureMap
     MultipleTmapSections?: typeof types.tmap_sections[number][]
     SingleTmapSection?: types.TmapLink[]
@@ -28,14 +24,9 @@ interface Props {
 }
 const {
 	Links: links, 
-	MergedCats: merged_cats,
-	NSFW: nsfw, 
-	Cats: cats, 
-	Period: period, 
-	SortBy: sort_by, 
-	URLContains: url_contains,
-	Page: page, 
+	URLParams: url_params,
 	Pages: pages,
+	MergedCats: merged_cats,
 	Tmap: tmap, 
 	MultipleTmapSections: multiple_tmap_sections, 
 	SingleTmapSection: single_tmap_section, 
@@ -46,8 +37,12 @@ const {
 	Token: token, 
 } = Astro.props
 
+const page = url_params.Page
+const cats_url_params_str = get_cats_url_params(url_params)
+
 const is_only_page = !page || !pages || (page === 1 && pages < 2)
 const is_your_tmap = tmap_owner_login_name !== undefined && user == tmap_owner_login_name
+
 const home_page_non_default_periods = ['day', 'week', 'year','all']
 ---
 
@@ -102,6 +97,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 						<Link
 							client:load
 							Link={link}
+							CatsURLParams={cats_url_params_str}
 							Token={token}
 							User={user}
 						/>
@@ -142,6 +138,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 									<Link
 										client:load
 										Link={link}
+										CatsURLParams={cats_url_params_str}
 										CatsFromUser={
 											link.CatsFromUser
 												? tmap_owner_login_name
@@ -166,6 +163,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
                     <Link
                         client:load
                         Link={link}
+						CatsURLParams={cats_url_params_str}
                         IsTmapPage={true}
                         CatsFromUser={
                             link.CatsFromUser
@@ -185,12 +183,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 	{ is_only_page 
 		? null 
 		: <Pagination
-			Cats={cats}
-			Period={period ?? 'month'}
-			SortBy={sort_by}
-			HasNSFW={nsfw}
-			URLContains={url_contains}
-			Page={page ?? 1}
+			URLParams={url_params}
 			Pages={pages}
 			SingleTmapSectionName={single_tmap_section_name}
 			TmapOwner={tmap_owner_login_name}

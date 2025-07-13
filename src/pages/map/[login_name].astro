@@ -58,6 +58,14 @@ if (params.get('nsfw') && params.get('nsfw') === 'true') {
 	nsfw = true
 }
 
+const url_params = {
+	Cats: cats,
+	Period: period,
+	SortBy: sort_by,
+	NSFW: nsfw,
+	URLContains: url_contains,
+}
+
 // Fetch Tmap
 const href_suffix = params.size ? `?${params.toString()}` : ''
 let tmap_url = TMAP_ENDPOINT + `/${login_name}` + href_suffix
@@ -121,14 +129,10 @@ if (!cats && tmap.hasOwnProperty('Profile')) {
 		/>
 
 		<Rankings
-			CatsParams={cats}
-			PeriodParams={period}
-			NSFWParams={nsfw}
-			SortByParams={sort_by}
-			URLContainsParams={url_contains}
-			TopCats={tmap.Cats}
 			Tmap={tmap}
 			IsTmapFromUser={login_name}
+			URLParams={url_params}
+			TopCats={tmap.Cats}
 			User={user}
 			Token={token}
 		/>

@@ -67,10 +67,21 @@ if (params.get('page')) {
 	page = parseInt(params.get('page') as string)
 }
 
+const url_params = {
+	Cats: cats,
+	Period: period,
+	SortBy: sort_by,
+	NSFW: nsfw,
+	URLContains: url_contains,
+	Page: page,
+}
+
 // Requests
 // links
-const links_href_suffix = params.size ? `?${params.toString()}` : ''
-let links_url = LINKS_ENDPOINT + links_href_suffix
+let links_url = LINKS_ENDPOINT
+if (params.size) {
+	links_url += `?${params.toString()}`
+}
 
 const get_links_resp = await (token
 	? fetch_with_handle_redirect(links_url, {
@@ -156,16 +167,11 @@ const page_title = `${(sort_by !== 'rating' ? " Newest" : " Top Rated")}${cats ?
 		{links && links.length ? (
 			<Rankings
 				Links={links}
-				MergedCats={merged_cats}
-				NSFWParams={nsfw}
-				CatsParams={cats}
-				PeriodParams={period}
-				SortByParams={sort_by}
-				URLContainsParams={url_contains}
-				PageParams={page}
+				URLParams={url_params}
 				Pages={data.Pages}
 				TopCats={cats ? top_subcats : top_cats}
 				TopContributors={top_contributors}
+				MergedCats={merged_cats}
 				Token={token}
 				User={user}
 			/>

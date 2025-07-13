@@ -26,24 +26,26 @@ import URLZone from './URLZone'
 
 interface Props {
 	Link: types.Link
+	CatsURLParams?: string
 	CatsFromUser?: string
+	SetNewLinkCats?: Dispatch<StateUpdater<string[]>>
 	IsSummaryPage?: boolean
 	IsTagPage?: boolean
 	IsTmapPage?: boolean
 	IsNewLinkPage?: boolean
-	SetNewLinkCats?: Dispatch<StateUpdater<string[]>>
 	Token?: string
 	User?: string
 }
 
 export default function Link(props: Props) {
 	const {
+		CatsURLParams: cats_url_params,
 		CatsFromUser: cats_from_user,
+		SetNewLinkCats: set_new_link_cats,
 		IsSummaryPage: is_summary_page,
 		IsTagPage: is_tag_page,
 		IsTmapPage: is_tmap_page,
 		IsNewLinkPage: is_new_link_page,
-		SetNewLinkCats: set_new_link_cats,
 		Token: token,
 		User: user,
 	} = props
@@ -60,11 +62,12 @@ export default function Link(props: Props) {
 		PreviewImgFilename: saved_preview_img_filename,
 	} = props.Link
 
-	const is_your_link = user !== undefined && submitted_by === user
 	const cats_endpoint =
 		is_tmap_page && cats_from_user ? `/map/${cats_from_user}` : '/search'
+
 	const split_cats = cats.split(',')
 	const has_one_tag = tag_count === 1
+	const is_your_link = user !== undefined && submitted_by === user
 	const should_display_full_date =
 		is_summary_page || is_tag_page || is_new_link_page
 
@@ -303,18 +306,20 @@ export default function Link(props: Props) {
 			{is_tag_page && has_one_tag ? null : (
 				<div class='tag'>
 					<ul class='cats'>
-						{split_cats.map((cat) => (
-							<TagCat
-								Cat={cat}
-								IsNSFW={cat === 'NSFW'}
-								Href={
-									cats_endpoint +
-									`?cats=${encodeURIComponent(cat)}${
-										cat === 'NSFW' ? `&nsfw=true` : ''
-									}`
-								}
-							/>
-						))}
+						{split_cats.map((cat) => {
+							const encoded_cat = encodeURIComponent(cat)
+							const url_params = cats_url_params
+								? `${cats_url_params}&cats=${encoded_cat}`
+								: `?${encoded_cat}`
+
+							return (
+								<TagCat
+									Cat={cat}
+									IsNSFW={cat === 'NSFW'}
+									Href={cats_endpoint + url_params}
+								/>
+							)
+						})}
 
 						{is_tag_page ? (
 							<li class='tag-count'> ({tag_count})</li>

@@ -1,15 +1,11 @@
 ---
 import { CATS_PAGE_LIMIT, MIN_LIST_ITEMS_FOR_SCROLLBAR } from '../../constants'
-import type { CatCount, Period, SortMetric, tmap_sections } from '../../types'
+import type { CatCount, URLParams, tmap_sections } from '../../types'
 import TagCat from '../Tag/TagCat'
 
 interface Props {
     TopCats: CatCount[]
-    CatsParams?: string
-    PeriodParams?: Period
-    SortByParams?: SortMetric
-    NSFWParams?: boolean
-    URLContainsParams?: string
+    URLParams: URLParams
     More?: boolean
     Mini?: boolean
     SingleTmapSection?: typeof tmap_sections[number]
@@ -18,16 +14,20 @@ interface Props {
 
 const { 
     TopCats: top_cats, 
-    CatsParams: cats_params, 
-    PeriodParams: period, 
-    SortByParams: sort_by, 
-    NSFWParams: nsfw, 
-    URLContainsParams: url_contains,
+    URLParams: url_params,
     More: more, 
     Mini: mini, 
     SingleTmapSection: single_tmap_section,
     IsTmapFromUser: tmap_owner, 
 } = Astro.props
+
+const {
+    Cats: cats_params,
+    Period: period,
+    SortBy: sort_by,
+    NSFW: nsfw,
+    URLContains: url_contains,
+} = url_params
 
 let top_cats_classes = more ? ['more'] : tmap_owner ? ['tmap'] : []
 if (mini) top_cats_classes.push('mini')

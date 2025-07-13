@@ -53,6 +53,15 @@ type PaginatedLinks = {
 	Pages: number
 }
 
+type URLParams = {
+	Cats?: string
+	Period?: Period
+	URLContains?: string
+	SortBy?: SortMetric
+	NSFW?: boolean
+	Page?: number
+}
+
 const Periods = ['day', 'week', 'month', 'year', 'all'] as const
 type Period = (typeof Periods)[number]
 
@@ -181,4 +190,5 @@ export type {
 	Totals,
 	TreasureMap,
 	TreasureMapSection,
+	URLParams,
 }

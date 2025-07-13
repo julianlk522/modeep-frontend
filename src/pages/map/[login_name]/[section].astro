@@ -75,6 +75,15 @@ if (params.get('page')) {
 	page = parseInt(params.get('page') as string)
 }
 
+const url_params = {
+    Cats: cats,
+    Period: period,
+    SortBy: sort_by,
+    NSFW: nsfw,
+    URLContains: url_contains,
+    Page: page,
+}
+
 // Fetch tmap
 const href_suffix = params.size ? `&${params.toString()}` : ''
 const tmap_section_url = TMAP_ENDPOINT + `/${login_name}` + `?section=${section_name}` + href_suffix
@@ -127,16 +136,12 @@ if (cats_split.length) {
 
 
 		<Rankings
-            CatsParams={cats}
-            PeriodParams={period}
-            NSFWParams={nsfw}
-            SortByParams={sort_by}
-            PageParams={page}
-            Pages={section_data.Pages}
-            TopCats={section_data.Cats}
             SingleTmapSection={single_tmap_section}
             SingleTmapSectionName={section_name as typeof tmap_sections[number]}
             IsTmapFromUser={login_name}
+            URLParams={url_params}
+            TopCats={section_data.Cats}
+            Pages={section_data.Pages}
             User={user}
             Token={token}
         />

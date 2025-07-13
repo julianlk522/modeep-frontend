@@ -1,30 +1,29 @@
 ---
-import type { Period, SortMetric, tmap_sections } from '../types'
+import type { URLParams, tmap_sections } from '../types'
 import get_paginated_href from '../util/pagination'
 
 interface Props {
-	Cats?: string
-	Period?: Period
-	SortBy?: SortMetric
-	HasNSFW?: boolean
-	URLContains?: string
-	Page: number
+	URLParams: URLParams
 	Pages: number
 	SingleTmapSectionName?: typeof tmap_sections[number]
 	TmapOwner?: string
 }
 
-const { 
-	Cats: cats, 
-	Period: period, 
-	SortBy: sort_by, 
-	HasNSFW: nsfw, 
-	URLContains: url_contains,
-	Page: page, 
+const {
+	URLParams: url_params,
 	Pages: pages, 
 	SingleTmapSectionName: single_tmap_section_name,
 	TmapOwner: tmap_owner, 
 } = Astro.props
+
+const {
+	Cats: cats,
+	Period: period,
+	URLContains: url_contains,
+	SortBy: sort_by,
+	NSFW: nsfw,
+} = url_params
+const page = url_params.Page ?? 1
 
 const params = new URLSearchParams()
 if (cats !== undefined && cats.length) {

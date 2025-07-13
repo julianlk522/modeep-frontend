@@ -15,8 +15,8 @@ interface Props {
 	InitialCats: string[]
 	InitialURLContains: string
 	InitialPeriod: Period
-	InitialSortBy: SortMetric
-	InitialNSFW: boolean
+	InitialSortBy?: SortMetric
+	InitialNSFW?: boolean
 }
 
 export default function SearchFilters(props: Props) {
