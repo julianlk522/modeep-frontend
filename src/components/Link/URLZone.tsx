@@ -62,17 +62,19 @@ export default function URLZone({
 					{link_text}
 				</a>
 
-				<>
-					{` (`}
-					<a
-						title={`View this link's summaries (${summary_count}) or add/edit yours`}
-						href={`/summary/${link_id}`}
-						class='summaries-page-link'
-					>
-						<span class='summary-count'>{summary_count}</span>
-					</a>
-					{`)`}
-				</>
+				{!is_summary_page ? (
+					<>
+						{` (`}
+						<a
+							title={`View this link's summaries (${summary_count}) or add/edit yours`}
+							href={`/summary/${link_id}`}
+							class='summaries-page-link'
+						>
+							<span class='summary-count'>{summary_count}</span>
+						</a>
+						{`)`}
+					</>
+				) : null}
 			</h3>
 			{summary ? <p class='url'>{url}</p> : null}
 		</div>
