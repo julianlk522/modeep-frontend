@@ -53,10 +53,12 @@ export default function NewLinks(props: Props) {
 		const formData = new FormData(form)
 		const url = formData.get('url')
 		if (!url) {
-			set_error('Missing URL')
+			set_error("You're missing a URL there :)")
 			return
 		} else if (!selected_cats.length) {
-			set_error('Missing tag (you might need to hit the plus button)')
+			set_error(
+				'Add your tag please :) (you might need to hit the plus button)'
+			)
 			return
 		}
 

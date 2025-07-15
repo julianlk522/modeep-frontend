@@ -170,7 +170,7 @@ export default function SearchCats(props: Props) {
 		event.preventDefault()
 
 		if (has_max_num_cats) {
-			set_error('Maxiumum number of cats reached')
+			set_error('Max number of cats reached :(')
 			return
 		}
 
@@ -180,7 +180,7 @@ export default function SearchCats(props: Props) {
 		}
 
 		if (selected_cats.includes(new_cat)) {
-			set_error('Already added')
+			set_error('You have that already, doofus :P')
 			return
 		}
 
