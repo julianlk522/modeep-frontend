@@ -308,8 +308,8 @@ export default function Link(props: Props) {
 						{split_cats.map((cat) => {
 							const encoded_cat = encodeURIComponent(cat)
 							const url_params = cats_url_params
-								? `${cats_url_params}&cats=${encoded_cat}`
-								: `?${encoded_cat}`
+								? `?${cats_url_params}&cats=${encoded_cat}`
+								: `?cats=${encoded_cat}`
 
 							return (
 								<TagCat
