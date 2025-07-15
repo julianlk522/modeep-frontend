@@ -12,13 +12,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 
         <section>
             <h2 id="cats" class="subsection">Meow?</h2>
-            <p><em>Cats</em> are an important FITM component. Their name is a shorthand for <em><a href="#tags">tag categories</a></em>. (And as a <a href="https://en.wikipedia.org/wiki/I_Can_Has_Cheezburger%3F">classic Internet symbol</a>, cats also seem well fitted to moderate a curated collection of links.) Don't be alarmed by talk of "stacking cats"; animals are wonderful and none were harmed making this tool.</p>
+            <p><em>Cats</em> are an important FITM component. Their name is a shorthand for <a href="#tags">tag categories</a>. (And as a <a href="https://en.wikipedia.org/wiki/I_Can_Has_Cheezburger%3F">classic Internet symbol</a>, cats also seem well fitted to moderate a curated collection of links.) Don't be alarmed by talk of "stacking cats"; animals are wonderful and none were harmed making this tool.</p>
 
-            <p>When you mark a link as treasure (AKA post it), you decide the best cats to describe it and submit them as a vote. Your vote influences the link's <em><a href="#global-tags">global tag</a></em>. And when searching, you can declare which cats must be present in the global tag of any found links.</p>
+            <p>When you <em>mark a link as treasure</em> (AKA post it), you decide the best cats to describe it and submit them as a vote. Your vote influences the link's <em><a href="#global-tags">global tag</a></em>. When searching, you can declare which cats must be present in the global tag of any found links by adding <em>cat filters</em>.</p>
 
-            <p>The most common cats throughout links returned in a search are listed in order of frequency. Searches utilizing cat filters list out top <em>subcats</em>: the most common cats from found links that were <strong>not</strong> provided as filters.</p>
+            <p>Searches always show their <strong>Top Cats</strong>, the most frequent cats throughout all returned links, or their <strong>Top <em>Subcats</em></strong>, the most frequent cats that were <strong>not</strong> provided as filters, if the search included cat filters.</p>
 
-			<p>Top cats or subcats can be stacked on existing filters to add specificity and rapidly concentrate on some certain material. Click a cat to add it to your constraints, drilling deeper and more precisely into the original cross section of found links.</p>
+			<p>Top cats or subcats can be stacked on existing filters to add specificity and rapidly concentrate on some certain material. Click a cat to add it to your constraints, drilling deeper and more precisely into the pile of stuff you found.</p>
         </section>
 
 		<NarrowSearchDiagram />
@@ -60,7 +60,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
                 via filtration. A tag is a list of cats for a link, chosen by someone. It's a personal interpretation of the topics that the link may be associated with, or terms that someone interested in the link might search for.
             </p>
             <p>
-                We don't have to agree on the most appropriate cat(s) for any link. Each tag author's configuration can be viewed on their Treasure Map, and it will also influence the link's global tag.
+                We don't have to agree on the most appropriate cat(s) for any link. Each tag author's configuration can be viewed on their Treasure Map, and it will also influence the link's global tag in proportion to its <a href="#global-tag-calculation">calculated goodness of fit</a>.
             </p>
         </section>
 			
@@ -76,7 +76,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 
 			<p>Global tags for a link are calculated automatically based on: <strong>1)</strong> the age of each user-submitted tag and <strong>2)</strong> the frequencies of cats across all of them. Each link shows its global tag. (Unless the link is viewed from a user's Treasure Map; then it will show <em>their</em> tag.) In addition to the global tag, you can view the top user-submitted tags for any link.</p>
 
-			<p>Each user-submitted tag shows its <em><a href="#global-tag-calculation">lifespan overlap percentage</a></em>, author, date of submission, and cats. Tags that have kept the same combination of cats for the greatest portion of the link's lifespan are ranked highest. Editing a tag's cats will reset it's lifespan overlap percentage.</p>
+			<p>Each user-submitted tag shows its <em>lifespan overlap percentage</em>, author, date of submission, and cats. Tags that have kept the same combination of cats for the greatest portion of the link's lifespan are ranked highest. Editing a tag's cats will reset it's lifespan overlap percentage.</p>
 
 			<p><strong>Note:</strong> a link's global cats will not necessarily resemble only its highest-ranked tags. If many newer tags contain some cats that are not already present in the global tag, it's likely that those will also be assigned.</p>
 
@@ -92,22 +92,28 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 
 			<p>For a cat to be added to link <code>L</code>'s global tags, it's <em>score</em> must be &ge;25% of the highest score among <code>L</code>'s cats.</p>
 
-			<p><em>Scores</em> for cat <code>C</code> of link <code>L</code> are calculated as the sum of scores from each occurrence of <code>C</code> in one of <code>L</code>'s tags. Each score is weighted by the number of cats in the tag containing the occurrence.</p>
+			<p><em>Scores</em> for cat <code>C</code> of link <code>L</code> are calculated as the sum of scores from all occurrences of <code>C</code> in <code>L</code>'s tags.</p>
+
+            <p>Each bit of score added for a cat is scaled down according to the weight of the tag in which the cat was found.</p>
+
+            <p>A tag's weight is inversely proportional to its total number of cats. (e.g., a cat from a tag with only 1 cat counts for more than one from a tag with 10 cats.)</p>
 
 			<p>Weights for tag <code>T</code> are calculated as <em>lifespan overlap percentage</em> of <code>T</code>, divided by <code>T</code>'s number of cats. </p>
 
-			<p>Lifespan overlap percentage for tag <code>T</code> of link <code>L</code> is the percentage of <code>L</code>'s time on FITM that  <code>T</code> has remained in its current state since creation or last edit.</p>
+			<p>Lifespan overlap percentage for tag <code>T</code> of link <code>L</code> is the percentage of <code>L</code>'s time on FITM that <code>T</code> has existed since creation or last edit.</p>
 
 			<GlobalTagCalcDiagram />
 		</section>
 
         <section>
             <h2 id="retrieving-metadata" class="subsection">Retrieving Metadata</h2>
-			<p>FITM employs <em>very limited</em> use of automated website scraping to fetch <a href="https://ogp.me/">Open Graph</a> metadata for submitted links. These requests can be identified by the <strong>FITM-Bot</strong> user agent.</p>
+			<p>FITM employs <em>very limited</em> use of automated website scraping to fetch <a href="https://ogp.me/">Open Graph</a> metadata for submitted links.</p>
 
-			<p>A max of 1-3 automated requests go out to each submitted URL (FITM-Bot tries different protocol prefixes, e.g., "https://" and "http://", if the first request fails). This automated scraping helps to cut down on link submission friction and pair links with eye-catching preview images. The goal is ultimately to promote appreciation for good, public Internet sites by improving their visibility.</p>
+            <p>These requests can be identified by the <strong>FITM-Bot</strong> user agent.</p>
 
-			<p><strong>Anyone can have their domain added to a non-scrape list upon request, with no further questions</strong>. Please send an email to <a href="mailto:support@fitm.online">support@fitm.online</a> if you'd like that. It would be an odd decision though. The point of adding sites to FITM is to help them get more visitors. Wouldn't any public website want more visitors?</p>
+			<p>A max of 1-3 automated requests go out to each submitted URL (FITM-Bot tries different protocol prefixes, e.g., "https://" and "http://", if the first request fails). This helps to reduce friction when submitting links and provide more eye-catching preview images. The goal, as with all of this, is ultimately to promote appreciation for good, public Internet sites by improving their visibility.</p>
+
+			<p><strong>Anyone can have their domain added to a non-scrape list upon request, with no further questions</strong>. Please send an email to <a href="mailto:support@fitm.online">support@fitm.online</a> if you'd like that. (It would be odd though! A site that does not welcome more visitors may be best kept private than on the open web.)</p>
         </section>
 
 		<ScrollUp />
