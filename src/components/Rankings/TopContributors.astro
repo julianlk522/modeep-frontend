@@ -37,7 +37,7 @@ if (url_params) {
         params.set('url_contains', url_contains)
     }
 
-    href_suffix = `?${params.toString()}`
+    href_suffix = params.size ? `?${params.toString()}` : ''
 }
 ---
 
