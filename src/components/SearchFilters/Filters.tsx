@@ -1,11 +1,12 @@
 import { useCallback, useRef, useState } from 'preact/hooks'
-import type { Period, SortMetric, tmap_sections } from '../../types'
+import type { AcceptableSortParams, Period, tmap_sections } from '../../types'
 import SearchCats from './Cats'
 import './Filters.css'
 import SearchNSFW from './NSFW'
 import SearchPeriod from './Period'
 import SearchSortBy from './SortBy'
 import SearchURLContains from './URLContains'
+import SearchURLLacks from './URLLacks'
 
 interface Props {
 	Endpoint?: '/search' | '/more' | '/map'
@@ -14,8 +15,9 @@ interface Props {
 	NSFWLinks?: number
 	InitialCats: string[]
 	InitialURLContains: string
+	InitialURLLacks: string
 	InitialPeriod: Period
-	InitialSortBy?: SortMetric
+	InitialSortBy?: AcceptableSortParams
 	InitialNSFW?: boolean
 }
 
@@ -27,6 +29,7 @@ export default function SearchFilters(props: Props) {
 		NSFWLinks: nsfw_links,
 		InitialCats: initial_cats,
 		InitialURLContains: initial_url_contains,
+		InitialURLLacks: initial_url_lacks,
 		InitialPeriod: initial_period,
 		InitialSortBy: initial_sort_by,
 		InitialNSFW: initial_nsfw,
@@ -35,8 +38,9 @@ export default function SearchFilters(props: Props) {
 	const [cats, set_cats] = useState<string[]>(initial_cats)
 	const [url_contains, set_url_contains] =
 		useState<string>(initial_url_contains)
+	const [url_lacks, set_url_lacks] = useState<string>(initial_url_lacks)
 	const [period, set_period] = useState<Period>(initial_period)
-	const [sort_by, set_sort_by] = useState<SortMetric>(
+	const [sort_by, set_sort_by] = useState<AcceptableSortParams>(
 		initial_sort_by ?? 'rating'
 	)
 	const [nsfw, set_nsfw] = useState<boolean>(initial_nsfw ?? false)
@@ -52,6 +56,11 @@ export default function SearchFilters(props: Props) {
 	const has_url_contains = url_contains?.length
 	if (has_url_contains) {
 		params.set('url_contains', url_contains)
+	}
+
+	const has_url_lacks = url_lacks?.length
+	if (has_url_lacks) {
+		params.set('url_lacks', url_lacks)
 	}
 
 	const has_period = period !== 'all'
@@ -76,6 +85,7 @@ export default function SearchFilters(props: Props) {
 	const has_changed_filters =
 		has_changed_cats ||
 		url_contains !== initial_url_contains ||
+		url_lacks !== initial_url_lacks ||
 		period !== initial_period ||
 		sort_by !== initial_sort_by ||
 		nsfw !== initial_nsfw
@@ -158,6 +168,11 @@ export default function SearchFilters(props: Props) {
 				<SearchURLContains
 					URLContains={url_contains}
 					SetURLContains={set_url_contains}
+				/>
+
+				<SearchURLLacks
+					URLLacks={url_lacks}
+					SetURLLacks={set_url_lacks}
 				/>
 
 				<SearchPeriod Period={period} SetPeriod={set_period} />

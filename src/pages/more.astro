@@ -15,6 +15,7 @@ let more_cats_url = CATS_ENDPOINT + "?more=true"
 // Params
 let cats = ""
 let url_contains = ""
+let url_lacks = ""
 let period: Period = 'all'
 
 if (Astro.url.searchParams.get('cats')) {
@@ -24,6 +25,10 @@ if (Astro.url.searchParams.get('cats')) {
 if (Astro.url.searchParams.get('url_contains')) {
 	url_contains = Astro.url.searchParams.get('url_contains') as string
 	more_cats_url += `&url_contains=${url_contains}`
+}
+if (Astro.url.searchParams.get('url_lacks')) {
+	url_lacks = Astro.url.searchParams.get('url_lacks') as string
+	more_cats_url += `&url_lacks=${url_lacks}`
 }
 if (
 	Astro.url.searchParams.get('period') &&
@@ -66,6 +71,7 @@ if (has_merged_cats_property(counts)) {
 			InitialCats={cats.length ? cats.split(',') : []}
 			InitialPeriod={period}
 			InitialURLContains={url_contains}
+			InitialURLLacks={url_lacks}
 			Endpoint="/more"
 		/>
 

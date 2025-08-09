@@ -8,6 +8,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import {
 Periods,
 SortMetrics,
+type AcceptableSortParams,
 type CatCount,
 type Contributor,
 type PaginatedLinks,
@@ -35,6 +36,12 @@ if (params.get('url_contains')) {
 	url_contains = params.get('url_contains') as string
 }
 
+// url lacks
+let url_lacks = ""
+if (params.get('url_lacks')) {
+	url_lacks = params.get('url_lacks') as string
+}
+
 // period
 let period: Period = 'all'
 if (
@@ -47,7 +54,7 @@ if (
 }
 
 // sort by
-let sort_by: SortMetric = 'rating'
+let sort_by: AcceptableSortParams = ''
 if (
 	params.get('sort_by') && (SortMetrics as readonly string[]).includes(
 		params.get('sort_by') as SortMetric
@@ -73,6 +80,7 @@ const url_params = {
 	SortBy: sort_by,
 	NSFW: nsfw,
 	URLContains: url_contains,
+	URLLacks: url_lacks,
 	Page: page,
 }
 
@@ -160,6 +168,7 @@ const page_title = `${(sort_by !== 'rating' ? " Newest" : " Top Rated")}${cats ?
 			InitialCats={cats.length ? cats.split(',') : []}
 			InitialPeriod={period}
 			InitialURLContains={url_contains}
+			InitialURLLacks={url_lacks}
 			InitialSortBy={sort_by}
 			InitialNSFW={nsfw}
 			NSFWLinks={nsfw_links}

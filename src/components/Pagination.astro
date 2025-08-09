@@ -20,6 +20,7 @@ const {
 	Cats: cats,
 	Period: period,
 	URLContains: url_contains,
+	URLLacks: url_lacks,
 	SortBy: sort_by,
 	NSFW: nsfw,
 } = url_params
@@ -40,6 +41,9 @@ if (nsfw) {
 }
 if (url_contains && url_contains.length) {
 	params.set('url_contains', url_contains)
+}
+if (url_lacks && url_lacks.length) {
+	params.set('url_lacks', url_lacks)
 }
 
 let base_href = single_tmap_section_name 

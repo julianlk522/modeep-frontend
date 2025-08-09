@@ -57,7 +57,8 @@ type URLParams = {
 	Cats?: string
 	Period?: Period
 	URLContains?: string
-	SortBy?: SortMetric
+	URLLacks?: string
+	SortBy?: AcceptableSortParams
 	NSFW?: boolean
 	Page?: number
 }
@@ -67,6 +68,8 @@ type Period = (typeof Periods)[number]
 
 const SortMetrics = ['rating', 'newest'] as const
 type SortMetric = (typeof SortMetrics)[number]
+
+type AcceptableSortParams = SortMetric | ''
 
 // TAG
 type Tag = {
@@ -170,6 +173,7 @@ export {
 	tmap_sections,
 }
 export type {
+	AcceptableSortParams,
 	CatCount,
 	Contributor,
 	ErrorResponse,

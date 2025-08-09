@@ -1,17 +1,17 @@
 import type { ChangeEvent } from 'preact/compat'
 import type { Dispatch, StateUpdater } from 'preact/hooks'
-import { SortMetrics, type SortMetric } from '../../types'
+import { SortMetrics, type AcceptableSortParams } from '../../types'
 
 interface Props {
-	SortBy: SortMetric
-	SetSortBy: Dispatch<StateUpdater<SortMetric>>
+	SortBy: AcceptableSortParams
+	SetSortBy: Dispatch<StateUpdater<AcceptableSortParams>>
 }
 
 export default function SearchSortBy(props: Props) {
 	const { SortBy: sort_by, SetSortBy: set_sort_by } = props
 
 	async function handle_set_sort_by(e: ChangeEvent<HTMLSelectElement>) {
-		set_sort_by(e.currentTarget.value as SortMetric)
+		set_sort_by(e.currentTarget.value as AcceptableSortParams)
 	}
 	return (
 		<div>

@@ -44,6 +44,12 @@ if (params.get('url_contains')) {
     url_contains = params.get('url_contains') as string
 }
 
+// url lacks
+let url_lacks = ""
+if (params.get('url_lacks')) {
+    url_lacks = params.get('url_lacks') as string
+}
+
 // period
 let period: Period = 'all'
 if (
@@ -81,6 +87,7 @@ const url_params = {
     SortBy: sort_by,
     NSFW: nsfw,
     URLContains: url_contains,
+    URLLacks: url_lacks,
     Page: page,
 }
 
@@ -130,6 +137,7 @@ if (cats_split.length) {
 			InitialCats={cats_split}
 			InitialPeriod={period}
 			InitialURLContains={url_contains}
+            InitialURLLacks={url_lacks}
 			InitialSortBy={sort_by}
 			InitialNSFW={nsfw}
 		/>

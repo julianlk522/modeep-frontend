@@ -20,6 +20,7 @@ if (url_params) {
         SortBy: sort_by,
         NSFW: nsfw,
         URLContains: url_contains,
+        URLLacks: url_lacks
     } = url_params
     if (cats) {
         params.set('cats', cats)
@@ -35,6 +36,9 @@ if (url_params) {
     }
     if (url_contains?.length) {
         params.set('url_contains', url_contains)
+    }
+    if (url_lacks?.length) {
+        params.set('url_lacks', url_lacks)
     }
 
     href_suffix = params.size ? `?${params.toString()}` : ''

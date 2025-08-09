@@ -1,6 +1,7 @@
 ---
 import { CATS_PAGE_LIMIT, MIN_LIST_ITEMS_FOR_SCROLLBAR } from '../../constants'
 import type { CatCount, URLParams, tmap_sections } from '../../types'
+import get_cats_url_params from '../Link/util/params'
 import TagCat from '../Tag/TagCat'
 
 interface Props {
@@ -21,27 +22,28 @@ const {
     IsTmapFromUser: tmap_owner, 
 } = Astro.props
 
-const {
-    Cats: cats_params,
-    Period: period,
-    SortBy: sort_by,
-    NSFW: nsfw,
-    URLContains: url_contains,
-} = url_params
-
 let top_cats_classes = more ? ['more'] : tmap_owner ? ['tmap'] : []
 if (mini) top_cats_classes.push('mini')
 if (!more && top_cats?.length > MIN_LIST_ITEMS_FOR_SCROLLBAR) top_cats_classes.push('scrollable')
 
-const is_subcats = cats_params ? true : false
-const has_period = period && period !== 'all'
+const has_subcats = url_params.Cats ? true : false
 
 let endpoint = tmap_owner ? `/map/${tmap_owner}` : "/search"
 if (single_tmap_section) endpoint += `/${single_tmap_section}`
+
+const cats_url_params = get_cats_url_params(url_params).length 
+    ? `&${get_cats_url_params(url_params)}` 
+    : ''
 ---
 
 {top_cats?.length ? <div id="top-cats-container" class={tmap_owner ? 'tmap' : ''}>
-    <h2 class={more ? 'more' : ''}>{is_subcats ? 'Top Subcats' : more ? 'More Cats' : 'Top Cats'}</h2>
+    <h2 class={more ? 'more' : ''}>{
+        has_subcats 
+            ? 'Top Subcats' 
+            : more 
+                ? 'More Cats' 
+                : 'Top Cats'
+    }</h2>
     <ol id="top-cats" class={top_cats_classes.join(' ')}>
         {
             top_cats.map((cat) => (
@@ -49,7 +51,7 @@ if (single_tmap_section) endpoint += `/${single_tmap_section}`
                     Cat={cat.Category} 
                     Count={cat.Count} 
                     IsNSFW={cat.Category === 'NSFW'} 
-                    Href={endpoint + `?cats=${is_subcats ? cats_params + ',' + encodeURIComponent(cat.Category) : encodeURIComponent(cat.Category)}${has_period ? `&period=${period}` : ''}${sort_by && sort_by !== 'rating' ? `&sort_by=newest` : ''}${nsfw || cat.Category === 'NSFW' ? `&nsfw=true` : ''}${url_contains ? `&url_contains=${url_contains}` : ''}`}
+                    Href={`${endpoint}?cats=${cat.Category}${cats_url_params}`}
                     IsMorePage={more}
                  />
             ))
@@ -57,18 +59,14 @@ if (single_tmap_section) endpoint += `/${single_tmap_section}`
     </ol>
     {top_cats.length === CATS_PAGE_LIMIT ? 
         <span id="to-more">
-            <a href={is_subcats ? 
-                `/more?cats=${cats_params}${has_period 
-                    ? `&period=${period}` 
-                    : ''}` 
-            : `/more${has_period ? 
-                `?period=${period}` 
-                : ''}`}>more
+            <a href={has_subcats 
+            ? `/more?cats=${url_params.Cats}${cats_url_params}` 
+            : `/more${cats_url_params}`}>more
             </a>
             <img src='../../back.svg' alt="Go to /more" height={18} width={18} />
         </span> 
     : null}
-</div> : is_subcats ? <p id="no-further-cats">No further subcats.</p> : null}
+</div> : has_subcats ? <p id="no-further-cats">No further subcats.</p> : null}
 
 <style>
     #top-cats-container {
