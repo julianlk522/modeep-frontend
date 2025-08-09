@@ -1,5 +1,38 @@
 div#search-cats-container {
 	margin-top: 0.5rem;
+
+	div#search-cats-input-container {
+		display: inline-block;
+
+		div#input-hidden-label {
+			height: 0;
+			visibility: hidden;
+			padding: 0 2px;
+		}
+
+		input#cats {
+			padding: 0;
+			width: 100%;
+		}
+
+		input#cats::placeholder {
+			opacity: 0.8;
+			text-align: center;
+		}
+
+		input#cats::placeholder,
+		div#input-hidden-label {
+			font-size: 0.85rem;
+		}
+	}
+
+	input#add-cat-filter {
+		margin-left: 6px;
+	}
+
+	input#add-cat-filter:disabled {
+		color: var(--text-muted);
+	}
 }
 
 div#search-cats-container.home {
@@ -8,26 +41,12 @@ div#search-cats-container.home {
 	text-align: center;
 }
 
-div#search-cats-container.home:not(:has(ol#recommendations-list)) {
+div#search-cats-container.home {
 	margin-bottom: 0.5rem;
 }
 
-input#cats {
-	min-width: 190px;
-}
-
-input#add-cat-filter {
-	margin-left: 2px;
-}
-
-input#add-cat-filter:disabled {
-	color: var(--text-muted);
-}
-
-input::placeholder {
-	opacity: 0.8;
-	font-size: 0.85rem;
-	text-align: center;
+div#search-cats-container:has(ol#recommendations-list) {
+	margin-bottom: 0;
 }
 
 ul#cat-list {
@@ -51,4 +70,19 @@ ol#recommendations-list {
 
 p.error {
 	margin-bottom: 0.5rem;
+}
+
+@media (min-width: 680px) {
+	div#search-cats-container.home {
+		margin-bottom: 1rem;
+	}
+	div#search-cats-container.home:has(ol#recommendations-list) {
+		margin-bottom: 1.5rem;
+	}
+}
+
+@media (min-width: 786px) {
+	div#search-cats-container.home {
+		margin-bottom: 2rem;
+	}
 }

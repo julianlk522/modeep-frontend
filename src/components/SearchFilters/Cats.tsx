@@ -196,6 +196,8 @@ export default function SearchCats(props: Props) {
 		reset_timeout_and_fetch_new_recommendations()
 	}
 
+	const placeholder_text = 'Start typing for cat suggestions'
+
 	return (
 		<div id='search-cats-container' class={is_home_page ? 'home' : ''}>
 			{addable ? (
@@ -206,36 +208,43 @@ export default function SearchCats(props: Props) {
 						</label>
 					) : null}
 
-					<input
-						id='cats'
-						name='cats'
-						type='text'
-						value={snippet}
-						autocomplete={'off'}
-						autoFocus={!is_new_link_page}
-						placeholder={
-							selected_cats?.length
-								? ''
-								: 'Start typing for topic suggestions'
-						}
-						onInput={(event) => {
-							// update selected cats ref so does not remain
-							// unsynced after deleting any from selected_cats,
-							// preventing new recommendations
-							prev_selected_cats_ref.current = selected_cats
-							set_snippet(
-								(event.target as HTMLInputElement).value
-							)
-						}}
-						onKeyDown={handle_enter}
-					/>
+					<div id='search-cats-input-container'>
+						{/* This is used to match the <input />'s width to that of
+						its placeholder text.
+						Thank you https://stackoverflow.com/a/60952231 */}
+						<div id='input-hidden-label' aria-hidden='true'>
+							{placeholder_text}
+						</div>
+
+						<input
+							id='cats'
+							name='cats'
+							type='text'
+							value={snippet}
+							autocomplete={'off'}
+							autoFocus={!is_new_link_page}
+							placeholder={
+								selected_cats?.length ? '' : placeholder_text
+							}
+							onInput={(event) => {
+								// update selected cats ref so does not remain
+								// unsynced after deleting any from selected_cats,
+								// preventing new recommendations
+								prev_selected_cats_ref.current = selected_cats
+								set_snippet(
+									(event.target as HTMLInputElement).value
+								)
+							}}
+							onKeyDown={handle_enter}
+						/>
+					</div>
 
 					{!is_home_page ? (
 						<input
 							id='add-cat-filter'
 							title={
 								has_max_num_cats
-									? 'Maxiumum number of cats reached'
+									? 'Max number of cats reached'
 									: 'Add cat filter'
 							}
 							type='button'

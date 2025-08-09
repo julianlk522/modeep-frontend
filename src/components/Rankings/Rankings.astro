@@ -144,7 +144,7 @@ const no_links_found = links && links.length === 0 || tmap && multiple_tmap_sect
     @media (min-width: 680px) {
         #rankings {
             flex-direction: row;
-            gap: 4rem;
+            gap: 3rem;
 
             aside#top-cats-and-contributors {
                 flex-direction: column;
@@ -161,6 +161,12 @@ const no_links_found = links && links.length === 0 || tmap && multiple_tmap_sect
     }
 
     @media (min-width: 786px) {
+        #rankings {
+            gap: 4rem;
+        }
+    }
+
+    @media (min-width: 1000px) {
         #rankings {
             gap: 6rem;
         }
