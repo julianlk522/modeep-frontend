@@ -25,42 +25,54 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 		<WideSearchDiagram />
 
         <section>
-            <h2 id="core-actions" class="subsection">Core Actions</h2>
+            <div id="core-actions">
+                <h2 class="subsection">Core Feedback Actions: </h2>
+
+                <p>Ways anyone can vote on how links are organized.</p>
+            </div>
+
             <ol>
                 <li><strong>Summarize</strong></li>
                 <li><strong>Copy</strong></li>
                 <li><strong>Like</strong></li>
                 <li><strong>Tag</strong></li>
             </ol>
+
             <h3 class="subsection">Summarize</h3>
+
             <p>
-                Every link has a summary page where any user can
-                offer their own description of its content. Summaries can be upvoted so the most liked ones are most visible.
+                Every link has a summary page where anyone can
+                offer their own description of the linked content.
             </p>
+
             <p>
-                A link's top summary will be shown above its URL at all times to
-                quickly give a sense for what it contains. If there are no summaries, the URL alone will be shown.
+                Good summaries can be upvoted. The most upvoted summary will be shown above a link's URL to give a compact gist of what it contains.
             </p>
+
             <h3 class="subsection">Copy</h3>
+
             <p>
-                <strong>Copying</strong> links to your Treasure Map improves
-                discoverability via proliferation. It allows you to bookmark a link to easily find it again or let others find it by reading your Treasure Map.
+                <strong>Copying</strong> links to your Treasure Map lets you and others easily find them again by reading your Treasure Map. It improves discoverability via proliferation.
             </p>
+
             <h3 class="subsection">Like</h3>
+
             <p>
-                <strong>Liking</strong> improves discoverability via corroboration.
-                It's a way to vouch for a link's "goodness" (comprehensiveness, authenticity, hilarity, whatever).
+                <strong>Liking</strong> links vouches for their "goodness" (comprehensiveness, authenticity, hilarity, whatever). It improves discoverability via corroboration.
             </p>
+
             <p>
                 Liking helps great content appear closer to the top of searches, boosting its relative visibility and allowing attention to flow naturally to the most noteworthy items.
             </p>
+
             <h3 id="tags" class="subsection">Tag</h3>
+
             <p>
-                <strong>Tagging</strong> links improves discoverability
-                via filtration. A tag is a list of cats for a link, chosen by someone. It's a personal interpretation of the topics that the link may be associated with, or terms that someone interested in the link might search for.
+                <strong>Tagging</strong> links arranges them with like material. Tags are personal interpretations of the topics that various links may be associated with, or terms that someone interested in them might look up. Tagging improves discoverability by allowing accurate filtration.
             </p>
+
             <p>
-                We don't have to agree on the most appropriate cat(s) for any link. Each tag author's configuration can be viewed on their Treasure Map, and it will also influence the link's global tag in proportion to its <a href="#global-tag-calculation">calculated goodness of fit</a>.
+                We don't have to agree on the most appropriate cat(s) for any link. Each tag author's configuration can be viewed on their Treasure Map, and it will also influence the link's global tag in proportion to its <a href="#global-tag-calculation">estimated goodness of fit</a>.
             </p>
         </section>
 			
@@ -96,7 +108,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 
             <p>Each bit of score added for a cat is scaled down according to the weight of the tag in which the cat was found.</p>
 
-            <p>A tag's weight is inversely proportional to its total number of cats. (e.g., a cat from a tag with only 1 cat counts for more than one from a tag with 10 cats.)</p>
+            <p>A tag's weight is inversely proportional to its total number of cats. (e.g., a cat from a tag with only 1 cat counts for 10x more than one from a tag with 10 cats.)</p>
 
 			<p>Weights for tag <code>T</code> are calculated as <em>lifespan overlap percentage</em> of <code>T</code>, divided by <code>T</code>'s number of cats. </p>
 
@@ -113,7 +125,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 
 			<p>A max of 1-3 automated requests go out to each submitted URL (FITM-Bot tries different protocol prefixes, e.g., "https://" and "http://", if the first request fails). This helps to reduce friction when submitting links and provide more eye-catching preview images. The goal, as with all of this, is ultimately to promote appreciation for good, public Internet sites by improving their visibility.</p>
 
-			<p><strong>Anyone can have their domain added to a non-scrape list upon request, with no further questions</strong>. Please send an email to <a href="mailto:support@fitm.online">support@fitm.online</a> if you'd like that. (It would be odd though! A site that does not welcome more visitors may be best kept private than on the open web.)</p>
+			<p><strong>Anyone can have their domain added to a non-scrape list upon request, with no further questions</strong>. Please send an email to <a href="mailto:support@fitm.online">support@fitm.online</a> if you'd like that. (It would be odd though! A site that does not welcome more visitors may be best kept private rather than on the open web.)</p>
         </section>
 
 		<ScrollUp />
@@ -129,7 +141,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 		margin-top: 0.5rem;
 	}
 
-    section:has(h2#core-actions) h3 {
+    #core-actions > * {
+        display: inline;
+    }
+
+    section:has(#core-actions) h3 {
         margin-top: 2rem;
     }
 
