@@ -66,7 +66,7 @@ type URLParams = {
 const Periods = ['day', 'week', 'month', 'year', 'all'] as const
 type Period = (typeof Periods)[number]
 
-const SortMetrics = ['rating', 'newest'] as const
+const SortMetrics = ['rating', 'newest', 'oldest'] as const
 type SortMetric = (typeof SortMetrics)[number]
 
 type AcceptableSortParams = SortMetric | ''

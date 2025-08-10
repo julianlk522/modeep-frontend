@@ -40,7 +40,7 @@ if (params.get('url_lacks')) {
 }
 
 // period
-let period: types.Period = 'all'
+let period: types.Period = "all"
 if (
 	params.get('period') &&
 	(types.Periods as readonly string[]).includes(
@@ -52,10 +52,13 @@ if (
 
 // sort_by
 let sort_by: types.SortMetric = 'rating'
-const sort_by_params = params.get('sort_by')
-const is_sorted_by_newest = sort_by_params === 'newest'
-if (is_sorted_by_newest) {
-	sort_by = 'newest'
+if (
+	params.get('sort_by') &&
+	(types.SortMetrics as readonly string[]).includes(
+		params.get('sort_by') as types.SortMetric
+	)
+) {
+	sort_by = params.get('sort_by') as types.SortMetric
 }
 
 // nsfw

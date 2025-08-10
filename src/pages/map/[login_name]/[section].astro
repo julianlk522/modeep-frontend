@@ -63,10 +63,11 @@ if (
 
 // sort_by
 let sort_by: SortMetric = 'rating'
-const sort_by_params = params.get('sort_by')
-const is_sorted_by_newest = sort_by_params === 'newest'
-if (is_sorted_by_newest) {
-	sort_by = 'newest'
+if (
+    params.get('sort_by') &&
+    (params.get('sort_by') as SortMetric)
+) {
+    sort_by = params.get('sort_by') as SortMetric
 }
 
 // nsfw
