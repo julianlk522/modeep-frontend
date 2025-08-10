@@ -2,7 +2,7 @@
 import { LINKS_PAGE_LIMIT } from '../../constants'
 import * as types from '../../types'
 import Link from '../Link/Link'
-import get_cats_url_params from '../Link/util/params'
+import get_non_cats_url_params from '../Link/util/params'
 import Pagination from '../Pagination.astro'
 import MergedResultsNotice from './MergedResultsNotice.astro'
 import NoLinksFound from './NoLinksFound.astro'
@@ -38,7 +38,7 @@ const {
 } = Astro.props
 
 const page = url_params.Page
-const cats_url_params_str = get_cats_url_params(url_params)
+const non_cats_url_params = get_non_cats_url_params(url_params)
 
 const is_only_page = !page || !pages || (page === 1 && pages < 2)
 const is_your_tmap = tmap_owner_login_name !== undefined && user == tmap_owner_login_name
@@ -97,7 +97,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 						<Link
 							client:load
 							Link={link}
-							CatsURLParams={cats_url_params_str}
+							NonCatsURLParams={non_cats_url_params}
 							Token={token}
 							User={user}
 						/>
@@ -138,7 +138,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 									<Link
 										client:load
 										Link={link}
-										CatsURLParams={cats_url_params_str}
+										NonCatsURLParams={non_cats_url_params}
 										CatsFromUser={
 											link.CatsFromUser
 												? tmap_owner_login_name
@@ -163,7 +163,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
                     <Link
                         client:load
                         Link={link}
-						CatsURLParams={cats_url_params_str}
+						NonCatsURLParams={non_cats_url_params}
                         IsTmapPage={true}
                         CatsFromUser={
                             link.CatsFromUser

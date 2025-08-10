@@ -1,8 +1,8 @@
 import type { URLParams } from '../../../types'
 
-export default function get_cats_url_params(params_obj: URLParams) {
+export default function get_non_cats_url_params(params_obj: URLParams) {
 	const {
-		// no need for cats params since they will be reset by clicking a cat
+		// cats params reset by clicking a cat - not needed in that case
 		Period: period,
 		URLContains: url_contains,
 		URLLacks: url_lacks,

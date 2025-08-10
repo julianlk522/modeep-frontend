@@ -1,7 +1,7 @@
 ---
 import { CATS_PAGE_LIMIT, MIN_LIST_ITEMS_FOR_SCROLLBAR } from '../../constants'
 import type { CatCount, URLParams, tmap_sections } from '../../types'
-import get_cats_url_params from '../Link/util/params'
+import get_non_cats_url_params from '../Link/util/params'
 import TagCat from '../Tag/TagCat'
 
 interface Props {
@@ -31,9 +31,7 @@ const has_subcats = url_params.Cats ? true : false
 let endpoint = tmap_owner ? `/map/${tmap_owner}` : "/search"
 if (single_tmap_section) endpoint += `/${single_tmap_section}`
 
-const cats_url_params = get_cats_url_params(url_params).length 
-    ? `&${get_cats_url_params(url_params)}` 
-    : ''
+const non_cats_url_params = get_non_cats_url_params(url_params)
 ---
 
 {top_cats?.length ? <div id="top-cats-container" class={tmap_owner ? 'tmap' : ''}>
@@ -46,22 +44,29 @@ const cats_url_params = get_cats_url_params(url_params).length
     }</h2>
     <ol id="top-cats" class={top_cats_classes.join(' ')}>
         {
-            top_cats.map((cat) => (
-                <TagCat 
+            top_cats.map((cat) => {
+                const new_cats_params = (url_params.Cats
+                    ? url_params.Cats + ',' + cat.Category 
+                    : cat.Category)
+                .split(',')
+                .sort((a, b) => a.localeCompare(b))
+                .join(',')
+
+                return <TagCat 
                     Cat={cat.Category} 
                     Count={cat.Count} 
                     IsNSFW={cat.Category === 'NSFW'} 
-                    Href={`${endpoint}?cats=${cat.Category}${cats_url_params}`}
+                    Href={`${endpoint}?cats=${new_cats_params}${non_cats_url_params.length ? `&${non_cats_url_params}` : ''}`}
                     IsMorePage={more}
                  />
-            ))
+            })
         }
     </ol>
     {top_cats.length === CATS_PAGE_LIMIT ? 
         <span id="to-more">
             <a href={has_subcats 
-            ? `/more?cats=${url_params.Cats}${cats_url_params}` 
-            : `/more${cats_url_params}`}>more
+            ? `/more?cats=${url_params.Cats}${non_cats_url_params.length ? `&${non_cats_url_params}` : ''}` 
+            : `/more${non_cats_url_params.length ? `?${non_cats_url_params}` : ''}`}>more
             </a>
             <img src='../../back.svg' alt="Go to /more" height={18} width={18} />
         </span> 

@@ -25,7 +25,7 @@ import URLZone from './URLZone'
 
 interface Props {
 	Link: types.Link
-	CatsURLParams?: string
+	NonCatsURLParams?: string
 	CatsFromUser?: string
 	SetNewLinkCats?: Dispatch<StateUpdater<string[]>>
 	IsSummaryPage?: boolean
@@ -38,7 +38,7 @@ interface Props {
 
 export default function Link(props: Props) {
 	const {
-		CatsURLParams: cats_url_params,
+		NonCatsURLParams: non_cats_url_params,
 		CatsFromUser: cats_from_user,
 		SetNewLinkCats: set_new_link_cats,
 		IsSummaryPage: is_summary_page,
@@ -307,8 +307,8 @@ export default function Link(props: Props) {
 					<ul class='cats'>
 						{split_cats.map((cat) => {
 							const encoded_cat = encodeURIComponent(cat)
-							const url_params = cats_url_params
-								? `?${cats_url_params}&cats=${encoded_cat}`
+							const url_params = non_cats_url_params
+								? `?${non_cats_url_params}&cats=${encoded_cat}`
 								: `?cats=${encoded_cat}`
 
 							return (
