@@ -69,7 +69,7 @@ export default function SearchFilters(props: Props) {
 	}
 
 	// /search page endpoint only
-	if (sort_by) {
+	if (sort_by && sort_by !== 'rating') {
 		params.set('sort_by', sort_by)
 	}
 
