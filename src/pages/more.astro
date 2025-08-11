@@ -7,7 +7,7 @@ import SearchFilters from "../components/SearchFilters/Filters";
 import LocalStorageLoader from "../components/SearchFilters/LocalStorageLoader.astro";
 import { CATS_ENDPOINT } from "../constants";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { has_merged_cats_property, Periods, type CatCount, type MorePageCatCountsWithMergedCats, type Period } from "../types";
+import { has_merged_cats_property, Periods, SortMetrics, type CatCount, type MorePageCatCountsWithMergedCats, type Period, type SortMetric } from "../types";
 import fetch_with_handle_redirect from "../util/fetch_with_handle_redirect";
 
 let more_cats_url = CATS_ENDPOINT + "?more=true"
@@ -17,6 +17,7 @@ let cats = ""
 let url_contains = ""
 let url_lacks = ""
 let period: Period = 'all'
+let sort_by: SortMetric = 'rating'
 
 if (Astro.url.searchParams.get('cats')) {
 	cats = Astro.url.searchParams.get('cats') as string
@@ -38,6 +39,15 @@ if (
 ) {
 	period = Astro.url.searchParams.get('period') as Period
 	more_cats_url += `&period=${period}`
+}
+if (
+	Astro.url.searchParams.get('sort_by') &&
+	(SortMetrics as readonly string[]).includes(
+		Astro.url.searchParams.get('sort_by') as SortMetric
+	)
+) {
+	sort_by = Astro.url.searchParams.get('sort_by') as SortMetric
+	more_cats_url += `&sort_by=${sort_by}`
 }
 
 const url_params = {
@@ -73,6 +83,7 @@ if (has_merged_cats_property(counts)) {
 			InitialPeriod={period}
 			InitialURLContains={url_contains}
 			InitialURLLacks={url_lacks}
+			InitialSortBy={sort_by}
 			Endpoint="/more"
 		/>
 

@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'preact/hooks'
-import type { AcceptableSortParams, Period, tmap_sections } from '../../types'
+import type { Period, SortMetric, tmap_sections } from '../../types'
 import SearchCats from './Cats'
 import './Filters.css'
 import SearchNSFW from './NSFW'
@@ -17,7 +17,7 @@ interface Props {
 	InitialURLContains: string
 	InitialURLLacks: string
 	InitialPeriod: Period
-	InitialSortBy?: AcceptableSortParams
+	InitialSortBy: SortMetric
 	InitialNSFW?: boolean
 }
 
@@ -40,9 +40,7 @@ export default function SearchFilters(props: Props) {
 		useState<string>(initial_url_contains)
 	const [url_lacks, set_url_lacks] = useState<string>(initial_url_lacks)
 	const [period, set_period] = useState<Period>(initial_period)
-	const [sort_by, set_sort_by] = useState<AcceptableSortParams>(
-		initial_sort_by ?? 'rating'
-	)
+	const [sort_by, set_sort_by] = useState<SortMetric>(initial_sort_by)
 	const [nsfw, set_nsfw] = useState<boolean>(initial_nsfw ?? false)
 
 	// Params
@@ -106,9 +104,7 @@ export default function SearchFilters(props: Props) {
 
 	const handle_keydown = useCallback(
 		(e: KeyboardEvent) => {
-			if (e.key !== 'Enter') return
-
-			if (has_changed_filters) {
+			if (e.key === 'Enter' && has_changed_filters) {
 				scour_anchor_ref.current?.click()
 			}
 		},

@@ -8,12 +8,11 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import {
 Periods,
 SortMetrics,
-type AcceptableSortParams,
 type CatCount,
 type Contributor,
 type PaginatedLinks,
 type Period,
-type SortMetric,
+type SortMetric
 } from '../types'
 import fetch_with_handle_redirect from '../util/fetch_with_handle_redirect'
 
@@ -54,7 +53,7 @@ if (
 }
 
 // sort by
-let sort_by: AcceptableSortParams = ''
+let sort_by: SortMetric = 'rating'
 if (
 	params.get('sort_by') && (SortMetrics as readonly string[]).includes(
 		params.get('sort_by') as SortMetric
