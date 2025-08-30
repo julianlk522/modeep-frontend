@@ -82,7 +82,7 @@ const page_title = link.Summary ? `Tags for "${link.Summary}"` : `Link Tags`
 								</p>
 								<CSRLastUpdated client:load LastUpdated={tag.LastUpdated} />
 								<label for={`lifespan-${i}`}
-								title={`This tag has had these cats without changes for ${tag.LifeSpanOverlap.toFixed(2)}% of the link's lifespan on FITM`} class="lifespan-label">
+								title={`This tag has had these cats without changes for ${tag.LifeSpanOverlap.toFixed(2)}% of the link's lifespan on Modeep`} class="lifespan-label">
 									{tag.LifeSpanOverlap.toFixed(2)}%
 								</label>
 								<progress id={`lifespan-${i}`} class="lifespan-bar" value={tag.LifeSpanOverlap} max="100"></progress>
