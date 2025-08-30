@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # logging
-LOG_FILE="/var/log/fitm/frontend/update.log"
+LOG_FILE="/var/log/modeep/frontend/update.log"
 log() {
     echo "$(date '+%Y-%m-%d %H:%M:%S') - $1"
 }
@@ -38,12 +38,12 @@ rm -rf dist
 npm run build
 
 # tmux session
-if ! tmux has-session -t fitm-frontend 2>/dev/null; then
-    tmux new-session -d -s fitm-frontend
-    log "created new fitm-frontend tmux session"
+if ! tmux has-session -t modeep-frontend 2>/dev/null; then
+    tmux new-session -d -s modeep-frontend
+    log "created new modeep-frontend tmux session"
 fi
 
-tmux send-keys -t fitm-frontend "cd $MODEEP_FRONTEND_ROOT && ./start_server.sh" ENTER
-tmux detach -s fitm-frontend
+tmux send-keys -t modeep-frontend "cd $MODEEP_FRONTEND_ROOT && ./start_server.sh" ENTER
+tmux detach -s modeep-frontend
 
 log "update complete and server restarted"
