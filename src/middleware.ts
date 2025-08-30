@@ -18,7 +18,7 @@ async function handle_jwt_auth(
 		try {
 			jwt.verify(
 				req_token,
-				import.meta.env.VITE_FITM_JWT_SECRET,
+				import.meta.env.VITE_MODEEP_JWT_SECRET,
 				function <JwtPayload>(
 					err: VerifyErrors | null,
 					decoded: JwtPayload | undefined

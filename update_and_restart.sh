@@ -14,11 +14,11 @@ touch "$LOG_FILE"
 exec >> "$LOG_FILE" 2>&1
 
 # pull changes
-if [[ -z "$FITM_FRONTEND_ROOT" ]]; then
-    log "error: FITM_FRONTEND_ROOT is not set"
+if [[ -z "$MODEEP_FRONTEND_ROOT" ]]; then
+    log "error: MODEEP_FRONTEND_ROOT is not set"
     exit 1
 fi
-cd "$FITM_FRONTEND_ROOT" || { log "error: could not navigate to $FITM_FRONTEND_ROOT"; exit 1; }
+cd "$MODEEP_FRONTEND_ROOT" || { log "error: could not navigate to $MODEEP_FRONTEND_ROOT"; exit 1; }
 git stash
 git pull
 git stash pop
@@ -43,7 +43,7 @@ if ! tmux has-session -t fitm-frontend 2>/dev/null; then
     log "created new fitm-frontend tmux session"
 fi
 
-tmux send-keys -t fitm-frontend "cd $FITM_FRONTEND_ROOT && ./start_server.sh" ENTER
+tmux send-keys -t fitm-frontend "cd $MODEEP_FRONTEND_ROOT && ./start_server.sh" ENTER
 tmux detach -s fitm-frontend
 
 log "update complete and server restarted"
