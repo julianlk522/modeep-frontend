@@ -78,8 +78,8 @@ async function handle_redirect_action(
 	// will apply)
 	if (
 		!redirect_action ||
-		context.request.url === 'https://fitm.online/login' ||
-		context.request.url === 'https://www.fitm.online/login'
+		context.request.url === 'https://modeep.org/login' ||
+		context.request.url === 'https://www.modeep.org/login'
 		// || context.request.url === 'http://localhost:4321/login'
 		// || context.request.url === 'http://127.0.0.1:4321/login'
 	) {

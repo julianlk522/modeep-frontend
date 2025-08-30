@@ -1,5 +1,5 @@
 // API ENDPOINTS
-const API_URL = 'https://api.fitm.online:1999'
+const API_URL = 'https://api.modeep.org:1999'
 // const API_URL = 'http://localhost:1999'
 
 const SIGNUP_ENDPOINT = API_URL + '/signup'

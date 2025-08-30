@@ -20,7 +20,7 @@ export default function URLZone({
 
 	// Any links saved in the database should have a protocol
 	// but just in case they don't, this will ensure they go to the proper URL
-	// and not, e.g., "https://fitm.online/google.com"
+	// and not, e.g., "https://modeep.org/google.com"
 	const has_protocol = url.startsWith('http://') || url.startsWith('https://')
 	const url_with_protocol = has_protocol ? url : `https://${url}`
 
