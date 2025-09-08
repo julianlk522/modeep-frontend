@@ -11,14 +11,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
         <h1>How Modeep Works</h1>
 
         <section>
-            <h2 id="cats" class="subsection">Meow?</h2>
-            <p><em>Cats</em> are an important Modeep component. Their name is a shorthand for <a href="#tags">tag categories</a>. (And as a <a href="https://en.wikipedia.org/wiki/I_Can_Has_Cheezburger%3F">classic Internet symbol</a>, cats also seem well fitted to moderate a curated collection of links.) Don't be alarmed by talk of "stacking cats"; animals are wonderful and none were harmed making this tool.</p>
+            <h2 id="cats" class="subsection">Meow</h2>
+            <p><em>Cats</em> are an important piece of all this... Hey, what? Seriously! Their name is a shorthand for <a href="#tags">tag categories</a>. (And as a <a href="https://en.wikipedia.org/wiki/I_Can_Has_Cheezburger%3F">classic Internet symbol</a>, cats also seem well fitted to moderate a curated collection of links.) Don't be alarmed by talk of "stacking cats"; animals are wonderful and none were harmed making this tool.</p>
 
-            <p>When you <em>mark a link as treasure</em> (AKA post it), you decide the best cats to describe it and submit them as a vote. Your vote influences the link's <em><a href="#global-tags">global tag</a></em>. When searching, you can declare which cats must be present in the global tag of any found links by adding <em>cat filters</em>.</p>
+            <p>When you <em>reveal a treasured link</em> (AKA post it here), you decide the best cats to describe it and submit them as a vote. Your vote influences the link's <em><a href="#global-tags">global tag</a></em>. When searching, you can declare which cats must be present in the global tag of any found links by adding <em>cat filters</em>.</p>
 
-            <p>Searches always show their <strong>Top Cats</strong>, the most frequent cats throughout all returned links, or their <strong>Top <em>Subcats</em></strong>, the most frequent cats that were <strong>not</strong> provided as filters, if the search included cat filters.</p>
+            <p>Searches always show their <em>Top Cats</em>, the most frequent cats throughout all returned links, or their Top <em>Subcats</em>, the most frequent cats that were <strong>not provided as filters</strong>, if the search included cat filters.</p>
 
-			<p>Top cats or subcats can be stacked on existing filters to add specificity and rapidly concentrate on some certain material. Click a cat to add it to your constraints, drilling deeper and more precisely into the pile of stuff you found.</p>
+			<p id="cat-stacking">Top cats or subcats can be stacked on existing filters to add specificity and rapidly concentrate on some idea(s). Click a cat to add it to your constraints, drilling deeper and more precisely into the pile of stuff you've found. Then, if your search gets too specific and the pile becomes too measly, click the "X" on a cat to remove it and re-broaden your focus. <strong>Wield this power to become a cat-stacking ninja, capable of swiftly plucking needles of epicness from the digital haystack.</strong></p>
         </section>
 
 		<NarrowSearchDiagram />
@@ -119,13 +119,15 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 
         <section>
             <h2 id="retrieving-metadata" class="subsection">Retrieving Metadata</h2>
-			<p>Modeep employs <em>very limited</em> use of automated website scraping to fetch <a href="https://ogp.me/">Open Graph</a> metadata for submitted links.</p>
+			<p>Modeep employs <em>very limited</em> use of automated website scraping to fetch <a href="https://ogp.me/">Open Graph</a> metadata for submitted links. This is to attempt to find a thumbnail preview image and descriptive text ("Auto Summary") to display with them.</p>
 
             <p>These requests can be identified by the <strong>Modeep-Bot</strong> user agent.</p>
 
-			<p>A max of 1-3 automated requests go out to each submitted URL (Modeep-Bot tries different protocol prefixes, e.g., "https://" and "http://", if the first request fails). This helps to reduce friction when submitting links and provide more eye-catching preview images. The goal, as with all of this, is ultimately to promote appreciation for good, public Internet sites by improving their visibility.</p>
+			<p>A max of 1-3 automated requests go out to each submitted URL (Modeep-Bot tries different protocol prefixes, e.g., "https://" and "http://", if the first request fails).</p>
 
-			<p><strong>Anyone can have their domain added to a non-scrape list upon request, with no further questions</strong>. Please send an email to <a href="mailto:support@modeep.org">support@modeep.org</a> if you'd like that. (It would be odd though! A site that does not welcome more visitors may be best kept private rather than on the open web.)</p>
+            <p>The goal, as with all of this, is to promote appreciation for great, public Internet sites by improving their visibility. Great links with an appropriate thumbnail and/or summary are easiest for would-be-enjoyers to notice.</p>
+
+			<p><strong>Anyone can have their domain added to a non-scrape list upon request, with no questions asked</strong>: just email <a href="mailto:support@modeep.org">support@modeep.org</a> to let us know.</p>
         </section>
 
 		<ScrollUp />
