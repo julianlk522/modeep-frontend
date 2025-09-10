@@ -66,7 +66,7 @@ type URLParams = {
 const Periods = ['day', 'week', 'month', 'year', 'all'] as const
 type Period = (typeof Periods)[number]
 
-const SortMetrics = ['rating', 'newest', 'oldest', 'clicks'] as const
+const SortMetrics = ['stars', 'newest', 'oldest', 'clicks'] as const
 type SortMetric = (typeof SortMetrics)[number]
 
 // TAG
