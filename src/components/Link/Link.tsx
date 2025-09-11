@@ -12,15 +12,11 @@ import {
 	get_local_time,
 	get_units_ago,
 } from '../../util/format_date'
-import {
-	save_action_and_path_then_redirect_to_login,
-	save_path_then_redirect_to_login,
-} from '../../util/login_redirect'
+import { save_path_then_redirect_to_login } from '../../util/login_redirect'
 import Modal from '../Modal/Modal'
 import TagCat from '../Tag/TagCat'
 import './Link.css'
-import StaticCopyCount from './StaticCopyCount'
-import StaticLikeCount from './StaticLikeCount'
+import Stars from './Stars'
 import URLZone from './URLZone'
 
 interface Props {
@@ -70,23 +66,16 @@ export default function Link(props: Props) {
 	const should_display_full_date =
 		is_summary_page || is_tag_page || is_new_link_page
 
-	const [is_copied, set_is_copied] = useState(props.Link.IsCopied)
-	const [is_liked, set_is_liked] = useState(props.Link.IsLiked)
-	const [like_count, set_like_count] = useState(props.Link.LikeCount)
-	const [earliest_likers, set_earliest_likers] = useState(
-		props.Link.EarliestLikers
-	)
-	const [copy_count, set_copy_count] = useState(props.Link.CopyCount)
-	const [earliest_copiers, set_earliest_copiers] = useState(
-		props.Link.EarliestCopiers
+	const [your_stars, set_your_stars] = useState(props.Link.StarsAssigned)
+	const [times_starred, set_times_starred] = useState(props.Link.TimesStarred)
+	const [earliest_starrers, set_earliest_starrers] = useState(
+		props.Link.EarliestStarrers
 	)
 	const [show_delete_modal, set_show_delete_modal] = useState(false)
 	const [preview_img_url, set_preview_img_url] = useState<string | undefined>(
 		undefined
 	)
 
-	const has_likes = like_count > 0
-	const has_copies = copy_count > 0
 	const has_clicks = click_count > 0
 
 	// hide preview image if path fails to resolve
@@ -118,109 +107,7 @@ export default function Link(props: Props) {
 		get_preview_img()
 	}, [saved_preview_img_filename])
 
-	const expected_like_or_copy_action_status = 204
-	async function handle_like() {
-		if (!token) {
-			save_action_and_path_then_redirect_to_login({
-				Action: 'like link',
-				LinkID: id,
-			})
-		}
-
-		const resp = await fetch_with_handle_redirect(
-			LINKS_ENDPOINT + `/${id}/like`,
-			{
-				method: is_liked ? 'DELETE' : 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}`,
-				},
-			}
-		)
-		if (!resp.Response || resp.RedirectTo) {
-			return (window.location.href = resp.RedirectTo ?? '/500')
-		} else if (
-			resp.Response.status !== expected_like_or_copy_action_status
-		) {
-			const like_data = await resp.Response.json()
-			if (types.is_error_response(like_data)) {
-				return console.error('Whoops: ', like_data.error)
-			}
-			return console.error('Whoops: ', like_data)
-		}
-
-		if (is_liked) {
-			set_is_liked(false)
-			set_like_count((prev) => prev - 1)
-			set_earliest_likers((prev) =>
-				prev
-					.split(', ')
-					.filter((liker: string) => liker !== user)
-					.join(', ')
-			)
-		} else {
-			set_is_liked(true)
-			set_like_count((prev) => prev + 1)
-
-			// TODO: replace magic number
-			if (like_count < 10) {
-				set_earliest_likers((prev) => prev + `, ${user}`)
-			}
-		}
-
-		return
-	}
-
-	async function handle_copy() {
-		if (!token) {
-			save_action_and_path_then_redirect_to_login({
-				Action: 'copy link',
-				LinkID: id,
-			})
-		}
-
-		const resp = await fetch_with_handle_redirect(
-			LINKS_ENDPOINT + `/${id}/copy`,
-			{
-				method: is_copied ? 'DELETE' : 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}`,
-				},
-			}
-		)
-		if (!resp.Response || resp.RedirectTo) {
-			return (window.location.href = resp.RedirectTo ?? '/500')
-		} else if (
-			resp.Response.status !== expected_like_or_copy_action_status
-		) {
-			const copy_data = await resp.Response.json()
-			if (types.is_error_response(copy_data)) {
-				return console.error('Whoops: ', copy_data.error)
-			}
-			return console.error('Whoops: ', copy_data)
-		}
-
-		if (is_copied) {
-			set_is_copied(false)
-			set_copy_count((prev) => prev - 1)
-			set_earliest_copiers((prev) =>
-				prev
-					.split(', ')
-					.filter((copier: string) => copier !== user)
-					.join(', ')
-			)
-		} else {
-			set_is_copied(true)
-			set_copy_count((prev) => prev + 1)
-			if (copy_count < 10) {
-				set_earliest_copiers((prev) => prev + `, ${user}`)
-			}
-		}
-		return
-	}
-
-	const expected_delete_action_status = 205
+	const EXPECTED_DELETE_REQ_STATUS = 205
 	async function handle_delete() {
 		if (!token) {
 			save_path_then_redirect_to_login()
@@ -239,9 +126,7 @@ export default function Link(props: Props) {
 		})
 		if (!delete_resp.Response || delete_resp.RedirectTo) {
 			return (window.location.href = delete_resp.RedirectTo ?? '/500')
-		} else if (
-			delete_resp.Response.status !== expected_delete_action_status
-		) {
+		} else if (delete_resp.Response.status !== EXPECTED_DELETE_REQ_STATUS) {
 			const delete_data = await delete_resp.Response.json()
 			if (types.is_error_response(await delete_data)) {
 				return console.error('Whoops: ', delete_data.error)
@@ -356,94 +241,37 @@ export default function Link(props: Props) {
 				</div>
 			)}
 
-			{!user || user === submitted_by ? (
-				<>
-					{has_likes ? (
-						<StaticLikeCount
-							LikeCount={like_count}
-							EarliestLikers={earliest_likers}
-						/>
-					) : null}
-					{has_copies ? (
-						<StaticCopyCount
-							CopyCount={copy_count}
-							EarliestCopiers={earliest_copiers}
-						/>
-					) : null}
-				</>
-			) : (
-				<>
-					<button
-						title={`${
-							is_liked ? 'Unlike' : 'Like'
-						} - (${like_count} ${
-							like_count === 1 ? 'like' : 'likes'
-						}${like_count > 0 ? `: ${earliest_likers}` : ''})`}
-						onClick={handle_like}
-						class={`like-btn${is_liked ? ' liked' : ''}`}
-					>
-						{is_liked ? (
-							<img
-								src='../../liked.svg'
-								alt='Unlike link'
-								width={16}
-								height={16}
-							/>
-						) : (
-							<img
-								src='../../like.svg'
-								alt='Like link'
-								width={16}
-								height={16}
-							/>
-						)}{' '}
-						({like_count})
-					</button>
+			<div class='user-interactions'>
+				<Stars
+					Stars={your_stars}
+					SetStars={set_your_stars}
+					TimesStarred={times_starred}
+					SetTimesStarred={set_times_starred}
+					EarliestStarrers={earliest_starrers}
+					SetEarliestStarrers={set_earliest_starrers}
+					LinkID={id}
+					LinkSubmittedBy={submitted_by}
+					LinkText={summary ?? url}
+					LinkURL={url}
+					User={user}
+					Token={token}
+				/>
 
-					<button
-						title={`${
-							is_copied ? 'Uncopy' : 'Copy to treasure map'
-						} - (${copy_count} ${
-							copy_count === 1 ? 'copy' : 'copies'
-						}${copy_count > 0 ? `: ${earliest_copiers}` : ''})`}
-						onClick={handle_copy}
-						class={`copy-btn${is_copied ? ' copied' : ''}`}
+				{has_clicks ? (
+					<div
+						title={`Clicked ${click_count > 1 ? `${click_count} times.` : 'once.'}`}
+						class='click-count'
 					>
-						{is_copied ? (
-							<img
-								src='../../copied.svg'
-								alt='Uncopy link'
-								width={16}
-								height={16}
-							/>
-						) : (
-							<img
-								src='../../copy.svg'
-								alt='Copy link'
-								width={16}
-								height={16}
-							/>
-						)}{' '}
-						({copy_count})
-					</button>
-				</>
-			)}
-			{has_clicks ? (
-				<div
-					title={`${click_count} ${
-						click_count === 1 ? 'click' : 'clicks'
-					}`}
-					class='click-count'
-				>
-					<img
-						src='../../click.svg'
-						alt='Clicks'
-						height={18}
-						width={18}
-					/>
-					<span>{click_count}</span>
-				</div>
-			) : null}
+						<img
+							src='../../click.svg'
+							alt='Clicks'
+							height={18}
+							width={18}
+						/>
+						<span>{click_count}</span>
+					</div>
+				) : null}
+			</div>
 
 			{is_your_link ? (
 				<>

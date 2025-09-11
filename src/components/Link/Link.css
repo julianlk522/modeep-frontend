@@ -54,57 +54,21 @@ div.tag {
 	color: var(--sky);
 }
 
-.like-btn {
-	margin-right: 3px;
-}
-
-.copy-btn {
-	margin-left: 2px;
-}
-
-.like-btn,
-.copy-btn {
-	border-radius: 2px;
-}
-
-.like-btn.liked,
-.copy-btn.copied {
-	background-color: var(--sky);
-	font-weight: bold;
-}
-
-.like-btn,
-.copy-btn,
-.same-user-like-count,
-.same-user-copy-count,
-.click-count {
-	display: inline-flex;
-	gap: 3px;
-	margin-top: 10px;
-}
-
-.same-user-like-count,
-.same-user-copy-count,
-.click-count {
+.user-interactions {
+	display: flex;
 	align-items: center;
+	margin-top: 0.5rem;
 }
 
 .click-count span {
 	margin-left: -1px;
 }
 
-.same-user-like-count + .same-user-copy-count,
-:is(.same-user-like-count, .same-user-copy-count) + .click-count {
-	margin-left: 8px;
-}
-
-button.copy-btn + .click-count {
-	margin-left: 3px;
-}
-
-.same-user-like-count,
-.same-user-copy-count,
-.click-count {
+.click-count,
+.star-container {
+	display: inline-flex;
+	align-items: center;
+	gap: 3px;
 	font-weight: bold;
 	color: var(--sky);
 
@@ -114,8 +78,7 @@ button.copy-btn + .click-count {
 }
 
 p,
-button,
-.same-user-like-count {
+button {
 	margin-top: 0.5rem;
 }
 
