@@ -1,0 +1,61 @@
+#stars-modal-bg {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	font-size: 1.1rem;
+	z-index: 1;
+	background: rgba(19, 21, 26, 0.85);
+
+	#stars-modal-content {
+		background-color: #13151a;
+		border: 1px solid cornflowerblue;
+		text-align: center;
+		padding: 2rem 0;
+
+		h3#link-title {
+			margin-bottom: 0;
+			color: var(--treasurey);
+		}
+
+		h3#link-title + p {
+			color: var(--text-muted);
+			margin-top: 0;
+			margin-bottom: 2rem;
+		}
+
+		p#times-starred {
+			font-size: 1rem;
+		}
+
+		#star-selectors {
+			display: flex;
+
+			.star-selector {
+				width: 33%;
+				cursor: pointer;
+
+				p {
+					font-style: italic;
+				}
+
+				.emphatic {
+					font-weight: bold;
+				}
+			}
+		}
+
+		#star-selectors,
+		button#ok {
+			margin-top: 2rem;
+		}
+
+		#times-starred {
+			margin-top: 1rem;
+		}
+	}
+}

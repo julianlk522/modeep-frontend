@@ -35,12 +35,9 @@ type Link = {
 	Cats: string
 	Summary?: string
 	SummaryCount: number
-	IsLiked?: boolean
-	LikeCount: number
-	EarliestLikers: string
-	IsCopied?: boolean
-	EarliestCopiers: string
-	CopyCount: number
+	StarsAssigned: number
+	TimesStarred: number
+	EarliestStarrers: string
 	TagCount: number
 	ClickCount: number
 	PreviewImgFilename?: string
@@ -127,7 +124,7 @@ type SummaryPage = {
 type Totals = {
 	Links: number
 	Clicks: number
-	Likes: number
+	LinksStarred: number
 	Tags: number
 	Summaries: number
 	Contributors: number
@@ -138,7 +135,7 @@ type TmapLink = Link & { CatsFromUser?: boolean }
 
 type FilteredTreasureMap = {
 	Submitted: TmapLink[]
-	Copied: TmapLink[]
+	Starred: TmapLink[]
 	Tagged: TmapLink[]
 	SectionsWithMore: string[]
 	Cats: CatCount[]
@@ -154,7 +151,7 @@ type TreasureMapSection = {
 	Pages: number
 }
 
-const tmap_sections = ['Submitted', 'Copied', 'Tagged'] as const
+const tmap_sections = ['Submitted', 'Starred', 'Tagged'] as const
 
 // PAGINATION
 type PaginationHrefOpts = {

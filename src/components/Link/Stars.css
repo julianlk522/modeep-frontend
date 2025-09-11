@@ -1,0 +1,21 @@
+.star-container {
+	margin-right: 5px;
+
+	button.stars-modal-opener {
+		display: flex;
+		background: none;
+		opacity: 0.75;
+		border: none;
+		padding: 0;
+		margin-top: 0;
+		cursor: pointer;
+	}
+
+	button.stars-modal-opener:hover {
+		opacity: 1;
+	}
+
+	span.times-starred {
+		color: var(--sky);
+	}
+}
