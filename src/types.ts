@@ -37,6 +37,7 @@ type Link = {
 	SummaryCount: number
 	StarsAssigned: number
 	TimesStarred: number
+	AvgStars: number
 	EarliestStarrers: string
 	TagCount: number
 	ClickCount: number

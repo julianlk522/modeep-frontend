@@ -67,6 +67,7 @@ export default function Link(props: Props) {
 		is_summary_page || is_tag_page || is_new_link_page
 
 	const [your_stars, set_your_stars] = useState(props.Link.StarsAssigned)
+	const [avg_stars, set_avg_stars] = useState(props.Link.AvgStars)
 	const [times_starred, set_times_starred] = useState(props.Link.TimesStarred)
 	const [earliest_starrers, set_earliest_starrers] = useState(
 		props.Link.EarliestStarrers
@@ -243,8 +244,10 @@ export default function Link(props: Props) {
 
 			<div class='user-interactions'>
 				<Stars
-					Stars={your_stars}
-					SetStars={set_your_stars}
+					YourStars={your_stars}
+					SetYourStars={set_your_stars}
+					AvgStars={avg_stars}
+					SetAvgStars={set_avg_stars}
 					TimesStarred={times_starred}
 					SetTimesStarred={set_times_starred}
 					EarliestStarrers={earliest_starrers}

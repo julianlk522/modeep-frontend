@@ -1,6 +1,10 @@
 .star-container {
 	margin-right: 5px;
 
+	.average-stars {
+		display: flex;
+	}
+
 	button.stars-modal-opener {
 		display: flex;
 		background: none;
@@ -17,5 +21,6 @@
 
 	span.times-starred {
 		color: var(--sky);
+		margin-right: 5px;
 	}
 }

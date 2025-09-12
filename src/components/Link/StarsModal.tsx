@@ -10,7 +10,7 @@ import './StarsModal.css'
 
 interface Props {
 	InitialStars: number
-	StarsSetSignal: Signal<number | undefined>
+	YourStarsUpdatedSignal: Signal<number | undefined>
 	SetShowModal: Dispatch<StateUpdater<boolean>>
 	LinkText: string
 	LinkURL: string
@@ -19,7 +19,7 @@ interface Props {
 export default function StarsModal(props: Props) {
 	const {
 		InitialStars: initial_stars,
-		StarsSetSignal: stars_set_signal,
+		YourStarsUpdatedSignal: your_stars_updated,
 		SetShowModal: set_show_modal,
 		LinkText: text,
 		LinkURL: url,
@@ -58,8 +58,8 @@ export default function StarsModal(props: Props) {
 	}, [pending_stars])
 
 	async function handle_submit() {
-		if (!stars_set_signal) return
-		stars_set_signal.value = pending_stars
+		if (!your_stars_updated) return
+		your_stars_updated.value = pending_stars
 		set_show_modal(false)
 	}
 
