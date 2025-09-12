@@ -13,8 +13,10 @@ import './Stars.css'
 import StarsModal from './StarsModal'
 
 interface Props {
-	Stars: number
-	SetStars: Dispatch<StateUpdater<number>>
+	YourStars: number
+	SetYourStars: Dispatch<StateUpdater<number>>
+	AvgStars: number
+	SetAvgStars: Dispatch<StateUpdater<number>>
 	TimesStarred: number
 	SetTimesStarred: Dispatch<StateUpdater<number>>
 	SetEarliestStarrers: Dispatch<StateUpdater<string>>
@@ -29,8 +31,10 @@ interface Props {
 
 export default function Stars(props: Props) {
 	const {
-		Stars: stars,
-		SetStars: set_stars,
+		YourStars: your_stars,
+		SetYourStars: set_your_stars,
+		AvgStars: avg_stars,
+		SetAvgStars: set_avg_stars,
 		TimesStarred: times_starred,
 		SetTimesStarred: set_times_starred,
 		EarliestStarrers: earliest_starrers,
@@ -44,7 +48,7 @@ export default function Stars(props: Props) {
 	} = props
 
 	const [show_modal, set_show_modal] = useState(false)
-	const stars_ref = useRef(stars)
+	const your_stars_ref = useRef(your_stars)
 
 	const is_static = !user || !token || link_submitted_by === user
 	const earliest_starrers_split = earliest_starrers.split(', ')
@@ -57,14 +61,20 @@ export default function Stars(props: Props) {
 					.join(', ')
 			: earliest_starrers_split.join(', ')
 
-	if (stars) {
-		earliest_starrers_preview += `\n (you gave ${stars} star${stars > 1 ? 's' : ''})`
-	}
+	const avg_stars_rounded_up = Math.ceil(avg_stars)
+	earliest_starrers_preview += ` (avg. ${avg_stars} ${
+		avg_stars === 1 ? 'star' : 'stars'
+	})`
 
 	const EXPECTED_STAR_REQ_STATUS = 204
 	const MAX_EARLIEST_STARRERS_SHOWN = 10
 
 	async function update_your_stars_for_link(new_stars: number) {
+		const old_stars = your_stars_ref.current
+		if (new_stars === old_stars) {
+			return
+		}
+
 		const star_resp = await fetch_with_handle_redirect(
 			LINKS_ENDPOINT + '/star',
 			{
@@ -77,7 +87,7 @@ export default function Stars(props: Props) {
 					? JSON.stringify({
 							link_id,
 							stars: new_stars,
-						})
+					  })
 					: JSON.stringify({ link_id }),
 			}
 		)
@@ -91,40 +101,77 @@ export default function Stars(props: Props) {
 			return console.error('Whoops: ', resp_data)
 		}
 
-		const old_stars = stars_ref.current
-		if (new_stars !== old_stars) {
-			if (!new_stars) {
-				set_times_starred((prev) => prev - 1)
-				set_earliest_starrers((prev) =>
-					prev
-						.split(', ')
-						.filter((starrer: string) => starrer !== user)
-						.join(', ')
-				)
-			} else if (!old_stars) {
-				set_times_starred((prev) => prev + 1)
+		if (!new_stars) {
+			// un-star
+			set_avg_stars((prev) => {
+				const new_avg =
+					(prev * times_starred - old_stars) / (times_starred - 1)
+				return parseFloat(new_avg.toFixed(2))
+			})
 
-				if (times_starred < MAX_EARLIEST_STARRERS_SHOWN) {
-					set_earliest_starrers((prev) => prev + `, you`)
-				}
+			set_earliest_starrers((prev) =>
+				prev
+					.split(', ')
+					.filter((starrer: string) => starrer !== user)
+					.join(', ')
+			)
+
+			set_times_starred((prev) => prev - 1)
+		} else if (!old_stars) {
+			// new star
+			set_avg_stars((prev) => {
+				const new_avg =
+					(prev * times_starred + new_stars) / (times_starred + 1)
+				return parseFloat(new_avg.toFixed(2))
+			})
+
+			if (!times_starred) {
+				set_earliest_starrers(
+					(prev) =>
+						prev +
+						`you\n(you gave ${new_stars} ${
+							new_stars === 1 ? 'star' : 'stars'
+						})`
+				)
+			} else if (times_starred < MAX_EARLIEST_STARRERS_SHOWN) {
+				set_earliest_starrers(
+					(prev) =>
+						prev +
+						`, you (you gave ${new_stars} ${
+							new_stars === 1 ? 'star' : 'stars'
+						})`
+				)
 			}
+
+			set_times_starred((prev) => prev + 1)
+		} else {
+			// edit number of stars you have assigned
+			set_avg_stars((prev) => {
+				const new_avg =
+					(prev * times_starred - old_stars + new_stars) /
+					times_starred
+				return parseFloat(new_avg.toFixed(2))
+			})
 		}
 
-		stars_ref.current = new_stars
-		set_stars(new_stars)
+		your_stars_ref.current = new_stars
+		set_your_stars(new_stars)
 	}
 
-	// Pass stars_set signal to child StarsModal
+	// Pass your_stars_updated signal to child StarsModal
 	// to allow receiving its value here and responding to updates with requests to
 	// API to update stars for this link
 	// (avoids passing all props to the modal needed to make the request)
-	const stars_set = useSignal<number | undefined>(undefined)
+	const your_stars_updated = useSignal<number | undefined>(undefined)
 
 	// Listen for changes and update accordingly
 	effect(() => {
-		if (stars_set.value !== undefined && stars_set.value !== stars) {
-			update_your_stars_for_link(stars_set.value)
-			stars_set.value = undefined
+		if (
+			your_stars_updated.value !== undefined &&
+			your_stars_updated.value !== your_stars
+		) {
+			update_your_stars_for_link(your_stars_updated.value)
+			your_stars_updated.value = undefined
 		}
 	})
 
@@ -137,7 +184,11 @@ export default function Stars(props: Props) {
 					class='star-container'
 					title={`Starred by ${earliest_starrers_preview}`}
 				>
-					<Star IsStatic />
+					{Array.from({ length: avg_stars_rounded_up }).map(
+						(_, i) => (
+							<Star key={i} IsStatic />
+						)
+					)}
 
 					<span class='times-starred'>{times_starred}</span>
 				</div>
@@ -147,36 +198,47 @@ export default function Stars(props: Props) {
 
 	return (
 		<>
-			<div
-				class='star-container'
-				title={
-					times_starred
-						? `Starred by ${earliest_starrers_preview}`
-						: 'Give a star?'
-				}
-			>
+			<div class='star-container'>
+				<div
+					class='average-stars'
+					title={
+						times_starred === 1 && your_stars
+							? `You are the first to star this!\n(you gave ${your_stars} ${
+									your_stars === 1 ? 'star' : 'stars'
+							  })`
+							: `Starred by ${earliest_starrers_preview}`
+					}
+				>
+					{Array.from({ length: avg_stars_rounded_up }).map(
+						(_, i) => (
+							<Star key={i} IsStatic />
+						)
+					)}
+				</div>
+
+				{times_starred ? (
+					<span class='times-starred'>{times_starred}</span>
+				) : null}
+
 				<button
 					class='stars-modal-opener'
+					title={your_stars ? 'Edit your rating?' : 'Star this?'}
 					onClick={() => set_show_modal(!show_modal)}
 				>
-					{stars > 0 ? (
-						Array.from({ length: stars }).map((_, i) => (
+					{your_stars > 0 ? (
+						Array.from({ length: your_stars }).map((_, i) => (
 							<Star IsActive key={i} />
 						))
 					) : (
 						<Star />
 					)}
 				</button>
-
-				{times_starred ? (
-					<span class='times-starred'>{times_starred}</span>
-				) : null}
 			</div>
 
 			{show_modal ? (
 				<StarsModal
-					InitialStars={stars}
-					StarsSetSignal={stars_set}
+					InitialStars={your_stars}
+					YourStarsUpdatedSignal={your_stars_updated}
 					SetShowModal={set_show_modal}
 					LinkText={link_text}
 					LinkURL={url}
