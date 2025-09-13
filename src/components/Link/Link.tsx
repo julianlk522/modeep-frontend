@@ -253,7 +253,6 @@ export default function Link(props: Props) {
 					EarliestStarrers={earliest_starrers}
 					SetEarliestStarrers={set_earliest_starrers}
 					LinkID={id}
-					LinkSubmittedBy={submitted_by}
 					LinkText={summary ?? url}
 					LinkURL={url}
 					User={user}

@@ -22,7 +22,6 @@ interface Props {
 	SetEarliestStarrers: Dispatch<StateUpdater<string>>
 	EarliestStarrers: string
 	LinkID: string
-	LinkSubmittedBy: string
 	LinkText: string
 	LinkURL: string
 	User?: string
@@ -40,7 +39,6 @@ export default function Stars(props: Props) {
 		EarliestStarrers: earliest_starrers,
 		SetEarliestStarrers: set_earliest_starrers,
 		LinkID: link_id,
-		LinkSubmittedBy: link_submitted_by,
 		LinkText: link_text,
 		LinkURL: url,
 		User: user,
@@ -50,7 +48,7 @@ export default function Stars(props: Props) {
 	const [show_modal, set_show_modal] = useState(false)
 	const your_stars_ref = useRef(your_stars)
 
-	const is_static = !user || !token || link_submitted_by === user
+	const is_static = !user || !token
 	const earliest_starrers_split = earliest_starrers.split(', ')
 	const num_earliest_starrers = earliest_starrers_split.length
 	let earliest_starrers_preview =
