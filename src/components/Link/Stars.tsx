@@ -10,7 +10,11 @@ import {
 	LINKS_ENDPOINT,
 	MAX_EARLIEST_STARRERS_SHOWN,
 } from '../../constants'
-import { is_error_response } from '../../types'
+import {
+	is_error_response,
+	type StarState,
+	type StarStateUpdate,
+} from '../../types'
 import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
 import Star from './Star'
 import './Stars.css'
@@ -53,6 +57,7 @@ export default function Stars(props: Props) {
 	const your_stars_ref = useRef(your_stars)
 
 	const is_static = !user || !token
+
 	const earliest_starrers_split = earliest_starrers.split(', ')
 	const num_earliest_starrers = earliest_starrers_split.length
 	let earliest_starrers_preview =
@@ -76,8 +81,10 @@ export default function Stars(props: Props) {
 	const avg_stars_text = `avg. ${avg_stars} ${
 		avg_stars === 1 ? 'star' : 'stars'
 	}`
+
 	const your_stars_text = `you gave ${your_stars}`
 	const only_you_have_starred = times_starred === 1 && your_stars
+
 	const stars_summary_text =
 		'(' +
 		(your_stars
@@ -92,6 +99,10 @@ export default function Stars(props: Props) {
 			? 'You are the first to star this!'
 			: `Starred by ${earliest_starrers_preview}`
 	}\n${stars_summary_text}`
+
+	const avg_stars_ref = useRef(avg_stars)
+	const times_starred_ref = useRef(times_starred)
+	const earliest_starrers_ref = useRef(earliest_starrers)
 
 	async function update_your_stars_for_link(new_stars: number) {
 		const old_stars = your_stars_ref.current
@@ -123,63 +134,80 @@ export default function Stars(props: Props) {
 			return console.error('Whoops: ', resp_data)
 		}
 
-		if (!new_stars) {
-			// un-star
-			set_times_starred((prev_times) => {
-				const new_times = prev_times - 1
-				set_avg_stars((prev_avg) => {
-					const new_avg =
-						new_times === 0
-							? 0
-							: (prev_avg * prev_times - old_stars) / new_times
-					return Math.round(new_avg * 100) / 100
-				})
-				return new_times
-			})
+		const old_avg = avg_stars_ref.current
+		const old_times_starred = times_starred_ref.current
+		const old_earliest_starrers = earliest_starrers_ref.current
 
-			set_earliest_starrers((prev) =>
-				prev
-					.split(', ')
-					.filter((starrer) => starrer !== user && starrer !== 'you')
-					.join(', ')
-			)
-		} else if (!old_stars) {
-			// add star
-			set_times_starred((prev_times) => {
-				const new_times = prev_times + 1
-				set_avg_stars((prev_avg) => {
-					const new_avg =
-						(prev_avg * prev_times + new_stars) / new_times
-					return Math.round(new_avg * 100) / 100
-				})
-				return new_times
-			})
+		const new_state = calculate_star_state_updates({
+			OldStarState: {
+				YourStars: old_stars,
+				AvgStars: old_avg,
+				TimesStarred: old_times_starred,
+				EarliestStarrers: old_earliest_starrers,
+			},
+			NewStars: new_stars,
+		})
 
-			set_earliest_starrers((prev) => {
-				if (
-					times_starred === 0 ||
-					times_starred < MAX_EARLIEST_STARRERS_SHOWN
-				) {
-					return 'you, ' + prev
-				}
-				return prev
-			})
-		} else {
-			// edit number of stars
-			set_avg_stars((prev_avg) => {
-				set_times_starred((prev_times) => {
-					const new_avg =
-						(prev_avg * prev_times - old_stars + new_stars) /
-						prev_times
-					set_avg_stars(Math.round(new_avg * 100) / 100)
-					return prev_times
-				})
-				return prev_avg
-			})
-		}
+		set_your_stars(new_stars)
+		set_avg_stars(new_state.AvgStars)
+		set_times_starred(new_state.TimesStarred)
+		set_earliest_starrers(new_state.EarliestStarrers)
 
 		your_stars_ref.current = new_stars
-		set_your_stars(new_stars)
+		avg_stars_ref.current = new_state.AvgStars
+		times_starred_ref.current = new_state.TimesStarred
+		earliest_starrers_ref.current = new_state.EarliestStarrers
+	}
+
+	function calculate_star_state_updates(update: StarStateUpdate): StarState {
+		const { OldStarState: old_state, NewStars: new_stars } = update
+		const {
+			YourStars: old_stars,
+			AvgStars: old_avg,
+			TimesStarred: old_times_starred,
+			EarliestStarrers: old_earliest_starrers,
+		} = old_state
+
+		const operation =
+			new_stars && !old_stars
+				? 'add'
+				: new_stars && old_stars
+				? 'edit'
+				: 'delete'
+
+		const times_starred_delta =
+			operation === 'add' ? 1 : operation === 'delete' ? -1 : 0
+		const new_times_starred = old_times_starred + times_starred_delta
+		const new_avg =
+			new_times_starred === 0
+				? 0
+				: parseFloat(
+						(
+							(old_avg * old_times_starred -
+								old_stars +
+								new_stars) /
+							new_times_starred
+						).toFixed(2)
+				  )
+
+		let new_earliest_starrers: string
+		if (operation === 'add') {
+			new_earliest_starrers = 'you, ' + old_earliest_starrers
+		} else if (operation === 'delete') {
+			new_earliest_starrers = old_earliest_starrers
+				.split(', ')
+				.filter((starrer) => starrer !== user && starrer !== 'you')
+				.join(', ')
+		} else {
+			new_earliest_starrers = old_earliest_starrers
+		}
+
+		return {
+			YourStars: new_stars,
+			AvgStars: new_avg,
+			TimesStarred: new_times_starred,
+			EarliestStarrers: new_earliest_starrers,
+		}
 	}
 
 	// Pass your_stars_updated signal to child StarsModal
