@@ -44,6 +44,18 @@ type Link = {
 	PreviewImgFilename?: string
 }
 
+type StarState = {
+	YourStars: number
+	AvgStars: number
+	TimesStarred: number
+	EarliestStarrers: string
+}
+
+type StarStateUpdate = {
+	OldStarState: StarState
+	NewStars: number
+}
+
 type PaginatedLinks = {
 	Links: Link[]
 	NSFWLinks: number
@@ -181,6 +193,8 @@ export type {
 	Profile,
 	ResponseAndRedirect,
 	SortMetric,
+	StarState,
+	StarStateUpdate,
 	Summary,
 	SummaryPage,
 	Tag,
