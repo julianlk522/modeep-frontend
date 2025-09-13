@@ -1,5 +1,5 @@
 import { useEffect, type Dispatch, type StateUpdater } from 'preact/hooks'
-import { TMAP_PFP_ENDPOINT } from '../../constants'
+import { ERR_STATUS_RANGE_START, TMAP_PFP_ENDPOINT } from '../../constants'
 import './Pic.css'
 
 interface Props {
@@ -27,7 +27,7 @@ export default function Pic(props: Props) {
 			const pfp_resp = await fetch(TMAP_PFP_ENDPOINT + `/${file_name}`, {
 				headers: { 'Content-Type': 'image/*' },
 			})
-			if (pfp_resp.status > 399) {
+			if (pfp_resp.status >= ERR_STATUS_RANGE_START) {
 				return console.error(pfp_resp)
 			}
 			const pfp_blob = await pfp_resp.blob()

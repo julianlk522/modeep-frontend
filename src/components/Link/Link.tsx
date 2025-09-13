@@ -4,7 +4,12 @@ import {
 	type Dispatch,
 	type StateUpdater,
 } from 'preact/hooks'
-import { LINK_PREVIEW_IMG_ENDPOINT, LINKS_ENDPOINT } from '../../constants'
+import {
+	ERR_STATUS_RANGE_START,
+	EXPECTED_LINK_DELETE_REQ_STATUS,
+	LINK_PREVIEW_IMG_ENDPOINT,
+	LINKS_ENDPOINT,
+} from '../../constants'
 import * as types from '../../types'
 import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
 import {
@@ -97,7 +102,7 @@ export default function Link(props: Props) {
 				}
 			)
 
-			if (img_resp.status > 399) {
+			if (img_resp.status >= ERR_STATUS_RANGE_START) {
 				console.error(img_resp)
 				return set_preview_img_url(undefined)
 			}
@@ -110,7 +115,6 @@ export default function Link(props: Props) {
 		get_preview_img()
 	}, [saved_preview_img_filename])
 
-	const EXPECTED_DELETE_REQ_STATUS = 205
 	async function handle_delete() {
 		if (!token) {
 			save_path_then_redirect_to_login()
@@ -129,7 +133,9 @@ export default function Link(props: Props) {
 		})
 		if (!delete_resp.Response || delete_resp.RedirectTo) {
 			return (window.location.href = delete_resp.RedirectTo ?? '/500')
-		} else if (delete_resp.Response.status !== EXPECTED_DELETE_REQ_STATUS) {
+		} else if (
+			delete_resp.Response.status !== EXPECTED_LINK_DELETE_REQ_STATUS
+		) {
 			const delete_data = await delete_resp.Response.json()
 			if (types.is_error_response(await delete_data)) {
 				return console.error('Whoops: ', delete_data.error)
@@ -138,6 +144,7 @@ export default function Link(props: Props) {
 		}
 
 		// tag / summary pages no longer exist for the deleted link
+		// have to go somewhere else
 		if (is_tag_page || is_summary_page) {
 			return (window.location.href = `/map/${user}`)
 		}
@@ -263,7 +270,9 @@ export default function Link(props: Props) {
 
 				{has_clicks ? (
 					<div
-						title={`Clicked ${click_count > 1 ? `${click_count} times.` : 'once.'}`}
+						title={`Clicked ${
+							click_count > 1 ? `${click_count} times.` : 'once.'
+						}`}
 						class='click-count'
 					>
 						<img

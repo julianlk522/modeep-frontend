@@ -1,5 +1,6 @@
 import { useState, type Dispatch, type StateUpdater } from 'preact/hooks'
 import {
+	ERR_STATUS_RANGE_START,
 	TMAP_ABOUT_ENDPOINT,
 	TMAP_EMAIL_ENDPOINT,
 	TMAP_PFP_ENDPOINT,
@@ -65,7 +66,7 @@ export default function Actions(props: Props) {
 		)
 		if (!new_pic_resp.Response || new_pic_resp.RedirectTo) {
 			return (window.location.href = new_pic_resp.RedirectTo ?? '/500')
-		} else if (new_pic_resp.Response.status > 399) {
+		} else if (new_pic_resp.Response.status >= ERR_STATUS_RANGE_START) {
 			const data = await new_pic_resp.Response.json()
 			if (is_error_response(data)) {
 				return set_error(data.error)
@@ -93,7 +94,7 @@ export default function Actions(props: Props) {
 		)
 		if (!delete_resp.Response || delete_resp.RedirectTo) {
 			return (window.location.href = delete_resp.RedirectTo ?? '/500')
-		} else if (delete_resp.Response.status > 399) {
+		} else if (delete_resp.Response.status >= ERR_STATUS_RANGE_START) {
 			const data = await delete_resp.Response.json()
 			if (is_error_response(data)) {
 				return set_error(data.error)

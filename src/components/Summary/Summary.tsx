@@ -1,5 +1,10 @@
 import { useState } from 'preact/hooks'
-import { SUMMARIES_ENDPOINT } from '../../constants'
+import {
+	EXPECTED_SUMMARY_DELETE_REQ_STATUS,
+	EXPECTED_SUMMARY_LIKE_REQ_STATUS,
+	MAX_EARLIEST_LIKERS_SHOWN,
+	SUMMARIES_ENDPOINT,
+} from '../../constants'
 import { is_error_response } from '../../types'
 import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
 import { format_long_date } from '../../util/format_date'
@@ -38,9 +43,6 @@ export default function Summary(props: Props) {
 
 	const is_your_summary = submitted_by === user
 
-	const like_api_url = SUMMARIES_ENDPOINT + `/${ID}/like`
-
-	const expected_like_action_status = 204
 	async function handle_like() {
 		if (!token) {
 			save_action_and_path_then_redirect_to_login({
@@ -49,16 +51,19 @@ export default function Summary(props: Props) {
 			})
 		}
 
-		const resp = await fetch_with_handle_redirect(like_api_url, {
-			method: is_liked ? 'DELETE' : 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${token}`,
-			},
-		})
+		const resp = await fetch_with_handle_redirect(
+			SUMMARIES_ENDPOINT + `/${ID}/like`,
+			{
+				method: is_liked ? 'DELETE' : 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		)
 		if (!resp.Response || resp.RedirectTo) {
 			return (window.location.href = resp.RedirectTo ?? '/500')
-		} else if (resp.Response.status !== expected_like_action_status) {
+		} else if (resp.Response.status !== EXPECTED_SUMMARY_LIKE_REQ_STATUS) {
 			const data = await resp.Response.json()
 			if (is_error_response(data)) {
 				return set_error(data.error)
@@ -79,15 +84,13 @@ export default function Summary(props: Props) {
 			set_is_liked(true)
 			set_like_count((prev) => prev + 1)
 
-			// TODO: replace magic number
-			if (like_count < 10) {
+			if (like_count < MAX_EARLIEST_LIKERS_SHOWN) {
 				set_earliest_likers((prev) => prev + `, ${user}`)
 			}
 		}
 		return
 	}
 
-	const expected_delete_action_status = 205
 	async function handle_delete() {
 		if (!token) {
 			return (window.location.href = '/login')
@@ -106,7 +109,7 @@ export default function Summary(props: Props) {
 		if (!delete_resp.Response || delete_resp.RedirectTo) {
 			return (window.location.href = delete_resp.RedirectTo ?? '/500')
 		} else if (
-			delete_resp.Response.status !== expected_delete_action_status
+			delete_resp.Response.status !== EXPECTED_SUMMARY_DELETE_REQ_STATUS
 		) {
 			const delete_data = await delete_resp.Response.json()
 			if (is_error_response(delete_data)) {
