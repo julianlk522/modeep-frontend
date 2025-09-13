@@ -70,7 +70,9 @@ export default function Link(props: Props) {
 	const [avg_stars, set_avg_stars] = useState(props.Link.AvgStars)
 	const [times_starred, set_times_starred] = useState(props.Link.TimesStarred)
 	const [earliest_starrers, set_earliest_starrers] = useState(
-		props.Link.EarliestStarrers
+		user
+			? props.Link.EarliestStarrers.replace(user, 'you')
+			: props.Link.EarliestStarrers
 	)
 	const [show_delete_modal, set_show_delete_modal] = useState(false)
 	const [preview_img_url, set_preview_img_url] = useState<string | undefined>(

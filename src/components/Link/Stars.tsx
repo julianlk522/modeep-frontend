@@ -52,17 +52,37 @@ export default function Stars(props: Props) {
 	const earliest_starrers_split = earliest_starrers.split(', ')
 	const num_earliest_starrers = earliest_starrers_split.length
 	let earliest_starrers_preview =
-		num_earliest_starrers > 3
+		num_earliest_starrers > 2
 			? earliest_starrers_split
-					.slice(0, 3)
-					.concat(`and ${num_earliest_starrers - 3} others`)
+					.slice(0, 2)
+					.concat(
+						`and ${num_earliest_starrers - 2} ${
+							num_earliest_starrers === 3 ? 'other' : 'others'
+						}`
+					)
 					.join(', ')
 			: earliest_starrers_split.join(', ')
 
-	const avg_stars_rounded_up = Math.ceil(avg_stars)
-	earliest_starrers_preview += ` (avg. ${avg_stars} ${
+	const avg_stars_rounded = Math.round(avg_stars)
+	const avg_stars_text = `avg. ${avg_stars} ${
 		avg_stars === 1 ? 'star' : 'stars'
-	})`
+	}`
+	const your_stars_text = `you gave ${your_stars}`
+	const only_you_have_starred = times_starred === 1 && your_stars
+	const stars_summary_text =
+		'(' +
+		(your_stars
+			? only_you_have_starred
+				? your_stars_text + (your_stars === 1 ? ' star' : ' stars')
+				: `${avg_stars_text}, ${your_stars_text}`
+			: avg_stars_text) +
+		')'
+
+	const stars_tooltip_text = `${
+		only_you_have_starred
+			? 'You are the first to star this!'
+			: `Starred by ${earliest_starrers_preview}`
+	}\n${stars_summary_text}`
 
 	const EXPECTED_STAR_REQ_STATUS = 204
 	const MAX_EARLIEST_STARRERS_SHOWN = 10
@@ -82,13 +102,11 @@ export default function Stars(props: Props) {
 					Authorization: `Bearer ${token}`,
 				},
 				body: new_stars
-					? JSON.stringify({
-							link_id,
-							stars: new_stars,
-					  })
+					? JSON.stringify({ link_id, stars: new_stars })
 					: JSON.stringify({ link_id }),
 			}
 		)
+
 		if (!star_resp.Response || star_resp.RedirectTo) {
 			return (window.location.href = star_resp.RedirectTo ?? '/500')
 		} else if (star_resp.Response.status !== EXPECTED_STAR_REQ_STATUS) {
@@ -101,54 +119,56 @@ export default function Stars(props: Props) {
 
 		if (!new_stars) {
 			// un-star
-			set_avg_stars((prev) => {
-				const new_avg =
-					(prev * times_starred - old_stars) / (times_starred - 1)
-				return parseFloat(new_avg.toFixed(2))
+			set_times_starred((prev_times) => {
+				const new_times = prev_times - 1
+				set_avg_stars((prev_avg) => {
+					const new_avg =
+						new_times === 0
+							? 0
+							: (prev_avg * prev_times - old_stars) / new_times
+					return Math.round(new_avg * 100) / 100
+				})
+				return new_times
 			})
 
 			set_earliest_starrers((prev) =>
 				prev
 					.split(', ')
-					.filter((starrer: string) => starrer !== user)
+					.filter((starrer) => starrer !== user && starrer !== 'you')
 					.join(', ')
 			)
-
-			set_times_starred((prev) => prev - 1)
 		} else if (!old_stars) {
-			// new star
-			set_avg_stars((prev) => {
-				const new_avg =
-					(prev * times_starred + new_stars) / (times_starred + 1)
-				return parseFloat(new_avg.toFixed(2))
+			// add star
+			set_times_starred((prev_times) => {
+				const new_times = prev_times + 1
+				set_avg_stars((prev_avg) => {
+					const new_avg =
+						(prev_avg * prev_times + new_stars) / new_times
+					return Math.round(new_avg * 100) / 100
+				})
+				return new_times
 			})
 
-			if (!times_starred) {
-				set_earliest_starrers(
-					(prev) =>
-						prev +
-						`you\n(you gave ${new_stars} ${
-							new_stars === 1 ? 'star' : 'stars'
-						})`
-				)
-			} else if (times_starred < MAX_EARLIEST_STARRERS_SHOWN) {
-				set_earliest_starrers(
-					(prev) =>
-						prev +
-						`, you (you gave ${new_stars} ${
-							new_stars === 1 ? 'star' : 'stars'
-						})`
-				)
-			}
-
-			set_times_starred((prev) => prev + 1)
+			set_earliest_starrers((prev) => {
+				if (
+					times_starred === 0 ||
+					times_starred < MAX_EARLIEST_STARRERS_SHOWN
+				) {
+					return 'you, ' + prev
+				}
+				return prev
+			})
 		} else {
-			// edit number of stars you have assigned
-			set_avg_stars((prev) => {
-				const new_avg =
-					(prev * times_starred - old_stars + new_stars) /
-					times_starred
-				return parseFloat(new_avg.toFixed(2))
+			// edit number of stars
+			set_avg_stars((prev_avg) => {
+				set_times_starred((prev_times) => {
+					const new_avg =
+						(prev_avg * prev_times - old_stars + new_stars) /
+						prev_times
+					set_avg_stars(Math.round(new_avg * 100) / 100)
+					return prev_times
+				})
+				return prev_avg
 			})
 		}
 
@@ -178,15 +198,10 @@ export default function Stars(props: Props) {
 			return null
 		} else {
 			return (
-				<div
-					class='star-container'
-					title={`Starred by ${earliest_starrers_preview}`}
-				>
-					{Array.from({ length: avg_stars_rounded_up }).map(
-						(_, i) => (
-							<Star key={i} IsStatic />
-						)
-					)}
+				<div class='star-container' title={stars_tooltip_text}>
+					{Array.from({ length: avg_stars_rounded }).map((_, i) => (
+						<Star key={i} IsStatic />
+					))}
 
 					<span class='times-starred'>{times_starred}</span>
 				</div>
@@ -197,21 +212,10 @@ export default function Stars(props: Props) {
 	return (
 		<>
 			<div class='star-container'>
-				<div
-					class='average-stars'
-					title={
-						times_starred === 1 && your_stars
-							? `You are the first to star this!\n(you gave ${your_stars} ${
-									your_stars === 1 ? 'star' : 'stars'
-							  })`
-							: `Starred by ${earliest_starrers_preview}`
-					}
-				>
-					{Array.from({ length: avg_stars_rounded_up }).map(
-						(_, i) => (
-							<Star key={i} IsStatic />
-						)
-					)}
+				<div class='average-stars' title={stars_tooltip_text}>
+					{Array.from({ length: avg_stars_rounded }).map((_, i) => (
+						<Star key={i} IsStatic />
+					))}
 				</div>
 
 				{times_starred ? (
