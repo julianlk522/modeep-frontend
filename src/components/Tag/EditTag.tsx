@@ -1,5 +1,5 @@
 import { useState } from 'preact/hooks'
-import { TAGS_ENDPOINT } from '../../constants'
+import { EXPECTED_TAG_DELETE_REQ_STATUS, TAGS_ENDPOINT } from '../../constants'
 import type { Tag } from '../../types'
 import { is_error_response } from '../../types'
 import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
@@ -93,8 +93,7 @@ export default function EditTag(props: Props) {
 			return (window.location.href = delete_resp.RedirectTo ?? '/500')
 		}
 
-		const expected_status = 204
-		if (delete_resp.Response.status !== expected_status) {
+		if (delete_resp.Response.status !== EXPECTED_TAG_DELETE_REQ_STATUS) {
 			console.error('WHOOPS: ', delete_resp)
 
 			const delete_tag_data = await delete_resp.Response.json()

@@ -5,7 +5,11 @@ import {
 	type Dispatch,
 	type StateUpdater,
 } from 'preact/hooks'
-import { LINKS_ENDPOINT } from '../../constants'
+import {
+	EXPECTED_STAR_REQ_STATUS,
+	LINKS_ENDPOINT,
+	MAX_EARLIEST_STARRERS_SHOWN,
+} from '../../constants'
 import { is_error_response } from '../../types'
 import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
 import Star from './Star'
@@ -52,12 +56,17 @@ export default function Stars(props: Props) {
 	const earliest_starrers_split = earliest_starrers.split(', ')
 	const num_earliest_starrers = earliest_starrers_split.length
 	let earliest_starrers_preview =
-		num_earliest_starrers > 2
+		num_earliest_starrers > MAX_EARLIEST_STARRERS_SHOWN
 			? earliest_starrers_split
-					.slice(0, 2)
+					.slice(0, MAX_EARLIEST_STARRERS_SHOWN)
 					.concat(
-						`and ${num_earliest_starrers - 2} ${
-							num_earliest_starrers === 3 ? 'other' : 'others'
+						`and ${
+							num_earliest_starrers - MAX_EARLIEST_STARRERS_SHOWN
+						} ${
+							num_earliest_starrers ===
+							MAX_EARLIEST_STARRERS_SHOWN + 1
+								? 'other'
+								: 'others'
 						}`
 					)
 					.join(', ')
@@ -83,9 +92,6 @@ export default function Stars(props: Props) {
 			? 'You are the first to star this!'
 			: `Starred by ${earliest_starrers_preview}`
 	}\n${stars_summary_text}`
-
-	const EXPECTED_STAR_REQ_STATUS = 204
-	const MAX_EARLIEST_STARRERS_SHOWN = 10
 
 	async function update_your_stars_for_link(new_stars: number) {
 		const old_stars = your_stars_ref.current
