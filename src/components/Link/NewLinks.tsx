@@ -107,6 +107,7 @@ export default function NewLinks(props: Props) {
 		} else {
 			new_link_data.TagCount = 1
 			new_link_data.TimesStarred = 0
+			new_link_data.AvgStars = 0
 
 			set_selected_cats([])
 			set_error(undefined)

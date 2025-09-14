@@ -35,7 +35,7 @@ type Link = {
 	Cats: string
 	Summary?: string
 	SummaryCount: number
-	StarsAssigned: number
+	StarsAssigned?: number
 	TimesStarred: number
 	AvgStars: number
 	EarliestStarrers: string

@@ -21,8 +21,8 @@ import './Stars.css'
 import StarsModal from './StarsModal'
 
 interface Props {
-	YourStars: number
-	SetYourStars: Dispatch<StateUpdater<number>>
+	YourStars?: number
+	SetYourStars: Dispatch<StateUpdater<number | undefined>>
 	AvgStars: number
 	SetAvgStars: Dispatch<StateUpdater<number>>
 	TimesStarred: number
@@ -140,7 +140,7 @@ export default function Stars(props: Props) {
 
 		const new_state = calculate_star_state_updates({
 			OldStarState: {
-				YourStars: old_stars,
+				YourStars: old_stars ?? 0,
 				AvgStars: old_avg,
 				TimesStarred: old_times_starred,
 				EarliestStarrers: old_earliest_starrers,
@@ -261,19 +261,19 @@ export default function Stars(props: Props) {
 					title={your_stars ? 'Edit your rating?' : 'Star this?'}
 					onClick={() => set_show_modal(!show_modal)}
 				>
-					{your_stars > 0 ? (
+					{!your_stars ? (
+						<Star />
+					) : (
 						Array.from({ length: your_stars }).map((_, i) => (
 							<Star IsActive key={i} />
 						))
-					) : (
-						<Star />
 					)}
 				</button>
 			</div>
 
 			{show_modal ? (
 				<StarsModal
-					InitialStars={your_stars}
+					InitialStars={your_stars ?? 0}
 					YourStarsUpdatedSignal={your_stars_updated}
 					SetShowModal={set_show_modal}
 					LinkText={link_text}
