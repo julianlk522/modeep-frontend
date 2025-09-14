@@ -76,8 +76,21 @@ type URLParams = {
 const Periods = ['day', 'week', 'month', 'year', 'all'] as const
 type Period = (typeof Periods)[number]
 
-const SortMetrics = ['stars', 'newest', 'oldest', 'clicks'] as const
+const SortMetrics = [
+	'times_starred',
+	'avg_stars',
+	'newest',
+	'oldest',
+	'clicks',
+] as const
 type SortMetric = (typeof SortMetrics)[number]
+const PrettySortMetrics = {
+	times_starred: 'times starred',
+	avg_stars: 'average stars',
+	newest: 'newest',
+	oldest: 'oldest',
+	clicks: 'clicks',
+}
 
 // TAG
 type Tag = {
@@ -177,6 +190,7 @@ export {
 	has_merged_cats_property,
 	is_error_response,
 	Periods,
+	PrettySortMetrics,
 	SortMetrics,
 	tmap_sections,
 }

@@ -17,7 +17,7 @@ let cats = ""
 let url_contains = ""
 let url_lacks = ""
 let period: Period = 'all'
-let sort_by: SortMetric = 'stars'
+let sort_by: SortMetric = 'times_starred'
 
 if (Astro.url.searchParams.get('cats')) {
 	cats = Astro.url.searchParams.get('cats') as string

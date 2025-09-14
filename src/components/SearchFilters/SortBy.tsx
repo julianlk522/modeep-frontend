@@ -1,6 +1,6 @@
 import type { ChangeEvent } from 'preact/compat'
 import type { Dispatch, StateUpdater } from 'preact/hooks'
-import { SortMetrics, type SortMetric } from '../../types'
+import { PrettySortMetrics, SortMetrics, type SortMetric } from '../../types'
 
 interface Props {
 	SortBy: SortMetric
@@ -24,9 +24,9 @@ export default function SearchSortBy(props: Props) {
 				value={sort_by}
 				onChange={handle_set_sort_by}
 			>
-				{SortMetrics.map((met) => (
-					<option value={met}>{met}</option>
-				))}
+				{SortMetrics.map((met) => {
+					return <option value={met}>{PrettySortMetrics[met]}</option>
+				})}
 			</select>
 		</div>
 	)

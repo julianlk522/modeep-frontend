@@ -67,7 +67,7 @@ export default function SearchFilters(props: Props) {
 	}
 
 	// /search page endpoint only
-	if (sort_by && sort_by !== 'stars') {
+	if (sort_by && sort_by !== 'times_starred') {
 		params.set('sort_by', sort_by)
 	}
 
@@ -148,11 +148,11 @@ export default function SearchFilters(props: Props) {
 									? search_url.replace(
 											`/map/${tmap_owner_login_name}/${single_tmap_section_name?.toLowerCase()}`,
 											'/search'
-										)
+									  )
 									: search_url.replace(
 											`/map/${tmap_owner_login_name}`,
 											'/search'
-										)
+									  )
 							}
 						>
 							Transfer cats to Global Treasure Map

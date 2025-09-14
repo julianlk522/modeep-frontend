@@ -7,6 +7,7 @@ import { CATS_ENDPOINT, CONTRIBUTORS_ENDPOINT, LINKS_ENDPOINT } from '../constan
 import BaseLayout from '../layouts/BaseLayout.astro'
 import {
 Periods,
+PrettySortMetrics,
 SortMetrics,
 type CatCount,
 type Contributor,
@@ -53,7 +54,7 @@ if (
 }
 
 // sort by
-let sort_by: SortMetric = 'stars'
+let sort_by: SortMetric = 'times_starred'
 if (
 	params.get('sort_by') && (SortMetrics as readonly string[]).includes(
 		params.get('sort_by') as SortMetric
@@ -153,12 +154,17 @@ if (!contributors_resp.Response || contributors_resp.RedirectTo) {
 top_contributors = await contributors_resp.Response.json()
 
 // Page title
-const cats_separated = cats ? cats.split(',') : []
-const has_many_cats = cats_separated.length > 3
-const cats_title_text = has_many_cats ? cats_separated.slice(0, 3).join(' + ') + '...' : cats_separated.join(' + ')
-const page_title = sort_by === 'stars' 
-	? ` Top Rated${cats ? `: ${cats_title_text}` : ''}` 
-	: sort_by.charAt(0).toUpperCase() + sort_by.slice(1)
+const pretty_sort_by = PrettySortMetrics[sort_by]
+let page_title = 'Sort by ' + pretty_sort_by.charAt(0) + pretty_sort_by.slice(1)
+
+if (cats) {
+	const cats_separated = cats ? cats.split(',') : []
+	const has_many_cats = cats_separated.length > 3
+	const cats_title_text = has_many_cats 
+		? cats_separated.slice(0, 3).join(' + ') + '...' 
+		: cats_separated.join(' + ')
+	page_title = cats_title_text + ': ' + page_title
+}
 ---
 
 <BaseLayout Title={page_title}>
