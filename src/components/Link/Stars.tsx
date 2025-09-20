@@ -61,7 +61,9 @@ export default function Stars(props: Props) {
 	const earliest_starrers_split = earliest_starrers.split(', ')
 	const num_earliest_starrers = earliest_starrers_split.length
 	let earliest_starrers_preview =
-		num_earliest_starrers > MAX_EARLIEST_STARRERS_SHOWN
+		num_earliest_starrers === 2
+			? earliest_starrers_split.join(' and ')
+			: num_earliest_starrers > MAX_EARLIEST_STARRERS_SHOWN
 			? earliest_starrers_split
 					.slice(0, MAX_EARLIEST_STARRERS_SHOWN)
 					.concat(

@@ -75,20 +75,17 @@ export default function Link(props: Props) {
 	const [avg_stars, set_avg_stars] = useState(props.Link.AvgStars)
 	const [times_starred, set_times_starred] = useState(props.Link.TimesStarred)
 
-	let initial_earliest_starrers = ''
-	if (user && props.Link.EarliestStarrers) {
-		if (props.Link.EarliestStarrers.includes(user + ', ')) {
-			initial_earliest_starrers = props.Link.EarliestStarrers.replace(
-				user + ', ',
-				'you, '
-			)
-		} else if (props.Link.EarliestStarrers.includes(', ' + user)) {
-			initial_earliest_starrers = props.Link.EarliestStarrers.replace(
-				', ' + user,
-				', you'
-			)
-		} else if (props.Link.EarliestStarrers === user) {
-			initial_earliest_starrers = 'you'
+	let initial_earliest_starrers = props.Link.EarliestStarrers ?? ''
+
+	// replace signed-in user's name with "you" and move to front
+	// if they are among the earliest starrers
+	if (props.Link.EarliestStarrers && user) {
+		let split_starrers = props.Link.EarliestStarrers.split(', ')
+		if (split_starrers.includes(user)) {
+			let index = split_starrers.indexOf(user)
+			split_starrers.splice(index, 1)
+			split_starrers.unshift('you')
+			initial_earliest_starrers = split_starrers.join(', ')
 		}
 	}
 	const [earliest_starrers, set_earliest_starrers] = useState(
