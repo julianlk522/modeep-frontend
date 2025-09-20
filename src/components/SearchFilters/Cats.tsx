@@ -74,7 +74,6 @@ export default function SearchCats(props: Props) {
 			const spellfix_matches: types.CatCount[] =
 				await spellfix_matches_resp.json()
 			set_recommended_cats(spellfix_matches)
-			set_error(undefined)
 		} catch (error) {
 			set_recommended_cats(undefined)
 			set_error(error instanceof Error ? error.message : String(error))
@@ -83,8 +82,6 @@ export default function SearchCats(props: Props) {
 
 	// prev_selected_cats_ref prevents re-searching for recommended cats
 	// when user deletes 1+
-	// gets updated after adding cats or changing snippet, but not after deleting
-	// (so deletion can be identified and ignored)
 	const prev_selected_cats_ref = useRef(selected_cats)
 
 	// timeout_ref keeps track of pending debounced recommendation fetches
@@ -180,7 +177,7 @@ export default function SearchCats(props: Props) {
 		}
 
 		if (selected_cats.includes(new_cat)) {
-			set_error('You have that already, doofus :P')
+			set_error('You already have that, doofus')
 			return
 		}
 
@@ -227,13 +224,11 @@ export default function SearchCats(props: Props) {
 								selected_cats?.length ? '' : placeholder_text
 							}
 							onInput={(event) => {
-								// update selected cats ref so does not remain
-								// unsynced after deleting any from selected_cats,
-								// preventing new recommendations
 								prev_selected_cats_ref.current = selected_cats
 								set_snippet(
 									(event.target as HTMLInputElement).value
 								)
+								set_error(undefined)
 							}}
 							onKeyDown={handle_enter}
 						/>
