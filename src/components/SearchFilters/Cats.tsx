@@ -138,14 +138,7 @@ export default function SearchCats(props: Props) {
 		}
 	})
 
-	useEffect(() => {
-		if (submitted_links?.length) {
-			set_snippet('')
-		}
-		set_recommended_cats(undefined)
-	}, [submitted_links])
-
-	// debounced fetch timeout
+		// debounced fetch timeout
 	const DEBOUNCE_INTERVAL = 500
 	function reset_timeout_and_fetch_new_recommendations() {
 		if (timeout_ref.current) {
@@ -193,6 +186,13 @@ export default function SearchCats(props: Props) {
 		reset_timeout_and_fetch_new_recommendations()
 	}
 
+	useEffect(() => {
+		if (submitted_links?.length) {
+			set_snippet('')
+		}
+		set_recommended_cats(undefined)
+	}, [submitted_links])
+
 	const placeholder_text = 'Start typing for cat suggestions'
 
 	return (
@@ -205,34 +205,25 @@ export default function SearchCats(props: Props) {
 						</label>
 					) : null}
 
-					<div id='search-cats-input-container'>
-						{/* This is used to match the <input />'s width to that of
-						its placeholder text.
-						Thank you https://stackoverflow.com/a/60952231 */}
-						<div id='input-hidden-label' aria-hidden='true'>
-							{placeholder_text}
-						</div>
-
-						<input
-							id='cats'
-							name='cats'
-							type='text'
-							value={snippet}
-							autocomplete={'off'}
-							autoFocus={!is_new_link_page}
-							placeholder={
-								selected_cats?.length ? '' : placeholder_text
-							}
-							onInput={(event) => {
-								prev_selected_cats_ref.current = selected_cats
-								set_snippet(
-									(event.target as HTMLInputElement).value
-								)
-								set_error(undefined)
-							}}
-							onKeyDown={handle_enter}
-						/>
-					</div>
+					<input
+						id='cats'
+						name='cats'
+						type='text'
+						value={snippet}
+						autocomplete={'off'}
+						autoFocus={!is_new_link_page}
+						placeholder={
+							selected_cats?.length ? '' : placeholder_text
+						}
+						onInput={(event) => {
+							prev_selected_cats_ref.current = selected_cats
+							set_snippet(
+								(event.target as HTMLInputElement).value
+							)
+							set_error(undefined)
+						}}
+						onKeyDown={handle_enter}
+					/>
 
 					{!is_home_page ? (
 						<input

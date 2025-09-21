@@ -163,6 +163,7 @@ if (cats) {
 	const cats_title_text = has_many_cats 
 		? cats_separated.slice(0, 3).join(' + ') + '...' 
 		: cats_separated.join(' + ')
+		 
 	page_title = cats_title_text + ': ' + page_title
 }
 ---
@@ -171,7 +172,7 @@ if (cats) {
 	<LocalStorageLoader />
 	<main>
 		<SearchFilters 
-			client:load 
+			client:load
 			InitialCats={cats.length ? cats.split(',') : []}
 			InitialPeriod={period}
 			InitialURLContains={url_contains}

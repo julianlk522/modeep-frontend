@@ -1,33 +1,20 @@
-div#search-cats-container {
+#search-cats-container {
 	margin-top: 0.5rem;
 
-	div#search-cats-input-container {
-		display: inline-block;
+	input#cats {
+		font-size: 0.85rem;
+		padding: 1px;
+		min-width: 25ch;
+	}
 
-		div#input-hidden-label {
-			height: 0;
-			visibility: hidden;
-			padding: 0 2px;
-		}
-
-		input#cats {
-			padding: 0;
-			width: 100%;
-		}
-
-		input#cats::placeholder {
-			opacity: 0.8;
-			text-align: center;
-		}
-
-		input#cats::placeholder,
-		div#input-hidden-label {
-			font-size: 0.85rem;
-		}
+	input#cats::placeholder {
+		font-size: 0.85rem;
+		opacity: 0.8;
+		text-align: center;
 	}
 
 	input#add-cat-filter {
-		margin-left: 6px;
+		margin-left: 3px;
 	}
 
 	input#add-cat-filter:disabled {
@@ -35,17 +22,14 @@ div#search-cats-container {
 	}
 }
 
-div#search-cats-container.home {
+#search-cats-container.home {
 	width: fit-content;
 	margin: 0 auto;
 	text-align: center;
-}
-
-div#search-cats-container.home {
 	margin-bottom: 0.5rem;
 }
 
-div#search-cats-container:has(ol#recommendations-list) {
+#search-cats-container:has(ol#recommendations-list) {
 	margin-bottom: 0;
 }
 
@@ -73,16 +57,16 @@ p.error {
 }
 
 @media (min-width: 680px) {
-	div#search-cats-container.home {
+	#search-cats-container.home {
 		margin-bottom: 1rem;
 	}
-	div#search-cats-container.home:has(ol#recommendations-list) {
+	#search-cats-container.home:has(ol#recommendations-list) {
 		margin-bottom: 1.5rem;
 	}
 }
 
 @media (min-width: 786px) {
-	div#search-cats-container.home {
+	#search-cats-container.home {
 		margin-bottom: 2rem;
 	}
 }
