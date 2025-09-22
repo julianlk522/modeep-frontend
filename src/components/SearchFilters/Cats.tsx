@@ -7,7 +7,7 @@ import {
 	type Dispatch,
 	type StateUpdater,
 } from 'preact/hooks'
-import { CATS_ENDPOINT, MAX_CATS_PER_TAG } from '../../constants'
+import { CATS_ENDPOINT, DEBOUNCE_INTERVAL_MS, MAX_CATS_PER_TAG } from '../../constants'
 import * as types from '../../types'
 import TagCat from '../Tag/TagCat'
 import './Cats.css'
@@ -138,15 +138,13 @@ export default function SearchCats(props: Props) {
 		}
 	})
 
-		// debounced fetch timeout
-	const DEBOUNCE_INTERVAL = 500
 	function reset_timeout_and_fetch_new_recommendations() {
 		if (timeout_ref.current) {
 			window.clearTimeout(timeout_ref.current)
 		}
 		timeout_ref.current = window.setTimeout(() => {
 			fetch_snippet_recommendations()
-		}, DEBOUNCE_INTERVAL)
+		}, DEBOUNCE_INTERVAL_MS)
 	}
 
 	function handle_enter(event: KeyboardEvent) {
