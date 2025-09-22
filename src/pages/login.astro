@@ -5,12 +5,19 @@ import NoFooter from '../layouts/NoFooter.astro'
 <NoFooter Title='Sign up or Log in to Modeep'>
 	<script>
 		import { COOKIE_LIFETIME_SECS, LOGIN_ENDPOINT, SIGNUP_ENDPOINT } from '../constants'
-import { is_error_response } from '../types'
-import fetch_with_handle_redirect from '../util/fetch_with_handle_redirect'
-import get_cookie from '../util/get_cookie'
+		import { is_error_response } from '../types'
+		import fetch_with_handle_redirect from '../util/fetch_with_handle_redirect'
+		import get_cookie from '../util/get_cookie'
 
 		const login_error = document.getElementById('login-error')
 		const signup_error = document.getElementById('signup-error')
+
+		document
+			.getElementById('signup')
+			?.addEventListener('submit', (e) => handle_signup(e))
+		document
+			.getElementById('login')
+			?.addEventListener('submit', (e) => handle_login(e))
 
 		async function handle_signup(event: SubmitEvent) {
 			event.preventDefault()
@@ -41,32 +48,7 @@ import get_cookie from '../util/get_cookie'
 				return
 			}
 
-			if (signup_data.token) {
-				// set cookie
-				document.cookie = `token=${signup_data.token}; max-age=${COOKIE_LIFETIME_SECS}; SameSite=strict; Secure`
-				document.cookie = `user=${signup_name}; max-age=${COOKIE_LIFETIME_SECS}; SameSite=strict; Secure`
-
-				// redirect
-				// check if redirect_to is set
-				if (document.cookie.includes('redirect_to')) {
-					const redirect_to = get_cookie(
-						'redirect_to',
-						document.cookie
-					)
-
-					document.cookie =
-						'redirect_to=; max-age=0; SameSite=strict; Secure'
-
-					window.location.href = redirect_to
-
-				} else {
-					window.location.href = '/'
-				}
-			} else {
-				alert('Something went wrong')
-			}
-
-			return
+			assign_auth_cookies_and_handle_redirect(signup_data, (signup_name as string))
 		}
 
 		async function handle_login(event: SubmitEvent) {
@@ -97,12 +79,15 @@ import get_cookie from '../util/get_cookie'
 					return
 				}
 
-			if (login_data.token) {
-				document.cookie = `token=${login_data.token}; max-age=${COOKIE_LIFETIME_SECS}; SameSite=strict; Secure`
-				document.cookie = `user=${login_name}; max-age=${COOKIE_LIFETIME_SECS}; SameSite=strict; Secure`
+			assign_auth_cookies_and_handle_redirect(login_data, (login_name as string))
+		}
 
-				// redirect
-				// check if redirect_to is set
+		function assign_auth_cookies_and_handle_redirect(resp_data: any, user: string) {
+			if (resp_data.token) {
+				document.cookie = `token=${resp_data.token}; max-age=${COOKIE_LIFETIME_SECS}; SameSite=strict; Secure`
+				document.cookie = `user=${user}; max-age=${COOKIE_LIFETIME_SECS}; SameSite=strict; Secure`
+
+				// redirect if "redirect_to" is set
 				if (document.cookie.includes('redirect_to')) {
 					const redirect_to = get_cookie(
 						'redirect_to',
@@ -123,13 +108,6 @@ import get_cookie from '../util/get_cookie'
 
 			return
 		}
-
-		document
-			.getElementById('signup')
-			?.addEventListener('submit', (e) => handle_signup(e))
-		document
-			.getElementById('login')
-			?.addEventListener('submit', (e) => handle_login(e))
 	</script>
 	<main>
 		<section>
