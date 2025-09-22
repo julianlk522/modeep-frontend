@@ -1,5 +1,5 @@
 import { useState } from 'preact/hooks'
-import { EXPECTED_TAG_DELETE_REQ_STATUS, TAGS_ENDPOINT } from '../../constants'
+import { COOKIE_LIFETIME_SECS, EXPECTED_TAG_DELETE_REQ_STATUS, TAGS_ENDPOINT } from '../../constants'
 import type { Tag } from '../../types'
 import { is_error_response } from '../../types'
 import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
@@ -33,7 +33,7 @@ export default function EditTag(props: Props) {
 			document.cookie = `redirect_to=${window.location.pathname.replaceAll(
 				'/',
 				'%2F'
-			)}; path=/login; max-age=259200; SameSite=strict; Secure`
+			)}; path=/login; max-age=${COOKIE_LIFETIME_SECS}; SameSite=strict; Secure`
 			return (window.location.href = '/login')
 		}
 
@@ -77,7 +77,7 @@ export default function EditTag(props: Props) {
 			document.cookie = `redirect_to=${window.location.pathname.replaceAll(
 				'/',
 				'%2F'
-			)}; path=/login; max-age=259200; SameSite=strict; Secure`
+			)}; path=/login; max-age=${COOKIE_LIFETIME_SECS}; SameSite=strict; Secure`
 			return (window.location.href = '/login')
 		}
 

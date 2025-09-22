@@ -2,7 +2,7 @@ import type { APIContext } from 'astro'
 import { sequence } from 'astro:middleware'
 import type { VerifyErrors } from 'jsonwebtoken'
 import jwt from 'jsonwebtoken'
-import { API_URL } from './constants'
+import { API_URL, COOKIE_LIFETIME_SECS } from './constants'
 
 export const onRequest = sequence(handle_jwt_auth, handle_redirect_action)
 
@@ -39,7 +39,7 @@ async function handle_jwt_auth(
 						// @ts-ignore
 						context.cookies.set('user', decoded.login_name, {
 							path: '/',
-							maxAge: 259200,
+							maxAge: COOKIE_LIFETIME_SECS,
 							sameSite: 'strict',
 							secure: true,
 						})

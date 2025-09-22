@@ -4,7 +4,7 @@ import NoFooter from '../layouts/NoFooter.astro'
 
 <NoFooter Title='Sign up or Log in to Modeep'>
 	<script>
-		import { LOGIN_ENDPOINT, SIGNUP_ENDPOINT } from '../constants'
+		import { COOKIE_LIFETIME_SECS, LOGIN_ENDPOINT, SIGNUP_ENDPOINT } from '../constants'
 import { is_error_response } from '../types'
 import fetch_with_handle_redirect from '../util/fetch_with_handle_redirect'
 import get_cookie from '../util/get_cookie'
@@ -43,7 +43,7 @@ import get_cookie from '../util/get_cookie'
 
 			if (signup_data.token) {
 				// set cookie
-				document.cookie = `token=${signup_data.token}; max-age=259200; SameSite=strict; Secure`
+				document.cookie = `token=${signup_data.token}; max-age=${COOKIE_LIFETIME_SECS}; SameSite=strict; Secure`
 
 				// redirect
 				// check if redirect_to is set
@@ -97,7 +97,7 @@ import get_cookie from '../util/get_cookie'
 				}
 
 			if (login_data.token) {
-				document.cookie = `token=${login_data.token}; max-age=259200; SameSite=strict; Secure`
+				document.cookie = `token=${login_data.token}; max-age=${COOKIE_LIFETIME_SECS}; SameSite=strict; Secure`
 
 				// redirect
 				// check if redirect_to is set
