@@ -2,7 +2,7 @@ import type { APIContext } from 'astro'
 import { sequence } from 'astro:middleware'
 import type { VerifyErrors } from 'jsonwebtoken'
 import jwt from 'jsonwebtoken'
-import { API_URL, COOKIE_LIFETIME_SECS } from './constants'
+import { API_URL } from './constants'
 
 export const onRequest = sequence(handle_jwt_auth, handle_redirect_action)
 
@@ -33,21 +33,11 @@ async function handle_jwt_auth(
 							new URL('/login', context.request.url),
 							302
 						)
-
-						// set user cookie if verified
-					} else {
-						// @ts-ignore
-						context.cookies.set('user', decoded.login_name, {
-							path: '/',
-							maxAge: COOKIE_LIFETIME_SECS,
-							sameSite: 'strict',
-							secure: true,
-						})
 					}
 				}
 			)
 		} catch (err) {
-			// TODO: maybe add saved logging
+			// TODO: saved logging
 			console.log('jwt errors: ', err)
 			return Response.redirect(
 				new URL('/login', context.request.url),
@@ -55,7 +45,7 @@ async function handle_jwt_auth(
 			)
 		}
 
-		// reset and redirect to login if user cookie found but not token cookie
+	// reset and redirect to login if user cookie but no token cookie
 	} else if (req_user) {
 		context.cookies.delete('user')
 		return Response.redirect(new URL('/login', context.request.url))
@@ -117,7 +107,7 @@ async function handle_redirect_action(
 	})
 
 	if (resp.status !== 200) {
-		// TODO: maybe add saved logging
+		// TODO: saved logging
 		console.error('redirect action failed')
 	} else {
 		// cleanup cookie if successful
