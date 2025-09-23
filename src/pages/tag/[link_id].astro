@@ -26,7 +26,12 @@ if (!get_tags_resp.Response || get_tags_resp.RedirectTo) {
 	return Astro.redirect(get_tags_resp.RedirectTo)
 }
 const tag_Data: TagPage = await get_tags_resp.Response.json()
-const { Link: link, UserTag: user_tag, TagRankings: tags } = tag_Data
+const {
+	Link: link, 
+	UserTag: your_tag, 
+	TagRankings: tags
+
+} = tag_Data
 link.TagCount = tags.length
 
 const page_title = link.Summary ? `Tags for "${link.Summary}"` : `Link Tags`
@@ -53,8 +58,8 @@ const page_title = link.Summary ? `Tags for "${link.Summary}"` : `Link Tags`
 				client:load
 				LinkID={link_id}
 				Token={token}
-				UserTag={user_tag}
-				OnlyTag={tags.length === 1}
+				YourTag={your_tag}
+				HasOneTag={tags.length === 1}
 			/> 
 		: <section>
 			<p id="login-redirect-link"><a href="/login">Log in</a> to tag links.</p>

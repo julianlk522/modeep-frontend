@@ -1,10 +1,9 @@
 #search-cats-container {
-	margin-top: 0.5rem;
-
 	input#cats {
 		font-size: 0.85rem;
 		padding: 1px;
 		min-width: 25ch;
+		margin-top: 0.5rem;
 	}
 
 	input#cats::placeholder {
@@ -25,20 +24,36 @@
 #search-cats-container.home {
 	width: fit-content;
 	margin: 0 auto;
-	text-align: center;
-	margin-bottom: 0.5rem;
 }
 
-#search-cats-container:has(ol#recommendations-list) {
-	margin-bottom: 0;
-}
-
-ul#cat-list {
+#selected-cats-container {
 	display: flex;
+	flex-wrap: wrap;
+	gap: 3px;
 
-	li:has(input#clear-cat-filters) {
-		list-style: none;
-		align-self: center;
+	ul#cat-list {
+		display: inline-flex;
+		width: fit-content;
+
+		li:has(input#clear-cat-filters) {
+			list-style: none;
+			align-self: center;
+		}
+	}
+
+	button#edit-tag-btn {
+		margin-left: 5px;
+	}
+
+	button#edit-tag-btn,
+	button#delete-tag-btn {
+		padding: 0;
+		margin-top: 0.5rem;
+	}
+
+	ul#cat-list + button#edit-tag-btn,
+	ul#cat-list + button#edit-tag-btn + button#delete-tag-btn {
+		margin-top: 0;
 	}
 }
 
@@ -47,26 +62,16 @@ ol#recommendations-list {
 	width: fit-content;
 }
 
+ol#recommendations-list + #selected-cats-container ul#cat-list {
+	margin-top: 0;
+}
+
+#search-cats-container.home + ol#recommendations-list {
+	margin-left: auto;
+	margin-right: auto;
+}
+
 ul#cat-list,
 ol#recommendations-list {
 	margin: 0.5rem 0;
-}
-
-p.error {
-	margin-bottom: 0.5rem;
-}
-
-@media (min-width: 680px) {
-	#search-cats-container.home {
-		margin-bottom: 1rem;
-	}
-	#search-cats-container.home:has(ol#recommendations-list) {
-		margin-bottom: 1.5rem;
-	}
-}
-
-@media (min-width: 786px) {
-	#search-cats-container.home {
-		margin-bottom: 2rem;
-	}
 }

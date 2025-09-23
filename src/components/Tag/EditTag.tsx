@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
 import { COOKIE_LIFETIME_SECS, EXPECTED_TAG_DELETE_REQ_STATUS, TAGS_ENDPOINT } from '../../constants'
 import type { Tag } from '../../types'
 import { is_error_response } from '../../types'
@@ -9,24 +9,36 @@ import SearchCats from '../SearchFilters/Cats'
 import './EditTag.css'
 interface Props {
 	LinkID: string
-	OnlyTag: boolean
-	UserTag?: Tag
+	YourTag?: Tag
+	HasOneTag: boolean
 	Token?: string
 }
 
 export default function EditTag(props: Props) {
 	const {
 		LinkID: link_id,
-		OnlyTag: only_tag,
-		UserTag: tag,
+		YourTag: your_tag,
+		HasOneTag: has_one_tag,
 		Token: token,
 	} = props
-	const initial_cats = tag ? tag.Cats.split(',') : []
+	const initial_cats = your_tag ? your_tag.Cats.split(',') : []
 
 	const [cats, set_cats] = useState<string[]>(initial_cats)
 	const [editing, set_editing] = useState(false)
 	const [error, set_error] = useState<string | undefined>(undefined)
 	const [show_delete_modal, set_show_delete_modal] = useState(false)
+
+	// this is in a useEffect so edit-tag-btn
+	// can live in child SearchCats.tsx and trigger confirm_changes() without
+	// passing link_id, token, etc. as props
+	useEffect(() => {
+		if (editing) return
+		if (cats.length !== initial_cats.length ||
+			cats.some((c, i) => c !== initial_cats[i])) {
+			set_cats(cats.sort())
+			confirm_changes()
+		}
+	}, [editing])
 
 	async function confirm_changes() {
 		if (!token) {
@@ -37,10 +49,10 @@ export default function EditTag(props: Props) {
 			return (window.location.href = '/login')
 		}
 
-		const request_method = tag ? 'PUT' : 'POST'
+		const request_method = your_tag ? 'PUT' : 'POST'
 		const cats_str = cats.join(',')
-		const payload = tag
-			? { tag_id: tag.ID, cats: cats_str }
+		const payload = your_tag
+			? { tag_id: your_tag.ID, cats: cats_str }
 			: { link_id: link_id, cats: cats_str }
 		const resp = await fetch_with_handle_redirect(TAGS_ENDPOINT, {
 			method: request_method,
@@ -54,7 +66,7 @@ export default function EditTag(props: Props) {
 			return (window.location.href = resp.RedirectTo ?? '/500')
 		}
 
-		const expected_status = tag ? 200 : 201
+		const expected_status = your_tag ? 200 : 201
 		if (resp.Response.status !== expected_status) {
 			console.error('WHOOPS: ', resp)
 
@@ -69,7 +81,7 @@ export default function EditTag(props: Props) {
 	}
 
 	async function handle_delete() {
-		if (!tag) {
+		if (!your_tag) {
 			return
 		}
 
@@ -87,7 +99,7 @@ export default function EditTag(props: Props) {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
 			},
-			body: JSON.stringify({ tag_id: tag.ID }),
+			body: JSON.stringify({ tag_id: your_tag.ID }),
 		})
 		if (!delete_resp.Response || delete_resp.RedirectTo) {
 			return (window.location.href = delete_resp.RedirectTo ?? '/500')
@@ -109,70 +121,33 @@ export default function EditTag(props: Props) {
 	return (
 		<section id='edit-tag'>
 			<form onSubmit={(e) => e.preventDefault()}>
-				<div id='user-tags-header-bar'>
-					<button
-						title={editing ? 'Save tag changes' : 'Edit tag'}
-						onClick={() => {
-							set_cats(cats.sort())
-							if (
-								editing &&
-								(cats.length !== initial_cats.length ||
-									cats.some((c, i) => c !== initial_cats[i]))
-							) {
-								confirm_changes()
-							}
-							set_editing((e) => !e)
-						}}
-						class='img-btn'
-					>
-						<img
-							src={
-								editing
-									? '../../../confirm.svg'
-									: '../../../edit.svg'
-							}
-							height={20}
-							width={20}
-							alt={editing ? 'Save Edits' : 'Edit Tag'}
-						/>
-					</button>
-
-					{editing && !only_tag ? (
-						<button
-							title='Delete tag'
-							class='delete-tag-btn img-btn'
-							onClick={() => set_show_delete_modal(true)}
-						>
-							<img
-								src='../../../delete.svg'
-								height={20}
-								width={20}
-							/>
-						</button>
-					) : null}
-				</div>
+				<h2 id='your-tag'>Your Tag</h2>
 
 				{error ? <p class='error'>{error}</p> : null}
 
-				{tag || editing ? (
-					<SearchCats
-						SelectedCats={cats}
-						SetSelectedCats={set_cats}
-						Addable={editing}
-						Removable={editing}
-						IsTagPage
-					/>
-				) : null}
-				{tag ? (
+				<SearchCats
+					SelectedCats={cats}
+					SetSelectedCats={set_cats}
+					Addable={editing}
+					Removable={editing}
+					EditingYourTag={editing}
+					SetEditingYourTag={set_editing}
+					YouHaveAnExistingTag={your_tag !== null}
+					HasOneTag={has_one_tag}
+					SetShowDeleteTagConfirmationModal={set_show_delete_modal}
+				/>
+
+				{your_tag ? (
 					<p class='last-updated'>
-						{format_long_date(tag.LastUpdated)}
+						{format_long_date(your_tag.LastUpdated)}
 					</p>
 				) : editing ? null : (
 					<p>(not tagged)</p>
 				)}
+
 				{show_delete_modal ? (
 					<Modal
-						Prompt={'Delete tag?'}
+						Prompt={'Delete your tag?'}
 						IsDeleteConfirmation
 						HandleDelete={handle_delete}
 						SetShowModal={set_show_delete_modal}
