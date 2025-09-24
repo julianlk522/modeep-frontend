@@ -64,7 +64,7 @@ export default function Stars(props: Props) {
 		num_earliest_starrers === 2
 			? earliest_starrers_split.join(' and ')
 			: num_earliest_starrers > MAX_EARLIEST_STARRERS_SHOWN
-			? earliest_starrers_split
+				? earliest_starrers_split
 					.slice(0, MAX_EARLIEST_STARRERS_SHOWN)
 					.concat(
 						`and ${
@@ -77,7 +77,7 @@ export default function Stars(props: Props) {
 						}`
 					)
 					.join(', ')
-			: earliest_starrers_split.join(', ')
+				: earliest_starrers_split.join(', ')
 
 	const avg_stars_rounded = Math.round(avg_stars)
 	const avg_stars_text = `avg. ${avg_stars} ${
@@ -170,10 +170,9 @@ export default function Stars(props: Props) {
 			EarliestStarrers: old_earliest_starrers,
 		} = old_state
 
-		const operation =
-			new_stars && !old_stars
-				? 'add'
-				: new_stars && old_stars
+		const operation = new_stars && !old_stars
+			? 'add'
+			: new_stars && old_stars
 				? 'edit'
 				: 'delete'
 
@@ -183,14 +182,10 @@ export default function Stars(props: Props) {
 		const new_avg =
 			new_times_starred === 0
 				? 0
-				: parseFloat(
-						(
-							(old_avg * old_times_starred -
-								old_stars +
-								new_stars) /
-							new_times_starred
-						).toFixed(2)
-				  )
+				: parseFloat((
+					(old_avg * old_times_starred - old_stars + new_stars) 
+					/ new_times_starred
+				).toFixed(2))
 
 		let new_earliest_starrers: string
 		if (operation === 'add') {
@@ -215,7 +210,7 @@ export default function Stars(props: Props) {
 	// Pass your_stars_updated signal to child StarsModal
 	// to allow receiving its value here and responding to updates with requests to
 	// API to update stars for this link
-	// (avoids passing all props to the modal needed to make the request)
+	// (avoids needing to pass all props required for the request to StarsModal)
 	const your_stars_updated = useSignal<number | undefined>(undefined)
 
 	// Listen for changes and update accordingly

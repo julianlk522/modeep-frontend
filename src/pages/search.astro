@@ -155,7 +155,7 @@ top_contributors = await contributors_resp.Response.json()
 
 // Page title
 const pretty_sort_by = PrettySortMetrics[sort_by]
-let page_title = 'Sort by ' + pretty_sort_by.charAt(0) + pretty_sort_by.slice(1)
+let page_title = 'Treasure sorted by ' + pretty_sort_by.charAt(0) + pretty_sort_by.slice(1)
 
 if (cats) {
 	const cats_separated = cats ? cats.split(',') : []

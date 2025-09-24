@@ -4,7 +4,7 @@ import ScrollUp from '../components/ScrollUp.astro'
 import SearchCats from '../components/SearchFilters/Cats'
 import { CATS_ENDPOINT, CONTRIBUTORS_ENDPOINT, LINKS_ENDPOINT, TOTALS_ENDPOINT } from '../constants'
 import BaseLayout from '../layouts/BaseLayout.astro'
-import { Periods, type CatCount, type Contributor, type PaginatedLinks, type Totals } from '../types'
+import type { CatCount, Contributor, PaginatedLinks, Totals } from '../types'
 import fetch_with_handle_redirect from '../util/fetch_with_handle_redirect'
 
 // Auth
@@ -30,7 +30,7 @@ if (!top_contributors_resp.Response || top_contributors_resp.RedirectTo) {
 const top_contributors: Contributor[] = await top_contributors_resp.Response.json()
 
 // Get top links
-const DEFAULT_PERIOD = Periods[2] // month
+const DEFAULT_PERIOD = "month"
 const links_url = LINKS_ENDPOINT + `?period=${DEFAULT_PERIOD}`
 const get_links_resp = await (token
 	? fetch_with_handle_redirect(links_url, {
