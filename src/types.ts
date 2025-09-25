@@ -66,6 +66,7 @@ type PaginatedLinks = {
 type URLParams = {
 	Cats?: string
 	Period?: Period
+	SummaryContains?: string
 	URLContains?: string
 	URLLacks?: string
 	SortBy?: SortMetric

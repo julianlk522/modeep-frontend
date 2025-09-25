@@ -14,6 +14,7 @@ let more_cats_url = CATS_ENDPOINT + "?more=true"
 
 // Params
 let cats = ""
+let summary_contains = ""
 let url_contains = ""
 let url_lacks = ""
 let period: Period = 'all'
@@ -22,6 +23,10 @@ let sort_by: SortMetric = 'times_starred'
 if (Astro.url.searchParams.get('cats')) {
 	cats = Astro.url.searchParams.get('cats') as string
 	more_cats_url += `&cats=${cats}`
+}
+if (Astro.url.searchParams.get('summary_contains')) {
+	summary_contains = Astro.url.searchParams.get('summary_contains') as string
+	more_cats_url += `&summary_contains=${summary_contains}`
 }
 if (Astro.url.searchParams.get('url_contains')) {
 	url_contains = Astro.url.searchParams.get('url_contains') as string
@@ -53,6 +58,7 @@ if (
 const url_params = {
 	Cats: cats,
 	Period: period,
+	SummaryContains: summary_contains,
 	URLContains: url_contains,
 	URLLacks: url_lacks
 }
@@ -81,6 +87,7 @@ if (has_merged_cats_property(counts)) {
 			client:load 
 			InitialCats={cats.length ? cats.split(',') : []}
 			InitialPeriod={period}
+			InitialSummaryContains={summary_contains}
 			InitialURLContains={url_contains}
 			InitialURLLacks={url_lacks}
 			InitialSortBy={sort_by}

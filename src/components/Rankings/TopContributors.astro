@@ -19,6 +19,7 @@ if (url_params) {
         Period: period,
         SortBy: sort_by,
         NSFW: nsfw,
+        SummaryContains: summary_contains,
         URLContains: url_contains,
         URLLacks: url_lacks
     } = url_params
@@ -33,6 +34,9 @@ if (url_params) {
     }
     if (nsfw) {
         params.set('nsfw', 'true')
+    }
+    if (summary_contains?.length) {
+        params.set('summary_contains', summary_contains)
     }
     if (url_contains?.length) {
         params.set('url_contains', url_contains)

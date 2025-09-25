@@ -21,25 +21,22 @@ if (!login_name) {
 
 const params = Astro.url.searchParams
 
-// cats
 let cats = ''
 if (params.get('cats')) {
 	cats = params.get('cats') as string
 }
-
-// url contains
+let summary_contains = ''
+if (params.get('summary_contains')) {
+	summary_contains = params.get('summary_contains') as string
+}
 let url_contains = ""
 if (params.get('url_contains')) {
 	url_contains = params.get('url_contains') as string
 }
-
-// url lacks
 let url_lacks = ""
 if (params.get('url_lacks')) {
 	url_lacks = params.get('url_lacks') as string
 }
-
-// period
 let period: types.Period = "all"
 if (
 	params.get('period') &&
@@ -49,8 +46,6 @@ if (
 ) {
 	period = params.get('period') as types.Period
 }
-
-// sort_by
 let sort_by: types.SortMetric = 'times_starred'
 if (
 	params.get('sort_by') &&
@@ -60,8 +55,6 @@ if (
 ) {
 	sort_by = params.get('sort_by') as types.SortMetric
 }
-
-// nsfw
 let nsfw = false
 if (params.get('nsfw') && params.get('nsfw') === 'true') {
 	nsfw = true
@@ -72,6 +65,7 @@ const url_params = {
 	Period: period,
 	SortBy: sort_by,
 	NSFW: nsfw,
+	SummaryContains: summary_contains,
 	URLContains: url_contains,
 	URLLacks: url_lacks,
 }
@@ -133,6 +127,7 @@ if (!cats && tmap.hasOwnProperty('Profile')) {
 			NSFWLinks={tmap.NSFWLinksCount}
 			InitialCats={cats_split}
 			InitialPeriod={period}
+			InitialSummaryContains={summary_contains}
 			InitialURLContains={url_contains}
 			InitialURLLacks={url_lacks}
 			InitialSortBy={sort_by}

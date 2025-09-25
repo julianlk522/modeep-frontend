@@ -5,6 +5,7 @@ import './Filters.css'
 import SearchNSFW from './NSFW'
 import SearchPeriod from './Period'
 import SearchSortBy from './SortBy'
+import SearchSummaryContains from './SummaryContains'
 import SearchURLContains from './URLContains'
 import SearchURLLacks from './URLLacks'
 
@@ -14,6 +15,7 @@ interface Props {
 	SingleTmapSectionName?: (typeof tmap_sections)[number]
 	NSFWLinks?: number
 	InitialCats: string[]
+	InitialSummaryContains: string
 	InitialURLContains: string
 	InitialURLLacks: string
 	InitialPeriod: Period
@@ -28,6 +30,7 @@ export default function SearchFilters(props: Props) {
 		SingleTmapSectionName: single_tmap_section_name,
 		NSFWLinks: nsfw_links,
 		InitialCats: initial_cats,
+		InitialSummaryContains: initial_summary_contains,
 		InitialURLContains: initial_url_contains,
 		InitialURLLacks: initial_url_lacks,
 		InitialPeriod: initial_period,
@@ -35,7 +38,11 @@ export default function SearchFilters(props: Props) {
 		InitialNSFW: initial_nsfw,
 	} = props
 
+	const is_tmap = endpoint === '/map'
+
 	const [cats, set_cats] = useState<string[]>(initial_cats)
+	const [summary_contains, set_summary_contains] =
+		useState<string>(initial_summary_contains)
 	const [url_contains, set_url_contains] =
 		useState<string>(initial_url_contains)
 	const [url_lacks, set_url_lacks] = useState<string>(initial_url_lacks)
@@ -50,27 +57,25 @@ export default function SearchFilters(props: Props) {
 	if (has_cats) {
 		params.set('cats', cats.join(','))
 	}
-
+	const has_summary_contains = summary_contains?.length
+	if (has_summary_contains) {
+		params.set('summary_contains', summary_contains)
+	}
 	const has_url_contains = url_contains?.length
 	if (has_url_contains) {
 		params.set('url_contains', url_contains)
 	}
-
 	const has_url_lacks = url_lacks?.length
 	if (has_url_lacks) {
 		params.set('url_lacks', url_lacks)
 	}
-
 	const has_period = period !== 'all'
 	if (has_period) {
 		params.set('period', period)
 	}
-
-	// /search page endpoint only
 	if (sort_by && sort_by !== 'times_starred') {
 		params.set('sort_by', sort_by)
 	}
-
 	if (nsfw) {
 		params.set('nsfw', 'true')
 	}
@@ -81,6 +86,7 @@ export default function SearchFilters(props: Props) {
 
 	const has_changed_filters =
 		has_changed_cats ||
+		summary_contains !== initial_summary_contains ||
 		url_contains !== initial_url_contains ||
 		url_lacks !== initial_url_lacks ||
 		period !== initial_period ||
@@ -88,7 +94,7 @@ export default function SearchFilters(props: Props) {
 		nsfw !== initial_nsfw
 
 	let base_url = endpoint
-		? endpoint === '/map'
+		? is_tmap
 			? single_tmap_section_name
 				? `/map/${tmap_owner_login_name}/${single_tmap_section_name.toLowerCase()}`
 				: `/map/${tmap_owner_login_name}`
@@ -140,7 +146,7 @@ export default function SearchFilters(props: Props) {
 			<form onKeyDown={handle_keydown}>
 				<SearchCats SelectedCats={cats} SetSelectedCats={set_cats} />
 
-				{cats.length && endpoint === '/map' ? (
+				{is_tmap && cats.length ? (
 					<p id='transfer-to-global-map'>
 						<a
 							href={
@@ -159,6 +165,12 @@ export default function SearchFilters(props: Props) {
 						</a>
 					</p>
 				) : null}
+
+				<SearchSummaryContains
+					SummaryContains={summary_contains}
+					SetSummaryContains={set_summary_contains}
+					TmapOwner={tmap_owner_login_name}
+				/>
 
 				<SearchURLContains
 					URLContains={url_contains}
@@ -199,7 +211,7 @@ export default function SearchFilters(props: Props) {
 					ref={scour_anchor_ref}
 				>
 					Scour
-					{base_url.startsWith('/map/' + tmap_owner_login_name)
+					{is_tmap
 						? ' this '
 						: ' the '}
 					Treasure Map

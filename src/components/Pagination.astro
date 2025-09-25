@@ -19,6 +19,7 @@ const {
 const {
 	Cats: cats,
 	Period: period,
+	SummaryContains: summary_contains,
 	URLContains: url_contains,
 	URLLacks: url_lacks,
 	SortBy: sort_by,
@@ -38,6 +39,9 @@ if (sort_by && sort_by !== 'times_starred') {
 }
 if (nsfw) {
 	params.set('nsfw', 'true')
+}
+if (summary_contains && summary_contains.length) {
+	params.set('summary_contains', summary_contains)
 }
 if (url_contains && url_contains.length) {
 	params.set('url_contains', url_contains)
