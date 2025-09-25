@@ -4,7 +4,7 @@ import ScrollUp from '../../../components/ScrollUp.astro'
 import SearchFilters from '../../../components/SearchFilters/Filters'
 import LocalStorageLoader from '../../../components/SearchFilters/LocalStorageLoader.astro'
 import { TMAP_ENDPOINT } from '../../../constants'
-import BaseLayout from '../../../layouts/BaseLayout.astro'
+import WithFooter from '../../../layouts/WithFooter.astro'
 import {
 Periods,
 tmap_sections,
@@ -110,7 +110,7 @@ if (cats_split.length) {
 
 ---
 
-<BaseLayout Title={page_title}>
+<WithFooter Title={page_title}>
     <LocalStorageLoader />
 	<main>
 		<h1>{login_name}</h1>
@@ -136,7 +136,6 @@ if (cats_split.length) {
 			InitialNSFW={nsfw}
 		/>
 
-
 		<Rankings
             SingleTmapSection={single_tmap_section}
             SingleTmapSectionName={section_name as typeof tmap_sections[number]}
@@ -150,7 +149,7 @@ if (cats_split.length) {
 
 		<ScrollUp />
 	</main>
-</BaseLayout>
+</WithFooter>
 
 <style>
     h1:has(+ .subtitle) { 

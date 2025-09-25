@@ -3,10 +3,10 @@ import GlobalTagCalcDiagram from '../../components/About/GlobalTagCalcDiagram.as
 import NarrowSearchDiagram from '../../components/About/NarrowSearchDiagram.astro'
 import WideSearchDiagram from '../../components/About/WideSearchDiagram.astro'
 import ScrollUp from '../../components/ScrollUp.astro'
-import BaseLayout from '../../layouts/BaseLayout.astro'
+import WithFooter from '../../layouts/WithFooter.astro'
 ---
 
-<BaseLayout Title='About Modeep'>
+<WithFooter Title='About Modeep'>
 	<main>
         <h1>How Modeep Works</h1>
 
@@ -132,7 +132,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 
 		<ScrollUp />
 	</main>
-</BaseLayout>
+</WithFooter>
 
 <style>
 	section {

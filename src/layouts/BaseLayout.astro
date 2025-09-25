@@ -1,23 +1,333 @@
 ---
-import NoFooter from "./NoFooter.astro";
-
 interface Props {
 	Title: string
 }
 
 const { Title: title } = Astro.props
+let user = Astro.cookies.get('user')?.value
 ---
 
-<NoFooter Title={title}>
-	<slot />
-	<footer>
-		<a href='/about'>About</a>
-		<a href='/feedback'>Feedback</a>
-	</footer>
-</NoFooter>
+<!doctype html>
+<html lang='en'>
+	<head>
+		<meta charset='UTF-8' />
+		<meta name='description' content='Modeep: MOdular filtration and Decentralized Evaluation of EPic internet treasure' />
+		<meta name='viewport' content='width=device-width' />
+		<meta name='generator' content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<header>
+		<nav>
+			<a href='/' title="Modeep - Home">
+				<img src="/home.webp" alt="Modeep" height="20" width="84">
+			</a>
+			<a href='/search'>Search</a>
+			<a href='/new'>Reveal</a>
 
-<style>
-	footer a:not(:last-of-type) {
-		margin-right: 3px;
-	}
-</style>
+			{user ? (
+				<div id="user-links">
+					<a href=`/map/${user}` id="my-treasure-map">{user}</a>
+					<button id="logout-btn">Logout</button>
+				</div>
+			) : <a href='/login' id="login-link">Login</a>}
+		</nav>
+	</header>
+	<script>
+		const logout_btn = document.getElementById('logout-btn')
+		logout_btn?.addEventListener('click', (e) => {
+			e.preventDefault()
+			document.cookie = `token=; Path=/; Max-Age=0; SameSite=strict; Secure`
+			document.cookie = `user=; Path=/; Max-Age=0; SameSite=strict; Secure`
+			window.location.reload()
+		})
+	</script>
+	<body>
+		<slot />
+	</body>
+
+	<style is:global>
+		@font-face {
+			font-family: 'Orienta';
+			src: url('/fonts/Orienta-Regular.ttf');
+			font-weight: normal;
+			font-style: normal;
+			font-display: swap;
+		}
+
+		:root {
+			--text: hsl(0, 0%, 92%);
+			--text-muted: hsl(44 5% 90% / 85%);
+			--treasurey: hsl(44, 55%, 80%);
+			--treasurey-dark: hsl(44, 25%, 60%);
+			--sky: hsl(180, 33%, 82%);
+			--sky-vague: hsla(180, 33%, 82%, 20%);
+			--danger: hsl(360, 66%, 66%);
+			font-family: 'Orienta', sans-serif;
+			font-size: 14px;
+			background: #13151a;
+		}
+
+		header nav {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.5rem;
+			align-items: center;
+			margin: 0 auto;
+
+			a:has(img) {
+				margin-bottom: -5px;
+				margin-right: 2px;
+			}
+
+			#login-link,
+			#user-links {
+				margin-left: auto;
+			}
+
+			#logout-btn {
+				background: none;
+				border: none;
+				cursor: pointer;
+				color: var(--text);
+				font-size: 1rem;
+				margin-top: 0;
+				padding: 0 0 0 calc(0.5rem - 4px);
+			}
+		}
+
+		footer {
+			margin: 0.5rem auto 0;
+			text-align: center;
+		}
+
+		header nav,
+		footer {
+			max-width: 1080px;
+			padding: 0.5rem 1rem;
+
+			a,
+			a:visited {
+				color: var(--text);
+			}
+		}
+
+		main {
+			margin: auto;
+			padding-top: 1rem;
+			width: 1080px;
+			max-width: 100%;
+			color: var(--text);
+		}
+
+		h1 {
+			font-size: 2rem;
+			font-weight: 700;
+			line-height: 1;
+			text-align: center;
+			margin: 1rem 0;
+		}
+
+		h2, h3, h4, h5, h6 {
+			margin: 0;
+			margin-bottom: 1rem;
+		}
+
+		h2 {
+			font-size: 1.25rem;
+		}
+
+		h3 {
+			font-size: 1.15rem;
+		}
+
+		p {
+			margin-bottom: 0;
+		}
+
+		section {
+			padding: 0.5rem 0;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+		}
+
+		a {
+			color: var(--treasurey);
+			text-decoration: none;
+		}
+
+		form {
+			max-width: 100%;
+
+			label {
+				display: block;
+				margin-top: 3px;
+			}
+
+			textarea {
+				max-width: 100%;
+			}
+
+			label:is(
+				#search-cats,
+				#search-summary-contains,
+				#search-url-contains,
+				#search-url-lacks,
+				#search-period, 
+				#search-sort-by,
+			) {
+				display: inline;
+				margin-right: 5px;
+			}
+		}
+
+		img {
+			height: auto;
+			object-fit: contain;
+			max-width: 100%;
+		}
+
+		details {
+			max-width: 100%;
+			margin-top: -7px;
+
+			summary pre {
+				display: inline;
+			}
+
+			summary::marker {
+				display: inline;
+				color: var(--treasurey-dark);
+			}
+		}
+
+		details[open] {			
+			> span,
+			summary pre { 
+				display: none;
+			}
+		}
+
+		details:not([open]) summary {
+			cursor: pointer;
+		}
+
+		pre {
+			white-space: pre-line;
+			margin: 0;
+		}
+
+		button {
+			color: black;
+		}
+
+		button.img-btn {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 0px 3px;
+			margin-top: 0;
+			min-width: fit-content;
+			background-color: transparent;
+			border: none;
+			cursor: pointer;
+		}
+
+		ol#top-cats,
+		ol#top-contributors {
+			display: flex;
+			flex-direction: column;
+			list-style-position: inside;
+			margin: 0;
+			padding: 0 1rem;
+			font-size: 0.9rem;
+			max-height: 88px;
+			overflow: hidden;
+
+			li span {
+				float: right;
+				font-weight: normal;
+			}
+		}
+
+		:is(ol#top-cats,
+		ol#top-contributors).scrollable {
+			overflow-y: scroll;
+		}
+
+		#profile-about details > pre {
+			overflow-y: scroll;
+			scrollbar-width: thin;
+		}
+
+		#cat-list,
+		#recommendations-list {
+			display: flex;
+			gap: 5px;
+		}
+
+		#cat-list,
+		#recommendations-list,
+		.cats {
+			flex-wrap: wrap;
+			padding: 0;
+		}
+
+		.error {
+			color: red;
+
+			a {
+				color: red;
+				text-decoration: underline;
+			}
+		}
+
+		span.by,
+		p.last-updated {
+			color: var(--text-muted);
+		}
+
+		:is(header nav,
+		footer) a,
+		#logout-btn {
+			text-decoration: underline;
+		}
+
+		@media (min-width: 350px) {
+			main {
+				max-width: calc(100% - 2rem);
+			}
+
+			ol#top-cats,
+			ol#top-contributors {
+				font-size: 1rem;
+			}
+		}
+
+		@media (min-width: 400px) {
+			h2 {
+				font-size: 1.5rem;
+			}
+
+			header nav #user-links {
+				margin-left: auto;
+			}	
+		}
+
+		@media (min-width: 680px) {
+			header nav {
+				a,
+				#logout-btn {
+					font-size: 1.1rem;
+				}
+			}
+
+			main {
+				padding: 1rem 2rem 0;
+				max-width: calc(100% - 4rem);
+			}
+
+			footer {
+				text-align: left;
+			}
+		}
+	</style>
+</html>

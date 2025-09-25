@@ -5,7 +5,7 @@ import NewSummary from '../../components/Summary/NewSummary'
 import type { SummaryPage } from '../../types'
 import {SUMMARIES_ENDPOINT} from '../../constants'
 import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
-import NoFooter from '../../layouts/NoFooter.astro'
+import BaseLayout from '../../layouts/BaseLayout.astro'
 
 // Auth
 const token = Astro.cookies.get('token')?.value
@@ -60,7 +60,7 @@ for (const summary of summaries) {
 const page_title = link.Summary ? `Summaries for "${link.Summary}"` : 'Link Summaries'
 ---
 
-<NoFooter Title={page_title}>
+<BaseLayout Title={page_title}>
 	<script>
 		import { assign_login_redirect_handler } from '../../util/login_redirect'
 		assign_login_redirect_handler()
@@ -113,7 +113,7 @@ const page_title = link.Summary ? `Summaries for "${link.Summary}"` : 'Link Summ
 			</ol>
 		</section> : null}
 	</main>
-</NoFooter>
+</BaseLayout>
 
 <style>
 	p#login-redirect-link {

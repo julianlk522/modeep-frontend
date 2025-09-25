@@ -1,8 +1,8 @@
 ---
-import NoFooter from '../layouts/NoFooter.astro'
+import BaseLayout from '../layouts/BaseLayout.astro'
 ---
 
-<NoFooter Title='Page Not Found'>
+<BaseLayout Title='Page Not Found'>
     <main>
         <h1>404 Page not found</h1>
         <p>
@@ -12,7 +12,7 @@ import NoFooter from '../layouts/NoFooter.astro'
             </a>
         </p>
     </main>
-</NoFooter>
+</BaseLayout>
 
 <style>
     a#go-home {

@@ -6,7 +6,7 @@ import ScrollUp from "../components/ScrollUp.astro";
 import SearchFilters from "../components/SearchFilters/Filters";
 import LocalStorageLoader from "../components/SearchFilters/LocalStorageLoader.astro";
 import { CATS_ENDPOINT } from "../constants";
-import BaseLayout from "../layouts/BaseLayout.astro";
+import WithFooter from "../layouts/WithFooter.astro";
 import { has_merged_cats_property, Periods, SortMetrics, type CatCount, type MorePageCatCountsWithMergedCats, type Period, type SortMetric } from "../types";
 import fetch_with_handle_redirect from "../util/fetch_with_handle_redirect";
 
@@ -80,7 +80,7 @@ if (has_merged_cats_property(counts)) {
 
 ---
 
-<BaseLayout Title="More">
+<WithFooter Title="More">
 	<LocalStorageLoader />
     <main>
 		<SearchFilters 
@@ -106,4 +106,4 @@ if (has_merged_cats_property(counts)) {
         </section> : cats ? <p>No further subcats.</p> : <NoLinksFound />}
         <ScrollUp />
     </main>
-</BaseLayout>
+</WithFooter>

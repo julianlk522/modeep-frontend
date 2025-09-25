@@ -3,7 +3,7 @@ import Rankings from '../components/Rankings/Rankings.astro'
 import ScrollUp from '../components/ScrollUp.astro'
 import SearchCats from '../components/SearchFilters/Cats'
 import { CATS_ENDPOINT, CONTRIBUTORS_ENDPOINT, LINKS_ENDPOINT, TOTALS_ENDPOINT } from '../constants'
-import BaseLayout from '../layouts/BaseLayout.astro'
+import WithFooter from '../layouts/WithFooter.astro'
 import type { CatCount, Contributor, PaginatedLinks, Totals } from '../types'
 import fetch_with_handle_redirect from '../util/fetch_with_handle_redirect'
 
@@ -51,7 +51,7 @@ if (!totals_resp.Response || totals_resp.RedirectTo) {
 const totals: Totals = await totals_resp.Response.json()
 ---
 
-<BaseLayout Title="Modeep: Share and discover the web's gems.">
+<WithFooter Title="Modeep: Share and discover the web's gems.">
 	<main>
 		<h1>Welcome Home, Good Hunter</h1>
 		<p id='subtitle'>What is it you desire?</p>
@@ -111,7 +111,7 @@ const totals: Totals = await totals_resp.Response.json()
 
 		<ScrollUp />
 	</main>
-</BaseLayout>
+</WithFooter>
 
 <style>
 	h1 {

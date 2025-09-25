@@ -1,11 +1,11 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro'
+import WithFooter from '../layouts/WithFooter.astro'
 ---
 
-<BaseLayout Title='Rate Limited'>
+<WithFooter Title='Rate Limited'>
 <main>
     <h1>Not so fast!</h1>
     <p>Literally. You sent too many requests too quickly. Try again after a minute.</p>
     <p>If you believe the rate limit is too strict, please email <a href='mailto:support@modeep.org'>support@modeep.org</a> to share your opinion.</p>
 </main>
-</BaseLayout>
+</WithFooter>

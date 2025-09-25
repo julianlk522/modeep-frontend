@@ -4,7 +4,7 @@ import Rankings from '../components/Rankings/Rankings.astro'
 import SearchFilters from '../components/SearchFilters/Filters'
 import LocalStorageLoader from '../components/SearchFilters/LocalStorageLoader.astro'
 import { CATS_ENDPOINT, CONTRIBUTORS_ENDPOINT, LINKS_ENDPOINT } from '../constants'
-import BaseLayout from '../layouts/BaseLayout.astro'
+import WithFooter from '../layouts/WithFooter.astro'
 import {
 Periods,
 PrettySortMetrics,
@@ -159,7 +159,7 @@ if (cats) {
 }
 ---
 
-<BaseLayout Title={page_title}>
+<WithFooter Title={page_title}>
 	<LocalStorageLoader />
 	<main>
 		<SearchFilters 
@@ -189,4 +189,4 @@ if (cats) {
 			<NoLinksFound AddSomethingPrompt />
 		)}
 	</main>
-</BaseLayout>
+</WithFooter>

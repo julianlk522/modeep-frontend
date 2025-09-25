@@ -5,7 +5,7 @@ import SearchFilters from '../../components/SearchFilters/Filters'
 import LocalStorageLoader from '../../components/SearchFilters/LocalStorageLoader.astro'
 import Profile from '../../components/TmapProfile/Profile'
 import { TMAP_ENDPOINT } from '../../constants'
-import BaseLayout from '../../layouts/BaseLayout.astro'
+import WithFooter from '../../layouts/WithFooter.astro'
 import * as types from '../../types'
 import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
 
@@ -102,7 +102,7 @@ if (!cats && tmap.hasOwnProperty('Profile')) {
 }
 ---
 
-<BaseLayout Title={page_title}>
+<WithFooter Title={page_title}>
 	<LocalStorageLoader />
 	<main>
 		<h1 class={profile ? 'has-profile' : ''}>{login_name}</h1>
@@ -145,7 +145,7 @@ if (!cats && tmap.hasOwnProperty('Profile')) {
 
 		<ScrollUp />
 	</main>
-</BaseLayout>
+</WithFooter>
 
 <style>	
 	h1 {

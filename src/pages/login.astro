@@ -1,8 +1,8 @@
 ---
-import NoFooter from '../layouts/NoFooter.astro'
+import BaseLayout from '../layouts/BaseLayout.astro'
 ---
 
-<NoFooter Title='Sign up or Log in to Modeep'>
+<BaseLayout Title='Sign up or Log in to Modeep'>
 	<script>
 		import { COOKIE_LIFETIME_SECS, LOGIN_ENDPOINT, SIGNUP_ENDPOINT } from '../constants'
 		import { is_error_response } from '../types'
@@ -138,7 +138,7 @@ import NoFooter from '../layouts/NoFooter.astro'
 			</form>
 		</section>
 	</main>
-</NoFooter>
+</BaseLayout>
 
 <style>
 	h2 {

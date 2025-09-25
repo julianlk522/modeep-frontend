@@ -6,7 +6,7 @@ import { TAGS_ENDPOINT } from '../../constants'
 import type { TagPage } from '../../types'
 import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
 import CSRLastUpdated from '../../components/Tag/CSRLastUpdated'
-import NoFooter from '../../layouts/NoFooter.astro'
+import BaseLayout from '../../layouts/BaseLayout.astro'
 
 const token = Astro.cookies.get('token')?.value
 const user = Astro.cookies.get('user')?.value
@@ -37,7 +37,7 @@ link.TagCount = tags.length
 const page_title = link.Summary ? `Tags for "${link.Summary}"` : `Link Tags`
 ---
 
-<NoFooter Title={page_title}>
+<BaseLayout Title={page_title}>
 	<script>
 		import { assign_login_redirect_handler } from '../../util/login_redirect'
 		assign_login_redirect_handler()
@@ -98,7 +98,7 @@ const page_title = link.Summary ? `Tags for "${link.Summary}"` : `Link Tags`
 			) : null
 		}
 	</main>
-</NoFooter>
+</BaseLayout>
 
 <style>
 	section h2 {

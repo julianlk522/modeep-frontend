@@ -1,0 +1,23 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props {
+	Title: string
+}
+
+const { Title: title } = Astro.props
+---
+
+<BaseLayout Title={title}>
+	<slot />
+	<footer>
+		<a href='/about'>About</a>
+		<a href='/feedback'>Feedback</a>
+	</footer>
+</BaseLayout>
+
+<style>
+	footer a:not(:last-of-type) {
+		margin-right: 3px;
+	}
+</style>
