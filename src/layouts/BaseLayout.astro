@@ -55,6 +55,7 @@ let user = Astro.cookies.get('user')?.value
 		}
 
 		:root {
+			--bg: #13151a;
 			--text: hsl(0, 0%, 92%);
 			--text-muted: hsl(44 5% 90% / 85%);
 			--treasurey: hsl(44, 55%, 80%);
@@ -62,9 +63,10 @@ let user = Astro.cookies.get('user')?.value
 			--sky: hsl(180, 33%, 82%);
 			--sky-vague: hsla(180, 33%, 82%, 20%);
 			--danger: hsl(360, 66%, 66%);
+			--border-light: 1px solid rgba(255, 255, 255, 0.05);
 			font-family: 'Orienta', sans-serif;
 			font-size: 14px;
-			background: #13151a;
+			background: var(--bg);
 		}
 
 		header nav {
