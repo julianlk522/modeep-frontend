@@ -17,7 +17,30 @@ const { Title: title } = Astro.props
 </BaseLayout>
 
 <style>
+	footer {
+		margin: 1rem auto 0;
+		text-align: center;
+	}
+
 	footer a:not(:last-of-type) {
 		margin-right: 3px;
+	}
+
+	@media (min-width: 400px) {
+		footer {
+			margin-bottom: 1rem;
+		}
+	}
+
+	@media (min-width: 480px) {
+		footer {
+			margin: 1.5rem auto 1rem;
+		}
+	}
+
+	@media (min-width: 680px) {
+		footer {
+			text-align: left;
+		}
 	}
 </style>

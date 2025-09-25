@@ -49,9 +49,9 @@ if (url_params) {
 }
 ---
 
-<div>
+<div id="top-contributors-container">
     <h2>Top Treasure Hunters</h2>
-    <ol id="top-contributors" class={contributors?.length > MIN_LIST_ITEMS_FOR_SCROLLBAR ? 'scrollable' : ''}>
+    <ol id="top-contributors" class={contributors?.length >= MIN_LIST_ITEMS_FOR_SCROLLBAR ? 'scrollable' : ''}>
         {contributors.map(
             (c: Contributor) => (
                 <li>
@@ -71,17 +71,18 @@ if (url_params) {
 
 <style>
     ol#top-contributors {
-        padding: 0;
-        padding-inline-start: 1rem;
-
+        max-height: 127px;
+        padding-right: 0.5rem;
+        padding-bottom: 0.25rem;
+        
         li {
             height: 16px;
         }
     }
 
-    @media (min-width: 350px) {
+    @media (min-width: 480px) {
         ol#top-contributors {
-            max-height: 98px;
+            max-height: 160px;
         }
     }
 

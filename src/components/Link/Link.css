@@ -38,7 +38,8 @@ div.tag {
 
 	ul.cats {
 		display: inline-flex;
-		gap: 2px;
+		row-gap: 6px;
+		column-gap: 2px;
 		margin: 0;
 
 		li a.nsfw {
@@ -89,10 +90,10 @@ p {
 button.delete-link-btn {
 	position: absolute;
 	right: 0;
-	bottom: 0;
+	top: 0;
 }
 
-@media (min-width: 680px) {
+@media (min-width: 480px) {
 	astro-island:first-of-type li.link {
 		margin-top: 0;
 	}

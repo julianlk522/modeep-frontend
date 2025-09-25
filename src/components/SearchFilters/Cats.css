@@ -3,7 +3,7 @@
 		font-size: 0.85rem;
 		padding: 1px;
 		min-width: 25ch;
-		margin-top: 0.5rem;
+		margin-top: 0.25rem;
 	}
 
 	input#cats::placeholder {

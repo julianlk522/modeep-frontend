@@ -126,7 +126,6 @@ const totals: Totals = await totals_resp.Response.json()
 	}
 
 	#totals {
-		margin-top: 1rem;
 		padding: 1rem 0;
 		font-size: 0.9rem;
 		text-align: center;
@@ -156,13 +155,14 @@ const totals: Totals = await totals_resp.Response.json()
 
 	@media (min-width: 400px) {
 		#totals div.row {
-			gap: 4px;
+			gap: 5px;
 		}
 	}
 
 	@media (min-width: 680px) {
 		#totals {
 			font-size: 1rem;
+			margin-top: 1rem;
 
 			div.row {
 				justify-content: flex-end;

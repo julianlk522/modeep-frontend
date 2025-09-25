@@ -205,9 +205,9 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
             align-items: center;
             list-style: none;
             padding-inline-start: 0;
-            padding-bottom: 0.5rem;
+            padding-bottom: 0.25rem;
             margin: 0;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
             font-weight: bold;
             border-bottom: var(--border-light);
 
@@ -299,6 +299,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 
 		ol {
 			min-width: fit-content;
+			list-style-position: outside;
 			max-width: calc(100% - 1rem);
 			margin: 0 0 0.5rem auto;
 			padding: 0;
@@ -332,12 +333,20 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 	}
 
 	@media (min-width: 680px) {
+		#top-links {
+			padding-top: 0.5rem;
+		}
+
 		section.links-section {
 			padding-top: 0.5rem;
 
 			img.section-expansion-arrow {
 				margin-left: -0.75rem;
 			}
+		}
+
+		section.links-section:has(ul#change-period) {
+			padding-top: 0;
 		}
 
 		section.links-section.single-tmap-section {

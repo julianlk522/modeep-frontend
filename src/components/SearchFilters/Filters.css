@@ -62,7 +62,7 @@ section#search-filters {
 
 	#lower-expansion-toggle-clickable-zone {
 		display: block;
-		height: 1rem;
+		height: 0.5rem;
 		cursor: pointer;
 	}
 
@@ -77,7 +77,7 @@ html.search-filters-collapsed section#search-filters {
 	padding-bottom: 0;
 
 	#search-filters-header {
-		margin-bottom: calc(0.5rem + 1px);
+		margin-bottom: 0.25rem;
 		img#filters-expansion-arrow {
 			rotate: 180deg;
 			opacity: 0.25;
