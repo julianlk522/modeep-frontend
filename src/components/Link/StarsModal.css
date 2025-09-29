@@ -13,9 +13,10 @@
 
 	#stars-modal-content {
 		background-color: var(--bg);
-		border: 1px solid cornflowerblue;
 		text-align: center;
-		padding: 2rem 0;
+		border: 1px solid cornflowerblue;
+		padding: 2rem 1rem;
+		max-width: 800px;
 
 		h3#link-title {
 			margin-bottom: 0;

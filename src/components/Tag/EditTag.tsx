@@ -22,6 +22,8 @@ export default function EditTag(props: Props) {
 		Token: token,
 	} = props
 	const initial_cats = your_tag ? your_tag.Cats.split(',') : []
+	const you_have_an_existing_tag = your_tag !== undefined
+	const tag_is_deletable = you_have_an_existing_tag && !has_one_tag
 
 	const [cats, set_cats] = useState<string[]>(initial_cats)
 	const [editing, set_editing] = useState(false)
@@ -130,11 +132,6 @@ export default function EditTag(props: Props) {
 					SetSelectedCats={set_cats}
 					Addable={editing}
 					Removable={editing}
-					EditingYourTag={editing}
-					SetEditingYourTag={set_editing}
-					YouHaveAnExistingTag={your_tag !== null}
-					HasOneTag={has_one_tag}
-					SetShowDeleteTagConfirmationModal={set_show_delete_modal}
 				/>
 
 				{your_tag ? (
@@ -144,6 +141,47 @@ export default function EditTag(props: Props) {
 				) : editing ? null : (
 					<p>(not tagged)</p>
 				)}
+
+				<>
+					<button
+						title={editing ? 'Save changes?' : 'Edit your tag?'}
+						onClick={() => {
+							if (editing && you_have_an_existing_tag && !cats.length) {
+								set_error('Surely SOMETHING can describe this? (at least 1 cat is required.)')
+								return
+							}
+							set_editing((e) => !e)
+						}}
+						id='edit-tag-btn'
+						class='img-btn'
+				>
+						<img
+							src={
+								editing
+									? '../../../confirm.svg'
+									: '../../../edit.svg'
+							}
+							height={20}
+							width={20}
+							alt={editing ? 'Save changes?' : 'Edit your tag?'}
+						/>
+					</button>
+
+					{editing && tag_is_deletable ? (
+						<button
+							title='Delete your tag?'
+							id='delete-tag-btn'
+							class='img-btn'
+							onClick={() => set_show_delete_modal(true)}
+						>
+							<img
+								src='../../../delete.svg'
+								height={20}
+								width={20}
+							/>
+						</button>
+					) : null}
+				</>
 
 				{show_delete_modal ? (
 					<Modal

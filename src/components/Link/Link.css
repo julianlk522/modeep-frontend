@@ -42,8 +42,14 @@ div.tag {
 		column-gap: 2px;
 		margin: 0;
 
-		li a.nsfw {
-			color: var(--danger);
+		li.cat {
+			a {
+				vertical-align: middle;
+			}
+			 
+			a.nsfw {
+				color: var(--danger);
+			}
 		}
 	}
 }

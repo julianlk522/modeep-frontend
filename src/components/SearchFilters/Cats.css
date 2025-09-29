@@ -40,21 +40,6 @@
 			align-self: center;
 		}
 	}
-
-	button#edit-tag-btn {
-		margin-left: 5px;
-	}
-
-	button#edit-tag-btn,
-	button#delete-tag-btn {
-		padding: 0;
-		margin-top: 0.5rem;
-	}
-
-	ul#cat-list + button#edit-tag-btn,
-	ul#cat-list + button#edit-tag-btn + button#delete-tag-btn {
-		margin-top: 0;
-	}
 }
 
 ol#recommendations-list {

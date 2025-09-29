@@ -20,13 +20,6 @@ interface Props {
 	SelectedCats: string[]
 	SetSelectedCats: Dispatch<StateUpdater<string[]>>
 	SubmittedLinks?: types.Link[]
-
-	// Tag Page only
-	EditingYourTag?: boolean
-	SetEditingYourTag?: Dispatch<StateUpdater<boolean>>
-	YouHaveAnExistingTag?: boolean
-	HasOneTag?: boolean
-	SetShowDeleteTagConfirmationModal?: Dispatch<StateUpdater<boolean>>
 }
 
 export default function SearchCats(props: Props) {
@@ -37,20 +30,7 @@ export default function SearchCats(props: Props) {
 		SelectedCats: selected_cats,
 		SetSelectedCats: set_selected_cats,
 		SubmittedLinks: submitted_links,
-		EditingYourTag: editing_your_tag,
-		SetEditingYourTag: set_editing_your_tag,
-		YouHaveAnExistingTag: you_have_an_existing_tag,
-		HasOneTag: has_one_tag,
-		SetShowDeleteTagConfirmationModal: set_show_delete_tag_confirmation_modal,
 	} = props
-	const is_tag_page = (
-		editing_your_tag !== undefined && 
-		set_editing_your_tag !== undefined && 
-		you_have_an_existing_tag !== undefined && 
-		has_one_tag !== undefined &&
-		set_show_delete_tag_confirmation_modal !== undefined
-	)
-	const tag_is_deletable = is_tag_page && you_have_an_existing_tag && !has_one_tag
 
 	const addable = props.Addable ?? true
 
@@ -213,56 +193,52 @@ export default function SearchCats(props: Props) {
 
 	return (
 		<>
-			{!is_tag_page || editing_your_tag ?
+			{addable ?
 				<div id='search-cats-container' class={is_home_page ? 'home' : ''}>
-					{addable ? (
-						<>
-							{!is_home_page ? (
-								<label id='search-cats' for='cats'>
-									Cats:
-								</label>
-							) : null}
+					{!is_home_page ? (
+						<label id='search-cats' for='cats'>
+							Cats:
+						</label>
+					) : null}
 
-							<input
-								id='cats'
-								name='cats'
-								type='text'
-								value={snippet}
-								autocomplete={'off'}
-								autoFocus={!is_new_link_page}
-								placeholder={
-									selected_cats?.length ? '' : placeholder_text
-								}
-								onInput={(event) => {
-									prev_selected_cats_ref.current = selected_cats
-									set_snippet(
-										(event.target as HTMLInputElement).value
-									)
-									set_error(undefined)
-								}}
-								onKeyDown={handle_enter}
-							/>
+					<input
+						id='cats'
+						name='cats'
+						type='text'
+						value={snippet}
+						autocomplete={'off'}
+						autoFocus={!is_new_link_page}
+						placeholder={
+							selected_cats?.length ? '' : placeholder_text
+						}
+						onInput={(event) => {
+							prev_selected_cats_ref.current = selected_cats
+							set_snippet(
+								(event.target as HTMLInputElement).value
+							)
+							set_error(undefined)
+						}}
+						onKeyDown={handle_enter}
+					/>
 
-							{!is_home_page ? (
-								<input
-									id='add-cat-filter'
-									title={
-										has_max_num_cats
-											? 'Max number of cats reached'
-											: 'Add cat filter'
-									}
-									type='button'
-									value='+'
-									onClick={add_cat}
-									onKeyDown={handle_enter}
-									disabled={!snippet || has_max_num_cats}
-								/>
-							) : null}
-						</>
+					{!is_home_page ? (
+						<input
+							id='add-cat-filter'
+							title={
+								has_max_num_cats
+									? 'Max number of cats reached'
+									: 'Add cat filter'
+							}
+							type='button'
+							value='+'
+							onClick={add_cat}
+							onKeyDown={handle_enter}
+							disabled={!snippet || has_max_num_cats}
+						/>
 					) : null}
 					
 					{error ? <p class='error'>{error}</p> : null}
-				</div>
+				</div> 
 			: null}
 
 			{non_selected_recommendations?.length ? (
@@ -303,7 +279,7 @@ export default function SearchCats(props: Props) {
 								/>
 							))}
 
-							{editing_your_tag && selected_cats.length > 1 ? (
+							{removable && selected_cats.length > 1 ? (
 								<li>
 									<input
 										id='clear-cat-filters'
@@ -318,49 +294,6 @@ export default function SearchCats(props: Props) {
 							) : null}
 						</ul>
 					) : null}
-
-					{is_tag_page ?
-						<>
-							<button
-								title={editing_your_tag ? 'Save changes' : 'Edit your tag'}
-								onClick={() => {
-									if (editing_your_tag && you_have_an_existing_tag && !selected_cats.length) {
-										set_error('Surely SOMETHING can describe this? (at least 1 cat is required.)')
-										return
-									}
-									set_editing_your_tag((e) => !e)
-								}}
-								id='edit-tag-btn'
-								class='img-btn'
-						>
-								<img
-									src={
-										editing_your_tag
-											? '../../../confirm.svg'
-											: '../../../edit.svg'
-									}
-									height={20}
-									width={20}
-									alt={editing_your_tag ? 'Save changes' : 'Edit your tag'}
-								/>
-							</button>
-
-							{editing_your_tag && tag_is_deletable ? (
-								<button
-									title='Delete your tag'
-									id='delete-tag-btn'
-									class='img-btn'
-									onClick={() => set_show_delete_tag_confirmation_modal(true)}
-								>
-									<img
-										src='../../../delete.svg'
-										height={20}
-										width={20}
-									/>
-								</button>
-							) : null}
-						</>
-					: null}
 				</div>
 			: null}
 		</>

@@ -103,7 +103,8 @@ const no_links_found = links && links.length === 0 || tmap && multiple_tmap_sect
 			justify-content: space-evenly;
 			gap: 0.25rem;
 			min-width: fit-content;
-			padding: 0.5rem 0;
+			padding: 0;
+            padding-top: 0.5rem;
 
 			> div {
 				padding-bottom: 0.5rem;
@@ -124,12 +125,20 @@ const no_links_found = links && links.length === 0 || tmap && multiple_tmap_sect
                 > div {
                     margin-top: 0;
                 }
+
+                h2 {
+                    text-align: center;
+                }
             }
         }
 
         @media (min-width: 680px) {
             aside#top-cats-and-contributors {
                 align-items: unset;
+
+                h2 {
+                    text-align: left;
+                }
             }
         }
 	}

@@ -6,7 +6,6 @@ li.cat {
 		color: var(--sky);
 		border-radius: 2px;
 		padding: 0 5px;
-		vertical-align: middle;
 	}
 
 	a:hover {
