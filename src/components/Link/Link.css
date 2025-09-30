@@ -115,6 +115,6 @@ button.delete-link-btn {
 	}
 
 	button.delete-link-btn {
-		bottom: calc(50% - 10px);
+		top: calc(50% - 10px);
 	}
 }

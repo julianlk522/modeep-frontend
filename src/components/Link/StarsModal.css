@@ -16,7 +16,7 @@
 		text-align: center;
 		border: 1px solid cornflowerblue;
 		padding: 2rem 1rem;
-		max-width: 800px;
+		max-width: min(800px, 80%);
 
 		h3#link-title {
 			margin-bottom: 0;

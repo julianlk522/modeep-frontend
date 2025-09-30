@@ -43,13 +43,11 @@ export default function SearchCats(props: Props) {
 	const [snippet, set_snippet] = useState<string>('')
 	const [error, set_error] = useState<string | undefined>(undefined)
 
-	// only render recommendations-list if there are non-selected recommendations
 	const non_selected_recommendations = recommended_cats?.filter(
 		(rc) => !selected_cats.includes(rc.Category)
 	)
 
 	const fetch_snippet_recommendations = useCallback(async () => {
-		// encode reserved chars
 		const encoded_snippet = encodeURIComponent(snippet)
 		let spellfix_matches_url = CATS_ENDPOINT + `/${encoded_snippet}`
 		if (selected_cats.length) {
@@ -82,12 +80,10 @@ export default function SearchCats(props: Props) {
 	// prev_selected_cats_ref prevents re-searching for recommended cats
 	// when user deletes 1+
 	const prev_selected_cats_ref = useRef(selected_cats)
-
-	// timeout_ref keeps track of pending debounced recommendation fetches
-	const timeout_ref = useRef<number | null>(null)
-
+	
 	// fetch new recommendations in response to snippet changes or added cats
 	const MIN_SNIPPET_CHARS = 2
+	const timeout_ref = useRef<number | null>(null)
 	useEffect(() => {
 		// skip if snippet is too short or user deleted selected cat(s)
 		if (prev_selected_cats_ref.current.length > selected_cats.length) {
@@ -112,7 +108,6 @@ export default function SearchCats(props: Props) {
 	const added_cat = useSignal<string | undefined>(undefined)
 	const deleted_cat = useSignal<string | undefined>(undefined)
 
-	// Listen for add / delete cat signals from TagCat
 	effect(() => {
 		if (added_cat.value?.length) {
 			const to_add = added_cat.value

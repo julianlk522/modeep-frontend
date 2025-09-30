@@ -1,6 +1,17 @@
 section#edit-tag {
 	padding: 1rem 0;
 
+	form {
+		position: relative;
+
+		h2 {
+			margin-bottom: 0;
+		}
+
+		p.last-updated {
+			margin-top: 0;
+		}
+
 		button#revert-btn {
 			margin-left: 3px;
 		}
@@ -10,8 +21,34 @@ section#edit-tag {
 			margin-top: 0.5rem;
 		}
 
-	ul#cat-list + button#edit-tag-btn,
-	ul#cat-list + button#edit-tag-btn + button#delete-tag-btn {
-		margin-top: 0;
+		ul#cat-list + button#edit-tag-btn {
+			margin-top: 0;
+		}
+
+		button#delete-tag-btn {
+			position: absolute;
+			bottom: 0;
+			right: 0;
+		}
+	}
+}
+
+@media (min-width: 480px) {
+	section#edit-tag {
+		form {
+			ul#cat-list {
+				max-width: calc(100% - 3.5rem);
+			}
+
+			button#delete-tag-btn {
+				bottom: calc(50% - 10px);
+			}
+		}
+	}
+}
+
+@media (min-width: 480px) {
+	section#edit-tag form ul#cat-list {
+		max-width: calc(100% - 4.5rem);
 	}
 }

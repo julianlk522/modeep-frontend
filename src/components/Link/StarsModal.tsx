@@ -31,7 +31,7 @@ export default function StarsModal(props: Props) {
 		return [
 			<>
 				<p class={pending_stars === 1 ? 'emphatic' : ''}>Thanks! </p>
-				<p>This is cool to see and know about.</p>
+				<p>This is good to know about.</p>
 			</>,
 			<>
 				<p>

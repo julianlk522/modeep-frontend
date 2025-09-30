@@ -80,7 +80,6 @@ export default function EditTag(props: Props) {
 			}
 		}
 
-		// success: reload
 		return window.location.reload()
 	}
 
@@ -118,7 +117,6 @@ export default function EditTag(props: Props) {
 			}
 		}
 
-		// success: reload
 		return window.location.reload()
 	}
 
@@ -136,17 +134,22 @@ export default function EditTag(props: Props) {
 					Removable={editing}
 				/>
 
-				{your_tag ? (
-					<p class='last-updated'>
-						{format_long_date(your_tag.LastUpdated)}
-					</p>
-				) : editing ? null : (
-					<p>(not tagged)</p>
-				)}
+				{!editing 
+					? your_tag 
+						? (<p class='last-updated'>
+							{format_long_date(your_tag.LastUpdated)}
+						</p>
+						) : <p style='margin-top: 0;'>(not tagged)</p>
+					: null
+				}
 
 				<>
 					<button
-						title={editing ? 'Save changes?' : 'Edit your tag?'}
+						title={editing 
+							? has_changes 
+								? 'Save changes?' 
+								: 'Cancel changes?'
+							: 'Edit your tag?'}
 						onClick={() => {
 							if (editing && you_have_an_existing_tag && !cats.length) {
 								set_error('Surely SOMETHING can describe this? (at least 1 cat is required.)')
