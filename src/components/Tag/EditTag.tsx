@@ -30,13 +30,15 @@ export default function EditTag(props: Props) {
 	const [error, set_error] = useState<string | undefined>(undefined)
 	const [show_delete_modal, set_show_delete_modal] = useState(false)
 
+	const has_changes = cats.length !== initial_cats.length ||
+		cats.some((c, i) => c !== initial_cats[i])
+
 	// this is in a useEffect so edit-tag-btn
 	// can live in child SearchCats.tsx and trigger confirm_changes() without
 	// passing link_id, token, etc. as props
 	useEffect(() => {
 		if (editing) return
-		if (cats.length !== initial_cats.length ||
-			cats.some((c, i) => c !== initial_cats[i])) {
+		if (has_changes) {
 			set_cats(cats.sort())
 			confirm_changes()
 		}
@@ -153,19 +155,22 @@ export default function EditTag(props: Props) {
 							set_editing((e) => !e)
 						}}
 						id='edit-tag-btn'
-						class='img-btn'
-				>
-						<img
-							src={
-								editing
-									? '../../../confirm.svg'
-									: '../../../edit.svg'
-							}
-							height={20}
-							width={20}
-							alt={editing ? 'Save changes?' : 'Edit your tag?'}
-						/>
-					</button>
+					>{editing 
+						? has_changes 
+							? 'Save' 
+							: 'Cancel'
+						: 'Edit'
+					}</button>
+
+					{editing && has_changes? (
+						<button
+							title='Revert changes?'
+							id='revert-btn'
+							onClick={() => {
+								set_cats(initial_cats)
+							}}
+						>Revert</button>
+					) : null}
 
 					{editing && tag_is_deletable ? (
 						<button

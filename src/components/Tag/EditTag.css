@@ -1,15 +1,14 @@
 section#edit-tag {
 	padding: 1rem 0;
 
-	h2 {
-		margin-bottom: 0;
-	}
+		button#revert-btn {
+			margin-left: 3px;
+		}
 
-	button#edit-tag-btn,
-	button#delete-tag-btn {
-		padding: 0;
-		margin-top: 0.5rem;
-	}
+		button#edit-tag-btn,
+		button#revert-btn {
+			margin-top: 0.5rem;
+		}
 
 	ul#cat-list + button#edit-tag-btn,
 	ul#cat-list + button#edit-tag-btn + button#delete-tag-btn {
