@@ -22,7 +22,7 @@ export default function EditTag(props: Props) {
 		Token: token,
 	} = props
 	const initial_cats = your_tag ? your_tag.Cats.split(',') : []
-	const you_have_an_existing_tag = your_tag !== undefined
+	const you_have_an_existing_tag = your_tag !== null
 	const tag_is_deletable = you_have_an_existing_tag && !has_one_tag
 
 	const [cats, set_cats] = useState<string[]>(initial_cats)
