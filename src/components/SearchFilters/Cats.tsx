@@ -33,6 +33,7 @@ export default function SearchCats(props: Props) {
 	} = props
 
 	const addable = props.Addable ?? true
+	const input_ref = useRef<HTMLInputElement>(null)
 
 	const has_max_num_cats = selected_cats.length >= MAX_CATS_PER_TAG
 
@@ -189,6 +190,14 @@ export default function SearchCats(props: Props) {
 		set_recommended_cats(undefined)
 	}, [submitted_links])
 
+	// autofocus on tag page when you start editing your tag
+	// (autoFocus attribute below will not apply there since the 
+	// <input /> is rendered conditionally) 
+	useEffect(() => {
+		if (!addable) return
+		input_ref.current?.focus() 
+	}, [addable])
+
 	const placeholder_text = 'Start typing for cat suggestions'
 
 	return (
@@ -203,6 +212,7 @@ export default function SearchCats(props: Props) {
 
 					<input
 						id='cats'
+						ref={input_ref}
 						name='cats'
 						type='text'
 						value={snippet}
