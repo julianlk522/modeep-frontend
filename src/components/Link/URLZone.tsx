@@ -36,7 +36,7 @@ export default function URLZone({
 		})
 
 		if (e.button === 0) {
-			return (window.location.href = url)
+			window.open(url, '_blank')
 		}
 	}
 
