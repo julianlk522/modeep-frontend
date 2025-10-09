@@ -7,7 +7,7 @@ import {
 	type Dispatch,
 	type StateUpdater,
 } from 'preact/hooks'
-import { CATS_ENDPOINT, DEBOUNCE_INTERVAL_MS, MAX_CATS_PER_TAG } from '../../constants'
+import { CATS_ENDPOINT, DEBOUNCE_INTERVAL_MS, CATS_PER_TAG_LIMIT } from '../../constants'
 import * as types from '../../types'
 import TagCat from '../Tag/TagCat'
 import './Cats.css'
@@ -39,7 +39,7 @@ export default function SearchCats(props: Props) {
 	const addable = props.Addable ?? true
 	const input_ref = useRef<HTMLInputElement>(null)
 
-	const has_max_num_cats = selected_cats.length >= MAX_CATS_PER_TAG
+	const has_max_num_cats = selected_cats.length >= CATS_PER_TAG_LIMIT
 
 	const [recommended_cats, set_recommended_cats] = useState<types.CatCount[] | undefined>(undefined)
 	const [snippet, set_snippet] = useState<string>('')
