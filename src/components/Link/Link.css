@@ -46,10 +46,6 @@ div.tag {
 			a {
 				vertical-align: middle;
 			}
-			 
-			a.nsfw {
-				color: var(--danger);
-			}
 		}
 	}
 

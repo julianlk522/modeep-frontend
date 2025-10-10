@@ -60,7 +60,8 @@ li.cat.nsfw a {
 	color: var(--danger);
 }
 
-li.cat.nsfw a:hover {
+li.cat.nsfw a:hover,
+li.cat.nsfw:not(:has(a)) {
 	background-color: var(--danger);
 	color: black;
 }
@@ -78,6 +79,14 @@ li.cat.addable:has(button:hover) {
 	background-color: var(--sky);
 
 	button img {
+		filter: invert(1);
+	}
+}
+
+li.cat.addable.nsfw {
+	background-color: var(--sky);
+
+	button.plus-btn {
 		filter: invert(1);
 	}
 }

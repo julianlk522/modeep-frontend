@@ -248,6 +248,7 @@ export default function SearchCats(props: Props) {
 						<TagCat
 							key={cat}
 							Cat={is_home_page ? `${cat.Category} (${cat.Count})` : cat.Category}
+							IsNSFW={cat.Category === 'NSFW'}
 							Count={is_home_page ? undefined : cat.Count}
 							Addable={!is_home_page}
 							AddedSignal={added_cat}
