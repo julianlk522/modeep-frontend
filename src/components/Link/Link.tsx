@@ -58,7 +58,6 @@ export default function Link(props: Props) {
 		Summary: summary,
 		SummaryCount: summary_count,
 		TagCount: tag_count,
-		ClickCount: click_count,
 		PreviewImgFilename: saved_preview_img_filename,
 	} = props.Link
 
@@ -74,6 +73,7 @@ export default function Link(props: Props) {
 	const [your_stars, set_your_stars] = useState(props.Link.StarsAssigned)
 	const [avg_stars, set_avg_stars] = useState(props.Link.AvgStars)
 	const [times_starred, set_times_starred] = useState(props.Link.TimesStarred)
+	const [clicks, set_clicks] = useState(props.Link.ClickCount)
 
 	let initial_earliest_starrers = props.Link.EarliestStarrers ?? ''
 
@@ -96,7 +96,7 @@ export default function Link(props: Props) {
 		undefined
 	)
 
-	const has_clicks = click_count > 0
+	const has_clicks = clicks > 0
 
 	// hide preview image if path fails to resolve
 	useEffect(() => {
@@ -169,16 +169,14 @@ export default function Link(props: Props) {
 			{preview_img_url ? (
 				<div class='preview'>
 					<img
-						src={preview_img_url}
-						alt={summary ? summary : url}
-						width={75}
-					/>
+
 					<URLZone
 						Link_ID={id}
 						URL={url}
 						Summary={summary}
 						SummaryCount={summary_count}
 						IsSummaryPage={is_summary_page}
+						SetClicks={set_clicks}
 					/>
 				</div>
 			) : (
@@ -188,6 +186,7 @@ export default function Link(props: Props) {
 					Summary={summary}
 					SummaryCount={summary_count}
 					IsSummaryPage={is_summary_page}
+					SetClicks={set_clicks}
 				/>
 			)}
 
@@ -281,19 +280,9 @@ export default function Link(props: Props) {
 				/>
 
 				{has_clicks ? (
-					<div
-						title={`Clicked ${
-							click_count > 1 ? `${click_count} times.` : 'once.'
-						}`}
-						class='click-count'
-					>
-						<img
-							src='../../click.svg'
-							alt='Clicks'
-							height={18}
-							width={18}
-						/>
-						<span>{click_count}</span>
+					<div title={`Clicked ${clicks > 1 ? `${clicks} times.` : 'once.'}`} class='click-count'>
+						<img src='../../click.svg' alt='Clicks' height={18} width={18} />
+						<span>{clicks}</span>
 					</div>
 				) : null}
 			</div>

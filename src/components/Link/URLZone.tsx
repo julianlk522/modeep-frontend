@@ -1,3 +1,4 @@
+import type { Dispatch, StateUpdater } from 'preact/hooks'
 import { CLICKS_ENDPOINT } from '../../constants'
 import './URLZone.css'
 
@@ -7,6 +8,7 @@ interface Props {
 	Summary?: string
 	SummaryCount: number
 	IsSummaryPage?: boolean
+	SetClicks: Dispatch<StateUpdater<number>>
 }
 
 export default function URLZone({
@@ -15,6 +17,7 @@ export default function URLZone({
 	Summary: summary,
 	SummaryCount: summary_count,
 	IsSummaryPage: is_summary_page,
+	SetClicks: set_clicks,
 }: Props) {
 	const link_text = summary ? summary : url
 
@@ -38,6 +41,8 @@ export default function URLZone({
 		if (e.button === 0) {
 			window.open(url, '_blank')
 		}
+
+		set_clicks((prev) => prev + 1)
 	}
 
 	return (
@@ -66,7 +71,7 @@ export default function URLZone({
 					<>
 						{` (`}
 						<a
-							title={`See summaries (${summary_count}); add or edit yours`}
+							title={`View summaries (${summary_count}) or add/edit yours`}
 							href={`/summary/${link_id}`}
 							class='summaries-page-link'
 						>
