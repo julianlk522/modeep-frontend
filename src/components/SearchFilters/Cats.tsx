@@ -16,7 +16,9 @@ interface Props {
 	Addable?: boolean
 	Removable?: boolean
 	IsHomePage?: boolean
+	TmapOwner?: string
 	IsNewLinkPage?: boolean
+	IsTagPage?: boolean
 	SelectedCats: string[]
 	SetSelectedCats: Dispatch<StateUpdater<string[]>>
 	SubmittedLinks?: types.Link[]
@@ -26,7 +28,9 @@ export default function SearchCats(props: Props) {
 	const {
 		Removable: removable,
 		IsHomePage: is_home_page,
+		TmapOwner: tmap_owner,
 		IsNewLinkPage: is_new_link_page,
+		IsTagPage: is_tag_page,
 		SelectedCats: selected_cats,
 		SetSelectedCats: set_selected_cats,
 		SubmittedLinks: submitted_links,
@@ -37,39 +41,40 @@ export default function SearchCats(props: Props) {
 
 	const has_max_num_cats = selected_cats.length >= MAX_CATS_PER_TAG
 
-	const [recommended_cats, set_recommended_cats] = useState<
-		types.CatCount[] | undefined
-	>(undefined)
+	const [recommended_cats, set_recommended_cats] = useState<types.CatCount[] | undefined>(undefined)
 	const [snippet, set_snippet] = useState<string>('')
 	const [error, set_error] = useState<string | undefined>(undefined)
 
-	const non_selected_recommendations = recommended_cats?.filter(
-		(rc) => !selected_cats.includes(rc.Category)
-	)
+	const non_selected_recommendations = recommended_cats?.filter((rc) => !selected_cats.includes(rc.Category))
 
 	const fetch_snippet_recommendations = useCallback(async () => {
 		const encoded_snippet = encodeURIComponent(snippet)
 		let spellfix_matches_url = CATS_ENDPOINT + `/${encoded_snippet}`
+		if (tmap_owner) {
+			spellfix_matches_url += `?from_tmap=${tmap_owner}`
+		}
 		if (selected_cats.length) {
 			const encoded_selected_cats = selected_cats
 				.map((cat) => {
 					return encodeURIComponent(cat)
 				})
 				.join(',')
-			spellfix_matches_url += `?omitted=${encoded_selected_cats}`
+			if (tmap_owner) {
+				spellfix_matches_url += `&omitted=${encoded_selected_cats}`
+			} else {
+				spellfix_matches_url += `?omitted=${encoded_selected_cats}`
+			}
 		}
 
 		try {
 			const spellfix_matches_resp = await fetch(spellfix_matches_url)
 			if (!spellfix_matches_resp.ok) {
-				const msg: types.ErrorResponse =
-					await spellfix_matches_resp.json()
+				const msg: types.ErrorResponse = await spellfix_matches_resp.json()
 				set_error(msg.error)
 				throw new Error('API request failed')
 			}
 
-			const spellfix_matches: types.CatCount[] =
-				await spellfix_matches_resp.json()
+			const spellfix_matches: types.CatCount[] = await spellfix_matches_resp.json()
 			set_recommended_cats(spellfix_matches)
 		} catch (error) {
 			set_recommended_cats(undefined)
@@ -80,7 +85,7 @@ export default function SearchCats(props: Props) {
 	// prev_selected_cats_ref prevents re-searching for recommended cats
 	// when user deletes 1+
 	const prev_selected_cats_ref = useRef(selected_cats)
-	
+
 	// fetch new recommendations in response to snippet changes or added cats
 	const MIN_SNIPPET_CHARS = 2
 	const timeout_ref = useRef<number | null>(null)
@@ -103,8 +108,7 @@ export default function SearchCats(props: Props) {
 		}
 	}, [snippet, selected_cats])
 
-	// Pass added_cat / deleted_cat signals to children TagCat.tsx
-	// to allow adding recommended cats / removing selected cats here
+	// Let children TagCat.tsx handle adding / removing cats
 	const added_cat = useSignal<string | undefined>(undefined)
 	const deleted_cat = useSignal<string | undefined>(undefined)
 
@@ -112,9 +116,7 @@ export default function SearchCats(props: Props) {
 		if (added_cat.value?.length) {
 			const to_add = added_cat.value
 			set_selected_cats((prev) => {
-				const next = [...prev, to_add].sort((a, b) =>
-					a.localeCompare(b)
-				)
+				const next = [...prev, to_add].sort((a, b) => a.localeCompare(b))
 				prev_selected_cats_ref.current = next
 				return next
 			})
@@ -186,41 +188,36 @@ export default function SearchCats(props: Props) {
 	}, [submitted_links])
 
 	// autofocus on tag page when you start editing your tag
-	// (autoFocus attribute below will not apply there since the 
-	// <input /> is rendered conditionally) 
+	// (autoFocus attribute below cannot be trusted since the
+	// <input /> is rendered conditionally)
 	useEffect(() => {
-		if (!addable) return
-		input_ref.current?.focus() 
-	}, [addable])
+		if (!is_tag_page) return
+		input_ref.current?.focus()
+	}, [is_tag_page])
 
 	const placeholder_text = 'Start typing for cat suggestions'
 
 	return (
 		<>
-			{addable ?
-				<div id='search-cats-container' class={is_home_page ? 'home' : ''}>
+			{addable ? (
+				<div id="search-cats-container" class={is_home_page ? 'home' : ''}>
 					{!is_home_page ? (
-						<label id='search-cats' for='cats'>
+						<label id="search-cats" for="cats">
 							Cats:
 						</label>
 					) : null}
 
 					<input
-						id='cats'
+						id="cats"
 						ref={input_ref}
-						name='cats'
-						type='text'
+						name="cats"
+						type="text"
 						value={snippet}
 						autocomplete={'off'}
-						autoFocus={!is_new_link_page}
-						placeholder={
-							selected_cats?.length ? '' : placeholder_text
-						}
+						placeholder={selected_cats?.length ? '' : placeholder_text}
 						onInput={(event) => {
 							prev_selected_cats_ref.current = selected_cats
-							set_snippet(
-								(event.target as HTMLInputElement).value
-							)
+							set_snippet((event.target as HTMLInputElement).value)
 							set_error(undefined)
 						}}
 						onKeyDown={handle_enter}
@@ -228,52 +225,40 @@ export default function SearchCats(props: Props) {
 
 					{!is_home_page ? (
 						<input
-							id='add-cat-filter'
-							title={
-								has_max_num_cats
-									? 'Max number of cats reached'
-									: 'Add cat filter'
-							}
-							type='button'
-							value='+'
+							id="add-cat-filter"
+							title={has_max_num_cats ? 'Max number of cats reached' : 'Add cat filter'}
+							type="button"
+							value="+"
 							onClick={add_cat}
 							onKeyDown={handle_enter}
 							disabled={!snippet || has_max_num_cats}
 						/>
 					) : null}
-					
-					{error ? <p class='error'>{error}</p> : null}
-				</div> 
-			: null}
+
+					{error ? <p class="error">{error}</p> : null}
+				</div>
+			) : null}
 
 			{non_selected_recommendations?.length ? (
-				<ol id='recommendations-list'>
+				<ol id="recommendations-list">
 					{non_selected_recommendations.map((cat) => (
 						<TagCat
 							key={cat}
-							Cat={
-								is_home_page
-									? `${cat.Category} (${cat.Count})`
-									: cat.Category
-							}
+							Cat={is_home_page ? `${cat.Category} (${cat.Count})` : cat.Category}
 							Count={is_home_page ? undefined : cat.Count}
 							Addable={!is_home_page}
 							AddedSignal={added_cat}
-							Href={
-								is_home_page
-									? `/search?cats=${cat.Category}`
-									: undefined
-							}
+							Href={is_home_page ? `/search?cats=${cat.Category}` : undefined}
 							IsNewLinkPage={is_new_link_page}
 						/>
 					))}
 				</ol>
 			) : null}
 
-			{!is_home_page ?
+			{!is_home_page ? (
 				<div id="selected-cats-container">
 					{selected_cats.length ? (
-						<ul id='cat-list'>
+						<ul id="cat-list">
 							{selected_cats.map((cat) => (
 								<TagCat
 									key={cat}
@@ -287,10 +272,10 @@ export default function SearchCats(props: Props) {
 							{removable && selected_cats.length > 1 ? (
 								<li>
 									<input
-										id='clear-cat-filters'
-										title='Clear cat filters'
-										type='button'
-										value='Clear'
+										id="clear-cat-filters"
+										title="Clear cat filters"
+										type="button"
+										value="Clear"
 										onClick={() => {
 											set_selected_cats([])
 										}}
@@ -300,7 +285,7 @@ export default function SearchCats(props: Props) {
 						</ul>
 					) : null}
 				</div>
-			: null}
+			) : null}
 		</>
 	)
 }
