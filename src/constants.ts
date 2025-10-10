@@ -4,8 +4,7 @@ const API_URL = 'https://api.modeep.org:1999'
 
 const SIGNUP_ENDPOINT = API_URL + '/signup'
 const LOGIN_ENDPOINT = API_URL + '/login'
-const SEND_PASSWORD_RESET_EMAIL_ENDPOINT =
-	API_URL + '/email-password-reset-link'
+const SEND_PASSWORD_RESET_EMAIL_ENDPOINT = API_URL + '/email-password-reset-link'
 const RESET_PASSWORD_ENDPOINT = API_URL + '/reset-password'
 
 const LINKS_ENDPOINT = API_URL + '/links'
@@ -36,6 +35,7 @@ const CATS_PAGE_LIMIT = 50
 const MAX_EARLIEST_LIKERS_SHOWN = 10
 const MAX_EARLIEST_STARRERS_SHOWN = 2
 const CATS_PER_TAG_LIMIT = 20
+const CATS_CHAR_LIMIT = 30
 const MIN_LIST_ITEMS_FOR_SCROLLBAR = 10
 
 // ???
@@ -46,6 +46,7 @@ export {
 	API_URL,
 	CATS_ENDPOINT,
 	CATS_PAGE_LIMIT,
+	CATS_CHAR_LIMIT,
 	CLICKS_ENDPOINT,
 	CONTRIBUTORS_ENDPOINT,
 	COOKIE_LIFETIME_SECS,

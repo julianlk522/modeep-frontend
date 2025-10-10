@@ -7,7 +7,7 @@ import {
 	type Dispatch,
 	type StateUpdater,
 } from 'preact/hooks'
-import { CATS_ENDPOINT, DEBOUNCE_INTERVAL_MS, CATS_PER_TAG_LIMIT } from '../../constants'
+import { CATS_ENDPOINT, CATS_CHAR_LIMIT, DEBOUNCE_INTERVAL_MS, CATS_PER_TAG_LIMIT } from '../../constants'
 import * as types from '../../types'
 import TagCat from '../Tag/TagCat'
 import './Cats.css'
@@ -155,6 +155,9 @@ export default function SearchCats(props: Props) {
 
 		if (has_max_num_cats) {
 			set_error('Max number of cats reached :(')
+			return
+		} else if (snippet.length > CATS_CHAR_LIMIT) {
+			set_error('Cat is too long :(')
 			return
 		}
 
