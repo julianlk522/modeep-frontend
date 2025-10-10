@@ -158,13 +158,13 @@ export default function SearchCats(props: Props) {
 			return
 		}
 
-		let new_cat = snippet
+		let new_cat = snippet.trim()
 		if (snippet === 'nsfw') {
 			new_cat = 'NSFW'
 		}
 
 		if (selected_cats.includes(new_cat)) {
-			set_error('You already have that, doofus')
+			set_error('You have that already, doofus')
 			return
 		}
 
