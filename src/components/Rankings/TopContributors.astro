@@ -3,92 +3,87 @@ import { MIN_LIST_ITEMS_FOR_SCROLLBAR } from '../../constants'
 import type { Contributor, URLParams } from '../../types'
 
 interface Props {
-    Contributors: Contributor[]
-    URLParams?: URLParams
+	Contributors: Contributor[]
+	URLParams?: URLParams
 }
-const {
-    Contributors: contributors,
-    URLParams: url_params
-} = Astro.props
+const { Contributors: contributors, URLParams: url_params } = Astro.props
 
 let href_suffix = ''
 if (url_params) {
-    const params = new URLSearchParams()
-    const {
-        Cats: cats,
-        Period: period,
-        SortBy: sort_by,
-        NSFW: nsfw,
-        SummaryContains: summary_contains,
-        URLContains: url_contains,
-        URLLacks: url_lacks
-    } = url_params
-    if (cats) {
-        params.set('cats', cats)
-    }
-    if (period && period !== 'all') {
-        params.set('period', period)
-    }
-    if (sort_by && sort_by !== 'times_starred') {
-        params.set('sort_by', sort_by)
-    }
-    if (nsfw) {
-        params.set('nsfw', 'true')
-    }
-    if (summary_contains?.length) {
-        params.set('summary_contains', summary_contains)
-    }
-    if (url_contains?.length) {
-        params.set('url_contains', url_contains)
-    }
-    if (url_lacks?.length) {
-        params.set('url_lacks', url_lacks)
-    }
+	const params = new URLSearchParams()
+	const {
+		Cats: cats,
+		Period: period,
+		SortBy: sort_by,
+		NSFW: nsfw,
+		SummaryContains: summary_contains,
+		URLContains: url_contains,
+		URLLacks: url_lacks,
+	} = url_params
+	if (cats) {
+		params.set('cats', cats)
+	}
+	if (period && period !== 'all') {
+		params.set('period', period)
+	}
+	if (sort_by && sort_by !== 'times_starred') {
+		params.set('sort_by', sort_by)
+	}
+	if (nsfw) {
+		params.set('nsfw', 'true')
+	}
+	if (summary_contains?.length) {
+		params.set('summary_contains', summary_contains)
+	}
+	if (url_contains?.length) {
+		params.set('url_contains', url_contains)
+	}
+	if (url_lacks?.length) {
+		params.set('url_lacks', url_lacks)
+	}
 
-    href_suffix = params.size ? `?${params.toString()}` : ''
+	href_suffix = params.size ? `?${params.toString()}` : ''
 }
 ---
 
-<div id="top-contributors-container">
-    <h2>Top Treasure Hunters</h2>
-    <ol id="top-contributors" class={contributors?.length >= MIN_LIST_ITEMS_FOR_SCROLLBAR ? 'scrollable' : ''}>
-        {contributors.map(
-            (c: Contributor) => (
-                <li>
-                    <strong>
-                        <a href={`/map/${c.LoginName}${href_suffix}`}>
-                            {c.LoginName}
-                        </a>
-                    </strong>
-                    <span>
-                        ({c.LinksSubmitted})
-                    </span>
-                </li>
-            )
-        )}
-    </ol>
+<div id='top-contributors-container'>
+	<h2>Top Treasure Hunters</h2>
+
+	<ol id='top-contributors' class={contributors?.length >= MIN_LIST_ITEMS_FOR_SCROLLBAR ? 'scrollable' : ''}>
+		{
+			contributors.map((c: Contributor) => (
+				<li>
+					<strong>
+						<a href={`/map/${c.LoginName}${href_suffix}`}>{c.LoginName}</a>
+					</strong>
+					<span>({c.LinksSubmitted})</span>
+				</li>
+			))
+		}
+	</ol>
 </div>
 
 <style>
-    ol#top-contributors {
-        max-height: 127px;
-        padding-right: 0.5rem;
-        padding-bottom: 0.25rem;
-        
-        li {
-            height: 16px;
-        }
-    }
+	ol#top-contributors {
+		max-height: 127px;
+		padding-right: 0.5rem;
+		padding-bottom: 0.25rem;
 
-    @media (min-width: 480px) {
-        ol#top-contributors {
-            max-height: 160px;
-        }
-    }
+		li {
+			height: 16px;
+		}
+	}
 
-    @media (min-width: 680px) {
-        ol#top-contributors {
-            max-height: 240px;
-        }
-    }
+	@media (min-width: 480px) {
+		ol#top-contributors {
+			max-height: 160px;
+		}
+	}
+
+	@media (min-width: 680px) {
+		ol#top-contributors {
+			max-height: 240px;
+		}
+	}
 </style>
+

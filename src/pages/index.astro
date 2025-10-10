@@ -30,7 +30,7 @@ if (!top_contributors_resp.Response || top_contributors_resp.RedirectTo) {
 const top_contributors: Contributor[] = await top_contributors_resp.Response.json()
 
 // Get top links
-const DEFAULT_PERIOD = "month"
+const DEFAULT_PERIOD = 'week'
 const links_url = LINKS_ENDPOINT + `?period=${DEFAULT_PERIOD}`
 const get_links_resp = await (token
 	? fetch_with_handle_redirect(links_url, {
@@ -51,60 +51,60 @@ if (!totals_resp.Response || totals_resp.RedirectTo) {
 const totals: Totals = await totals_resp.Response.json()
 ---
 
-<WithFooter Title="Modeep: Share and discover the web's gems.">
+<WithFooter Title='Modeep - discover and share treasures.'>
 	<main>
 		<h1>Welcome Home, Good Hunter</h1>
 		<p id='subtitle'>What is it you desire?</p>
 
 		<SearchCats client:load SelectedCats={[]} SetSelectedCats={() => {}} IsHomePage />
 
-		<Rankings 
+		<Rankings
 			Links={links}
-			URLParams={{Page: 1}}
-			Pages={links_data.Pages} 
-			TopCats={top_cats} 
-			TopContributors={top_contributors} 
-			Token={token} 
-			User={user} 
+			URLParams={{ Page: 1 }}
+			Pages={links_data.Pages}
+			TopCats={top_cats}
+			TopContributors={top_contributors}
+			Token={token}
+			User={user}
 			IsHomePage
 		/>
 
-		<div id="totals">
-			<div class="row">
-				<div class="total">
-					<span class="number">{totals.Links}</span> 
-					<span class="category">Links</span>
-				</div> 
-				<span>•</span> 
+		<div id='totals'>
+			<div class='row'>
+				<div class='total'>
+					<span class='number'>{totals.Links}</span>
+					<span class='category'>Links</span>
+				</div>
+				<span>•</span>
 
-				<div class="total">
-					<span class="number">{totals.Clicks}</span> 
-					<span class="category">Clicks</span>
-				</div> 
-				<span>•</span> 
+				<div class='total'>
+					<span class='number'>{totals.Clicks}</span>
+					<span class='category'>Clicks</span>
+				</div>
+				<span>•</span>
 
-				<div class="total">
-					<span class="number">{totals.LinksStarred}</span> 
-					<span class="category">Links Starred</span>
+				<div class='total'>
+					<span class='number'>{totals.LinksStarred}</span>
+					<span class='category'>Links Starred</span>
 				</div>
 			</div>
 
-			<div class="row">
-				<div class="total">
-					<span class="number">{totals.Contributors}</span>
-					<span class="category">Treasure Hunters</span>
+			<div class='row'>
+				<div class='total'>
+					<span class='number'>{totals.Contributors}</span>
+					<span class='category'>Treasure Hunters</span>
 				</div>
 				<span>•</span>
 
-				<div class="total">
-					<span class="number">{totals.Tags}</span>
-					<span class="category">Tags</span>
+				<div class='total'>
+					<span class='number'>{totals.Tags}</span>
+					<span class='category'>Tags</span>
 				</div>
 				<span>•</span>
 
-				<div class="total">
-					<span class="number">{totals.Summaries}</span>
-					<span class="category">Summaries</span>
+				<div class='total'>
+					<span class='number'>{totals.Summaries}</span>
+					<span class='category'>Summaries</span>
 				</div>
 			</div>
 		</div>
@@ -142,7 +142,7 @@ const totals: Totals = await totals_resp.Response.json()
 
 				span.number {
 					font-weight: bold;
-					color: var(--sky);	
+					color: var(--sky);
 				}
 
 				span.category {

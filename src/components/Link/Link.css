@@ -7,6 +7,10 @@
 	list-style: none;
 }
 
+astro-island:first-of-type li.link {
+	margin-top: 0.75rem;
+}
+
 .preview {
 	display: inline-flex;
 	gap: 1rem;
@@ -94,12 +98,6 @@ button.delete-link-btn {
 	position: absolute;
 	right: 0;
 	top: 0;
-}
-
-@media (min-width: 480px) {
-	astro-island:first-of-type li.link {
-		margin-top: 0;
-	}
 }
 
 @media (min-width: 768px) {

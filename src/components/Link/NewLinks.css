@@ -13,6 +13,10 @@ section#new-link {
 			margin-left: 0;
 		}
 	}
+	
+	> p.error {
+		margin-top: 0;
+	}
 }
 
 #submitted-links ol li.link:not(:first-of-type) {

@@ -1,194 +1,184 @@
 ---
-import type { CatCount, Contributor, FilteredTreasureMap, Link, TmapLink, TreasureMap, URLParams } from "../../types";
-import { tmap_sections } from "../../types";
-import ScrollUp from "../ScrollUp.astro";
-import TopCats from "./TopCats.astro";
-import TopContributors from "./TopContributors.astro";
-import TopLinks from "./TopLinks.astro";
+import type { CatCount, Contributor, FilteredTreasureMap, Link, TmapLink, TreasureMap, URLParams } from '../../types'
+import { tmap_sections } from '../../types'
+import ScrollUp from '../ScrollUp.astro'
+import TopCats from './TopCats.astro'
+import TopContributors from './TopContributors.astro'
+import TopLinks from './TopLinks.astro'
 
 interface Props {
-    Links?: Link[]
-    URLParams: URLParams
-    Pages?: number
-    TopCats: CatCount[]
-    TopContributors?: Contributor[]
-    MergedCats?: string[]
-    Tmap?: TreasureMap | FilteredTreasureMap
-    SingleTmapSection?: TmapLink[]
-    SingleTmapSectionName?: typeof tmap_sections[number]
-    IsHomePage?: boolean
-    IsTmapFromUser?: string
-    Token?: string
-    User?: string
+	Links?: Link[]
+	URLParams: URLParams
+	Pages?: number
+	TopCats: CatCount[]
+	TopContributors?: Contributor[]
+	MergedCats?: string[]
+	Tmap?: TreasureMap | FilteredTreasureMap
+	SingleTmapSection?: TmapLink[]
+	SingleTmapSectionName?: (typeof tmap_sections)[number]
+	IsHomePage?: boolean
+	IsTmapFromUser?: string
+	Token?: string
+	User?: string
 }
 
-const { 
-    Links: links, 
-    URLParams: url_params,
-    Pages: pages, 
-    TopCats: top_cats, 
-    TopContributors: top_contributors, 
-    MergedCats: merged_cats,
-    Tmap: tmap, 
-    SingleTmapSection: single_tmap_section,
-    SingleTmapSectionName: single_tmap_section_name, 
-    IsHomePage: is_home_page, 
-    IsTmapFromUser: tmap_owner, 
-    User: user, 
-    Token: token, 
+const {
+	Links: links,
+	URLParams: url_params,
+	Pages: pages,
+	TopCats: top_cats,
+	TopContributors: top_contributors,
+	MergedCats: merged_cats,
+	Tmap: tmap,
+	SingleTmapSection: single_tmap_section,
+	SingleTmapSectionName: single_tmap_section_name,
+	IsHomePage: is_home_page,
+	IsTmapFromUser: tmap_owner,
+	User: user,
+	Token: token,
 } = Astro.props
 
-let multiple_tmap_sections: typeof tmap_sections[number][] = []
+let multiple_tmap_sections: (typeof tmap_sections)[number][] = []
 if (tmap) {
-    multiple_tmap_sections = tmap_sections.filter((s) => tmap[s]?.length)
+	multiple_tmap_sections = tmap_sections.filter((s) => tmap[s]?.length)
 }
 
-const no_links_found = links && links.length === 0 || tmap && multiple_tmap_sections.length === 0
+const no_links_found = (links && links.length === 0) || (tmap && multiple_tmap_sections.length === 0)
 ---
 
-<div id="rankings" class={is_home_page ? 'home' : ''}>
-    {no_links_found 
-        ? null 
-        : <aside id="top-cats-and-contributors" class={tmap || single_tmap_section 
-            ? 'tmap' 
-            : ''
-        }>        
-            {top_contributors 
-                ? <TopContributors 
-                    Contributors={top_contributors}
-                    URLParams={url_params}    
-                /> 
-                : null
-            } 
+<div id='rankings' class={is_home_page ? 'home' : ''}>
+	{
+		no_links_found ? null : (
+			<aside id='top-cats-and-contributors' class={tmap || single_tmap_section ? 'tmap' : ''}>
+				<TopCats
+					TopCats={top_cats}
+					URLParams={url_params}
+					IsTmapFromUser={tmap_owner}
+					SingleTmapSection={single_tmap_section_name}
+				/>
 
-            <TopCats 
-                TopCats={top_cats} 
-                URLParams={url_params}
-                IsTmapFromUser={tmap_owner} 
-                SingleTmapSection={single_tmap_section_name}
-            />
-        </aside>
-    }
+				{top_contributors ? <TopContributors Contributors={top_contributors} URLParams={url_params} /> : null}
+			</aside>
+		)
+	}
 
-  <TopLinks 
-        Links={links}
-        URLParams={url_params}
-        MergedCats={merged_cats}
-        Pages={pages}
-        Tmap={tmap}
-        MultipleTmapSections={multiple_tmap_sections}
-        SingleTmapSection={single_tmap_section}
-        SingleTmapSectionName={single_tmap_section_name}
-        TmapOwner={tmap_owner}
-        IsHomePage={is_home_page}
-        Token={token}
-        User={user}
-    />
+	<TopLinks
+		Links={links}
+		URLParams={url_params}
+		MergedCats={merged_cats}
+		Pages={pages}
+		Tmap={tmap}
+		MultipleTmapSections={multiple_tmap_sections}
+		SingleTmapSection={single_tmap_section}
+		SingleTmapSectionName={single_tmap_section_name}
+		TmapOwner={tmap_owner}
+		IsHomePage={is_home_page}
+		Token={token}
+		User={user}
+	/>
 
-    {links && links.length > 5 
-        ? <ScrollUp /> 
-        : null
-    }
+	{links && links.length > 5 ? <ScrollUp /> : null}
 </div>
 
 <style>
-    #rankings {
+	#rankings {
 		display: flex;
 		flex-direction: column;
-        padding-top: 0.5rem;
+		padding-top: 0.5rem;
 
-        aside#top-cats-and-contributors {
+		aside#top-cats-and-contributors {
 			display: flex;
 			flex-direction: column;
 			justify-content: space-evenly;
 			gap: 0.25rem;
 			min-width: fit-content;
 			padding: 0;
-            padding-top: 0.5rem;
+			padding-top: 0.5rem;
 
 			> div {
 				padding-bottom: 0.5rem;
 			}
 
-            h2 {
-                margin-bottom: 0;
-                padding-bottom: 0.25rem;
-                border-bottom: var(--border-light);
-            }
-        }
+			h2 {
+				margin-bottom: 0;
+				padding-bottom: 0.25rem;
+				border-bottom: var(--border-light);
+			}
+		}
 
-        /* had to put this here to increase specificity */
-        @media (min-width: 480px) {
-            aside#top-cats-and-contributors {
-                flex-direction: row;
+		/* had to put this here to increase specificity */
+		@media (min-width: 480px) {
+			aside#top-cats-and-contributors {
+				flex-direction: row;
 
-                > div {
-                    margin-top: 0;
-                }
+				> div {
+					margin-top: 0;
+				}
 
-                h2 {
-                    text-align: center;
-                }
-            }
-        }
+				h2 {
+					text-align: center;
+				}
+			}
+		}
 
-        @media (min-width: 680px) {
-            aside#top-cats-and-contributors {
-                align-items: unset;
+		@media (min-width: 680px) {
+			aside#top-cats-and-contributors {
+				align-items: initial;
 
-                h2 {
-                    text-align: left;
-                }
-            }
-        }
+				h2 {
+					text-align: left;
+				}
+			}
+		}
 	}
 
-    #rankings:has(p#no-further-cats) {
+	#rankings:has(p#no-further-cats) {
 		padding: 0.5rem 0;
 	}
 
-    @media (min-width: 450px) {
-        #rankings {
-            h2.has-section-after {
-                font-size: 1.25rem;
-            }
-        }
-    }
+	@media (min-width: 450px) {
+		#rankings {
+			h2.has-section-after {
+				font-size: 1.25rem;
+			}
+		}
+	}
 
-    @media (min-width: 480px) {
-        #rankings.home {
-            margin-top: 1.5rem;
-        }
-    }
+	@media (min-width: 480px) {
+		#rankings.home {
+			margin-top: 1rem;
+		}
+	}
 
-    @media (min-width: 680px) {
-        #rankings {
-            flex-direction: row;
-            gap: 3rem;
+	@media (min-width: 680px) {
+		#rankings {
+			flex-direction: row;
+			gap: 3rem;
 
-            aside#top-cats-and-contributors {
-                flex-direction: column;
-                justify-content: start;
-                position: sticky;
-                top: 1rem;
-                height: min-content;
-            }
+			aside#top-cats-and-contributors {
+				flex-direction: column;
+				justify-content: start;
+				position: sticky;
+				top: 1rem;
+				height: min-content;
+				margin-top: 0.5rem;
+			}
 
-            aside#top-cats-and-contributors.tmap {
-                margin-top: 1.5rem;
-            }
-        }
-    }
+			aside#top-cats-and-contributors.tmap {
+				margin-top: 1.5rem;
+			}
+		}
+	}
 
-    @media (min-width: 786px) {
-        #rankings {
-            gap: 4rem;
-        }
-    }
+	@media (min-width: 786px) {
+		#rankings {
+			gap: 4rem;
+		}
+	}
 
-    @media (min-width: 1000px) {
-        #rankings {
-            gap: 6rem;
-        }
-    }
+	@media (min-width: 1000px) {
+		#rankings {
+			gap: 6rem;
+		}
+	}
 </style>

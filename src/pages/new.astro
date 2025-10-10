@@ -17,21 +17,21 @@ if (!token || !user) {
 }
 ---
 
-<BaseLayout Title='Reveal Treasure'>
+<BaseLayout Title='Tell a tale from your journey: what struck you? - Modeep'>
 	<main>
-		<h2>What's That?</h2>
-
 		<NewLinks client:load Token={token} User={user} />
 
-		<section id="rules">
+		<section id='rules'>
 			<h2>Rules</h2>
+
 			<ul>
 				<li>
-					<ToolTip client:load Prompt={"NSFW"} Title="Click to be informed of what 'NSFW' stands for">
-						<p style="margin-bottom: 1rem;"><strong>Not Safe For Work</strong></p>
-					</ToolTip> 
-					stuff should be tagged with 
-					<span id="example-cat" class="cat fat">"NSFW"</span>
+					<ToolTip client:load Prompt={'NSFW'} Title="Click to be informed of what 'NSFW' stands for">
+						<p style='margin-bottom: 1rem;'><strong>Not Safe For Work</strong></p>
+					</ToolTip>
+					stuff should be tagged with
+
+					<span id='example-cat'>"NSFW"</span>
 				</li>
 			</ul>
 		</section>
@@ -41,7 +41,7 @@ if (!token || !user) {
 <style>
 	section#rules {
 		margin-top: 1.5rem;
-		
+
 		ul {
 			margin: 0 0 0.5rem;
 

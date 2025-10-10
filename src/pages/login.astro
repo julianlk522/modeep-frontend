@@ -22,9 +22,9 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 		async function handle_signup(event: SubmitEvent) {
 			event.preventDefault()
 			const form = event.target as HTMLFormElement
-			const form_data = new FormData(form)
-			const signup_name = form_data.get('signup_name')
-			const password = form_data.get('password')
+			const data = new FormData(form)
+			const signup_name = data.get('signup_name')
+			const password = data.get('password')
 
 			const signup_resp = await fetch_with_handle_redirect(SIGNUP_ENDPOINT, {
 				method: 'POST',
@@ -54,9 +54,9 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 		async function handle_login(event: SubmitEvent) {
 			event.preventDefault()
 			const form = event.target as HTMLFormElement
-			const form_data = new FormData(form)
-			const login_name = form_data.get('login_name')
-			const password = form_data.get('password')
+			const data = new FormData(form)
+			const login_name = data.get('login_name')
+			const password = data.get('password')
 
 			const login_resp = await fetch_with_handle_redirect(LOGIN_ENDPOINT, {
 				method: 'POST',

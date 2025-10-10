@@ -1,13 +1,6 @@
 import { effect, useSignal } from '@preact/signals'
-import {
-	useCallback,
-	useEffect,
-	useRef,
-	useState,
-	type Dispatch,
-	type StateUpdater,
-} from 'preact/hooks'
-import { CATS_ENDPOINT, CATS_CHAR_LIMIT, DEBOUNCE_INTERVAL_MS, CATS_PER_TAG_LIMIT } from '../../constants'
+import { useCallback, useEffect, useRef, useState, type Dispatch, type StateUpdater } from 'preact/hooks'
+import { CATS_ENDPOINT, DEBOUNCE_INTERVAL_MS, CATS_PER_TAG_LIMIT, CATS_CHAR_LIMIT } from '../../constants'
 import * as types from '../../types'
 import TagCat from '../Tag/TagCat'
 import './Cats.css'
@@ -203,18 +196,18 @@ export default function SearchCats(props: Props) {
 	return (
 		<>
 			{addable ? (
-				<div id="search-cats-container" class={is_home_page ? 'home' : ''}>
+				<div id='search-cats-container' class={is_home_page ? 'home' : ''}>
 					{!is_home_page ? (
-						<label id="search-cats" for="cats">
+						<label id='search-cats' for='cats'>
 							Cats:
 						</label>
 					) : null}
 
 					<input
-						id="cats"
+						id='cats'
 						ref={input_ref}
-						name="cats"
-						type="text"
+						name='cats'
+						type='text'
 						value={snippet}
 						autocomplete={'off'}
 						placeholder={selected_cats?.length ? '' : placeholder_text}
@@ -228,22 +221,22 @@ export default function SearchCats(props: Props) {
 
 					{!is_home_page ? (
 						<input
-							id="add-cat-filter"
+							id='add-cat-filter'
 							title={has_max_num_cats ? 'Max number of cats reached' : 'Add cat filter'}
-							type="button"
-							value="+"
+							type='button'
+							value='+'
 							onClick={add_cat}
 							onKeyDown={handle_enter}
 							disabled={!snippet || has_max_num_cats}
 						/>
 					) : null}
 
-					{error ? <p class="error">{error}</p> : null}
+					{error ? <p class='error'>{error}</p> : null}
 				</div>
 			) : null}
 
 			{non_selected_recommendations?.length ? (
-				<ol id="recommendations-list">
+				<ol id='recommendations-list'>
 					{non_selected_recommendations.map((cat) => (
 						<TagCat
 							key={cat}
@@ -260,9 +253,9 @@ export default function SearchCats(props: Props) {
 			) : null}
 
 			{!is_home_page ? (
-				<div id="selected-cats-container">
-					{selected_cats.length ? (
-						<ul id="cat-list">
+				selected_cats.length ? (
+					<div id='selected-cats-container'>
+						<ul id='cat-list'>
 							{selected_cats.map((cat) => (
 								<TagCat
 									key={cat}
@@ -276,10 +269,10 @@ export default function SearchCats(props: Props) {
 							{removable && selected_cats.length > 1 ? (
 								<li>
 									<input
-										id="clear-cat-filters"
-										title="Clear cat filters"
-										type="button"
-										value="Clear"
+										id='clear-cat-filters'
+										title='Clear cat filters'
+										type='button'
+										value='Clear'
 										onClick={() => {
 											set_selected_cats([])
 										}}
@@ -287,8 +280,8 @@ export default function SearchCats(props: Props) {
 								</li>
 							) : null}
 						</ul>
-					) : null}
-				</div>
+					</div>
+				) : null
 			) : null}
 		</>
 	)

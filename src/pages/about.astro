@@ -3,37 +3,60 @@ import cornucopia from '../images/cornucopia.webp'
 import WithFooter from '../layouts/WithFooter.astro'
 ---
 
-<WithFooter Title='About Modeep'>
+<WithFooter Title='What is Modeep?'>
 	<main>
 		<h1>The Internet rocks.</h1>
 
-		<p style="text-align: center;">This little site is to help the awesomest parts reach people who would love them. </p>
+		<p style='text-align: center;'>This site is to help the best parts reach people who would love them.</p>
 
-		<img id="cornucopia" src={cornucopia.src} title="In this elaborate feast, every guest finds something delicious." />
+		<img
+			id='cornucopia'
+			src={cornucopia.src}
+			title='In this elaborate feast, every guest finds something delicious.'
+		/>
 
-		<section style="padding-top: 0;">
-			<p>Our precious treasure trove constantly introduces knowledge, joy, curiosity, beauty, and meaning to all manner of visitors. The ocean of opportunities in the web connects interests quickly and cheaply to the most appropriate and extraordinary resources for them available anywhere in the world, an exclusive 21st-century privilege.</p>
+		<section style='padding-top: 0;'>
+			<p>
+				Our precious treasure trove constantly introduces knowledge, joy, curiosity, beauty, and meaning to all
+				manner of visitors. An ocean of opportunity connecting interests quickly and cheaply to the most
+				appropriate and extraordinary resources for them available anywhere in the world, an exclusive
+				21st-century privilege.
+			</p>
 
 			<p>
-				<strong>Yet, it can be easy to miss indispensable things for your set of interests</strong>.
+				<strong>Yet, it's easy to miss personally and broadly indispensable things.</strong>.
 			</p>
 		</section>
 
 		<section>
-			<h2>MODEEP: <span style="font-weight: normal;">MOdular filtration and Decentralized Evaluation of EPic internet treasure</span></h2>
+			<h2>
+				MODEEP: <span style='font-weight: normal;'
+					>MOdular filtration and Decentralized Evaluation of EPic internet treasure</span
+				>
+			</h2>
 
 			<p>
-				Modeep marks the hiding places of treasured links found by brave web wanderers. It's purpose is to curate, organize, and help you discover great things online that engage your heart and mind.
+				Modeep marks the hiding places of treasured links found by brave web wanderers. It's purpose is to
+				curate, organize, and help you discover great things online that engage your heart and mind.
 			</p>
 
 			<p>
-				"Epic internet treasure" can be anything anyone cares about. Any topic is fair game, and importantly, any<em>combination of topics</em> can be dynamically indexed.
+				<strong>Epic internet treasure</strong> can be anything anyone cares about. Any topic is fair game, and importantly,
+				any <em>combination of topics</em> can be dynamically indexed.
 			</p>
 
-			<p>Recommendations are produced by an open user base and its consensus, to the extent that that's possible. There is an algorithm (well... a few), but it is minimal, <a href="https://github.com/julianlk522/modeep-backend">open source</a>, and deliberately <a href="/about/how#global-tag-calculation">transparent</a>. Links are evaluated by simple, predictable rules and aggregate feedback interactions like clicks, stars, and <a href="/about/how#cats">cat</a> assignments.</p>
+			<p>
+				Recommendations are produced by an open user base and its consensus, to the extent that that's possible.
+				There's still an algorithm, but it's minimal, <a href='https://github.com/julianlk522/modeep-backend'
+					>open source</a
+				>, and deliberately <a href='/about/how#global-tag-calculation'>transparent</a>. Links are evaluated by
+				simple, predictable rules and aggregate feedback interactions like clicks, stars, and <a
+					href='/about/how#cats'>cat</a
+				> assignments.
+			</p>
 
 			<p>
-				<a href="/about/how">Learn more</a>
+				<a href='/about/how'>Learn more</a>
 			</p>
 		</section>
 
@@ -41,11 +64,32 @@ import WithFooter from '../layouts/WithFooter.astro'
 			<h2>Benefits</h2>
 
 			<ul>
-				<li><strong>Objective, relevant recommendations.</strong> Link sorting and ranking are decided by cumulative user interactions and other simple metadata, not an opaque algorithm. Filtering to match various conditions is easy and reliable because searches do exactly what they say they do, nothing more, nothing less. Finding what most people recommend for something is very easy: by default, the most-liked (starred) links from any search go first.  Because fairness and accountability are crucial in this exchange, Modeep is <a href="https://github.com/julianlk522/modeep-backend">open</a> and made to be easily understood.</li>
+				<li>
+					<strong>Objective, relevant recommendations.</strong> Link sorting and ranking are decided by cumulative
+					user interactions and other simple metadata, not an opaque algorithm. Filtering to match various conditions
+					is easy and reliable because searches do exactly what they say they do, nothing more, nothing less. Finding
+					what most people recommend for something is very easy: by default, the most-liked (starred) links from
+					any search go first. Because fairness and accountability are crucial in this exchange, Modeep is <a
+						href='https://github.com/julianlk522/modeep-backend'>open</a
+					> and made to be easily understood.
+				</li>
 
-				<li><strong>Maximal search precision.</strong> Matching <em>all</em>&mdash;not <em>any</em>&mdash; of your keywords (cats). In exchange for not getting an endless feed to scroll, you get sniper-like concentration on the few most truly noteworthy items for your inquiry. Incrementally adding or removing specificity by <a href="/about/how#stacking-cats">stacking</a> or un-stacking cats lets you fine-tune the breadth of your searches to be just right.</li>
+				<li>
+					<strong>Maximal search precision.</strong> Matching <em>all</em>&mdash;not <em>any</em>&mdash; of
+					your keywords (cats). In exchange for not getting an endless feed to scroll, you get sniper-like
+					concentration on the few most truly noteworthy items for your inquiry. Incrementally adding or
+					removing specificity by <a href='/about/how#stacking-cats'>stacking</a> or un-stacking cats lets you
+					fine-tune the breadth of your searches to be just right.
+				</li>
 
-				<li><strong>No distractions.</strong> Modeep is more like a library or art gallery than a bar&mdash;an efficient pipeline for accessing the documented world. No being inundated with obnoxious ads or other unsolicited fluff. You're encouraged to effortlessly locate specific material using specialized search tools, or to wander amid new ideas and see what looks interesting. Comments, direct messaging, and other fun but inappropriate attention-callers are absent to help make this a safe sanctuary for enjoying purposefully curated online delights.</li>
+				<li>
+					<strong>No distractions.</strong> Modeep is more like a library or art gallery than a bar&mdash;an efficient
+					pipeline for accessing the documented world. No being inundated with obnoxious ads or other unsolicited
+					fluff. You're encouraged to effortlessly locate specific material using specialized search tools, or
+					to wander amid new ideas and see what looks interesting. Comments, direct messaging, and other fun but
+					inappropriate attention-callers are absent to help make this a safe sanctuary for enjoying purposefully
+					curated online delights.
+				</li>
 			</ul>
 		</section>
 
@@ -54,9 +98,12 @@ import WithFooter from '../layouts/WithFooter.astro'
 
 			<p>Broad input helps all kinds of people discover and enjoy web treasures.</p>
 
-			<p>Consider <a href="/new">showing off a cool thing you've found</a>. Anything at all. If you like it, someone else will too.</p>
+			<p>
+				Consider <a href='/new'>showing off a cool thing you've found</a>. Anything at all. If you like it,
+				someone else will too.
+			</p>
 
-			<p>Otherwise, sit back in your surfing chair and enjoy the goodies!</p>
+			<p>Otherwise, sit back and enjoy the goodies!</p>
 		</section>
 	</main>
 </WithFooter>

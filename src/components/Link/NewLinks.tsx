@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
 import { LINKS_ENDPOINT } from '../../constants'
 import * as types from '../../types'
 import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
@@ -26,43 +26,33 @@ export default function NewLinks(props: Props) {
 		let cats_to_be_added: string[] = []
 
 		// channel
-		if (
-			val.includes('youtube.com/@') &&
-			!selected_cats.includes('YouTube channels')
-		) {
+		if (val.includes('youtube.com/@') && !selected_cats.includes('YouTube channels')) {
 			cats_to_be_added.push('YouTube channels')
 		}
 		// playlist
-		if (
-			val.includes('youtube.com/playlist?') &&
-			!selected_cats.includes('YouTube playlists')
-		) {
+		if (val.includes('youtube.com/playlist?') && !selected_cats.includes('YouTube playlists')) {
 			cats_to_be_added.push('YouTube playlists')
 		}
 
-		set_selected_cats(
-			[...selected_cats, ...cats_to_be_added].sort((a, b) =>
-				a.localeCompare(b)
-			)
-		)
+		set_selected_cats([...selected_cats, ...cats_to_be_added].sort((a, b) => a.localeCompare(b)))
 	}
 
 	async function handle_submit(event: SubmitEvent) {
 		event.preventDefault()
 		const form = event.target as HTMLFormElement
-		const formData = new FormData(form)
-		const url = formData.get('url')
+		const data = new FormData(form)
+		const url = data.get('url')
 		if (!url) {
 			set_error("You're missing a URL there :)")
 			return
 		} else if (!selected_cats.length) {
 			set_error(
-				'Add your tag please :) (you might need to hit the plus button)'
+				'Please add at least one cat :) You might just need to click the plus button or hit ENTER if you have typed something.',
 			)
 			return
 		}
 
-		const summary = formData.get('summary')
+		const summary = data.get('summary')
 
 		let resp_body: string
 
@@ -91,8 +81,7 @@ export default function NewLinks(props: Props) {
 			return (window.location.href = new_link_resp.RedirectTo ?? '/500')
 		}
 
-		let new_link_data: types.Link | types.ErrorResponse =
-			await new_link_resp.Response.json()
+		let new_link_data: types.Link | types.ErrorResponse = await new_link_resp.Response.json()
 		if (types.is_error_response(new_link_data)) {
 			if (new_link_data.error.includes('already submitted')) {
 				const dupe_URL = new_link_data.error.split('See ')[1]
@@ -120,9 +109,17 @@ export default function NewLinks(props: Props) {
 		return
 	}
 
+	// can remove any errors if the user starts adding / removing cats
+	useEffect(() => {
+		set_error(undefined)
+		set_dupe_url(undefined)
+	}, [selected_cats])
+
 	return (
 		<>
 			<section id='new-link'>
+				<h2>What's That?</h2>
+
 				{error ? (
 					<p class='error'>
 						{error}
@@ -134,15 +131,10 @@ export default function NewLinks(props: Props) {
 						) : null}
 					</p>
 				) : null}
+
 				<form onSubmit={async (e) => await handle_submit(e)}>
 					<label for='url'>URL</label>
-					<input
-						type='text'
-						id='url'
-						name='url'
-						onInput={(e) => handle_url_change(e)}
-						autoFocus
-					/>
+					<input type='text' id='url' name='url' onInput={(e) => handle_url_change(e)} autoFocus />
 
 					<SearchCats
 						SelectedCats={selected_cats}
@@ -157,6 +149,7 @@ export default function NewLinks(props: Props) {
 					<input id='submit-new-link' type='submit' value='Submit' />
 				</form>
 			</section>
+
 			{submitted_links.length ? (
 				<section id='submitted-links'>
 					<ol>
@@ -164,7 +157,7 @@ export default function NewLinks(props: Props) {
 							<Link
 								key={link.ID}
 								Link={link}
-								IsNewLinkPage
+								IsNewLink
 								SetNewLinkCats={set_selected_cats}
 								Token={props.Token}
 								User={props.User}

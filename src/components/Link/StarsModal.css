@@ -21,6 +21,7 @@
 		h3#link-title {
 			margin-bottom: 0;
 			color: var(--treasurey);
+			word-break: break-word;
 		}
 
 		h3#link-title + p {

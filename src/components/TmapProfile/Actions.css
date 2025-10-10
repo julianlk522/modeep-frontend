@@ -6,7 +6,7 @@
 	margin-top: 0.5rem;
 
 	label#new-pic-upload-label {
-		display: inline-block;
+		display: inline-flex;
 		min-width: fit-content;
 		cursor: pointer;
 	}

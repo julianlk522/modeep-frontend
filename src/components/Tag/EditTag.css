@@ -12,17 +12,21 @@ section#edit-tag {
 			margin-top: 0;
 		}
 
-		button#revert-btn {
-			margin-left: 3px;
-		}
-
-		button#edit-tag-btn,
-		button#revert-btn {
+		button#edit-tag-btn {
 			margin-top: 0.5rem;
 		}
+		
+		#recommendations-list + button#edit-tag-btn {
+			margin-top: 0.25rem;
+		}
 
-		ul#cat-list + button#edit-tag-btn {
+		#selected-cats-container + button#edit-tag-btn {
 			margin-top: 0;
+		}
+
+		button#revert-btn {
+			margin-top: 0;
+			margin-left: 3px;
 		}
 
 		button#delete-tag-btn {

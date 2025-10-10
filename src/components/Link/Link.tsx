@@ -1,9 +1,4 @@
-import {
-	useEffect,
-	useState,
-	type Dispatch,
-	type StateUpdater,
-} from 'preact/hooks'
+import { useEffect, useState, type Dispatch, type StateUpdater } from 'preact/hooks'
 import {
 	ERR_STATUS_RANGE_START,
 	EXPECTED_LINK_DELETE_REQ_STATUS,
@@ -12,11 +7,7 @@ import {
 } from '../../constants'
 import * as types from '../../types'
 import fetch_with_handle_redirect from '../../util/fetch_with_handle_redirect'
-import {
-	format_long_date,
-	get_local_time,
-	get_units_ago,
-} from '../../util/format_date'
+import { format_long_date, get_local_time, get_units_ago } from '../../util/format_date'
 import { save_path_then_redirect_to_login } from '../../util/login_redirect'
 import Modal from '../Modal/Modal'
 import TagCat from '../Tag/TagCat'
@@ -32,7 +23,7 @@ interface Props {
 	IsSummaryPage?: boolean
 	IsTagPage?: boolean
 	IsTmapPage?: boolean
-	IsNewLinkPage?: boolean
+	IsNewLink?: boolean
 	Token?: string
 	User?: string
 }
@@ -45,7 +36,7 @@ export default function Link(props: Props) {
 		IsSummaryPage: is_summary_page,
 		IsTagPage: is_tag_page,
 		IsTmapPage: is_tmap_page,
-		IsNewLinkPage: is_new_link_page,
+		IsNewLink: is_new_link,
 		Token: token,
 		User: user,
 	} = props
@@ -61,14 +52,12 @@ export default function Link(props: Props) {
 		PreviewImgFilename: saved_preview_img_filename,
 	} = props.Link
 
-	const cats_endpoint =
-		is_tmap_page && cats_from_user ? `/map/${cats_from_user}` : '/search'
+	const cats_endpoint = is_tmap_page && cats_from_user ? `/map/${cats_from_user}` : '/search'
 
 	const split_cats = cats.split(',')
 	const has_one_tag = tag_count === 1
-	const is_your_link = user !== undefined && submitted_by === user
-	const should_display_full_date =
-		is_summary_page || is_tag_page || is_new_link_page
+	const is_your_link = user !== undefined && user === submitted_by
+	const display_full_date = is_summary_page || is_tag_page || is_new_link
 
 	const [your_stars, set_your_stars] = useState(props.Link.StarsAssigned)
 	const [avg_stars, set_avg_stars] = useState(props.Link.AvgStars)
@@ -88,13 +77,9 @@ export default function Link(props: Props) {
 			initial_earliest_starrers = split_starrers.join(', ')
 		}
 	}
-	const [earliest_starrers, set_earliest_starrers] = useState(
-		initial_earliest_starrers
-	)
+	const [earliest_starrers, set_earliest_starrers] = useState(initial_earliest_starrers)
 	const [show_delete_modal, set_show_delete_modal] = useState(false)
-	const [preview_img_url, set_preview_img_url] = useState<string | undefined>(
-		undefined
-	)
+	const [preview_img_url, set_preview_img_url] = useState<string | undefined>(undefined)
 
 	const has_clicks = clicks > 0
 
@@ -105,14 +90,11 @@ export default function Link(props: Props) {
 				return
 			}
 
-			const img_resp = await fetch(
-				LINK_PREVIEW_IMG_ENDPOINT + `/${saved_preview_img_filename}`,
-				{
-					headers: {
-						'Content-Type': 'image/*',
-					},
-				}
-			)
+			const img_resp = await fetch(LINK_PREVIEW_IMG_ENDPOINT + `/${saved_preview_img_filename}`, {
+				headers: {
+					'Content-Type': 'image/*',
+				},
+			})
 
 			if (img_resp.status >= ERR_STATUS_RANGE_START) {
 				console.error(img_resp)
@@ -145,9 +127,7 @@ export default function Link(props: Props) {
 		})
 		if (!delete_resp.Response || delete_resp.RedirectTo) {
 			return (window.location.href = delete_resp.RedirectTo ?? '/500')
-		} else if (
-			delete_resp.Response.status !== EXPECTED_LINK_DELETE_REQ_STATUS
-		) {
+		} else if (delete_resp.Response.status !== EXPECTED_LINK_DELETE_REQ_STATUS) {
 			const delete_data = await delete_resp.Response.json()
 			if (types.is_error_response(await delete_data)) {
 				return console.error('Whoops: ', delete_data.error)
@@ -168,7 +148,7 @@ export default function Link(props: Props) {
 		<li class={`link${is_summary_page || is_tag_page ? ' single' : ''}`}>
 			{preview_img_url ? (
 				<div class='preview'>
-					<img
+					<img src={preview_img_url} alt={summary ? summary : url} width={75} />
 
 					<URLZone
 						Link_ID={id}
@@ -193,15 +173,15 @@ export default function Link(props: Props) {
 			<p>
 				<span class='by'>by </span>
 				<a
-					title={`View ${submitted_by}'s Treasure Map`}
+					title={`View ${is_your_link ? 'your' : `${submitted_by}'s`} wondrous discoveries? (Treasure Map)`}
 					href={`/map/${submitted_by}`}
 					class='submitted-by'
 				>
 					{is_your_link ? 'you' : submitted_by}
 				</a>{' '}
 				<span class='submit-date'>
-					{should_display_full_date
-						? is_new_link_page
+					{display_full_date
+						? is_new_link
 							? format_long_date(get_local_time(submit_date))
 							: format_long_date(submit_date)
 						: get_units_ago(submit_date)}
@@ -217,13 +197,7 @@ export default function Link(props: Props) {
 								? `?${non_cats_url_params}&cats=${encoded_cat}`
 								: `?cats=${encoded_cat}`
 
-							return (
-								<TagCat
-									Cat={cat}
-									IsNSFW={cat === 'NSFW'}
-									Href={cats_endpoint + url_params}
-								/>
-							)
+							return <TagCat Cat={cat} IsNSFW={cat === 'NSFW'} Href={cats_endpoint + url_params} />
 						})}
 
 						{is_tag_page ? (
@@ -232,13 +206,11 @@ export default function Link(props: Props) {
 							<li class='tag-count'>
 								{' ('}
 								<a
-									title={`View this link's tags (${tag_count}) or add/edit yours`}
+									title={`View tags (${tag_count}) or add/edit yours`}
 									class='tags-page-link'
 									href={`/tag/${id}`}
 								>
-									<span class='tags-page-link'>
-										{tag_count}
-									</span>
+									<span class='tags-page-link'>{tag_count}</span>
 								</a>
 								{')'}
 							</li>
@@ -251,12 +223,7 @@ export default function Link(props: Props) {
 							class='img-btn copy-cats-btn'
 							onClick={() => set_new_link_cats(split_cats)}
 						>
-							<img
-								alt='Copy cats to pending new link'
-								src='../../copy-cats.svg'
-								width={16}
-								height={16}
-							/>
+							<img alt='Copy cats to pending new link' src='../../copy-cats.svg' width={16} height={16} />
 						</button>
 					) : null}
 				</div>
@@ -294,12 +261,7 @@ export default function Link(props: Props) {
 						class='delete-link-btn img-btn'
 						onClick={() => set_show_delete_modal(true)}
 					>
-						<img
-							alt='Delete Link'
-							src='../../../delete.svg'
-							height={20}
-							width={20}
-						/>
+						<img alt='Delete Link' src='../../../delete.svg' height={20} width={20} />
 					</button>
 
 					{show_delete_modal ? (

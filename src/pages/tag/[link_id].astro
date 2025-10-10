@@ -17,24 +17,21 @@ if (!link_id) {
 }
 
 const tags_url = TAGS_ENDPOINT + `/${link_id}`
-const get_tags_resp = await (token ? fetch_with_handle_redirect(tags_url, {
-	headers: {
-		Authorization: `Bearer ${token}`,
-	},
-}) : fetch_with_handle_redirect(tags_url))
+const get_tags_resp = await (token
+	? fetch_with_handle_redirect(tags_url, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
+	: fetch_with_handle_redirect(tags_url))
 if (!get_tags_resp.Response || get_tags_resp.RedirectTo) {
 	return Astro.redirect(get_tags_resp.RedirectTo)
 }
-const tag_Data: TagPage = await get_tags_resp.Response.json()
-const {
-	Link: link, 
-	UserTag: your_tag, 
-	TagRankings: tags
-
-} = tag_Data
+const data: TagPage = await get_tags_resp.Response.json()
+const { Link: link, UserTag: your_tag, TagRankings: tags } = data
 link.TagCount = tags.length
 
-const page_title = link.Summary ? `Tags for "${link.Summary}"` : `Link Tags`
+const page_title = `Tags for ${link.Summary ? link.Summary : link.URL}`
 ---
 
 <BaseLayout Title={page_title}>
@@ -44,53 +41,53 @@ const page_title = link.Summary ? `Tags for "${link.Summary}"` : `Link Tags`
 	</script>
 	<main>
 		<section>
-			<Link
-				client:load
-				Link={link}
-				IsTagPage={true}
-				Token={token}
-				User={user}
-			/>
+			<Link client:load Link={link} IsTagPage={true} Token={token} User={user} />
 		</section>
 
-		{user ? 
-			<EditTag
-				client:load
-				LinkID={link_id}
-				Token={token}
-				YourTag={your_tag}
-				HasOneTag={tags.length === 1}
-			/> 
-		: <section>
-			<p id="login-redirect-link"><a href="/login">Log in</a> to tag links.</p>
-		</section>}
+		{
+			user ? (
+				<EditTag client:load LinkID={link_id} Token={token} YourTag={your_tag} HasOneTag={tags.length === 1} />
+			) : (
+				<section>
+					<p id='login-redirect-link'>
+						<a href='/login'>Log in</a> to tag links.
+					</p>
+				</section>
+			)
+		}
 
 		{
 			tags ? (
 				<section>
 					<h2>Top Tags</h2>
-					<ol id="top-tags">
+					<ol id='top-tags'>
 						{tags.map((tag, i) => (
 							<li class='tag'>
 								<ul id='cat-list'>
-									{tag.Cats.split(',').map((tag) => {
-										return (
-											<TagCat Cat={tag} Fat />
-										)
+									{tag.Cats.split(',').map((c) => {
+										return <TagCat Cat={c} Fat IsNSFW={c === 'NSFW'} />
 									})}
 								</ul>
 								<p>
-									<span class="by">by{' '}</span>
-									<a class="submitted-by" href={`/map/${tag.SubmittedBy}`}>
+									<span class='by'>by </span>
+									<a class='submitted-by' href={`/map/${tag.SubmittedBy}`}>
 										{tag.SubmittedBy}
 									</a>
 								</p>
 								<CSRLastUpdated client:load LastUpdated={tag.LastUpdated} />
-								<label for={`lifespan-${i}`}
-								title={`This tag has had these cats without changes for ${tag.LifeSpanOverlap.toFixed(2)}% of the link's lifespan on Modeep`} class="lifespan-label">
+								<label
+									for={`lifespan-${i}`}
+									title={`This tag has had these cats without changes for ${tag.LifeSpanOverlap.toFixed(2)}% of the link's lifespan on Modeep`}
+									class='lifespan-label'
+								>
 									{tag.LifeSpanOverlap.toFixed(2)}%
 								</label>
-								<progress id={`lifespan-${i}`} class="lifespan-bar" value={tag.LifeSpanOverlap} max="100"></progress>
+								<progress
+									id={`lifespan-${i}`}
+									class='lifespan-bar'
+									value={tag.LifeSpanOverlap}
+									max='100'
+								/>
 							</li>
 						))}
 					</ol>

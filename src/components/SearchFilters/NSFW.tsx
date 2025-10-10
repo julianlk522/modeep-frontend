@@ -15,12 +15,7 @@ export default function SearchNSFW(props: Props) {
 	return (
 		<div id='search-nsfw-container'>
 			<label id='search-nsfw' for='nsfw'>
-				NSFW{' '}
-				{nsfw_links ? (
-					<span id='nsfw-link-count'>{`(${nsfw_links})`}</span>
-				) : (
-					''
-				)}
+				Include NSFW {nsfw_links ? <span id='nsfw-link-count'>{`(${nsfw_links})`}</span> : ''}
 			</label>
 			<input
 				type='checkbox'

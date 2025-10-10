@@ -37,7 +37,7 @@ export default function StarsModal(props: Props) {
 				<p>
 					This is{' '}
 					<span class={pending_stars === 2 ? 'emphatic' : ''}>
-						Epic!
+						epic!
 					</span>
 				</p>
 				<p>What treasure I have uncovered...</p>
@@ -71,7 +71,7 @@ export default function StarsModal(props: Props) {
 
 				<div id='star-selectors'>
 					{Array.from({ length: 3 }).map((_, i) => (
-						<div
+						<button
 							class='star-selector'
 							onClick={() => {
 								if (pending_stars === i + 1) {
@@ -94,7 +94,7 @@ export default function StarsModal(props: Props) {
 							</div>
 
 							{star_descriptive_text_html[i]}
-						</div>
+						</button>
 					))}
 				</div>
 

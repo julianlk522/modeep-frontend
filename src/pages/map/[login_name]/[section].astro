@@ -125,27 +125,27 @@ if (cats_split.length) {
 			client:load 
 			Endpoint={"/map"}
 			TmapOwnerLoginName={login_name}
-            SingleTmapSectionName={section_name as typeof tmap_sections[number]}
+			SingleTmapSectionName={section_name as typeof tmap_sections[number]}
 			NSFWLinks={section_data.NSFWLinksCount}
 			InitialCats={cats_split}
 			InitialPeriod={period}
-            InitialSummaryContains={summary_contains}
+			InitialSummaryContains={summary_contains}
 			InitialURLContains={url_contains}
-            InitialURLLacks={url_lacks}
+			InitialURLLacks={url_lacks}
 			InitialSortBy={sort_by}
 			InitialNSFW={nsfw}
 		/>
 
 		<Rankings
-            SingleTmapSection={single_tmap_section}
-            SingleTmapSectionName={section_name as typeof tmap_sections[number]}
-            IsTmapFromUser={login_name}
-            URLParams={url_params}
-            TopCats={section_data.Cats}
-            Pages={section_data.Pages}
-            User={user}
-            Token={token}
-        />
+			SingleTmapSection={single_tmap_section}
+			SingleTmapSectionName={section_name as typeof tmap_sections[number]}
+			IsTmapFromUser={login_name}
+			URLParams={url_params}
+			TopCats={section_data.Cats}
+			Pages={section_data.Pages}
+			User={user}
+			Token={token}
+		/>
 
 		<ScrollUp />
 	</main>

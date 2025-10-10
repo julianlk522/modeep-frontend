@@ -8,33 +8,32 @@ import MergedResultsNotice from './MergedResultsNotice.astro'
 import NoLinksFound from './NoLinksFound.astro'
 
 interface Props {
-    Links?: types.Link[]
+	Links?: types.Link[]
 	URLParams: types.URLParams
-    Pages?: number
+	Pages?: number
 	MergedCats?: string[]
-    Tmap?: types.TreasureMap | types.FilteredTreasureMap
-    MultipleTmapSections?: typeof types.tmap_sections[number][]
-    SingleTmapSection?: types.TmapLink[]
-    SingleTmapSectionName?: typeof types.tmap_sections[number]
-    TmapOwner?: string
+	Tmap?: types.TreasureMap | types.FilteredTreasureMap
+	MultipleTmapSections?: (typeof types.tmap_sections)[number][]
+	SingleTmapSection?: types.TmapLink[]
+	SingleTmapSectionName?: (typeof types.tmap_sections)[number]
+	TmapOwner?: string
 	IsHomePage?: boolean
-    User?: string
-    Token?: string
-
+	User?: string
+	Token?: string
 }
 const {
-	Links: links, 
+	Links: links,
 	URLParams: url_params,
 	Pages: pages,
 	MergedCats: merged_cats,
-	Tmap: tmap, 
-	MultipleTmapSections: multiple_tmap_sections, 
-	SingleTmapSection: single_tmap_section, 
-	SingleTmapSectionName: single_tmap_section_name, 
+	Tmap: tmap,
+	MultipleTmapSections: multiple_tmap_sections,
+	SingleTmapSection: single_tmap_section,
+	SingleTmapSectionName: single_tmap_section_name,
 	TmapOwner: tmap_owner_login_name,
 	IsHomePage: is_home_page,
-	User: user, 
-	Token: token, 
+	User: user,
+	Token: token,
 } = Astro.props
 
 const page = url_params.Page
@@ -43,10 +42,10 @@ const non_cats_url_params = get_non_cats_url_params(url_params)
 const is_only_page = !page || !pages || (page === 1 && pages < 2)
 const is_your_tmap = tmap_owner_login_name !== undefined && user == tmap_owner_login_name
 
-const home_page_non_default_periods = ['day', 'week', 'year','all']
+const home_page_non_default_periods = ['day', 'month', 'year', 'all']
 ---
 
-<div id='top-links'>   
+<div id='top-links'>
 	<script>
 		const section_header_areas = document.querySelectorAll('.links-section > div')
 
@@ -57,183 +56,180 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 			})
 		}
 
-		function toggle_section_expansion(header_area: Element) {	
+		function toggle_section_expansion(header_area: Element) {
 			const ol_elem = header_area?.nextElementSibling
 			const img_elem = header_area?.firstElementChild
 
 			img_elem?.classList.toggle('collapsed')
 			ol_elem?.classList.toggle('collapsed')
 
-			const new_img_alt_text = img_elem?.classList.contains('collapsed') 
-				? 'Section is collapsed' 
+			const new_img_alt_text = img_elem?.classList.contains('collapsed')
+				? 'Section is collapsed'
 				: 'Section is expanded'
 			img_elem?.setAttribute('alt', new_img_alt_text)
-			
 		}
 	</script>
 
-    {is_home_page || links?.length ? 
-		<section class="links-section">
-			{is_home_page ? <ul id='change-period'>
-				<li>
-					<h2>Treasure This Month:</h2>
-				</li>
-				{
-					home_page_non_default_periods.map((period) => (
-						<li class='period'>
-							<a href={`/search?period=${period}`}>{period}</a>
+	{
+		is_home_page || links?.length ? (
+			<section class='links-section'>
+				{is_home_page ? (
+					<ul id='change-period'>
+						<li>
+							<h2>Treasure This Week:</h2>
 						</li>
-					))
-				}
-			</ul> : null}
+						{home_page_non_default_periods.map((period) => (
+							<li class='period'>
+								<a href={`/search?period=${period}`}>{period}</a>
+							</li>
+						))}
+					</ul>
+				) : null}
 
-			{merged_cats && merged_cats.length ? (
-				<MergedResultsNotice MergedCats={merged_cats} />
-			) : null}
+				{merged_cats && merged_cats.length ? <MergedResultsNotice MergedCats={merged_cats} /> : null}
 
-			{links?.length ? 
+				{links?.length ? (
+					<ol start={page ? (page - 1) * LINKS_PAGE_LIMIT + 1 : ''}>
+						{links?.map((link) => (
+							<Link
+								client:load
+								Link={link}
+								NonCatsURLParams={non_cats_url_params}
+								Token={token}
+								User={user}
+							/>
+						))}
+					</ol>
+				) : (
+					<NoLinksFound AddSomethingPrompt />
+				)}
+			</section>
+		) : tmap ? (
+			multiple_tmap_sections?.length ? (
+				<div id='tmap-multiple-sections-container'>
+					{multiple_tmap_sections.map((s) => {
+						const is_section_with_more =
+							tmap.SectionsWithMore?.length && tmap.SectionsWithMore?.includes(s.toLowerCase())
+
+						return (
+							<section id={s.toLowerCase()} class='links-section'>
+								<div class={is_section_with_more ? 'section-with-more' : ''}>
+									<img
+										class='section-expansion-arrow'
+										src='../../back.svg'
+										alt='Section is expanded'
+										height={20}
+										width={20}
+									/>
+
+									<h2>{s}</h2>
+
+									{is_section_with_more ? (
+										<span class='see-all'>
+											<a
+												href={Astro.url.href.replace(
+													`/map/${tmap_owner_login_name}`,
+													`/map/${tmap_owner_login_name}/${s.toLowerCase()}`,
+												)}
+												onclick='event.stopPropagation()'
+											>
+												See All
+											</a>
+										</span>
+									) : null}
+
+									<div class='bg' />
+								</div>
+
+								<ol>
+									{tmap[s].map((link) => (
+										<Link
+											client:load
+											Link={link}
+											NonCatsURLParams={non_cats_url_params}
+											CatsFromUser={link.CatsFromUser ? tmap_owner_login_name : undefined}
+											IsTmapPage={true}
+											Token={token}
+											User={user}
+										/>
+									))}
+								</ol>
+							</section>
+						)
+					})}
+				</div>
+			) : (
+				<NoLinksFound AddSomethingPrompt={is_your_tmap} />
+			)
+		) : single_tmap_section?.length ? (
+			<section id={`${single_tmap_section_name?.toLowerCase()}-links`} class='links-section single-tmap-section'>
 				<ol start={page ? (page - 1) * LINKS_PAGE_LIMIT + 1 : ''}>
-					{links?.map((link) => (
+					{single_tmap_section.map((link) => (
 						<Link
 							client:load
 							Link={link}
 							NonCatsURLParams={non_cats_url_params}
+							IsTmapPage={true}
+							CatsFromUser={link.CatsFromUser ? tmap_owner_login_name : undefined}
 							Token={token}
 							User={user}
 						/>
 					))}
 				</ol>
-			:
-				<NoLinksFound AddSomethingPrompt />
-			}
-		</section>
-	: tmap ?
-        multiple_tmap_sections?.length ? 
-			<div id="tmap-multiple-sections-container">
-				{multiple_tmap_sections.map((s) => {
-					const is_section_with_more = tmap.SectionsWithMore?.length && tmap.SectionsWithMore?.includes(s.toLowerCase())
+			</section>
+		) : (
+			<NoLinksFound AddSomethingPrompt={is_your_tmap} />
+		)
+	}
 
-					return (
-						<section id={s.toLowerCase()} class='links-section'>
-							<div class={is_section_with_more ?"section-with-more" : ""}>
-								<img 
-									class='section-expansion-arrow' 
-									src='../../back.svg' 
-									alt="Section is expanded" 
-									height={20} 
-									width={20}
-								/>
-
-								<h2>{s}</h2>
-
-								{is_section_with_more ? <span class="see-all">
-									<a 
-										href={Astro.url.href.replace(`/map/${tmap_owner_login_name}`, `/map/${tmap_owner_login_name}/${s.toLowerCase()}`)}
-										onclick="event.stopPropagation()"
-									>See All
-									</a>
-								</span> : null}
-
-								<div class="bg"></div>
-							</div>
-
-							<ol>
-								{tmap[s].map((link) => (
-									<Link
-										client:load
-										Link={link}
-										NonCatsURLParams={non_cats_url_params}
-										CatsFromUser={
-											link.CatsFromUser
-												? tmap_owner_login_name
-												: undefined
-										}
-										IsTmapPage={true}
-										Token={token}
-										User={user}
-									/>
-								))}
-							</ol>
-						</section>
-					)
-				})}
-			</div>
-		: 
-            <NoLinksFound AddSomethingPrompt={is_your_tmap} />
-    : single_tmap_section?.length ?
-        <section id={`${single_tmap_section_name?.toLowerCase()}-links`} class='links-section single-tmap-section'>
-            <ol start={page ? (page - 1) * LINKS_PAGE_LIMIT + 1 : ''}>
-                {single_tmap_section.map((link) => (
-                    <Link
-                        client:load
-                        Link={link}
-						NonCatsURLParams={non_cats_url_params}
-                        IsTmapPage={true}
-                        CatsFromUser={
-                            link.CatsFromUser
-                                ? tmap_owner_login_name
-                                : undefined
-                        }
-                        Token={token}
-                        User={user}
-                    />
-                ))}
-            </ol>
-        </section>
-    :
-        <NoLinksFound AddSomethingPrompt={is_your_tmap} />
-    }
-
-	{ is_only_page 
-		? null 
-		: <Pagination
-			URLParams={is_home_page 
-				? {...url_params, Period: 'month'} 
-				: url_params}
-			Pages={pages}
-			SingleTmapSectionName={single_tmap_section_name}
-			TmapOwner={tmap_owner_login_name}
-		/>
+	{
+		is_only_page ? null : (
+			<Pagination
+				URLParams={is_home_page ? { ...url_params, Period: 'month' } : url_params}
+				Pages={pages}
+				SingleTmapSectionName={single_tmap_section_name}
+				TmapOwner={tmap_owner_login_name}
+			/>
+		)
 	}
 </div>
 
 <style>
-    section.links-section {
+	section.links-section {
 		width: 100%;
 		padding: 0;
 		border-bottom: none;
 
 		ul#change-period {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            list-style: none;
-            padding-inline-start: 0;
-            padding-bottom: 0.25rem;
-            margin: 0;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-            border-bottom: var(--border-light);
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			list-style: none;
+			padding-inline-start: 0;
+			padding-bottom: 0.25rem;
+			margin: 0.5rem 0;
+			font-weight: bold;
+			border-bottom: var(--border-light);
 
-            li h2 {
-                margin-bottom: 0;
-            }
+			li h2 {
+				margin-bottom: 0;
+			}
 
-            li:nth-of-type(2) {
-                margin-left: 0.5rem;
-            }
+			li:nth-of-type(2) {
+				margin-left: 0.5rem;
+			}
 
-            li.period {
-                margin-right: 0.5rem;
-            }
+			li.period {
+				margin-right: 0.5rem;
+			}
 
-            li.period:last-of-type {
-                margin-right: 0;
-            }
-        }
+			li.period:last-of-type {
+				margin-right: 0;
+			}
+		}
 
 		> .section-with-more h2 {
-			display: inline
+			display: inline;
 		}
 
 		> div {
@@ -241,7 +237,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 			align-items: center;
 			position: sticky;
 			top: 0px;
-			padding: 1.5rem 0 0.5rem;
+			padding: 1rem 0 0.25rem;
 			z-index: 1;
 			cursor: pointer;
 
@@ -256,7 +252,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 			img.section-expansion-arrow.collapsed {
 				opacity: 0.25;
 				rotate: 180deg;
-			} 
+			}
 
 			h2 {
 				margin-bottom: 0;
@@ -284,7 +280,6 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 					width: calc(100% + 3rem);
 				}
 			}
-
 
 			@media (min-width: 680px) {
 				.bg {
@@ -336,9 +331,19 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 		}
 	}
 
+	@media (min-width: 480px) {
+		section.links-section:has(ul#change-period) {
+			margin-top: 1.5rem;
+		}
+	}
+
 	@media (min-width: 680px) {
 		#top-links {
 			padding-top: 0.5rem;
+		}
+
+		ul#change-period {
+			margin-top: 0;
 		}
 
 		section.links-section {
@@ -351,6 +356,7 @@ const home_page_non_default_periods = ['day', 'week', 'year','all']
 
 		section.links-section:has(ul#change-period) {
 			padding-top: 0;
+			margin-top: 0;
 		}
 
 		section.links-section.single-tmap-section {

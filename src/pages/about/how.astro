@@ -6,142 +6,218 @@ import WithFooter from '../../layouts/WithFooter.astro'
 
 <WithFooter Title='About Modeep'>
 	<main>
-            <h1>How Modeep Works</h1>
+		<h1>How Modeep Works</h1>
 
-            <section>
-                <h2 id="cats" class="subsection">Meow</h2>
+		<section>
+			<h2 id='cats' class='subsection'>Meow</h2>
 
-                <p><em>Cats</em> is shorthand for <a href="#tags">tag categories</a>. (And as a <a href="https://en.wikipedia.org/wiki/I_Can_Has_Cheezburger%3F">classic Internet symbol</a>, cats also seem well fitted to moderate a curated collection of links.)</p>
+			<p>
+				<em>Cats</em> is shorthand for <a href='#tags'>tag categories</a>. (And as a <a
+					href='https://en.wikipedia.org/wiki/I_Can_Has_Cheezburger%3F'>classic Internet symbol</a
+				>, cats also seem well fitted to moderate a curated collection of links.)
+			</p>
 
-                <p>When you <em>reveal</em> (post) a treasured link you decide the best cats to describe it and submit them as a vote. Your vote, which we'll call an <em>individual tag</em>, influences the link's <em><a href="#global-tags">global tag</a></em> in proportion to its <a href="#global-tag-calculation">estimated goodness of fit</a>.</p>
+			<p>
+				When you <em>reveal</em> (post) a treasured link you decide the best cats to describe it and submit them
+				as a vote. Your vote, which we'll call an <em>individual tag</em>, influences the link's <em
+					><a href='#global-tags'>global tag</a></em
+				> in proportion to its <a href='#global-tag-calculation'>estimated goodness of fit</a>.
+			</p>
 
-                <p>In searches, you can declare which cats must be present in the global tag of any found links by adding <em>cat filters</em>.</p>
+			<p>
+				In searches, you can declare which cats must be present in the global tag of any found links by adding <em
+					>cat filters</em
+				>.
+			</p>
 
-                <p>Searches always show their <em>Top Cats</em>, the most frequent cats throughout all returned links, or their Top <em>Subcats</em>, the most frequent cats that were <strong>not provided as filters</strong>, if your search included cat filters.</p>
+			<p>
+				Searches always show their <em>Top Cats</em>, the most frequent cats throughout all returned links, or
+				their Top <em>Subcats</em>, the most frequent cats that were <strong>not provided as filters</strong>,
+				if your search included cat filters.
+			</p>
 
-                <p id="cat-stacking">Top cats or subcats can be stacked on existing filters to add specificity and rapidly concentrate on some theme(s). If your search gets too specific, remove cats to re-broaden the focus. <strong>Wield this power and become a cat-stacking ninja, capable of swiftly plucking needles of epicness from the haystack.</strong></p>
-            </section>
+			<p id='cat-stacking'>
+				Top cats or subcats can be stacked on existing filters to add specificity and rapidly concentrate on
+				some theme(s). If your search gets too specific, remove cats to re-broaden the focus.
+			</p>
+		</section>
 
-            <section>
-                <h2 id="core-actions" class="subsection">Collective Evaluation</h2>
+		<section>
+			<h2 id='core-actions' class='subsection'>Collective Evaluation</h2>
 
-                <p>Anyone use these methods to "vote" on the classifications of various links.</p>
-                
-                <p>This helps ensure that what YOU think is cool or important makes its way to others.</p>
+			<p>Anyone use these methods to "vote" on the classifications of various links.</p>
 
-                <h3 class="subsection">Summarize</h3>
+			<p>This helps ensure that what YOU think is cool or important makes its way to others.</p>
 
-                <p>
-                    Every link has a summary page where anyone can offer their own interpretation of its contents. 
-                </p>
+			<h3 class='subsection'>Summarize</h3>
 
-                <p>
-                    Summaries can be upvoted, and a link's top summary is displayed above its URL to provide a compact gist of what it contains. On your Treasure Map, other users see your summary, if you write one, for any links there.
-                </p>
+			<p>Every link has a summary page where anyone can offer their own interpretation of its contents.</p>
 
-                <h3 class="subsection">Copy</h3>
+			<p>
+				Summaries can be upvoted, and a link's top summary is displayed above its URL to provide a quick gist of
+				what it contains. On your Treasure Map, other users see your summary, if you wrote one, for any links
+				there.
+			</p>
 
-                <p>
-                    <strong>Copying</strong> links to your Treasure Map bookmarks them publicly, so that both you and your fans can easily find them by reading your Treasure Map.
-                </p>
+			<h3 class='subsection'>Copy</h3>
 
-                <h3 class="subsection">Star</h3>
+			<p>
+				<strong>Copying</strong> links to your Treasure Map bookmarks them publicly, so that both you and your fans
+				can easily find them by reading your Treasure Map.
+			</p>
 
-                <p>
-                    <strong>Starring</strong> links vouches for their "goodness" (comprehensiveness, authenticity, hilarity&mdash;whatever). It helps move the really great stuff to the top of searches. You can give 1-3 stars depending on how epic you deem something to be.
-                </p>
+			<h3 class='subsection'>Star</h3>
 
-                <h3 id="tags" class="subsection">Tag</h3>
+			<p>
+				<strong>Starring</strong> links vouches for their "goodness" (comprehensiveness, authenticity, hilarity&mdash;whatever).
+				It helps move the really great stuff to the top of searches. You can give 1-3 stars depending on how epic
+				you deem something to be.
+			</p>
 
-                <p>
-                    <strong>Tagging</strong> links helps the right people find them. Tags are personal interpretations of the topics that various links may be associated with, or terms that someone interested in them might look up. 
-                </p>
-            
-                <p>
-                    Every link has a tag page where individual tags can be submitted or edited and where you can see its top <a href="#global-tags">highest-weighted</a> tags.
-                </p>
+			<h3 id='tags' class='subsection'>Tag</h3>
 
-                <p>
-                    We don't have to agree on the most appropriate cat(s) for any link. By acknowledging both individual and global tags, we can enjoy the benefits of collective thinking without drowning out valuable individual opinions.
-                </p>
+			<p>
+				<strong>Tagging</strong> links helps the right people find them. Tags are personal interpretations of the
+				topics that various links may be associated with, or terms that someone interested in them might look up.
+			</p>
 
-            </section>
-                            
-            <section id="global-tags">
-                <h2>Global Tags and the Global Treasure Map</h2>
+			<p>
+				Every link has a tag page where individual tags can be submitted or edited and where you can see its top <a
+					href='#global-tags'>highest-weighted</a
+				> tags.
+			</p>
 
-                <p>
-                    Any individual tag decides how the link it applies to is sorted on the tag author's Treasure Map. Every link also has a global tag, which determines its placement on the <em>Global Treasure Map</em>. The Global Treasure Map represents the averages of individual tags and the aggregate of other forms of feedback such as likes and clicks. You can access it from <a href='/search'>Search</a> or <a href='/more'>More Cats</a>. A global tag represents an approximate consensus of a link's key concepts.
-                </p>
+			<p>
+				We don't have to agree on the most appropriate cat(s) for any link. By acknowledging both individual and
+				global tags, we can enjoy the benefits of collective thinking without drowning out valuable individual
+				opinions.
+			</p>
+		</section>
 
-                <p>
-                    Global tags for a link are calculated automatically based on: <strong>1)</strong> the age of each individual tag and <strong>2)</strong> the frequencies of cats across all of them. This system is based on the assumptions that the best interpretations of various links' cats (most logical, most useful, etc.) will be those that <strong>1)</strong> reappear often across tags or <strong>2)</strong> remain unedited for a long time.
-               </p>
+		<section id='global-tags'>
+			<h2>Global Tags and the Global Treasure Map</h2>
 
-        
-                <p>
-                    Each individual tag shows, in addition to its cats, its <em>lifespan overlap percentage</em>, author, and submission timestamp. Tags that have kept the same combination of cats for greater portions of their link's lifespan are given greater weight in influencing the global tag. Editing a tag's cats resets its lifespan overlap percentage.
-                </p>
+			<p>
+				Any individual tag decides how the link it applies to is sorted on the tag author's Treasure Map. Every
+				link also has a global tag, which determines its placement on the <em>Global Treasure Map</em>. The
+				Global Treasure Map represents the averages of individual tags and the aggregate of other forms of
+				feedback such as likes and clicks. You can access it from <a href='/search'>Search</a> or <a
+					href='/more'>More Cats</a
+				>. A global tag represents an approximate consensus of a link's key concepts.
+			</p>
 
-                <p>
-                    <strong>Note:</strong> a link's global cats will not necessarily resemble only its highest-ranked tags. If many newer tags contain some cats that are not already present in the global tag, it's likely that those will also be assigned. A long-unchanged tag could still be a poor representation, but if enough people disagree and submit alternative tags their collective input will nullify it; the old tag's cats will likely be removed from the global tag.
-                </p>
-            </section>
+			<p>
+				Global tags for a link are calculated automatically based on: <strong>1)</strong> the age of each individual
+				tag and <strong>2)</strong> the frequencies of cats across all of them. This system is based on the assumptions
+				that the best interpretations of various links' cats (most logical, most useful, etc.) will be those that
+				<strong>1)</strong> reappear often across tags or <strong>2)</strong> remain unedited for a long time.
+			</p>
 
-            <section>
-                <h2 id="global-tag-calculation" class="subsection">Global Tag Calculation</h2>
+			<p>
+				Each individual tag shows, in addition to its cats, its <em>lifespan overlap percentage</em>, author,
+				and submission timestamp. Tags that have kept the same combination of cats for greater portions of their
+				link's lifespan are given greater weight in influencing the global tag. Editing a tag's cats resets its
+				lifespan overlap percentage.
+			</p>
 
-                <p>Note: <a href="/feedback">constructive criticism welcomed</a> for this system.</p>
+			<p>
+				<strong>Note:</strong> a link's global cats will not necessarily resemble only its highest-ranked tags. If
+				many newer tags contain some cats that are not already present in the global tag, it's likely that those
+				will also be assigned. A long-unchanged tag could still be a poor representation, but if enough people disagree
+				and submit alternative tags their collective input will nullify it; the old tag's cats will likely be removed
+				from the global tag.
+			</p>
+		</section>
 
-                <p>For a cat to be added to link <code>L</code>'s global tags, it's <em>score</em> must be &ge;25% of the highest score among <code>L</code>'s cats.</p>
+		<section>
+			<h2 id='global-tag-calculation' class='subsection'>Global Tag Calculation</h2>
 
-                <p><em>Scores</em> for cat <code>C</code> of link <code>L</code> are calculated as the sum of scores from all occurrences of <code>C</code> in <code>L</code>'s tags.</p>
+			<p>Note: <a href='/feedback'>constructive criticism welcomed</a> for this system.</p>
 
-                <p>Each bit of score added for a cat is scaled down according to the weight of the tag in which the cat was found.</p>
+			<p>
+				For a cat to be added to link <code>L</code>'s global tags, it's <em>score</em> must be &ge;25% of the highest
+				score among <code>L</code>'s cats.
+			</p>
 
-                <p>A tag's weight is inversely proportional to its total number of cats. (e.g., a cat from a tag with only 1 cat counts for 10x more than one from a tag with 10 cats.)</p>
+			<p>
+				<em>Scores</em> for cat <code>C</code> of link <code>L</code> are calculated as the sum of scores from all
+				occurrences of <code>C</code> in <code>L</code>'s tags.
+			</p>
 
-                <p>Weights for tag <code>T</code> are calculated as <em>lifespan overlap percentage</em> of <code>T</code>, divided by <code>T</code>'s number of cats. </p>
+			<p>
+				Each bit of score added for a cat is scaled down according to the weight of the tag in which the cat was
+				found.
+			</p>
 
-                <p>Lifespan overlap percentage for tag <code>T</code> of link <code>L</code> is the percentage of <code>L</code>'s time on Modeep that <code>T</code> has existed since creation or last edit.</p>
+			<p>
+				A tag's weight is inversely proportional to its total number of cats. (e.g., a cat from a tag with only
+				1 cat counts for 10x more than one from a tag with 10 cats.)
+			</p>
 
-                <GlobalTagCalcDiagram />
-            </section>
+			<p>
+				Weights for tag <code>T</code> are calculated as <em>lifespan overlap percentage</em> of <code>T</code>,
+				divided by <code>T</code>'s number of cats.
+			</p>
 
-            <section>
-                <h2 id="retrieving-metadata" class="subsection">Retrieving Metadata</h2>
+			<p>
+				Lifespan overlap percentage for tag <code>T</code> of link <code>L</code> is the percentage of <code
+					>L</code
+				>'s time on Modeep that <code>T</code> has existed since creation or last edit.
+			</p>
 
-                <p>Modeep employs <em>very limited</em> use of automated website scraping to fetch <a href="https://ogp.me/">Open Graph</a> metadata for submitted links. This is to attempt to find a thumbnail preview image and descriptive text ("Auto Summary") to display with them.</p>
+			<GlobalTagCalcDiagram />
+		</section>
 
-                <p>These requests can be identified by the <strong>Modeep-Bot</strong> user agent.</p>
+		<section>
+			<h2 id='retrieving-metadata' class='subsection'>Retrieving Metadata</h2>
 
-                <p>A max of 1-3 automated requests go out to each submitted URL (Modeep-Bot tries different protocol prefixes, e.g., "https://" and "http://", if the first request fails).</p>
+			<p>
+				Modeep employs very limited use of automated website requests to fetch <a href='https://ogp.me/'
+					>Open Graph</a
+				> metadata for submitted links. This is to attempt to find a thumbnail preview image and descriptive text
+				("Auto Summary") to display with them.
+			</p>
 
-                <p>The goal, as with all of this, is to promote appreciation for great, public Internet sites by improving their visibility. Great links with an appropriate thumbnail and/or summary are easiest for would-be-enjoyers to notice.</p>
+			<p>These requests can be identified by the <strong>Modeep-Bot</strong> user agent.</p>
 
-                <p><strong>Anyone can have their domain added to a non-scrape list upon request, with no questions asked</strong>: just email <a href="mailto:support@modeep.org">support@modeep.org</a> to let us know.</p>
-            </section>
+			<p>
+				A max of 1-3 automated requests go out to each submitted URL (Modeep-Bot tries different protocol
+				prefixes, e.g., "https://" and "http://", if the first request fails).
+			</p>
 
-            <ScrollUp />
+			<p>
+				The goal, as with all of this, is to help promote and garner appreciation for great, public Internet
+				sites. Links with an appropriate thumbnail and/or summary are easiest for would-be-enjoyers to notice.
+			</p>
+
+			<p>
+				<strong
+					>Anyone can have their site or domain added to a no-touch list (exempt from Modeep's automated
+					traffic) upon request with no questions asked</strong
+				>: just email <a href='mailto:support@modeep.org'>support@modeep.org</a> to let us know.
+			</p>
+		</section>
+
+		<ScrollUp />
 	</main>
 </WithFooter>
 
 <style>
-    section {
-        padding: 1rem 0;
-    }
+	section {
+		padding: 1rem 0;
+	}
 
-    h2 {
-        margin-top: 0;
-    }
+	h2 {
+		margin-top: 0;
+	}
 
-    section:has(#core-actions) h3 {
-        margin-top: 2rem;
-    }
+	section:has(#core-actions) h3 {
+		margin-top: 2rem;
+	}
 
-    @media (min-width: 480px) {
-        section {
-            padding: 2rem 0;
-        }
-    }
+	@media (min-width: 480px) {
+		section {
+			padding: 2rem 0;
+		}
+	}
 </style>
