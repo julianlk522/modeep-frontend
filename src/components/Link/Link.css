@@ -52,13 +52,14 @@ div.tag {
 			}
 		}
 	}
-}
 
-.copy-cats-btn {
-	vertical-align: middle;
-	margin-top: -1px;
-	margin-left: 5px;
-	color: var(--sky);
+	button.copy-cats-btn {
+		display: inline-flex;
+		vertical-align: middle;
+		margin-top: -1px;
+		margin-left: 5px;
+		color: var(--sky);
+	}
 }
 
 .user-interactions {
