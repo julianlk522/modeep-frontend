@@ -84,7 +84,7 @@ const tmap_resp = token
 if (!tmap_resp.Response || tmap_resp.RedirectTo) {
 	return Astro.redirect(tmap_resp.RedirectTo)
 }
-const tmap: types.TreasureMap | types.FilteredTreasureMap = await tmap_resp.Response.json()
+const tmap: types.TreasureMap | types.TreasureMapWithProfile = await tmap_resp.Response.json()
 
 // Page title
 let page_title = `${login_name}'s Treasure Map`
@@ -98,7 +98,7 @@ if (cats_split.length) {
 // Display about if used (unfiltered only)
 let profile: types.Profile | undefined
 if (!cats && tmap.hasOwnProperty('Profile')) {
-	profile = (tmap as types.TreasureMap).Profile
+	profile = (tmap as types.TreasureMapWithProfile).Profile
 }
 ---
 
@@ -107,18 +107,20 @@ if (!cats && tmap.hasOwnProperty('Profile')) {
 	<main>
 		<h1 class={profile ? 'has-profile' : ''}>{login_name}</h1>
 
-		{profile ? (
-			<Profile
-				client:idle
-				LoginName={login_name}
-				SignedInUser={user}
-				CreatedAt={profile.Created}
-				InitialPFPFileName={profile.PFP}
-				InitialAboutText={profile.About}
-				InitialEmailText={profile.Email}
-				Token={token}
-			/>
-		) : null}
+		{
+			profile ? (
+				<Profile
+					client:idle
+					LoginName={login_name}
+					SignedInUser={user}
+					CreatedAt={profile.CreatedAt}
+					InitialPFPFileName={profile.PFP}
+					InitialAboutText={profile.About}
+					InitialEmailText={profile.Email}
+					Token={token}
+				/>
+			) : null
+		}
 
 		<SearchFilters
 			client:load 

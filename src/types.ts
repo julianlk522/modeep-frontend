@@ -23,7 +23,7 @@ type Profile = {
 	PFP: string
 	About: string
 	Email: string
-	Created: string
+	CreatedAt: string
 }
 
 // LINK
@@ -160,7 +160,7 @@ type Totals = {
 // TREASURE MAP
 type TmapLink = Link & { CatsFromUser?: boolean }
 
-type FilteredTreasureMap = {
+type TreasureMap = {
 	Submitted: TmapLink[]
 	Starred: TmapLink[]
 	Tagged: TmapLink[]
@@ -169,7 +169,7 @@ type FilteredTreasureMap = {
 	NSFWLinksCount: number
 }
 
-type TreasureMap = FilteredTreasureMap & { Profile: Profile }
+type TreasureMapWithProfile = TreasureMap & { Profile: Profile }
 
 type TreasureMapSection = {
 	Links: TmapLink[]
@@ -199,7 +199,6 @@ export type {
 	CatCount,
 	Contributor,
 	ErrorResponse,
-	FilteredTreasureMap,
 	Link,
 	MorePageCatCountsWithMergedCats,
 	PaginatedLinks,
@@ -214,6 +213,7 @@ export type {
 	SummaryPage,
 	Tag,
 	TagPage,
+	TreasureMapWithProfile,
 	TmapLink,
 	Totals,
 	TreasureMap,

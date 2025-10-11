@@ -1,5 +1,5 @@
 ---
-import type { CatCount, Contributor, FilteredTreasureMap, Link, TmapLink, TreasureMap, URLParams } from '../../types'
+import type { CatCount, Contributor, TreasureMap, Link, TmapLink, TreasureMapWithProfile, URLParams } from '../../types'
 import { tmap_sections } from '../../types'
 import ScrollUp from '../ScrollUp.astro'
 import TopCats from './TopCats.astro'
@@ -13,7 +13,7 @@ interface Props {
 	TopCats: CatCount[]
 	TopContributors?: Contributor[]
 	MergedCats?: string[]
-	Tmap?: TreasureMap | FilteredTreasureMap
+	Tmap?: TreasureMap | TreasureMapWithProfile
 	SingleTmapSection?: TmapLink[]
 	SingleTmapSectionName?: (typeof tmap_sections)[number]
 	IsHomePage?: boolean

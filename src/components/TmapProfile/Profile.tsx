@@ -72,19 +72,11 @@ export default function Profile(props: Props) {
 				) : null}
 
 				{about_text?.length ? (
-					<About
-						Text={about_text}
-						SetText={set_about_text}
-						Editing={is_editing_about}
-					/>
+					<About Text={about_text} SetText={set_about_text} Editing={is_editing_about} />
 				) : null}
 
 				{is_signed_in_user ? (
-					<Email
-						Text={email_text}
-						SetText={set_email_text}
-						Editing={is_editing_email}
-					/>
+					<Email Text={email_text} SetText={set_email_text} Editing={is_editing_email} />
 				) : null}
 			</div>
 		</section>
