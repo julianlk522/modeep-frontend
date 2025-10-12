@@ -99,6 +99,7 @@ if (!tmap_resp.Response || tmap_resp.RedirectTo) {
 }
 const section_data: TreasureMapSection = await tmap_resp.Response.json()
 const single_tmap_section = section_data.Links
+const merged_cats = section_data.MergedCats
 
 // Page title
 let page_title = `${login_name}'s Treasure Map`
@@ -138,10 +139,11 @@ if (cats_split.length) {
 
 		<Rankings
 			SingleTmapSection={single_tmap_section}
-			SingleTmapSectionName={section_name as typeof tmap_sections[number]}
+			SingleTmapSectionName={section_name as (typeof tmap_sections)[number]}
 			IsTmapFromUser={login_name}
 			URLParams={url_params}
 			TopCats={section_data.Cats}
+			MergedCats={merged_cats ?? undefined}
 			Pages={section_data.Pages}
 			User={user}
 			Token={token}

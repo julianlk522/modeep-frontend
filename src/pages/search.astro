@@ -170,19 +170,21 @@ if (cats) {
 			NSFWLinksCount={nsfw_links_count}
 		/>
 
-		{links && links.length ? (
-			<Rankings
-				Links={links}
-				URLParams={url_params}
-				Pages={data.Pages}
-				TopCats={cats ? top_subcats : top_cats}
-				TopContributors={top_contributors}
-				MergedCats={merged_cats}
-				Token={token}
-				User={user}
-			/>
-		) : (
-			<NoLinksFound AddSomethingPrompt />
-		)}
+		{
+			links && links.length ? (
+				<Rankings
+					Links={links}
+					URLParams={url_params}
+					Pages={data.Pages}
+					TopCats={cats ? top_subcats : top_cats}
+					TopContributors={top_contributors}
+					MergedCats={merged_cats}
+					Token={token}
+					User={user}
+				/>
+			) : (
+				<NoLinksFound AddSomethingPrompt />
+			)
+		}
 	</main>
 </WithFooter>

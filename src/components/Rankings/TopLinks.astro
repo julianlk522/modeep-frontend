@@ -4,14 +4,12 @@ import * as types from '../../types'
 import Link from '../Link/Link'
 import get_non_cats_url_params from '../Link/util/params'
 import Pagination from '../Pagination.astro'
-import MergedResultsNotice from './MergedResultsNotice.astro'
 import NoLinksFound from './NoLinksFound.astro'
 
 interface Props {
 	Links?: types.Link[]
 	URLParams: types.URLParams
 	Pages?: number
-	MergedCats?: string[]
 	Tmap?: types.TreasureMap | types.TreasureMapWithProfile
 	MultipleTmapSections?: (typeof types.tmap_sections)[number][]
 	SingleTmapSection?: types.TmapLink[]
@@ -25,7 +23,6 @@ const {
 	Links: links,
 	URLParams: url_params,
 	Pages: pages,
-	MergedCats: merged_cats,
 	Tmap: tmap,
 	MultipleTmapSections: multiple_tmap_sections,
 	SingleTmapSection: single_tmap_section,
@@ -85,8 +82,6 @@ const home_page_non_default_periods = ['day', 'month', 'year', 'all']
 						))}
 					</ul>
 				) : null}
-
-				{merged_cats && merged_cats.length ? <MergedResultsNotice MergedCats={merged_cats} /> : null}
 
 				{links?.length ? (
 					<ol start={page ? (page - 1) * LINKS_PAGE_LIMIT + 1 : ''}>

@@ -17,15 +17,6 @@ type ResponseAndRedirect = {
 	RedirectTo: RedirectTo | undefined
 }
 
-// USER
-type Profile = {
-	LoginName: string
-	PFP: string
-	About: string
-	Email: string
-	CreatedAt: string
-}
-
 // LINK
 type Link = {
 	ID: string
@@ -62,7 +53,46 @@ type PaginatedLinks = {
 	MergedCats?: string[]
 	Pages: number
 }
+// TREASURE MAP
+type TmapLink = Link & { CatsFromUser?: boolean }
 
+type TreasureMap = {
+	Submitted: TmapLink[]
+	Starred: TmapLink[]
+	Tagged: TmapLink[]
+	SectionsWithMore: string[]
+	Cats: CatCount[]
+	NSFWLinksCount: number
+	MergedCats?: string[]
+}
+
+type TreasureMapWithProfile = TreasureMap & { Profile: Profile }
+
+type TreasureMapSection = {
+	Links: TmapLink[]
+	Cats: CatCount[]
+	NSFWLinksCount: number
+	MergedCats?: string[]
+	Pages: number
+}
+
+const tmap_sections = ['Submitted', 'Starred', 'Tagged'] as const
+
+// USER
+type Contributor = {
+	LoginName: string
+	LinksSubmitted: number
+}
+
+type Profile = {
+	LoginName: string
+	PFP: string
+	About: string
+	Email: string
+	CreatedAt: string
+}
+
+// PARAMS
 type URLParams = {
 	Cats?: string
 	Period?: Period
@@ -77,13 +107,7 @@ type URLParams = {
 const Periods = ['day', 'week', 'month', 'year', 'all'] as const
 type Period = (typeof Periods)[number]
 
-const SortMetrics = [
-	'times_starred',
-	'avg_stars',
-	'newest',
-	'oldest',
-	'clicks',
-] as const
+const SortMetrics = ['times_starred', 'avg_stars', 'newest', 'oldest', 'clicks'] as const
 type SortMetric = (typeof SortMetrics)[number]
 const PrettySortMetrics = {
 	times_starred: 'times starred',
@@ -91,6 +115,13 @@ const PrettySortMetrics = {
 	newest: 'newest',
 	oldest: 'oldest',
 	clicks: 'clicks',
+}
+
+// PAGINATION
+type PaginationHrefOpts = {
+	BaseHref: string
+	Page: number
+	OtherParams: URLSearchParams
 }
 
 // TAG
@@ -105,11 +136,10 @@ type TagRanking = Tag & { LifeSpanOverlap: number }
 
 type TagPage = {
 	Link: Link
-	UserTag?: Tag
+	YourTag?: Tag
 	TagRankings: TagRanking[]
 }
 
-// CATEGORY
 type CatCount = {
 	Category: string
 	Count: number
@@ -120,15 +150,8 @@ type MorePageCatCountsWithMergedCats = {
 	MergedCats?: string[]
 }
 
-function has_merged_cats_property(
-	obj: any
-): obj is MorePageCatCountsWithMergedCats {
+function has_merged_cats_property(obj: any): obj is MorePageCatCountsWithMergedCats {
 	return obj?.MergedCats !== undefined
-}
-
-type Contributor = {
-	LoginName: string
-	LinksSubmitted: number
 }
 
 // SUMMARY
@@ -157,44 +180,7 @@ type Totals = {
 	Contributors: number
 }
 
-// TREASURE MAP
-type TmapLink = Link & { CatsFromUser?: boolean }
-
-type TreasureMap = {
-	Submitted: TmapLink[]
-	Starred: TmapLink[]
-	Tagged: TmapLink[]
-	SectionsWithMore: string[]
-	Cats: CatCount[]
-	NSFWLinksCount: number
-}
-
-type TreasureMapWithProfile = TreasureMap & { Profile: Profile }
-
-type TreasureMapSection = {
-	Links: TmapLink[]
-	Cats: CatCount[]
-	NSFWLinksCount: number
-	Pages: number
-}
-
-const tmap_sections = ['Submitted', 'Starred', 'Tagged'] as const
-
-// PAGINATION
-type PaginationHrefOpts = {
-	BaseHref: string
-	Page: number
-	OtherParams: URLSearchParams
-}
-
-export {
-	has_merged_cats_property,
-	is_error_response,
-	Periods,
-	PrettySortMetrics,
-	SortMetrics,
-	tmap_sections,
-}
+export { has_merged_cats_property, is_error_response, Periods, PrettySortMetrics, SortMetrics, tmap_sections }
 export type {
 	CatCount,
 	Contributor,

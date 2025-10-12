@@ -1,39 +1,35 @@
 ---
-
 interface Props {
 	MergedCats: string[]
 }
 
 let { MergedCats: merged_cats } = Astro.props
 if (merged_cats.length > 3) {
-    merged_cats = merged_cats.slice(0, 3).concat(`and ${merged_cats.length - 3} others`)
+	merged_cats = merged_cats.slice(0, 3).concat(`and ${merged_cats.length - 3} others`)
 }
 ---
 
-<p id="merged-results-notice">Merging results for: {merged_cats.map((mc, i) => {
-    return <span class="merged-cat">{i > 0 ? ', ' : ''}{mc}</span>
-})}</p>
+<p id='merged-results-notice'>
+	(Merging results for: {(<span>{merged_cats.join(', ')}</span>)})
+</p>
 
 <style>
-    #merged-results-notice {
-        font-style: italic;
-        color: var(--text-muted);
-        margin: 0 0 1rem 1rem;
+	#merged-results-notice {
+		font-style: italic;
+		text-align: center;
+		color: var(--text-muted);
+		margin: 0;
+		margin-top: 1rem;
 
-        .merged-cat {
-            font-weight: bold;
-        }
-    }
+		span {
+			font-weight: bold;
+		}
+	}
 
-    @media (min-width: 450px) {
-        #merged-results-notice {
-            margin-left: 1.75rem;
-        }
-    }
-
-    @media (min-width: 480px) {
-        #merged-results-notice {
-            margin-left: 2rem;
-        }
-    }
+	@media (min-width: 680px) {
+		#merged-results-notice {
+			text-align: left;
+		}
+	}
 </style>
+

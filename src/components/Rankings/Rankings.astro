@@ -2,6 +2,7 @@
 import type { CatCount, Contributor, TreasureMap, Link, TmapLink, TreasureMapWithProfile, URLParams } from '../../types'
 import { tmap_sections } from '../../types'
 import ScrollUp from '../ScrollUp.astro'
+import MergedResultsNotice from './MergedResultsNotice.astro'
 import TopCats from './TopCats.astro'
 import TopContributors from './TopContributors.astro'
 import TopLinks from './TopLinks.astro'
@@ -46,45 +47,53 @@ if (tmap) {
 const no_links_found = (links && links.length === 0) || (tmap && multiple_tmap_sections.length === 0)
 ---
 
-<div id='rankings' class={is_home_page ? 'home' : ''}>
-	{
-		no_links_found ? null : (
-			<aside id='top-cats-and-contributors' class={tmap || single_tmap_section ? 'tmap' : ''}>
-				<TopCats
-					TopCats={top_cats}
-					URLParams={url_params}
-					IsTmapFromUser={tmap_owner}
-					SingleTmapSection={single_tmap_section_name}
-				/>
+<>
+	{merged_cats && merged_cats.length ? <MergedResultsNotice MergedCats={merged_cats} /> : null}
 
-				{top_contributors ? <TopContributors Contributors={top_contributors} URLParams={url_params} /> : null}
-			</aside>
-		)
-	}
+	<div
+		id='rankings'
+		class=`${is_home_page ? 'home' : ''}${merged_cats && merged_cats.length ? ' has-merged-results' : ''}`
+	>
+		{
+			no_links_found ? null : (
+				<aside id='top-cats-and-contributors' class={tmap || single_tmap_section ? 'tmap' : ''}>
+					<TopCats
+						TopCats={top_cats}
+						URLParams={url_params}
+						IsTmapFromUser={tmap_owner}
+						SingleTmapSection={single_tmap_section_name}
+					/>
 
-	<TopLinks
-		Links={links}
-		URLParams={url_params}
-		MergedCats={merged_cats}
-		Pages={pages}
-		Tmap={tmap}
-		MultipleTmapSections={multiple_tmap_sections}
-		SingleTmapSection={single_tmap_section}
-		SingleTmapSectionName={single_tmap_section_name}
-		TmapOwner={tmap_owner}
-		IsHomePage={is_home_page}
-		Token={token}
-		User={user}
-	/>
+					{top_contributors ? (
+						<TopContributors Contributors={top_contributors} URLParams={url_params} />
+					) : null}
+				</aside>
+			)
+		}
 
-	{links && links.length > 5 ? <ScrollUp /> : null}
-</div>
+		<TopLinks
+			Links={links}
+			URLParams={url_params}
+			Pages={pages}
+			Tmap={tmap}
+			MultipleTmapSections={multiple_tmap_sections}
+			SingleTmapSection={single_tmap_section}
+			SingleTmapSectionName={single_tmap_section_name}
+			TmapOwner={tmap_owner}
+			IsHomePage={is_home_page}
+			Token={token}
+			User={user}
+		/>
+
+		{links && links.length > 5 ? <ScrollUp /> : null}
+	</div>
+</>
 
 <style>
 	#rankings {
 		display: flex;
 		flex-direction: column;
-		padding-top: 0.5rem;
+		padding-top: 1rem;
 
 		aside#top-cats-and-contributors {
 			display: flex;
@@ -93,7 +102,6 @@ const no_links_found = (links && links.length === 0) || (tmap && multiple_tmap_s
 			gap: 0.25rem;
 			min-width: fit-content;
 			padding: 0;
-			padding-top: 0.5rem;
 
 			> div {
 				padding-bottom: 0.5rem;
@@ -132,6 +140,10 @@ const no_links_found = (links && links.length === 0) || (tmap && multiple_tmap_s
 		}
 	}
 
+	#rankings.has-merged-results {
+		padding-top: 0.5rem;
+	}
+
 	#rankings:has(p#no-further-cats) {
 		padding: 0.5rem 0;
 	}
@@ -154,6 +166,7 @@ const no_links_found = (links && links.length === 0) || (tmap && multiple_tmap_s
 		#rankings {
 			flex-direction: row;
 			gap: 3rem;
+			padding-top: 0;
 
 			aside#top-cats-and-contributors {
 				flex-direction: column;
@@ -166,6 +179,20 @@ const no_links_found = (links && links.length === 0) || (tmap && multiple_tmap_s
 
 			aside#top-cats-and-contributors.tmap {
 				margin-top: 1.5rem;
+			}
+		}
+
+		#rankings.has-merged-results {
+			aside#top-cats-and-contributors {
+				margin-top: 1rem;
+			}
+
+			section.links-section:has(h2):first-of-type {
+				margin-top: 0;
+			}
+
+			section.links-section:not(:has(h2)) astro-island:first-of-type li.link {
+				margin-top: 1rem;
 			}
 		}
 	}
