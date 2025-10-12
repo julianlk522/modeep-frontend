@@ -58,7 +58,7 @@ type StarStateUpdate = {
 
 type PaginatedLinks = {
 	Links: Link[]
-	NSFWLinks: number
+	NSFWLinksCount: number
 	MergedCats?: string[]
 	Pages: number
 }

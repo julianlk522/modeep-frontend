@@ -91,11 +91,7 @@ if (!get_links_resp.Response || get_links_resp.RedirectTo) {
 	return Astro.redirect(get_links_resp.RedirectTo)
 }
 const data: PaginatedLinks = await get_links_resp.Response.json()
-const {
-	Links: links,
-	NSFWLinks: nsfw_links,
-	MergedCats: merged_cats,
-} = data
+const { Links: links, NSFWLinksCount: nsfw_links_count, MergedCats: merged_cats } = data
 
 if (!links?.length) {
 	if (page > 1) {
@@ -171,7 +167,7 @@ if (cats) {
 			InitialURLLacks={url_lacks}
 			InitialSortBy={sort_by}
 			InitialNSFW={nsfw}
-			NSFWLinks={nsfw_links}
+			NSFWLinksCount={nsfw_links_count}
 		/>
 
 		{links && links.length ? (

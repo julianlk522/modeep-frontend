@@ -123,10 +123,10 @@ if (!cats && tmap.hasOwnProperty('Profile')) {
 		}
 
 		<SearchFilters
-			client:load 
-			Endpoint={"/map"}
+			client:load
+			Endpoint={'/map'}
 			TmapOwnerLoginName={login_name}
-			NSFWLinks={tmap.NSFWLinksCount}
+			NSFWLinksCount={tmap.NSFWLinksCount}
 			InitialCats={cats_split}
 			InitialPeriod={period}
 			InitialSummaryContains={summary_contains}

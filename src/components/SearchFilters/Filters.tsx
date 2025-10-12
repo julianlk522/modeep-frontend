@@ -13,7 +13,7 @@ interface Props {
 	Endpoint?: '/search' | '/more' | '/map'
 	TmapOwnerLoginName?: string
 	SingleTmapSectionName?: (typeof tmap_sections)[number]
-	NSFWLinks?: number
+	NSFWLinksCount?: number
 	InitialCats: string[]
 	InitialSummaryContains: string
 	InitialURLContains: string
@@ -28,7 +28,7 @@ export default function SearchFilters(props: Props) {
 		Endpoint: endpoint,
 		TmapOwnerLoginName: tmap_owner_login_name,
 		SingleTmapSectionName: single_tmap_section_name,
-		NSFWLinks: nsfw_links,
+		NSFWLinksCount: nsfw_links_count,
 		InitialCats: initial_cats,
 		InitialSummaryContains: initial_summary_contains,
 		InitialURLContains: initial_url_contains,
@@ -189,15 +189,8 @@ export default function SearchFilters(props: Props) {
 				{endpoint !== '/more' ? (
 					<>
 						<SearchSortBy
-							SortBy={sort_by}
-							SetSortBy={set_sort_by}
-						/>
 
-						<SearchNSFW
-							NSFW={nsfw}
-							SetNSFW={set_nsfw}
-							NSFWLinks={nsfw_links}
-						/>
+						<SearchNSFW NSFW={nsfw} SetNSFW={set_nsfw} NSFWLinksCount={nsfw_links_count} />
 					</>
 				) : null}
 

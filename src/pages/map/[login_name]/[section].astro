@@ -122,11 +122,11 @@ if (cats_split.length) {
         </a>
 
 		<SearchFilters
-			client:load 
-			Endpoint={"/map"}
+			client:load
+			Endpoint={'/map'}
 			TmapOwnerLoginName={login_name}
-			SingleTmapSectionName={section_name as typeof tmap_sections[number]}
-			NSFWLinks={section_data.NSFWLinksCount}
+			SingleTmapSectionName={section_name as (typeof tmap_sections)[number]}
+			NSFWLinksCount={section_data.NSFWLinksCount}
 			InitialCats={cats_split}
 			InitialPeriod={period}
 			InitialSummaryContains={summary_contains}
