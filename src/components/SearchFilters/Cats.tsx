@@ -197,14 +197,10 @@ export default function SearchCats(props: Props) {
 		<>
 			{addable ? (
 				<div id='search-cats-container' class={is_home_page ? 'home' : ''}>
-					{!is_home_page ? (
-						<label id='search-cats' for='cats'>
-							Cats:
-						</label>
-					) : null}
+					{!is_home_page ? <label for='cats'>Cats:</label> : null}
 
 					<input
-						id='cats'
+						id='search-cats'
 						ref={input_ref}
 						name='cats'
 						type='text'

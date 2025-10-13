@@ -19,6 +19,7 @@ interface Props {
 	InitialURLContains: string
 	InitialURLLacks: string
 	InitialPeriod: Period
+
 	// not used on More Cats page
 	InitialSortBy?: SortMetric
 	InitialNSFW?: boolean
@@ -42,12 +43,12 @@ export default function SearchFilters(props: Props) {
 	const is_tmap = endpoint === '/map'
 
 	const [cats, set_cats] = useState<string[]>(initial_cats)
-	const [summary_contains, set_summary_contains] =
-		useState<string>(initial_summary_contains)
-	const [url_contains, set_url_contains] =
-		useState<string>(initial_url_contains)
+	const [summary_contains, set_summary_contains] = useState<string>(initial_summary_contains)
+	const [url_contains, set_url_contains] = useState<string>(initial_url_contains)
 	const [url_lacks, set_url_lacks] = useState<string>(initial_url_lacks)
-	const [period, set_period] = useState<Period>(initial_period)
+	const [period, set_period] = useState<Period>(initial_period ?? 'all')
+
+	// might want to move these if not always used... TODO
 	const [sort_by, set_sort_by] = useState<SortMetric>(initial_sort_by ?? 'times_starred')
 	const [nsfw, set_nsfw] = useState<boolean>(initial_nsfw ?? false)
 
@@ -81,10 +82,7 @@ export default function SearchFilters(props: Props) {
 		params.set('nsfw', 'true')
 	}
 
-	const has_changed_cats =
-		cats.length !== initial_cats.length ||
-		cats.some((cat) => !initial_cats.includes(cat))
-
+	const has_changed_cats = cats.length !== initial_cats.length || cats.some((cat) => !initial_cats.includes(cat))
 	const has_changed_filters =
 		has_changed_cats ||
 		summary_contains !== initial_summary_contains ||
@@ -101,9 +99,7 @@ export default function SearchFilters(props: Props) {
 				: `/map/${tmap_owner_login_name}`
 			: endpoint
 		: '/search'
-	const search_url = params.toString()
-		? `${base_url}?${params.toString()}`
-		: base_url
+	const search_url = params.toString() ? `${base_url}?${params.toString()}` : base_url
 
 	// search by pressing "Enter"
 	// (propagation stopped within SearchCats if "Enter" is used to add a cat)
@@ -115,26 +111,19 @@ export default function SearchFilters(props: Props) {
 				scour_anchor_ref.current?.click()
 			}
 		},
-		[has_changed_filters]
+		[has_changed_filters],
 	)
 
 	function toggle_search_filters_collapsed() {
 		document.documentElement.classList.toggle('search-filters-collapsed')
 
-		const is_collaped = document.documentElement.classList.contains(
-			'search-filters-collapsed'
-		)
-			? 'true'
-			: 'false'
+		const is_collaped = document.documentElement.classList.contains('search-filters-collapsed') ? 'true' : 'false'
 		localStorage.setItem('collapse_search_filters_initially', is_collaped)
 	}
 
 	return (
 		<section id='search-filters'>
-			<div
-				id='search-filters-header'
-				onClick={toggle_search_filters_collapsed}
-			>
+			<div id='search-filters-header' onClick={toggle_search_filters_collapsed}>
 				<img
 					id='filters-expansion-arrow'
 					src='../../back.svg'
@@ -144,80 +133,53 @@ export default function SearchFilters(props: Props) {
 				/>
 				<h2>Filters</h2>
 			</div>
-			<form onKeyDown={handle_keydown}>
-				<SearchCats
-					SelectedCats={cats}
-					SetSelectedCats={set_cats}
-					TmapOwner={tmap_owner_login_name}
-				/>
 
+			<form onKeyDown={handle_keydown}>
+				<SearchCats SelectedCats={cats} SetSelectedCats={set_cats} TmapOwner={tmap_owner_login_name} />
 				{is_tmap && cats.length ? (
 					<p id='transfer-to-global-map'>
-						<a href={
-							single_tmap_section_name
-								? search_url.replace(
-									`/map/${tmap_owner_login_name}/${single_tmap_section_name?.toLowerCase()}`,
-									'/search'
-								)
-								: search_url.replace(
-									`/map/${tmap_owner_login_name}`,
-									'/search'
-								)
-						}>
+						<a
+							href={
+								single_tmap_section_name
+									? search_url.replace(
+											`/map/${tmap_owner_login_name}/${single_tmap_section_name?.toLowerCase()}`,
+											'/search',
+										)
+									: search_url.replace(`/map/${tmap_owner_login_name}`, '/search')
+							}
+						>
 							Transfer cats to Global Treasure Map
 						</a>
 					</p>
 				) : null}
 
-				<SearchSummaryContains
-					SummaryContains={summary_contains}
-					SetSummaryContains={set_summary_contains}
-					TmapOwner={tmap_owner_login_name}
-				/>
-
-				<SearchURLContains
-					URLContains={url_contains}
-					SetURLContains={set_url_contains}
-				/>
-
-				<SearchURLLacks
-					URLLacks={url_lacks}
-					SetURLLacks={set_url_lacks}
-				/>
-
+				<SearchSummaryContains SummaryContains={summary_contains} SetSummaryContains={set_summary_contains} />
+				<SearchURLContains URLContains={url_contains} SetURLContains={set_url_contains} />
+				<SearchURLLacks URLLacks={url_lacks} SetURLLacks={set_url_lacks} />
 				<SearchPeriod Period={period} SetPeriod={set_period} />
 
 				{endpoint !== '/more' ? (
 					<>
-						<SearchSortBy
-
+						<SearchSortBy SortBy={sort_by} SetSortBy={set_sort_by} />
 						<SearchNSFW NSFW={nsfw} SetNSFW={set_nsfw} NSFWLinksCount={nsfw_links_count} />
 					</>
 				) : null}
 
 				<a
 					id='search-from-filters'
-					title={
-						has_changed_filters
-							? ''
-							: 'Filters unchanged; scroll down to see returned links'
-					}
+					title={has_changed_filters ? '' : 'Filters unchanged; scroll down to see matching links'}
 					class={has_changed_filters ? 'filters-changed' : ''}
 					href={search_url}
 					ref={scour_anchor_ref}
 				>
 					Scour
-					{is_tmap
-						? ' this '
-						: ' the '}
+					{is_tmap ? ' this ' : ' the '}
 					Treasure Map
 					{single_tmap_section_name ? ' section' : ''}
 				</a>
 			</form>
-			<div
-				id='lower-expansion-toggle-clickable-zone'
-				onClick={toggle_search_filters_collapsed}
-			></div>
+
+			<div id='lower-expansion-toggle-clickable-zone' onClick={toggle_search_filters_collapsed}></div>
 		</section>
 	)
 }

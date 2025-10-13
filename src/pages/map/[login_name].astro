@@ -80,13 +80,13 @@ if (!tmap_resp.Response || tmap_resp.RedirectTo) {
 const tmap: types.TreasureMap | types.TreasureMapWithProfile = await tmap_resp.Response.json()
 
 // Page title
-let page_title = `${login_name}'s Treasure Map`
-
+let page_title = `Treasure that ${login_name} found`
 const cats_split: string[] = cats ? cats.split(',') : []
 if (cats_split.length) {
-	page_title += ' (Filtered)'
+	const has_many_cats = cats_split.length > 3
+	const cats_title_text = has_many_cats ? cats_split.slice(0, 3).join(' + ') + '...' : cats_split.join(' + ')
+	page_title += ` about ${cats_title_text}`
 }
-
 
 // Display about if used (unfiltered only)
 let profile: types.Profile | undefined
@@ -143,10 +143,11 @@ if (!cats && tmap.hasOwnProperty('Profile')) {
 	</main>
 </WithFooter>
 
-<style>	
+<style>
 	h1 {
 		text-align: left;
 	}
+
 	h1.has-profile {
 		margin-bottom: 0;
 	}

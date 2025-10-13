@@ -14,12 +14,12 @@ export default function SearchNSFW(props: Props) {
 
 	return (
 		<div id='search-nsfw-container'>
-			<label id='search-nsfw' for='nsfw'>
+			<label for='nsfw'>
 				Include NSFW {nsfw_links_count ? <span id='nsfw-link-count'>{`(${nsfw_links_count})`}</span> : ''}
 			</label>
 			<input
 				type='checkbox'
-				id='nsfw'
+				id='search-nsfw'
 				name='nsfw'
 				checked={nsfw}
 				onChange={(e: ChangeEvent<HTMLInputElement>) => set_nsfw((e.target as HTMLInputElement).checked)}

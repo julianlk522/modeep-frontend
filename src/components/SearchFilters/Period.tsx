@@ -14,16 +14,9 @@ export default function SearchPeriod(props: Props) {
 		set_period(e.currentTarget.value as Period)
 	}
 	return (
-		<div>
-			<label id='search-period' for='period'>
-				Period:
-			</label>
-			<select
-				name='period'
-				id='period'
-				value={period}
-				onChange={handle_set_period}
-			>
+		<div id='search-period-container'>
+			<label for='period'>Period:</label>
+			<select name='period' id='period' value={period} onChange={handle_set_period}>
 				{Periods.map((per) => (
 					<option value={per}>{per}</option>
 				))}

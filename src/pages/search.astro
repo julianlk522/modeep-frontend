@@ -7,7 +7,6 @@ import { CATS_ENDPOINT, CONTRIBUTORS_ENDPOINT, LINKS_ENDPOINT } from '../constan
 import WithFooter from '../layouts/WithFooter.astro'
 import {
 	Periods,
-	PrettySortMetrics,
 	SortMetrics,
 	type CatCount,
 	type Contributor,
@@ -67,8 +66,7 @@ const url_params = {
 	Page: page,
 }
 
-// Requests
-// links
+// Links
 let links_url = LINKS_ENDPOINT
 if (params.size) {
 	links_url += `?${params.toString()}`
@@ -93,7 +91,7 @@ if (!links?.length) {
 	}
 }
 
-// cats
+// Top Cats/Subcats
 let top_cats: CatCount[] = []
 let top_subcats: CatCount[] = []
 
@@ -103,9 +101,7 @@ for (const [key, value] of params.entries()) {
 		params_minus_page.set(key, value)
 	}
 }
-const cats_and_contributors_href_suffix = params_minus_page.size 
-	? `?${params_minus_page.toString()}` 
-	: ''
+const cats_and_contributors_href_suffix = params_minus_page.size ? `?${params_minus_page.toString()}` : ''
 let cats_url = CATS_ENDPOINT + cats_and_contributors_href_suffix
 let contributors_url = CONTRIBUTORS_ENDPOINT + cats_and_contributors_href_suffix
 
@@ -123,7 +119,7 @@ if (cats) {
 	top_cats = await top_cats_resp.Response.json()
 }
 
-// contributors
+// Contributors
 let top_contributors: Contributor[] = []
 
 const contributors_resp = await fetch_with_handle_redirect(contributors_url)
@@ -133,24 +129,19 @@ if (!contributors_resp.Response || contributors_resp.RedirectTo) {
 top_contributors = await contributors_resp.Response.json()
 
 // Page title
-const pretty_sort_by = PrettySortMetrics[sort_by]
-let page_title = 'Treasure sorted by ' + pretty_sort_by.charAt(0) + pretty_sort_by.slice(1)
-
+let page_title = 'Search'
 if (cats) {
-	const cats_separated = cats ? cats.split(',') : []
-	const has_many_cats = cats_separated.length > 3
-	const cats_title_text = has_many_cats 
-		? cats_separated.slice(0, 3).join(' + ') + '...' 
-		: cats_separated.join(' + ')
-		 
-	page_title = cats_title_text + ': ' + page_title
+	const cats_split = cats ? cats.split(',') : []
+	const has_many_cats = cats_split.length > 3
+	const cats_title_text = has_many_cats ? cats_split.slice(0, 3).join(' + ') + '...' : cats_split.join(' + ')
+	page_title = page_title += `: ${cats_title_text}`
 }
 ---
 
 <WithFooter Title={page_title}>
 	<LocalStorageLoader />
 	<main>
-		<SearchFilters 
+		<SearchFilters
 			client:load
 			InitialCats={cats.length ? cats.split(',') : []}
 			InitialPeriod={period}

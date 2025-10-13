@@ -1,33 +1,42 @@
 ---
 interface Props {
-    AddSomethingPrompt?: boolean
+	AddSomethingPrompt?: boolean
 }
-
 ---
 
 <section>
-    <p id="no-links">Alas, this voyage uncovered no loot</p>
+	<p id='no-links'>Alas, no treasure here.</p>
 
-    <p>&macr;&bsol;&lowbar;&lpar;&#x30c4;&rpar;&lowbar;&sol;&macr;</p>
-    
-    {Astro.props.AddSomethingPrompt && <p id="add-link"><a href="/new">Reveal something cool</a></p>}
+	<p>&macr;&bsol;&lowbar;&lpar;&#x30c4;&rpar;&lowbar;&sol;&macr;</p>
+
+	{
+		Astro.props.AddSomethingPrompt && (
+			<>
+				<p id='hope'>Unless... ?</p>
+				<p id='anime-glasses-moment'>
+					<a href='/new'>I know a thing</a>
+				</p>
+			</>
+		)
+	}
 </section>
 
 <style>
-    section {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        min-height: 150px;
-        width: 100%;
-        text-align: center;
-    }
+	section {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		min-height: 150px;
+		width: 100%;
+		text-align: center;
+	}
 
-	p#no-links {
+	p#no-links,
+	p#anime-glasses-moment {
 		margin-top: 0;
 	}
 
-	p#add-link {
+	p#hope {
 		margin-top: 2rem;
 	}
 </style>

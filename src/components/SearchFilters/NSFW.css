@@ -1,17 +1,19 @@
 #search-nsfw-container {
 	display: flex;
 	align-items: center;
+	gap: 3px;
 	margin-top: 3px;
 
-	label#search-nsfw {
+	label {
 		display: inline;
+		margin-top: 0;
 
 		span#nsfw-link-count {
 			font-weight: bold;
 		}
 	}
 
-	input#nsfw {
+	input#search-nsfw {
 		margin-bottom: 0;
 	}
 }

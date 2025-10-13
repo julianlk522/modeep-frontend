@@ -1,11 +1,11 @@
 #search-cats-container {
-	input#cats {
+	input#search-cats {
 		font-size: 0.85rem;
 		padding: 1px;
 		min-width: 24ch;
 	}
 
-	input#cats::placeholder {
+	input#search-cats::placeholder {
 		font-size: 0.85rem;
 		opacity: 0.8;
 		text-align: center;

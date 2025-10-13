@@ -13,25 +13,24 @@ export default function Email(props: Props) {
 
 	return (
 		<div id='profile-email'>
-			<span>Email: </span>
-
 			{editing ? (
 				<input
 					type='email'
 					name='email'
-					onChange={(e: ChangeEvent<HTMLInputElement>) =>
-						set_text(e.currentTarget.value)
-					}
+					onChange={(e: ChangeEvent<HTMLInputElement>) => set_text(e.currentTarget.value)}
 					value={text}
 				/>
 			) : text ? (
-				<strong>{text}</strong>
+				<>
+					<span>Email: </span>
+					<strong>{text}</strong>
+				</>
 			) : (
-				<strong>not set</strong>
+				<span>No email set.</span>
 			)}
 			<p id='profile-email-note' class='profile-details-text'>
-				Only you can see your email. It is recommended to set one in
-				case you forget your password and need to send a recovery link.
+				Only you can see your email. It is recommended to set one in case you forget your password and need to
+				send a recovery link.
 			</p>
 		</div>
 	)

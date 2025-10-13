@@ -162,14 +162,14 @@ let user = Astro.cookies.get('user')?.value
 				max-width: 100%;
 			}
 
-			label:is(
-				#search-cats,
-				#search-summary-contains,
-				#search-url-contains,
-				#search-url-lacks,
-				#search-period, 
-				#search-sort-by,
-			) {
+			:is(
+				#search-cats-container,
+				#search-summary-contains-container,
+				#search-url-contains-container,
+				#search-url-lacks-container,
+				#search-period-container,
+				#search-sort-by-container
+			) label {
 				display: inline;
 				margin-right: 5px;
 			}

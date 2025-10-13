@@ -6,11 +6,12 @@ import LocalStorageLoader from '../../../components/SearchFilters/LocalStorageLo
 import { TMAP_ENDPOINT } from '../../../constants'
 import WithFooter from '../../../layouts/WithFooter.astro'
 import {
-Periods,
-tmap_sections,
-type Period,
-type SortMetric,
-type TreasureMapSection
+	Periods,
+	SortMetrics,
+	tmap_sections,
+	type Period,
+	type SortMetric,
+	type TreasureMapSection,
 } from '../../../types'
 import fetch_with_handle_redirect from '../../../util/fetch_with_handle_redirect'
 
@@ -27,7 +28,7 @@ if (!login_name) {
 // section
 let section_name = Astro.params.section?.toLowerCase()
 if (!section_name || !tmap_sections.map((s) => s.toLowerCase()).includes(section_name)) {
-    return Astro.redirect(`/map/${login_name}`)
+	return Astro.redirect(`/map/${login_name}`)
 }
 
 const params = Astro.url.searchParams
@@ -94,25 +95,25 @@ const single_tmap_section = section_data.Links
 const merged_cats = section_data.MergedCats
 
 // Page title
-let page_title = `${login_name}'s Treasure Map`
-
+let page_title = `Treasure that ${login_name} ${section_name}`
 const cats_split: string[] = cats ? cats.split(',') : []
 if (cats_split.length) {
-    page_title += ' (Filtered)'
+	const has_many_cats = cats_split.length > 3
+	const cats_title_text = has_many_cats ? cats_split.slice(0, 3).join(' + ') + '...' : cats_split.join(' + ')
+	page_title += ` about ${cats_title_text}`
 }
-
 ---
 
 <WithFooter Title={page_title}>
-    <LocalStorageLoader />
+	<LocalStorageLoader />
 	<main>
 		<h1>{login_name}</h1>
-        <p class="subtitle">({section_name[0].toUpperCase() + section_name.slice(1)})</p>
+		<p class='subtitle'>({section_name[0].toUpperCase() + section_name.slice(1)})</p>
 
-        <a id="see-all-sections" href={Astro.url.href.replace(`/${section_name}`, '')}>
-            <img src='../../back.svg' height={18} width={18} />
-            All sections
-        </a>
+		<a id='see-all-sections' href={Astro.url.href.replace(`/${section_name}`, '')}>
+			<img src='../../back.svg' height={18} width={18} />
+			All sections
+		</a>
 
 		<SearchFilters
 			client:load
@@ -146,27 +147,27 @@ if (cats_split.length) {
 </WithFooter>
 
 <style>
-    h1:has(+ .subtitle) { 
-        margin-bottom: 0.5rem; 
-    }
+	h1:has(+ .subtitle) {
+		margin-bottom: 0.5rem;
+	}
 
-    p.subtitle {
-        text-align: center;
-    }
+	p.subtitle {
+		text-align: center;
+	}
 
-    a#see-all-sections {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        width: fit-content;
-        margin-bottom: 1rem;
-    }
+	a#see-all-sections {
+		display: flex;
+		align-items: center;
+		gap: 5px;
+		width: fit-content;
+		margin-bottom: 1rem;
+	}
 
-    ol {
-        max-width: calc(100% - 1rem);
-        margin: 0;
-        margin-top: 0.5rem;
-        margin-left: auto;
-        padding: 0;
-    }
+	ol {
+		max-width: calc(100% - 1rem);
+		margin: 0;
+		margin-top: 0.5rem;
+		margin-left: auto;
+		padding: 0;
+	}
 </style>

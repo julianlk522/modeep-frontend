@@ -51,7 +51,7 @@ if (!totals_resp.Response || totals_resp.RedirectTo) {
 const totals: Totals = await totals_resp.Response.json()
 ---
 
-<WithFooter Title='Modeep - discover and share treasures.'>
+<WithFooter Title='Modeep'>
 	<main>
 		<h1>Welcome Home, Good Hunter</h1>
 		<p id='subtitle'>What is it you desire?</p>
@@ -162,7 +162,6 @@ const totals: Totals = await totals_resp.Response.json()
 	@media (min-width: 680px) {
 		#totals {
 			font-size: 1rem;
-			margin-top: 1rem;
 
 			div.row {
 				justify-content: flex-end;

@@ -9,12 +9,11 @@ export default function SearchURLLacks(props: Props) {
 	const { URLLacks: url_lacks, SetURLLacks: set_url_lacks } = props
 
 	return (
-		<div>
-			<label id='search-url-lacks' for='url-snippet'>
-				URL Lacks:
-			</label>
+		<div id='search-url-lacks-container'>
+			<label for='url-lacks-snippet'>URL Lacks:</label>
 			<input
-				id='url-snippet'
+				id='search-url-lacks'
+				name='url-lacks-snippet'
 				type='text'
 				value={url_lacks}
 				onInput={(e: InputEvent) => {

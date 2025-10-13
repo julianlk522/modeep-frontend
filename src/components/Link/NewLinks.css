@@ -6,7 +6,7 @@ section#new-link {
 		margin-top: 1rem;
 	}
 
-	label#search-cats {
+	#search-cats-container label {
 		display: block;
 
 		+ * {

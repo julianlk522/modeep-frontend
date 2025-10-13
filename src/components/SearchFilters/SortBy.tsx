@@ -14,16 +14,9 @@ export default function SearchSortBy(props: Props) {
 		set_sort_by(e.currentTarget.value as SortMetric)
 	}
 	return (
-		<div>
-			<label id='search-sort-by' for='sort-by'>
-				Sort By:
-			</label>
-			<select
-				name='sort-by'
-				id='sort-by'
-				value={sort_by}
-				onChange={handle_set_sort_by}
-			>
+		<div id='search-sort-by-container'>
+			<label for='sort-by'>Sort By:</label>
+			<select name='sort-by' id='search-sort-by' value={sort_by} onChange={handle_set_sort_by}>
 				{SortMetrics.map((met) => {
 					return <option value={met}>{PrettySortMetrics[met]}</option>
 				})}
