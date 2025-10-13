@@ -23,35 +23,28 @@ const params = Astro.url.searchParams
 
 let cats = ''
 if (params.get('cats')) {
-	cats = params.get('cats') as string
+	cats = params.get('cats') ?? ''
 }
 let summary_contains = ''
 if (params.get('summary_contains')) {
-	summary_contains = params.get('summary_contains') as string
+	summary_contains = params.get('summary_contains') ?? ''
 }
-let url_contains = ""
+let url_contains = ''
 if (params.get('url_contains')) {
-	url_contains = params.get('url_contains') as string
+	url_contains = params.get('url_contains') ?? ''
 }
-let url_lacks = ""
+let url_lacks = ''
 if (params.get('url_lacks')) {
-	url_lacks = params.get('url_lacks') as string
+	url_lacks = params.get('url_lacks') ?? ''
 }
-let period: types.Period = "all"
-if (
-	params.get('period') &&
-	(types.Periods as readonly string[]).includes(
-		params.get('period') as types.Period
-	)
-) {
+let period = ''
+if (params.get('period') && (types.Periods as readonly string[]).includes(params.get('period') as types.Period)) {
 	period = params.get('period') as types.Period
 }
-let sort_by: types.SortMetric = 'times_starred'
+let sort_by = ''
 if (
 	params.get('sort_by') &&
-	(types.SortMetrics as readonly string[]).includes(
-		params.get('sort_by') as types.SortMetric
-	)
+	(types.SortMetrics as readonly string[]).includes(params.get('sort_by') as types.SortMetric)
 ) {
 	sort_by = params.get('sort_by') as types.SortMetric
 }
@@ -62,8 +55,8 @@ if (params.get('nsfw') && params.get('nsfw') === 'true') {
 
 const url_params = {
 	Cats: cats,
-	Period: period,
-	SortBy: sort_by,
+	Period: (period as types.Period) ?? undefined,
+	SortBy: (sort_by as types.SortMetric) ?? undefined,
 	NSFW: nsfw,
 	SummaryContains: summary_contains,
 	URLContains: url_contains,
@@ -128,11 +121,11 @@ if (!cats && tmap.hasOwnProperty('Profile')) {
 			TmapOwnerLoginName={login_name}
 			NSFWLinksCount={tmap.NSFWLinksCount}
 			InitialCats={cats_split}
-			InitialPeriod={period}
+			InitialPeriod={period && period !== 'all' ? (period as types.Period) : 'all'}
+			InitialSortBy={sort_by && sort_by !== 'times_starred' ? (sort_by as types.SortMetric) : 'times_starred'}
 			InitialSummaryContains={summary_contains}
 			InitialURLContains={url_contains}
 			InitialURLLacks={url_lacks}
-			InitialSortBy={sort_by}
 			InitialNSFW={nsfw}
 		/>
 

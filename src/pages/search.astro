@@ -6,14 +6,14 @@ import LocalStorageLoader from '../components/SearchFilters/LocalStorageLoader.a
 import { CATS_ENDPOINT, CONTRIBUTORS_ENDPOINT, LINKS_ENDPOINT } from '../constants'
 import WithFooter from '../layouts/WithFooter.astro'
 import {
-Periods,
-PrettySortMetrics,
-SortMetrics,
-type CatCount,
-type Contributor,
-type PaginatedLinks,
-type Period,
-type SortMetric
+	Periods,
+	PrettySortMetrics,
+	SortMetrics,
+	type CatCount,
+	type Contributor,
+	type PaginatedLinks,
+	type Period,
+	type SortMetric,
 } from '../types'
 import fetch_with_handle_redirect from '../util/fetch_with_handle_redirect'
 
@@ -23,38 +23,30 @@ const user = Astro.cookies.get('user')?.value
 
 // Params
 const params = Astro.url.searchParams
-let cats = ""
+let cats = ''
 if (params.get('cats')) {
 	cats = params.get('cats') as string
 }
-let summary_contains = ""
+let summary_contains = ''
 if (params.get('summary_contains')) {
 	summary_contains = params.get('summary_contains') as string
 }
-let url_contains = ""
+let url_contains = ''
 if (params.get('url_contains')) {
 	url_contains = params.get('url_contains') as string
 }
-let url_lacks = ""
+let url_lacks = ''
 if (params.get('url_lacks')) {
 	url_lacks = params.get('url_lacks') as string
 }
 let period: Period = 'all'
-if (
-	params.get('period') &&
-	(Periods as readonly string[]).includes(
-		params.get('period') as Period
-	)
-) {
+if (params.get('period') && (Periods as readonly string[]).includes(params.get('period') as Period)) {
 	period = params.get('period') as Period
 }
 let sort_by: SortMetric = 'times_starred'
-if (
-	params.get('sort_by') && (SortMetrics as readonly string[]).includes(
-		params.get('sort_by') as SortMetric
-	)) {
-		sort_by = params.get('sort_by') as SortMetric
-	}
+if (params.get('sort_by') && (SortMetrics as readonly string[]).includes(params.get('sort_by') as SortMetric)) {
+	sort_by = params.get('sort_by') as SortMetric
+}
 let nsfw: boolean = false
 if (params.get('nsfw') && params.get('nsfw') === 'true') {
 	nsfw = true
@@ -66,8 +58,8 @@ if (params.get('page')) {
 
 const url_params = {
 	Cats: cats,
-	Period: period,
-	SortBy: sort_by,
+	Period: period !== 'all' ? period : undefined,
+	SortBy: sort_by !== 'times_starred' ? sort_by : undefined,
 	NSFW: nsfw,
 	SummaryContains: summary_contains,
 	URLContains: url_contains,

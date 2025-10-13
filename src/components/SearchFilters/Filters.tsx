@@ -19,7 +19,8 @@ interface Props {
 	InitialURLContains: string
 	InitialURLLacks: string
 	InitialPeriod: Period
-	InitialSortBy: SortMetric
+	// not used on More Cats page
+	InitialSortBy?: SortMetric
 	InitialNSFW?: boolean
 }
 
@@ -47,7 +48,7 @@ export default function SearchFilters(props: Props) {
 		useState<string>(initial_url_contains)
 	const [url_lacks, set_url_lacks] = useState<string>(initial_url_lacks)
 	const [period, set_period] = useState<Period>(initial_period)
-	const [sort_by, set_sort_by] = useState<SortMetric>(initial_sort_by)
+	const [sort_by, set_sort_by] = useState<SortMetric>(initial_sort_by ?? 'times_starred')
 	const [nsfw, set_nsfw] = useState<boolean>(initial_nsfw ?? false)
 
 	// Params

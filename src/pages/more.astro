@@ -1,66 +1,54 @@
 ---
-import MergedResultsNotice from "../components/Rankings/MergedResultsNotice.astro";
-import NoLinksFound from "../components/Rankings/NoLinksFound.astro";
-import TopCats from "../components/Rankings/TopCats.astro";
-import ScrollUp from "../components/ScrollUp.astro";
-import SearchFilters from "../components/SearchFilters/Filters";
-import LocalStorageLoader from "../components/SearchFilters/LocalStorageLoader.astro";
-import { CATS_ENDPOINT } from "../constants";
-import WithFooter from "../layouts/WithFooter.astro";
-import { has_merged_cats_property, Periods, SortMetrics, type CatCount, type MorePageCatCountsWithMergedCats, type Period, type SortMetric } from "../types";
-import fetch_with_handle_redirect from "../util/fetch_with_handle_redirect";
-
-let more_cats_url = CATS_ENDPOINT + "?more=true"
+import MergedResultsNotice from '../components/Rankings/MergedResultsNotice.astro'
+import NoLinksFound from '../components/Rankings/NoLinksFound.astro'
+import TopCats from '../components/Rankings/TopCats.astro'
+import ScrollUp from '../components/ScrollUp.astro'
+import SearchFilters from '../components/SearchFilters/Filters'
+import LocalStorageLoader from '../components/SearchFilters/LocalStorageLoader.astro'
+import { CATS_ENDPOINT } from '../constants'
+import WithFooter from '../layouts/WithFooter.astro'
+import {
+	has_merged_cats_property,
+	Periods,
+	type CatCount,
+	type MorePageCatCountsWithMergedCats,
+	type Period,
+} from '../types'
+import fetch_with_handle_redirect from '../util/fetch_with_handle_redirect'
 
 // Params
-let cats = ""
-let summary_contains = ""
-let url_contains = ""
-let url_lacks = ""
-let period: Period = 'all'
-let sort_by: SortMetric = 'times_starred'
+const params = Astro.url.searchParams
+params.set('more', 'true')
 
-if (Astro.url.searchParams.get('cats')) {
-	cats = Astro.url.searchParams.get('cats') as string
-	more_cats_url += `&cats=${cats}`
+let cats = ''
+if (params.get('cats')) {
+	cats = params.get('cats') ?? ''
 }
-if (Astro.url.searchParams.get('summary_contains')) {
-	summary_contains = Astro.url.searchParams.get('summary_contains') as string
-	more_cats_url += `&summary_contains=${summary_contains}`
+let summary_contains = ''
+if (params.get('summary_contains')) {
+	summary_contains = params.get('summary_contains') ?? ''
 }
-if (Astro.url.searchParams.get('url_contains')) {
-	url_contains = Astro.url.searchParams.get('url_contains') as string
-	more_cats_url += `&url_contains=${url_contains}`
+let url_contains = ''
+if (params.get('url_contains')) {
+	url_contains = params.get('url_contains') ?? ''
 }
-if (Astro.url.searchParams.get('url_lacks')) {
-	url_lacks = Astro.url.searchParams.get('url_lacks') as string
-	more_cats_url += `&url_lacks=${url_lacks}`
+let url_lacks = ''
+if (params.get('url_lacks')) {
+	url_lacks = params.get('url_lacks') ?? ''
 }
-if (
-	Astro.url.searchParams.get('period') &&
-	(Periods as readonly string[]).includes(
-		Astro.url.searchParams.get('period') as Period
-	)
-) {
-	period = Astro.url.searchParams.get('period') as Period
-	more_cats_url += `&period=${period}`
+let period = ''
+if (params.get('period') && (Periods as readonly string[]).includes(params.get('period') as Period)) {
+	period = params.get('period') as Period
 }
-if (
-	Astro.url.searchParams.get('sort_by') &&
-	(SortMetrics as readonly string[]).includes(
-		Astro.url.searchParams.get('sort_by') as SortMetric
-	)
-) {
-	sort_by = Astro.url.searchParams.get('sort_by') as SortMetric
-	more_cats_url += `&sort_by=${sort_by}`
-}
-
+const more_cats_url = params.size ? `${CATS_ENDPOINT}?${params.toString()}` : CATS_ENDPOINT
 const url_params = {
 	Cats: cats,
-	Period: period,
+	Period: period ? (period as Period) : undefined,
 	SummaryContains: summary_contains,
 	URLContains: url_contains,
-	URLLacks: url_lacks
+	URLLacks: url_lacks,
+	// SortBy/IncludeNSFW/Page not relevant here since we are
+	// only returning cat counts, not links
 }
 
 // Cat counts
@@ -77,33 +65,33 @@ if (has_merged_cats_property(counts)) {
 } else {
 	top_cats = counts
 }
-
 ---
 
-<WithFooter Title="More">
+<WithFooter Title='More'>
 	<LocalStorageLoader />
-    <main>
-		<SearchFilters 
-			client:load 
+	<main>
+		<SearchFilters
+			client:load
 			InitialCats={cats.length ? cats.split(',') : []}
-			InitialPeriod={period}
+			InitialPeriod={(period as Period) ?? 'all'}
 			InitialSummaryContains={summary_contains}
 			InitialURLContains={url_contains}
 			InitialURLLacks={url_lacks}
-			InitialSortBy={sort_by}
-			Endpoint="/more"
+			Endpoint='/more'
 		/>
 
-        {top_cats?.length ? <section>
-			{merged_cats && merged_cats.length ? (
-				<MergedResultsNotice MergedCats={merged_cats} />
-			) : null}
-           <TopCats 
-				TopCats={top_cats}
-				URLParams={url_params}
-				More
-		   />
-        </section> : cats ? <p>No further subcats.</p> : <NoLinksFound />}
-        <ScrollUp />
-    </main>
+		{
+			top_cats?.length ? (
+				<section>
+					{merged_cats && merged_cats.length ? <MergedResultsNotice MergedCats={merged_cats} /> : null}
+					<TopCats TopCats={top_cats} URLParams={url_params} More />
+				</section>
+			) : cats ? (
+				<p>No further subcats.</p>
+			) : (
+				<NoLinksFound />
+			)
+		}
+		<ScrollUp />
+	</main>
 </WithFooter>

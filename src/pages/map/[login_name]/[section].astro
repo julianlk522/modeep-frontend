@@ -34,35 +34,27 @@ const params = Astro.url.searchParams
 
 let cats = ''
 if (params.get('cats')) {
-	cats = params.get('cats') as string
+	cats = params.get('cats') ?? ''
 }
 let summary_contains = ''
 if (params.get('summary_contains')) {
-    summary_contains = params.get('summary_contains') as string
+	summary_contains = params.get('summary_contains') ?? ''
 }
-let url_contains = ""
+let url_contains = ''
 if (params.get('url_contains')) {
-    url_contains = params.get('url_contains') as string
+	url_contains = params.get('url_contains') ?? ''
 }
-let url_lacks = ""
+let url_lacks = ''
 if (params.get('url_lacks')) {
-    url_lacks = params.get('url_lacks') as string
+	url_lacks = params.get('url_lacks') ?? ''
 }
-let period: Period = 'all'
-if (
-	params.get('period') &&
-	(Periods as readonly string[]).includes(
-		params.get('period') as Period
-	)
-) {
+let period = ''
+if (params.get('period') && (Periods as readonly string[]).includes(params.get('period') as Period)) {
 	period = params.get('period') as Period
 }
-let sort_by: SortMetric = 'times_starred'
-if (
-    params.get('sort_by') &&
-    (params.get('sort_by') as SortMetric)
-) {
-    sort_by = params.get('sort_by') as SortMetric
+let sort_by = ''
+if (params.get('sort_by') && (SortMetrics as readonly string[]).includes(params.get('sort_by') as SortMetric)) {
+	sort_by = params.get('sort_by') as SortMetric
 }
 let nsfw: boolean = false
 if (params.get('nsfw') && params.get('nsfw') === 'true') {
@@ -74,14 +66,14 @@ if (params.get('page')) {
 }
 
 const url_params = {
-    Cats: cats,
-    Period: period,
-    SortBy: sort_by,
-    NSFW: nsfw,
-    SummaryContains: summary_contains,
-    URLContains: url_contains,
-    URLLacks: url_lacks,
-    Page: page,
+	Cats: cats,
+	Period: period ? (period as Period) : undefined,
+	SortBy: sort_by ? (sort_by as SortMetric) : undefined,
+	NSFW: nsfw,
+	SummaryContains: summary_contains,
+	URLContains: url_contains,
+	URLLacks: url_lacks,
+	Page: page,
 }
 
 // Fetch tmap
@@ -129,11 +121,11 @@ if (cats_split.length) {
 			SingleTmapSectionName={section_name as (typeof tmap_sections)[number]}
 			NSFWLinksCount={section_data.NSFWLinksCount}
 			InitialCats={cats_split}
-			InitialPeriod={period}
+			InitialPeriod={(period as Period) ?? undefined}
+			InitialSortBy={(sort_by as SortMetric) ?? undefined}
 			InitialSummaryContains={summary_contains}
 			InitialURLContains={url_contains}
 			InitialURLLacks={url_lacks}
-			InitialSortBy={sort_by}
 			InitialNSFW={nsfw}
 		/>
 
