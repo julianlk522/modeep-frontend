@@ -37,8 +37,13 @@
 		#star-selectors {
 			display: flex;
 
-			.star-selector {
+			button.star-selector {
 				width: 33%;
+				background-color: transparent;
+				color: var(--text-muted);
+				border: none;
+				border-radius: 2px;
+				margin-top: 0;
 				cursor: pointer;
 
 				p {
