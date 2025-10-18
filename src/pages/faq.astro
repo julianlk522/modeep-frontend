@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+
+<BaseLayout Title='FAQ'>
+	<main>
+		<h1>FAQ</h1>
+
+		<article>
+			<h2>When do a link's global cats get updated?</h2>
+
+			<p>2 ways:</p>
+
+			<ol>
+				<li>
+					<p>Someone who has tagged the link edits their tag</p>
+				</li>
+
+				<li>
+					<p>Someone visits the link's Tags page</p>
+					<span class='subtitle'
+						>(You can get to the Tags page by clicking the number in the parentheses next to a link's cats.)</span
+					>
+				</li>
+			</ol>
+		</article>
+
+		<article>
+			<h2>Why do Top Cats and Top Contributors not always match what's on someone's Treaure Map?</h2>
+
+			<p>
+				Top Contributors describe global cats but Treasure Maps count their owner's assigned cats primarily and
+				only fall back to global cats where necessary. If the Treasure Map owner chooses cats that don't make it
+				to the global tag, it causes this apparent discrepancy. On someone's Treasure Map, however, you get
+				context-specific output: Top Cats and Subcats rankings as well as any cat recommendations from typing
+				reflect the Treasure Map owner's selections.
+			</p>
+		</article>
+	</main>
+</BaseLayout>
+
+<style>
+	article {
+		margin: 2rem 0;
+	}
+
+	.subtitle {
+		font-size: 0.9em;
+	}
+</style>
