@@ -47,15 +47,16 @@ export default function SearchCats(props: Props) {
 			spellfix_matches_url += `?from_tmap=${tmap_owner}`
 		}
 		if (selected_cats.length) {
+			const param_keyword = is_new_link_page ? 'new_link_omitted' : 'omitted'
 			const encoded_selected_cats = selected_cats
 				.map((cat) => {
 					return encodeURIComponent(cat)
 				})
 				.join(',')
 			if (tmap_owner) {
-				spellfix_matches_url += `&omitted=${encoded_selected_cats}`
+				spellfix_matches_url += `&${param_keyword}=${encoded_selected_cats}`
 			} else {
-				spellfix_matches_url += `?omitted=${encoded_selected_cats}`
+				spellfix_matches_url += `?${param_keyword}=${encoded_selected_cats}`
 			}
 		}
 
