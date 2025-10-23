@@ -23,7 +23,7 @@ const {
 	URLContains: url_contains,
 	URLLacks: url_lacks,
 	SortBy: sort_by,
-	NSFW: nsfw,
+	IncludeNSFW: include_nsfw,
 } = url_params
 const page = url_params.Page ?? 1
 
@@ -37,8 +37,8 @@ if (period && period !== 'all') {
 if (sort_by && sort_by !== 'times_starred') {
 	params.set('sort_by', sort_by)
 }
-if (nsfw) {
-	params.set('nsfw', 'true')
+if (include_nsfw) {
+	params.set('include_nsfw', 'true')
 }
 if (summary_contains && summary_contains.length) {
 	params.set('summary_contains', summary_contains)

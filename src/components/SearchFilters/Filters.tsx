@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from 'preact/hooks'
 import type { Period, SortMetric, tmap_sections } from '../../types'
 import SearchCats from './Cats'
 import './Filters.css'
-import SearchNSFW from './NSFW'
+import SearchIncludeNSFW from './IncludeNSFW'
 import SearchPeriod from './Period'
 import SearchSortBy from './SortBy'
 import SearchSummaryContains from './SummaryContains'
@@ -20,9 +20,9 @@ interface Props {
 	InitialURLLacks: string
 	InitialPeriod: Period
 
-	// not used on More Cats page
+	// not used on /more page
 	InitialSortBy?: SortMetric
-	InitialNSFW?: boolean
+	InitialIncludeNSFW?: boolean
 }
 
 export default function SearchFilters(props: Props) {
@@ -37,7 +37,7 @@ export default function SearchFilters(props: Props) {
 		InitialURLLacks: initial_url_lacks,
 		InitialPeriod: initial_period,
 		InitialSortBy: initial_sort_by,
-		InitialNSFW: initial_nsfw,
+		InitialIncludeNSFW: initial_include_nsfw,
 	} = props
 
 	const is_tmap = endpoint === '/map'
@@ -48,9 +48,8 @@ export default function SearchFilters(props: Props) {
 	const [url_lacks, set_url_lacks] = useState<string>(initial_url_lacks)
 	const [period, set_period] = useState<Period>(initial_period ?? 'all')
 
-	// might want to move these if not always used... TODO
 	const [sort_by, set_sort_by] = useState<SortMetric>(initial_sort_by ?? 'times_starred')
-	const [nsfw, set_nsfw] = useState<boolean>(initial_nsfw ?? false)
+	const [include_nsfw, set_include_nsfw] = useState<boolean>(initial_include_nsfw ?? false)
 
 	// Params
 	const params = new URLSearchParams()
@@ -78,8 +77,8 @@ export default function SearchFilters(props: Props) {
 	if (sort_by && sort_by !== 'times_starred') {
 		params.set('sort_by', sort_by)
 	}
-	if (nsfw) {
-		params.set('nsfw', 'true')
+	if (include_nsfw) {
+		params.set('include_nsfw', 'true')
 	}
 
 	const has_changed_cats = cats.length !== initial_cats.length || cats.some((cat) => !initial_cats.includes(cat))
@@ -90,7 +89,7 @@ export default function SearchFilters(props: Props) {
 		url_lacks !== initial_url_lacks ||
 		period !== initial_period ||
 		sort_by !== initial_sort_by ||
-		nsfw !== initial_nsfw
+		include_nsfw !== initial_include_nsfw
 
 	let base_url = endpoint
 		? is_tmap
@@ -161,7 +160,7 @@ export default function SearchFilters(props: Props) {
 				{endpoint !== '/more' ? (
 					<>
 						<SearchSortBy SortBy={sort_by} SetSortBy={set_sort_by} />
-						<SearchNSFW NSFW={nsfw} SetNSFW={set_nsfw} NSFWLinksCount={nsfw_links_count} />
+						<SearchIncludeNSFW IncludeNSFW={include_nsfw} SetIncludeNSFW={set_include_nsfw} NSFWLinksCount={nsfw_links_count} />
 					</>
 				) : null}
 

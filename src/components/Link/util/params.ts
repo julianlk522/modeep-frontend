@@ -8,7 +8,7 @@ export default function get_non_cats_url_params(params_obj: URLParams) {
 		URLContains: url_contains,
 		URLLacks: url_lacks,
 		SortBy: sort_by,
-		NSFW: nsfw,
+		IncludeNSFW: include_nsfw,
 	} = params_obj
 
 	const params = new URLSearchParams()
@@ -28,8 +28,8 @@ export default function get_non_cats_url_params(params_obj: URLParams) {
 	if (sort_by) {
 		params.set('sort_by', sort_by)
 	}
-	if (nsfw) {
-		params.set('nsfw', nsfw.toString())
+	if (include_nsfw) {
+		params.set('include_nsfw', include_nsfw.toString())
 	}
 
 	return params.toString()

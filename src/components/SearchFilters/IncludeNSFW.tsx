@@ -1,16 +1,16 @@
 import type { ChangeEvent } from 'preact/compat'
 import type { Dispatch, StateUpdater } from 'preact/hooks'
 
-import './NSFW.css'
+import './IncludeNSFW.css'
 
 interface Props {
-	NSFW: boolean
-	SetNSFW: Dispatch<StateUpdater<boolean>>
+	IncludeNSFW: boolean
+	SetIncludeNSFW: Dispatch<StateUpdater<boolean>>
 	NSFWLinksCount?: number
 }
 
 export default function SearchNSFW(props: Props) {
-	const { NSFW: nsfw, SetNSFW: set_nsfw, NSFWLinksCount: nsfw_links_count } = props
+	const { IncludeNSFW: include_nsfw, SetIncludeNSFW: set_include_nsfw, NSFWLinksCount: nsfw_links_count } = props
 
 	return (
 		<div id='search-nsfw-container'>
@@ -21,8 +21,8 @@ export default function SearchNSFW(props: Props) {
 				type='checkbox'
 				id='search-nsfw'
 				name='nsfw'
-				checked={nsfw}
-				onChange={(e: ChangeEvent<HTMLInputElement>) => set_nsfw((e.target as HTMLInputElement).checked)}
+				checked={include_nsfw}
+				onChange={(e: ChangeEvent<HTMLInputElement>) => set_include_nsfw((e.target as HTMLInputElement).checked)}
 			/>
 		</div>
 	)

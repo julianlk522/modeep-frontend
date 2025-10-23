@@ -46,9 +46,9 @@ let sort_by: SortMetric = 'times_starred'
 if (params.get('sort_by') && (SortMetrics as readonly string[]).includes(params.get('sort_by') as SortMetric)) {
 	sort_by = params.get('sort_by') as SortMetric
 }
-let nsfw: boolean = false
-if (params.get('nsfw') && params.get('nsfw') === 'true') {
-	nsfw = true
+let include_nsfw: boolean = false
+if (params.get('include_nsfw') && params.get('include_nsfw') === 'true') {
+	include_nsfw = true
 }
 let page = 1
 if (params.get('page')) {
@@ -59,7 +59,7 @@ const url_params = {
 	Cats: cats,
 	Period: period !== 'all' ? period : undefined,
 	SortBy: sort_by !== 'times_starred' ? sort_by : undefined,
-	NSFW: nsfw,
+	IncludeNSFW: include_nsfw,
 	SummaryContains: summary_contains,
 	URLContains: url_contains,
 	URLLacks: url_lacks,
@@ -149,7 +149,7 @@ if (cats) {
 			InitialURLContains={url_contains}
 			InitialURLLacks={url_lacks}
 			InitialSortBy={sort_by}
-			InitialNSFW={nsfw}
+			InitialIncludeNSFW={include_nsfw}
 			NSFWLinksCount={nsfw_links_count}
 		/>
 

@@ -100,7 +100,7 @@ type URLParams = {
 	URLContains?: string
 	URLLacks?: string
 	SortBy?: SortMetric
-	NSFW?: boolean
+	IncludeNSFW?: boolean
 	Page?: number
 }
 

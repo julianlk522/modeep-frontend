@@ -48,16 +48,16 @@ if (
 ) {
 	sort_by = params.get('sort_by') as types.SortMetric
 }
-let nsfw = false
-if (params.get('nsfw') && params.get('nsfw') === 'true') {
-	nsfw = true
+let include_nsfw = false
+if (params.get('include_nsfw') && params.get('include_nsfw') === 'true') {
+	include_nsfw = true
 }
 
 const url_params = {
 	Cats: cats,
 	Period: (period as types.Period) ?? undefined,
 	SortBy: (sort_by as types.SortMetric) ?? undefined,
-	NSFW: nsfw,
+	IncludeNSFW: include_nsfw,
 	SummaryContains: summary_contains,
 	URLContains: url_contains,
 	URLLacks: url_lacks,
@@ -126,7 +126,7 @@ if (!cats && tmap.hasOwnProperty('Profile')) {
 			InitialSummaryContains={summary_contains}
 			InitialURLContains={url_contains}
 			InitialURLLacks={url_lacks}
-			InitialNSFW={nsfw}
+			InitialIncludeNSFW={include_nsfw}
 		/>
 
 		<Rankings

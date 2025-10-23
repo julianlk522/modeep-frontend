@@ -43,23 +43,22 @@ export default function SearchCats(props: Props) {
 	const fetch_snippet_recommendations = useCallback(async () => {
 		const encoded_snippet = encodeURIComponent(snippet)
 		let spellfix_matches_url = CATS_ENDPOINT + `/${encoded_snippet}`
+
+		const snippet_params = new URLSearchParams()
 		if (tmap_owner) {
-			spellfix_matches_url += `?from_tmap=${tmap_owner}`
+			snippet_params.set('tmap', tmap_owner)
+		}
+		if (is_new_link_page) {
+			snippet_params.set('is_new_link_page', 'true')
 		}
 		if (selected_cats.length) {
-			const param_keyword = is_new_link_page ? 'new_link_omitted' : 'omitted'
 			const encoded_selected_cats = selected_cats
-				.map((cat) => {
-					return encodeURIComponent(cat)
-				})
+				.map((cat) => encodeURIComponent(cat))
 				.join(',')
-			if (tmap_owner) {
-				spellfix_matches_url += `&${param_keyword}=${encoded_selected_cats}`
-			} else {
-				spellfix_matches_url += `?${param_keyword}=${encoded_selected_cats}`
-			}
+			snippet_params.set('cats', encoded_selected_cats)
 		}
-
+		spellfix_matches_url += `?${snippet_params.toString()}`
+		
 		try {
 			const spellfix_matches_resp = await fetch(spellfix_matches_url)
 			if (!spellfix_matches_resp.ok) {

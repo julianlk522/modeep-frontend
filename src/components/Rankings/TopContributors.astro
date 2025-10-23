@@ -15,7 +15,7 @@ if (url_params) {
 		Cats: cats,
 		Period: period,
 		SortBy: sort_by,
-		NSFW: nsfw,
+		IncludeNSFW: include_nsfw,
 		SummaryContains: summary_contains,
 		URLContains: url_contains,
 		URLLacks: url_lacks,
@@ -29,8 +29,8 @@ if (url_params) {
 	if (sort_by && sort_by !== 'times_starred') {
 		params.set('sort_by', sort_by)
 	}
-	if (nsfw) {
-		params.set('nsfw', 'true')
+	if (include_nsfw) {
+		params.set('include_nsfw', 'true')
 	}
 	if (summary_contains?.length) {
 		params.set('summary_contains', summary_contains)
