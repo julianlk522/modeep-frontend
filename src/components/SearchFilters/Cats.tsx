@@ -1,5 +1,5 @@
 import { effect, useSignal } from '@preact/signals'
-import { useCallback, useEffect, useRef, useState, type Dispatch, type StateUpdater } from 'preact/hooks'
+import { useCallback, useEffect, useMemo, useRef, useState, type Dispatch, type StateUpdater } from 'preact/hooks'
 import { CATS_ENDPOINT, DEBOUNCE_INTERVAL_MS, CATS_PER_TAG_LIMIT, CATS_CHAR_LIMIT } from '../../constants'
 import * as types from '../../types'
 import TagCat from '../Tag/TagCat'
@@ -10,10 +10,16 @@ interface Props {
 	Removable?: boolean
 	IsHomePage?: boolean
 	TmapOwner?: string
-	IsNewLinkPage?: boolean
 	IsTagPage?: boolean
 	SelectedCats: string[]
 	SetSelectedCats: Dispatch<StateUpdater<string[]>>
+
+	// Searches only (/search, /more, or user Treasure Maps)
+	SelectedNeuteredCats?: string[]
+	SetSelectedNeuteredCats?: Dispatch<StateUpdater<string[]>>
+
+	// /new only
+	IsNewLinkPage?: boolean
 	SubmittedLinks?: types.Link[]
 }
 
@@ -26,24 +32,29 @@ export default function SearchCats(props: Props) {
 		IsTagPage: is_tag_page,
 		SelectedCats: selected_cats,
 		SetSelectedCats: set_selected_cats,
+		SelectedNeuteredCats: selected_neutered_cats = [],
+		SetSelectedNeuteredCats: set_selected_neutered_cats,
 		SubmittedLinks: submitted_links,
 	} = props
 
 	const addable = props.Addable ?? true
 	const input_ref = useRef<HTMLInputElement>(null)
-
-	const has_max_num_cats = selected_cats.length >= CATS_PER_TAG_LIMIT
+	const combined_selections = useMemo(() => 
+		[...selected_cats, ...(selected_neutered_cats || [])],
+		[selected_cats, selected_neutered_cats]
+	)
+	const has_max_num_cats = selected_cats.length >= CATS_PER_TAG_LIMIT ||
+		(selected_neutered_cats?.length || 0) >= CATS_PER_TAG_LIMIT
 
 	const [recommended_cats, set_recommended_cats] = useState<types.CatCount[] | undefined>(undefined)
 	const [snippet, set_snippet] = useState<string>('')
 	const [error, set_error] = useState<string | undefined>(undefined)
-
-	const non_selected_recommendations = recommended_cats?.filter((rc) => !selected_cats.includes(rc.Category))
+	const non_selected_recommendations = recommended_cats?.filter((rc) => !combined_selections.includes(rc.Category))
 
 	const fetch_snippet_recommendations = useCallback(async () => {
-		const encoded_snippet = encodeURIComponent(snippet)
-		let spellfix_matches_url = CATS_ENDPOINT + `/${encoded_snippet}`
+		if (!snippet) return
 
+		const encoded_snippet = encodeURIComponent(snippet)
 		const snippet_params = new URLSearchParams()
 		if (tmap_owner) {
 			snippet_params.set('tmap', tmap_owner)
@@ -57,75 +68,58 @@ export default function SearchCats(props: Props) {
 				.join(',')
 			snippet_params.set('cats', encoded_selected_cats)
 		}
-		spellfix_matches_url += `?${snippet_params.toString()}`
-		
+		if (selected_neutered_cats && selected_neutered_cats.length) {
+			const encoded_selected_neutered_cats = selected_neutered_cats
+				.map((cat) => encodeURIComponent(cat))
+				.join(',')
+			snippet_params.set('neutered', encoded_selected_neutered_cats)
+		}
+
+		const spellfix_matches_url = CATS_ENDPOINT + `/${encoded_snippet}` + `?${snippet_params.toString()}`
 		try {
 			const spellfix_matches_resp = await fetch(spellfix_matches_url)
 			if (!spellfix_matches_resp.ok) {
 				const msg: types.ErrorResponse = await spellfix_matches_resp.json()
 				set_error(msg.error)
-				throw new Error('API request failed')
+				throw new Error(msg.error)
 			}
-
 			const spellfix_matches: types.CatCount[] = await spellfix_matches_resp.json()
 			set_recommended_cats(spellfix_matches)
 		} catch (error) {
 			set_recommended_cats(undefined)
 			set_error(error instanceof Error ? error.message : String(error))
 		}
-	}, [snippet, selected_cats])
+	}, [snippet, selected_cats, selected_neutered_cats])
 
-	// prev_selected_cats_ref prevents re-searching for recommended cats
-	// when user deletes 1+
-	const prev_selected_cats_ref = useRef(selected_cats)
-
-	// fetch new recommendations in response to snippet changes or added cats
-	const MIN_SNIPPET_CHARS = 2
+	const prev_combined_selections_ref = useRef(combined_selections)
 	const timeout_ref = useRef<number | null>(null)
+	const MIN_SNIPPET_CHARS = 2
 	useEffect(() => {
-		// skip if snippet is too short or user deleted selected cat(s)
-		if (prev_selected_cats_ref.current.length > selected_cats.length) {
+		const prev_length = prev_combined_selections_ref.current.length
+		const curr_length = combined_selections.length
+
+		// Skip if user deleted selected cat(s)
+		if (prev_length > curr_length) {
+			prev_combined_selections_ref.current = combined_selections
 			return
 		}
-		if (snippet?.length >= MIN_SNIPPET_CHARS) {
-			reset_timeout_and_fetch_new_recommendations()
-		} else {
+
+		// Skip if snippet is too short
+		if (snippet?.length < MIN_SNIPPET_CHARS) {
 			set_recommended_cats(undefined)
+		} else {
+			reset_timeout_and_fetch_new_recommendations()
 		}
 
-		// cleanup: clear any ongoing debounce timeout
+		// Update ref
+		prev_combined_selections_ref.current = combined_selections
+
 		return () => {
 			if (timeout_ref.current) {
 				window.clearTimeout(timeout_ref.current)
 			}
 		}
-	}, [snippet, selected_cats])
-
-	// Let children TagCat.tsx handle adding / removing cats
-	const added_cat = useSignal<string | undefined>(undefined)
-	const deleted_cat = useSignal<string | undefined>(undefined)
-
-	effect(() => {
-		if (added_cat.value?.length) {
-			const to_add = added_cat.value
-			set_selected_cats((prev) => {
-				const next = [...prev, to_add].sort((a, b) => a.localeCompare(b))
-				prev_selected_cats_ref.current = next
-				return next
-			})
-
-			added_cat.value = undefined
-			set_error(undefined)
-
-			reset_timeout_and_fetch_new_recommendations()
-		} else if (deleted_cat.value) {
-			const to_delete = deleted_cat.value
-			set_selected_cats((c) => c.filter((cat) => cat !== to_delete))
-
-			deleted_cat.value = undefined
-			set_error(undefined)
-		}
-	})
+	}, [snippet, combined_selections.length])
 
 	function reset_timeout_and_fetch_new_recommendations() {
 		if (timeout_ref.current) {
@@ -136,44 +130,81 @@ export default function SearchCats(props: Props) {
 		}, DEBOUNCE_INTERVAL_MS)
 	}
 
-	function handle_enter(event: KeyboardEvent) {
-		if (event.key === 'Enter' && snippet) {
-			event.stopPropagation()
-			return add_cat(event)
+	const added_cat = useSignal<string | undefined>(undefined)
+	const neutered_cat = useSignal<string | undefined>(undefined)
+	const deleted_cat = useSignal<string | undefined>(undefined)
+	effect(() => {
+		if (added_cat.value?.length) {
+			verify_and_add_cat(added_cat.value)
+			added_cat.value = undefined
+		} else if (neutered_cat.value?.length) {
+			verify_and_add_neutered_cat(neutered_cat.value)
+			neutered_cat.value = undefined
+		} else if (deleted_cat.value) {
+			set_selected_cats((c) => c.filter((cat) => cat !== deleted_cat.value))
+			if (set_selected_neutered_cats) {
+				set_selected_neutered_cats((c) => c.filter((cat) => cat !== deleted_cat.value))
+			}
+			set_error(undefined)
+			deleted_cat.value = undefined
 		}
-	}
+	})
 
-	function add_cat(event: Event) {
-		event.preventDefault()
-
+	function verify_and_add_cat(cat: string) {
 		if (has_max_num_cats) {
 			set_error('Max number of cats reached :(')
 			return
-		} else if (snippet.length > CATS_CHAR_LIMIT) {
+		} else if (cat.length > CATS_CHAR_LIMIT) {
 			set_error('Cat is too long :(')
 			return
 		}
-
-		let new_cat = snippet.trim()
-		if (snippet === 'nsfw') {
-			new_cat = 'NSFW'
+		cat = cat.trim()
+		if (cat === 'nsfw') {
+			cat = 'NSFW'
 		}
-
-		if (selected_cats.includes(new_cat)) {
+		if (selected_cats.includes(cat)) {
 			set_error('You have that already, doofus')
 			return
 		}
-
 		set_selected_cats((prev) => {
-			const next = [...prev, new_cat].sort((a, b) => a.localeCompare(b))
-			prev_selected_cats_ref.current = next
+			const next = [...prev, cat].sort((a, b) => a.localeCompare(b))
+			prev_combined_selections_ref.current = [...next, ...(selected_neutered_cats || [])]
 			return next
 		})
-
-		set_snippet('')
 		set_error(undefined)
+	}
 
-		reset_timeout_and_fetch_new_recommendations()
+	function verify_and_add_neutered_cat(cat: string) {
+		if (!set_selected_neutered_cats) return
+		if (has_max_num_cats) {
+			set_error('Max number of cats reached :(')
+			return
+		} else if (cat.length > CATS_CHAR_LIMIT) {
+			set_error('Cat is too long :(')
+			return
+		}
+		cat = cat.trim()
+		if (cat === 'nsfw') {
+			cat = 'NSFW'
+		}
+		if (selected_neutered_cats && selected_neutered_cats.includes(cat)) {
+			set_error('Already neutered :)')
+			return
+		}
+		set_selected_neutered_cats((prev) => {
+			const next = [...prev, cat].sort((a, b) => a.localeCompare(b))
+			prev_combined_selections_ref.current = [...selected_cats, ...next]
+			return next
+		})
+		set_error(undefined)
+	}
+
+	function handle_enter(event: KeyboardEvent) {
+		if (event.key === 'Enter' && snippet.length) {
+			event.preventDefault()
+			event.stopPropagation()
+			return verify_and_add_cat(snippet)
+		}
 	}
 
 	useEffect(() => {
@@ -183,9 +214,6 @@ export default function SearchCats(props: Props) {
 		set_recommended_cats(undefined)
 	}, [submitted_links])
 
-	// autofocus on tag page when you start editing your tag
-	// (autoFocus attribute below cannot be trusted since the
-	// <input /> is rendered conditionally)
 	useEffect(() => {
 		if (!is_tag_page) return
 		input_ref.current?.focus()
@@ -208,7 +236,7 @@ export default function SearchCats(props: Props) {
 						autocomplete={'off'}
 						placeholder={selected_cats?.length ? '' : placeholder_text}
 						onInput={(event) => {
-							prev_selected_cats_ref.current = selected_cats
+							prev_combined_selections_ref.current = selected_cats
 							set_snippet((event.target as HTMLInputElement).value)
 							set_error(undefined)
 						}}
@@ -221,7 +249,7 @@ export default function SearchCats(props: Props) {
 							title={has_max_num_cats ? 'Max number of cats reached' : 'Add cat filter'}
 							type='button'
 							value='+'
-							onClick={add_cat}
+							onClick={() => verify_and_add_cat(snippet)}
 							onKeyDown={handle_enter}
 							disabled={!snippet || has_max_num_cats}
 						/>
@@ -235,12 +263,13 @@ export default function SearchCats(props: Props) {
 				<ol id='recommendations-list'>
 					{non_selected_recommendations.map((cat) => (
 						<TagCat
-							key={cat}
+							key={cat.Category}
 							Cat={is_home_page ? `${cat.Category} (${cat.Count})` : cat.Category}
-							IsNSFW={cat.Category === 'NSFW'}
 							Count={is_home_page ? undefined : cat.Count}
 							Addable={!is_home_page}
 							AddedSignal={added_cat}
+							Neuterable={props.SelectedNeuteredCats !== undefined}
+							NeuteredSignal={neutered_cat}
 							Href={is_home_page ? `/search?cats=${cat.Category}` : undefined}
 							IsNewLinkPage={is_new_link_page}
 						/>
@@ -249,20 +278,32 @@ export default function SearchCats(props: Props) {
 			) : null}
 
 			{!is_home_page ? (
-				selected_cats.length ? (
+				combined_selections.length ? (
 					<div id='selected-cats-container'>
 						<ul id='cat-list'>
 							{selected_cats.map((cat) => (
 								<TagCat
 									key={cat}
 									Cat={cat}
+									IsNSFW={cat === 'NSFW'}
 									Removable={removable ?? true}
 									DeletedSignal={deleted_cat}
 									Fat
 								/>
 							))}
-
-							{removable && selected_cats.length > 1 ? (
+							{selected_neutered_cats
+								? selected_neutered_cats.map((cat) => (
+										<TagCat
+											key={cat}
+											Cat={cat}
+											Neutered
+											Removable={removable ?? true}
+											DeletedSignal={deleted_cat}
+											Fat
+										/>
+									))
+								: null}
+							{removable && combined_selections.length > 1 ? (
 								<li>
 									<input
 										id='clear-cat-filters'
@@ -271,6 +312,7 @@ export default function SearchCats(props: Props) {
 										value='Clear'
 										onClick={() => {
 											set_selected_cats([])
+											set_selected_neutered_cats?.([])
 										}}
 									/>
 								</li>

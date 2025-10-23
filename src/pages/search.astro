@@ -26,6 +26,10 @@ let cats = ''
 if (params.get('cats')) {
 	cats = params.get('cats') as string
 }
+let neutered_cats = ''
+if (params.get('neutered')) {
+	neutered_cats = params.get('neutered') as string
+}
 let summary_contains = ''
 if (params.get('summary_contains')) {
 	summary_contains = params.get('summary_contains') as string
@@ -57,6 +61,7 @@ if (params.get('page')) {
 
 const url_params = {
 	Cats: cats,
+	NeuteredCats: neutered_cats,
 	Period: period !== 'all' ? period : undefined,
 	SortBy: sort_by !== 'times_starred' ? sort_by : undefined,
 	IncludeNSFW: include_nsfw,
@@ -144,6 +149,7 @@ if (cats) {
 		<SearchFilters
 			client:load
 			InitialCats={cats.length ? cats.split(',') : []}
+			InitialNeuteredCats={neutered_cats.length ? neutered_cats.split(',') : []}
 			InitialPeriod={period}
 			InitialSummaryContains={summary_contains}
 			InitialURLContains={url_contains}

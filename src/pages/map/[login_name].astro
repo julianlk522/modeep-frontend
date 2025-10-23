@@ -25,6 +25,10 @@ let cats = ''
 if (params.get('cats')) {
 	cats = params.get('cats') ?? ''
 }
+let neutered_cats = ''
+if (params.get('neutered')) {
+	neutered_cats = params.get('neutered') ?? ''
+}
 let summary_contains = ''
 if (params.get('summary_contains')) {
 	summary_contains = params.get('summary_contains') ?? ''
@@ -55,6 +59,7 @@ if (params.get('include_nsfw') && params.get('include_nsfw') === 'true') {
 
 const url_params = {
 	Cats: cats,
+	NeuteredCats: neutered_cats,
 	Period: (period as types.Period) ?? undefined,
 	SortBy: (sort_by as types.SortMetric) ?? undefined,
 	IncludeNSFW: include_nsfw,
@@ -121,6 +126,7 @@ if (!cats && tmap.hasOwnProperty('Profile')) {
 			TmapOwnerLoginName={login_name}
 			NSFWLinksCount={tmap.NSFWLinksCount}
 			InitialCats={cats_split}
+			InitialNeuteredCats={neutered_cats.split(',')}
 			InitialPeriod={period && period !== 'all' ? (period as types.Period) : 'all'}
 			InitialSortBy={sort_by && sort_by !== 'times_starred' ? (sort_by as types.SortMetric) : 'times_starred'}
 			InitialSummaryContains={summary_contains}

@@ -3,6 +3,7 @@ import type { URLParams } from '../../../types'
 export default function get_non_cats_url_params(params_obj: URLParams) {
 	const {
 		// cats params reset by clicking a cat - not needed in that case
+		NeuteredCats: neutered_cats,
 		Period: period,
 		SummaryContains: summary_contains,
 		URLContains: url_contains,
@@ -13,6 +14,9 @@ export default function get_non_cats_url_params(params_obj: URLParams) {
 
 	const params = new URLSearchParams()
 
+	if (neutered_cats) {
+		params.set('neutered', neutered_cats)
+	}
 	if (period) {
 		params.set('period', period)
 	}

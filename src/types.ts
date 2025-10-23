@@ -95,6 +95,7 @@ type Profile = {
 // PARAMS
 type URLParams = {
 	Cats?: string
+	NeuteredCats?: string
 	Period?: Period
 	SummaryContains?: string
 	URLContains?: string

@@ -15,6 +15,7 @@ interface Props {
 	SingleTmapSectionName?: (typeof tmap_sections)[number]
 	NSFWLinksCount?: number
 	InitialCats: string[]
+	InitialNeuteredCats: string[]
 	InitialSummaryContains: string
 	InitialURLContains: string
 	InitialURLLacks: string
@@ -32,6 +33,7 @@ export default function SearchFilters(props: Props) {
 		SingleTmapSectionName: single_tmap_section_name,
 		NSFWLinksCount: nsfw_links_count,
 		InitialCats: initial_cats,
+		InitialNeuteredCats: initial_neutered_cats,
 		InitialSummaryContains: initial_summary_contains,
 		InitialURLContains: initial_url_contains,
 		InitialURLLacks: initial_url_lacks,
@@ -43,6 +45,7 @@ export default function SearchFilters(props: Props) {
 	const is_tmap = endpoint === '/map'
 
 	const [cats, set_cats] = useState<string[]>(initial_cats)
+	const [neutered_cats, set_neutered_cats] = useState<string[]>(initial_neutered_cats)
 	const [summary_contains, set_summary_contains] = useState<string>(initial_summary_contains)
 	const [url_contains, set_url_contains] = useState<string>(initial_url_contains)
 	const [url_lacks, set_url_lacks] = useState<string>(initial_url_lacks)
@@ -53,10 +56,11 @@ export default function SearchFilters(props: Props) {
 
 	// Params
 	const params = new URLSearchParams()
-
-	const has_cats = cats.length > 0
-	if (has_cats) {
+	if (cats.length) {
 		params.set('cats', cats.join(','))
+	}
+	if (neutered_cats.length) {
+		params.set('neutered', neutered_cats.join(','))
 	}
 	const has_summary_contains = summary_contains?.length
 	if (has_summary_contains) {
@@ -82,8 +86,10 @@ export default function SearchFilters(props: Props) {
 	}
 
 	const has_changed_cats = cats.length !== initial_cats.length || cats.some((cat) => !initial_cats.includes(cat))
+	const has_changed_neutered_cats = neutered_cats.length !== initial_neutered_cats.length
 	const has_changed_filters =
 		has_changed_cats ||
+		has_changed_neutered_cats ||
 		summary_contains !== initial_summary_contains ||
 		url_contains !== initial_url_contains ||
 		url_lacks !== initial_url_lacks ||
@@ -134,7 +140,14 @@ export default function SearchFilters(props: Props) {
 			</div>
 
 			<form onKeyDown={handle_keydown}>
-				<SearchCats SelectedCats={cats} SetSelectedCats={set_cats} TmapOwner={tmap_owner_login_name} />
+				<SearchCats
+					SelectedCats={cats}
+					SetSelectedCats={set_cats}
+					SelectedNeuteredCats={neutered_cats}
+					SetSelectedNeuteredCats={set_neutered_cats}
+					Removable
+					TmapOwner={tmap_owner_login_name}
+				/>
 				{is_tmap && cats.length ? (
 					<p id='transfer-to-global-map'>
 						<a
@@ -160,7 +173,11 @@ export default function SearchFilters(props: Props) {
 				{endpoint !== '/more' ? (
 					<>
 						<SearchSortBy SortBy={sort_by} SetSortBy={set_sort_by} />
-						<SearchIncludeNSFW IncludeNSFW={include_nsfw} SetIncludeNSFW={set_include_nsfw} NSFWLinksCount={nsfw_links_count} />
+						<SearchIncludeNSFW
+							IncludeNSFW={include_nsfw}
+							SetIncludeNSFW={set_include_nsfw}
+							NSFWLinksCount={nsfw_links_count}
+						/>
 					</>
 				) : null}
 

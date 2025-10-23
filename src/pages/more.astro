@@ -24,6 +24,10 @@ let cats = ''
 if (params.get('cats')) {
 	cats = params.get('cats') ?? ''
 }
+let neutered_cats = ''
+if (params.get('neutered')) {
+	neutered_cats = params.get('neutered') ?? ''
+}
 let summary_contains = ''
 if (params.get('summary_contains')) {
 	summary_contains = params.get('summary_contains') ?? ''
@@ -43,6 +47,7 @@ if (params.get('period') && (Periods as readonly string[]).includes(params.get('
 const more_cats_url = params.size ? `${CATS_ENDPOINT}?${params.toString()}` : CATS_ENDPOINT
 const url_params = {
 	Cats: cats,
+	NeuteredCats: neutered_cats,
 	Period: period ? (period as Period) : undefined,
 	SummaryContains: summary_contains,
 	URLContains: url_contains,
@@ -73,6 +78,7 @@ if (has_merged_cats_property(counts)) {
 		<SearchFilters
 			client:load
 			InitialCats={cats.length ? cats.split(',') : []}
+			InitialNeuteredCats={neutered_cats.length ? neutered_cats.split(',') : []}
 			InitialPeriod={(period as Period) ?? 'all'}
 			InitialSummaryContains={summary_contains}
 			InitialURLContains={url_contains}

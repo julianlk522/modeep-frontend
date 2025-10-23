@@ -45,6 +45,14 @@ li.cat.fat {
 	}
 }
 
+li.cat.addable {
+	padding-left: 5px;
+
+	p {
+		margin-top: 0;
+	}
+}
+
 li.cat.fat,
 li.cat.addable {
 	display: inline-flex;
@@ -56,25 +64,7 @@ li.cat.addable {
 	border: 1px solid var(--sky-vague);
 }
 
-li.cat.nsfw a {
-	color: var(--danger);
-}
-
-li.cat.nsfw a:hover,
-li.cat.nsfw:not(:has(a)) {
-	background-color: var(--danger);
-	color: black;
-}
-
-li.cat.addable {
-	padding-left: 5px;
-
-	p {
-		margin-top: 0;
-	}
-}
-
-li.cat.addable:has(button:hover) {
+li.cat.addable:has(button.plus-btn:hover) {
 	color: black;
 	background-color: var(--sky);
 
@@ -83,10 +73,39 @@ li.cat.addable:has(button:hover) {
 	}
 }
 
-li.cat.addable.nsfw {
-	background-color: var(--sky);
+li.cat.nsfw a {
+	color: var(--danger);
+}
 
-	button.plus-btn {
+li.cat.nsfw a:hover,
+li.cat.nsfw:not(.addable, :has(a)) {
+	background-color: var(--danger);
+	color: black;
+
+	button {
 		filter: invert(1);
 	}
+}
+
+li.cat.removable.nsfw {
+	background-color: var(--danger);
+
+}
+
+li.cat.neutered {
+	background-color: coral;
+}
+
+li.cat.neuterable:has(button.neuter-btn:hover) {
+	color: black;
+	background-color: coral;
+	border: 1px solid var(--danger);
+
+	button {
+		filter: invert(1);
+	}
+}
+
+button.img-btn.neuter-btn {
+	padding-left: 0;
 }

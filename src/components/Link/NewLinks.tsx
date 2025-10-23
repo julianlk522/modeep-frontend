@@ -137,15 +137,15 @@ export default function NewLinks(props: Props) {
 					<input type='text' id='url' name='url' onInput={(e) => handle_url_change(e)} autoFocus />
 
 					<SearchCats
+						IsNewLinkPage
 						SelectedCats={selected_cats}
 						SetSelectedCats={set_selected_cats}
+						Removable
 						SubmittedLinks={submitted_links}
-						IsNewLinkPage
 					/>
 
 					<label for='summary'>Summary (optional)</label>
 					<textarea id='summary' name='summary' rows={3} cols={50} />
-
 					<input id='submit-new-link' type='submit' value='Submit' />
 				</form>
 			</section>

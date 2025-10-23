@@ -18,6 +18,7 @@ const {
 
 const {
 	Cats: cats,
+	NeuteredCats: neutered_cats,
 	Period: period,
 	SummaryContains: summary_contains,
 	URLContains: url_contains,
@@ -30,6 +31,9 @@ const page = url_params.Page ?? 1
 const params = new URLSearchParams()
 if (cats !== undefined && cats.length) {
 	params.set('cats', cats)
+}
+if (neutered_cats !== undefined && neutered_cats.length) {
+	params.set('neutered', neutered_cats)
 }
 if (period && period !== 'all') {
 	params.set('period', period)

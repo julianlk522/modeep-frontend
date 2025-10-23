@@ -3,8 +3,11 @@ interface Props {
 	Count?: number
 	IsNSFW?: boolean
 	Addable?: boolean
+	Neuterable?: boolean
+	Neutered?: boolean
 	Removable?: boolean
 	AddedSignal?: Signal<string | undefined>
+	NeuteredSignal?: Signal<string | undefined>
 	DeletedSignal?: Signal<string | undefined>
 	Fat?: boolean
 	Href?: string
@@ -22,12 +25,15 @@ export default function TagCat(props: Props) {
 		IsNSFW: is_nsfw,
 		Addable: addable,
 		Removable: removable,
+		Neuterable: neuterable,
+		Neutered: neutered,
 		Fat: fat,
 		Href: href,
 		IsNewLinkPage: is_new_link_page,
 		IsMorePage: is_more_page,
 	} = props
 	const add_btn_ref = useRef<HTMLButtonElement>(null)
+	const neuter_btn_ref = useRef<HTMLButtonElement>(null)
 	const delete_btn_ref = useRef<HTMLButtonElement>(null)
 
 	useEffect(() => {
@@ -35,17 +41,40 @@ export default function TagCat(props: Props) {
 			return
 		}
 		add_btn_ref.current?.addEventListener('click', handle_add)
-		add_btn_ref.current?.addEventListener('keydown', (e) =>
-			e.stopPropagation()
-		)
+		add_btn_ref.current?.addEventListener('keydown', (e) => e.stopPropagation())
 
 		return () => {
 			add_btn_ref.current?.removeEventListener('click', handle_add)
-			add_btn_ref.current?.removeEventListener('keydown', (e) =>
-				e.stopPropagation()
-			)
+			add_btn_ref.current?.removeEventListener('keydown', (e) => e.stopPropagation())
 		}
 	}, [addable])
+
+	useEffect(() => {
+		if (!neuterable) {
+			return
+		}
+		neuter_btn_ref.current?.addEventListener('click', handle_neuter)
+		neuter_btn_ref.current?.addEventListener('keydown', (e) => e.stopPropagation())
+
+		return () => {
+			neuter_btn_ref.current?.removeEventListener('click', handle_neuter)
+			neuter_btn_ref.current?.removeEventListener('keydown', (e) => e.stopPropagation())
+		}
+	}, [neuterable])
+
+	useEffect(() => {
+		if (!removable) {
+			return
+		}
+
+		delete_btn_ref.current?.addEventListener('click', handle_delete)
+		delete_btn_ref.current?.addEventListener('keydown', (e) => e.stopPropagation())
+
+		return () => {
+			delete_btn_ref.current?.removeEventListener('click', handle_delete)
+			delete_btn_ref.current?.removeEventListener('keydown', (e) => e.stopPropagation())
+		}
+	}, [removable])
 
 	async function handle_add(e: MouseEvent) {
 		e.preventDefault()
@@ -54,23 +83,12 @@ export default function TagCat(props: Props) {
 		props.AddedSignal.value = cat
 	}
 
-	useEffect(() => {
-		if (!removable) {
-			return
-		}
+	async function handle_neuter(e: MouseEvent) {
+		e.preventDefault()
 
-		delete_btn_ref.current?.addEventListener('click', handle_delete)
-		delete_btn_ref.current?.addEventListener('keydown', (e) =>
-			e.stopPropagation()
-		)
-
-		return () => {
-			delete_btn_ref.current?.removeEventListener('click', handle_delete)
-			delete_btn_ref.current?.removeEventListener('keydown', (e) =>
-				e.stopPropagation()
-			)
-		}
-	}, [removable])
+		if (!props.NeuteredSignal) return
+		props.NeuteredSignal.value = cat
+	}
 
 	async function handle_delete(e: MouseEvent) {
 		e.preventDefault()
@@ -81,8 +99,8 @@ export default function TagCat(props: Props) {
 
 	return (
 		<li
-			title={addable ? `Add '${cat}' to cats filters` : ''}
-			class={`cat${addable ? ' addable' : ''}${is_nsfw ? ' nsfw' : ''}${fat ? ' fat' : ''}${is_more_page ? ' more' : ''}`}
+			title={'Filtering for: ' + cat}
+			class={`cat${addable ? ' addable' : ''}${neuterable ? ' neuterable' : ''}${neutered ? ' neutered' : ''}${removable ? ' removable' : ''}${is_new_link_page ? ' new' : ''}${is_nsfw ? ' nsfw' : ''}${fat ? ' fat' : ''}${is_more_page ? ' more' : ''}`}
 		>
 			{href ? (
 				<>
@@ -98,22 +116,19 @@ export default function TagCat(props: Props) {
 
 					{removable && props.DeletedSignal ? (
 						<button
-							// without type='button' the click event handler will
-							// go off even when you have the input field focused
-							// and hit "Enter" because it's treated as a form
-							// submission
+							// without type='button' the click event handler fires
+							// even when you have the input field focused and hit
+							// "Enter"
 							type='button'
 							ref={delete_btn_ref}
-							title={`Remove '${cat}'`}
+							title={`Remove '${cat}'${neutered ? ' from neutered cats' : ''}`}
 							class='img-btn'
 						>
-							<img
-								src='../../../delete.svg'
-								height={20}
-								width={20}
-							/>
+							<img src='../../../delete.svg' height={20} width={20} />
 						</button>
-					) : addable && props.AddedSignal ? (
+					) : null}
+
+					{addable && props.AddedSignal ? (
 						<button
 							type='button'
 							ref={add_btn_ref}
@@ -129,6 +144,12 @@ export default function TagCat(props: Props) {
 								height={20}
 								width={20}
 							/>
+						</button>
+					) : null}
+
+					{neuterable && props.NeuteredSignal ? (
+						<button type='button' ref={neuter_btn_ref} title={`Neuter '${cat}'`} class='img-btn neuter-btn'>
+							<img src='../../../neuter.svg' height={16} width={16} />
 						</button>
 					) : null}
 				</>

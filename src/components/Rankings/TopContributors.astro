@@ -13,6 +13,7 @@ if (url_params) {
 	const params = new URLSearchParams()
 	const {
 		Cats: cats,
+		NeuteredCats: neutered_cats,
 		Period: period,
 		SortBy: sort_by,
 		IncludeNSFW: include_nsfw,
@@ -22,6 +23,9 @@ if (url_params) {
 	} = url_params
 	if (cats) {
 		params.set('cats', cats)
+	}
+	if (neutered_cats) {
+		params.set('neutered', neutered_cats)
 	}
 	if (period && period !== 'all') {
 		params.set('period', period)

@@ -1,0 +1,7 @@
+<!-- https://icon-sets.iconify.design/solar/forbidden-circle-linear/ -->
+<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24">
+	<g stroke="hsl(180, 33%, 82%)" fill='none' stroke-width="2">
+		<path stroke-linecap="round" d="m18.5 5.5l-13 13" />
+		<circle cx="12" cy="12" r="10" />
+	</g>
+</svg>
