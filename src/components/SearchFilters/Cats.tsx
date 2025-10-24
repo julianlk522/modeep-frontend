@@ -203,7 +203,14 @@ export default function SearchCats(props: Props) {
 		if (event.key === 'Enter' && snippet.length) {
 			event.preventDefault()
 			event.stopPropagation()
-			return verify_and_add_cat(snippet)
+			
+			// ENTER alone adds cat to filters,
+			// SHIFT+ENTER neuters cat 
+			if (event.shiftKey) {
+				verify_and_add_neutered_cat(snippet)
+			} else {
+				verify_and_add_cat(snippet)
+			}
 		}
 	}
 

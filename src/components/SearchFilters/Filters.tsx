@@ -106,10 +106,10 @@ export default function SearchFilters(props: Props) {
 		: '/search'
 	const search_url = params.toString() ? `${base_url}?${params.toString()}` : base_url
 
-	// search by pressing "Enter"
-	// (propagation stopped within SearchCats if "Enter" is used to add a cat)
+	// search by pressing ENTER
+	// (propagation stopped within SearchCats if ENTER is used to add a cat
+	// or SHIFT+ENTER to neuter a cat)
 	const scour_anchor_ref = useRef<HTMLAnchorElement>(null)
-
 	const handle_keydown = useCallback(
 		(e: KeyboardEvent) => {
 			if (e.key === 'Enter' && has_changed_filters) {
