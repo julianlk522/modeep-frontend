@@ -154,7 +154,8 @@ export default function SearchCats(props: Props) {
 		if (has_max_num_cats) {
 			set_error('Max number of cats reached :(')
 			return
-		} else if (cat.length > CATS_CHAR_LIMIT) {
+		}
+		if (cat.length > CATS_CHAR_LIMIT) {
 			set_error('Cat is too long :(')
 			return
 		}
@@ -165,6 +166,9 @@ export default function SearchCats(props: Props) {
 		if (selected_cats.includes(cat)) {
 			set_error('You have that already, doofus')
 			return
+		}
+		if (selected_neutered_cats && set_selected_neutered_cats !== undefined && selected_neutered_cats.includes(cat)) {
+			set_selected_neutered_cats((prev: string[]) => prev.filter((c) => c !== cat))
 		}
 		set_selected_cats((prev) => {
 			const next = [...prev, cat].sort((a, b) => a.localeCompare(b))
@@ -179,7 +183,8 @@ export default function SearchCats(props: Props) {
 		if (has_max_num_cats) {
 			set_error('Max number of cats reached :(')
 			return
-		} else if (cat.length > CATS_CHAR_LIMIT) {
+		}
+		if (cat.length > CATS_CHAR_LIMIT) {
 			set_error('Cat is too long :(')
 			return
 		}
@@ -190,6 +195,9 @@ export default function SearchCats(props: Props) {
 		if (selected_neutered_cats && selected_neutered_cats.includes(cat)) {
 			set_error('Already neutered :)')
 			return
+		}
+		if (selected_cats.includes(cat)) {
+			set_selected_cats((prev: string[]) => prev.filter((c) => c !== cat))
 		}
 		set_selected_neutered_cats((prev) => {
 			const next = [...prev, cat].sort((a, b) => a.localeCompare(b))

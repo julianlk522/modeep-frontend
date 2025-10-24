@@ -68,8 +68,12 @@ li.cat.addable:has(button.plus-btn:hover) {
 	color: black;
 	background-color: var(--sky);
 
-	button img {
+	button.plus-btn {
 		filter: invert(1);
+	}
+
+	button.neuter-btn {
+		filter: brightness(0.9);
 	}
 }
 
@@ -82,7 +86,7 @@ li.cat.nsfw:not(.addable, :has(a)) {
 	background-color: var(--danger);
 	color: black;
 
-	button {
+	button.plus-btn {
 		filter: invert(1);
 	}
 }
@@ -103,6 +107,10 @@ li.cat.neuterable:has(button.neuter-btn:hover) {
 
 	button {
 		filter: invert(1);
+	}
+
+	button.neuter-btn {
+		filter: brightness(0.25);
 	}
 }
 
