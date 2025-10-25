@@ -109,7 +109,7 @@ export default function NewLinks(props: Props) {
 		return
 	}
 
-	// can remove any errors if the user starts adding / removing cats
+	// Remove any errors after adding / removing cats
 	useEffect(() => {
 		set_error(undefined)
 		set_dupe_url(undefined)
@@ -140,7 +140,7 @@ export default function NewLinks(props: Props) {
 						IsNewLinkPage
 						SelectedCats={selected_cats}
 						SetSelectedCats={set_selected_cats}
-						Removable
+						Editable
 						SubmittedLinks={submitted_links}
 					/>
 

@@ -6,35 +6,38 @@ import TagCat from '../Tag/TagCat'
 import './Cats.css'
 
 interface Props {
-	Addable?: boolean
-	Removable?: boolean
-	IsHomePage?: boolean
-	TmapOwner?: string
-	IsTagPage?: boolean
 	SelectedCats: string[]
 	SetSelectedCats: Dispatch<StateUpdater<string[]>>
+	Addable?: boolean
+	IsHomePage?: boolean
+	TmapOwner?: string
 
-	// Searches only (/search, /more, or user Treasure Maps)
+	// /search, /more, or user Treasure Map only
+	// (just searches, not while adding cats)
 	SelectedNeuteredCats?: string[]
 	SetSelectedNeuteredCats?: Dispatch<StateUpdater<string[]>>
 
 	// /new only
 	IsNewLinkPage?: boolean
 	SubmittedLinks?: types.Link[]
+
+	// /tag/{link_id} only
+	IsTagPage?: boolean
+	Editable?: boolean
 }
 
 export default function SearchCats(props: Props) {
 	const {
-		Removable: removable,
-		IsHomePage: is_home_page,
-		TmapOwner: tmap_owner,
-		IsNewLinkPage: is_new_link_page,
-		IsTagPage: is_tag_page,
 		SelectedCats: selected_cats,
 		SetSelectedCats: set_selected_cats,
 		SelectedNeuteredCats: selected_neutered_cats = [],
 		SetSelectedNeuteredCats: set_selected_neutered_cats,
+		IsHomePage: is_home_page,
+		TmapOwner: tmap_owner,
+		IsNewLinkPage: is_new_link_page,
 		SubmittedLinks: submitted_links,
+		IsTagPage: is_tag_page,
+		Editable: editable,
 	} = props
 
 	const addable = props.Addable ?? true
@@ -281,11 +284,11 @@ export default function SearchCats(props: Props) {
 							key={cat.Category}
 							Cat={is_home_page ? `${cat.Category} (${cat.Count})` : cat.Category}
 							Count={is_home_page ? undefined : cat.Count}
+							Href={is_home_page ? `/search?cats=${cat.Category}` : undefined}
 							Addable={!is_home_page}
 							AddedSignal={added_cat}
 							Neuterable={props.SelectedNeuteredCats !== undefined}
 							NeuteredSignal={neutered_cat}
-							Href={is_home_page ? `/search?cats=${cat.Category}` : undefined}
 							IsNewLinkPage={is_new_link_page}
 						/>
 					))}
@@ -301,7 +304,7 @@ export default function SearchCats(props: Props) {
 									key={cat}
 									Cat={cat}
 									IsNSFW={cat === 'NSFW'}
-									Removable={removable ?? true}
+									Removable={editable ?? true}
 									DeletedSignal={deleted_cat}
 									Fat
 								/>
@@ -312,13 +315,13 @@ export default function SearchCats(props: Props) {
 											key={cat}
 											Cat={cat}
 											Neutered
-											Removable={removable ?? true}
+											Removable={editable ?? true}
 											DeletedSignal={deleted_cat}
 											Fat
 										/>
 									))
 								: null}
-							{removable && combined_selections.length > 1 ? (
+							{editable && combined_selections.length > 1 ? (
 								<li>
 									<input
 										id='clear-cat-filters'

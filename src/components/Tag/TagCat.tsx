@@ -100,7 +100,7 @@ export default function TagCat(props: Props) {
 	return (
 		<li
 			title={'Filtering for: ' + cat}
-			class={`cat${addable ? ' addable' : ''}${neuterable ? ' neuterable' : ''}${neutered ? ' neutered' : ''}${removable ? ' removable' : ''}${is_new_link_page ? ' new' : ''}${is_nsfw ? ' nsfw' : ''}${fat ? ' fat' : ''}${is_more_page ? ' more' : ''}`}
+			class={`cat${addable ? ' addable' : ''}${neuterable ? ' neuterable' : ''}${neutered ? ' neutered' : ''}${removable ? ' removable' : ''}${is_nsfw ? ' nsfw' : ''}${fat ? ' fat' : ''}${is_more_page ? ' more' : ''}`}
 		>
 			{href ? (
 				<>

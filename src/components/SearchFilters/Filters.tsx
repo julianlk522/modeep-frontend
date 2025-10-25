@@ -145,7 +145,7 @@ export default function SearchFilters(props: Props) {
 					SetSelectedCats={set_cats}
 					SelectedNeuteredCats={neutered_cats}
 					SetSelectedNeuteredCats={set_neutered_cats}
-					Removable
+					Editable
 					TmapOwner={tmap_owner_login_name}
 				/>
 				{is_tmap && cats.length ? (

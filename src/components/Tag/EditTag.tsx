@@ -131,7 +131,7 @@ export default function EditTag(props: Props) {
 					SelectedCats={cats}
 					SetSelectedCats={set_cats}
 					Addable={editing}
-					Removable={editing}
+					Editable={editing}
 				/>
 
 				{!editing 
