@@ -178,6 +178,7 @@ export default function SearchCats(props: Props) {
 			prev_combined_selections_ref.current = [...next, ...(selected_neutered_cats || [])]
 			return next
 		})
+		set_snippet('')
 		set_error(undefined)
 	}
 
@@ -207,6 +208,7 @@ export default function SearchCats(props: Props) {
 			prev_combined_selections_ref.current = [...selected_cats, ...next]
 			return next
 		})
+		set_snippet('')
 		set_error(undefined)
 	}
 
