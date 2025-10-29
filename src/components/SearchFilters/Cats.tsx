@@ -8,7 +8,6 @@ import './Cats.css'
 interface Props {
 	SelectedCats: string[]
 	SetSelectedCats: Dispatch<StateUpdater<string[]>>
-	Addable?: boolean
 	IsHomePage?: boolean
 	IsTmapAndOwnerIs?: string
 
@@ -246,7 +245,7 @@ export default function SearchCats(props: Props) {
 
 	return (
 		<>
-			{addable ? (
+			{editable ? (
 				<div id='search-cats-container' class={is_home_page ? 'home' : ''}>
 					{!is_home_page ? <label for='cats'>Cats:</label> : null}
 
@@ -309,7 +308,7 @@ export default function SearchCats(props: Props) {
 									key={cat}
 									Cat={cat}
 									IsNSFW={cat === 'NSFW'}
-									Removable={editable ?? true}
+									Removable={editable}
 									DeletedSignal={deleted_cat}
 									Fat
 								/>
@@ -320,7 +319,7 @@ export default function SearchCats(props: Props) {
 											key={cat}
 											Cat={cat}
 											Neutered
-											Removable={editable ?? true}
+											Removable={editable}
 											DeletedSignal={deleted_cat}
 											Fat
 										/>

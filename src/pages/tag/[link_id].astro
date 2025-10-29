@@ -41,7 +41,7 @@ const page_title = `Tags for ${link.Summary ? link.Summary : link.URL}`
 	</script>
 	<main>
 		<section>
-			<Link client:load Link={link} IsTagPage={true} Token={token} User={user} />
+			<Link client:load Link={link} IsTagPage Token={token} User={user} />
 		</section>
 
 		{
