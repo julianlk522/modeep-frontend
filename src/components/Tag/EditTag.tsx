@@ -127,21 +127,15 @@ export default function EditTag(props: Props) {
 
 				{error ? <p class='error'>{error}</p> : null}
 
-				<SearchCats
-					SelectedCats={cats}
-					SetSelectedCats={set_cats}
-					Addable={editing}
-					Editable={editing}
-				/>
+				<SearchCats SelectedCats={cats} SetSelectedCats={set_cats} Editable={editing} IsTagPage />
 
-				{!editing 
-					? your_tag 
-						? (<p class='last-updated'>
-							{format_long_date(your_tag.LastUpdated)}
-						</p>
-						) : <p style='margin-top: 0;'>(not tagged)</p>
-					: null
-				}
+				{!editing ? (
+					your_tag ? (
+						<p class='last-updated'>{format_long_date(your_tag.LastUpdated)}</p>
+					) : (
+						<p style='margin-top: 0;'>(not tagged)</p>
+					)
+				) : null}
 
 				<>
 					<button

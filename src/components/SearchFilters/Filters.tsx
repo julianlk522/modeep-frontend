@@ -146,7 +146,7 @@ export default function SearchFilters(props: Props) {
 					SelectedNeuteredCats={neutered_cats}
 					SetSelectedNeuteredCats={set_neutered_cats}
 					Editable
-					TmapOwner={tmap_owner_login_name}
+					IsTmapAndOwnerIs={tmap_owner_login_name}
 				/>
 				{is_tmap && cats.length ? (
 					<p id='transfer-to-global-map'>

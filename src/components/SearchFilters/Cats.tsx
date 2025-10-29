@@ -10,7 +10,7 @@ interface Props {
 	SetSelectedCats: Dispatch<StateUpdater<string[]>>
 	Addable?: boolean
 	IsHomePage?: boolean
-	TmapOwner?: string
+	IsTmapAndOwnerIs?: string
 
 	// /search, /more, or user Treasure Map only
 	// (just searches, not while adding cats)
@@ -33,21 +33,21 @@ export default function SearchCats(props: Props) {
 		SelectedNeuteredCats: selected_neutered_cats = [],
 		SetSelectedNeuteredCats: set_selected_neutered_cats,
 		IsHomePage: is_home_page,
-		TmapOwner: tmap_owner,
+		IsTmapAndOwnerIs: tmap_owner,
 		IsNewLinkPage: is_new_link_page,
 		SubmittedLinks: submitted_links,
 		IsTagPage: is_tag_page,
-		Editable: editable,
 	} = props
+	const editable = props.Editable ?? true
+	// technically adding or editing... that's a bit wordy for the URL params
+	const you_are_adding_cats = is_new_link_page || is_tag_page || tmap_owner !== undefined
 
-	const addable = props.Addable ?? true
-	const input_ref = useRef<HTMLInputElement>(null)
-	const combined_selections = useMemo(() => 
-		[...selected_cats, ...(selected_neutered_cats || [])],
-		[selected_cats, selected_neutered_cats]
+	const combined_selections = useMemo(
+		() => [...selected_cats, ...(selected_neutered_cats || [])],
+		[selected_cats, selected_neutered_cats],
 	)
-	const has_max_num_cats = selected_cats.length >= CATS_PER_TAG_LIMIT ||
-		(selected_neutered_cats?.length || 0) >= CATS_PER_TAG_LIMIT
+	const has_max_num_cats =
+		selected_cats.length >= CATS_PER_TAG_LIMIT || (selected_neutered_cats?.length || 0) >= CATS_PER_TAG_LIMIT
 
 	const [recommended_cats, set_recommended_cats] = useState<types.CatCount[] | undefined>(undefined)
 	const [snippet, set_snippet] = useState<string>('')
@@ -62,13 +62,11 @@ export default function SearchCats(props: Props) {
 		if (tmap_owner) {
 			snippet_params.set('tmap', tmap_owner)
 		}
-		if (is_new_link_page) {
-			snippet_params.set('is_new_link_page', 'true')
+		if (you_are_adding_cats) {
+			snippet_params.set('adding_cats', 'true')
 		}
 		if (selected_cats.length) {
-			const encoded_selected_cats = selected_cats
-				.map((cat) => encodeURIComponent(cat))
-				.join(',')
+			const encoded_selected_cats = selected_cats.map((cat) => encodeURIComponent(cat)).join(',')
 			snippet_params.set('cats', encoded_selected_cats)
 		}
 		if (selected_neutered_cats && selected_neutered_cats.length) {
@@ -170,7 +168,11 @@ export default function SearchCats(props: Props) {
 			set_error('You have that already, doofus')
 			return
 		}
-		if (selected_neutered_cats && set_selected_neutered_cats !== undefined && selected_neutered_cats.includes(cat)) {
+		if (
+			selected_neutered_cats &&
+			set_selected_neutered_cats !== undefined &&
+			selected_neutered_cats.includes(cat)
+		) {
 			set_selected_neutered_cats((prev: string[]) => prev.filter((c) => c !== cat))
 		}
 		set_selected_cats((prev) => {
@@ -234,6 +236,7 @@ export default function SearchCats(props: Props) {
 		set_recommended_cats(undefined)
 	}, [submitted_links])
 
+	const input_ref = useRef<HTMLInputElement>(null)
 	useEffect(() => {
 		if (!is_tag_page) return
 		input_ref.current?.focus()
