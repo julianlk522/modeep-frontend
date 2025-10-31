@@ -1,109 +1,136 @@
 ---
-import cornucopia from '../images/cornucopia.webp'
 import WithFooter from '../layouts/WithFooter.astro'
 ---
 
-<WithFooter Title='What is Modeep? Why might you care?'>
+<WithFooter Title='What is Modeep? Who cares?'>
 	<main>
-		<h1>The Internet rocks.</h1>
+		<h1>
+			MODEEP: <span style='font-weight: normal;'
+				>MOdular filtration and Decentralized Evaluation of EPic internet treasure</span
+			>
+		</h1>
 
-		<p style='text-align: center;'>This site is to help the best parts reach people who would love them.</p>
-
-		<img
-			id='cornucopia'
-			src={cornucopia.src}
-			title='In this elaborate feast, every guest finds something delicious.'
-		/>
-
-		<section style='padding-top: 0;'>
+		<section>
 			<p>
-				Our precious treasure trove constantly introduces knowledge, joy, curiosity, beauty, and meaning to all
-				manner of visitors. An ocean of opportunity connecting interests quickly and cheaply to the most
-				appropriate and extraordinary resources for them available anywhere in the world, an exclusive
-				21st-century privilege.
-			</p>
-
-			<p>
-				<strong>Yet, it's easy to miss utterly indispensable things.</strong>.
+				Modeep is an open source search engine optimized for precise visualization and traversal of manually
+				curated, high-value Internet links.
 			</p>
 		</section>
 
 		<section>
-			<h2>
-				MODEEP: <span style='font-weight: normal;'
-					>MOdular filtration and Decentralized Evaluation of EPic internet treasure</span
-				>
-			</h2>
+			<h2>Motivation</h2>
 
 			<p>
-				Modeep marks the hiding places of treasured links found by brave web wanderers. It's purpose is to
-				curate, organize, and help you discover great things online that engage your heart and mind.
+				The Internet constantly introduces knowledge, joy, curiosity, beauty, and meaning to all manner of
+				visitors. It holds an enormous sum of greatness and potential. <strong
+					>Yet, it's so easy to miss fantastic and indispensable parts</strong
+				>, particularly within specific niches and intersections of niches. Gems of imaginative genius and/or
+				radical utility lie idle somewhere across an impenetrable ocean, ready to brighten your life but without
+				the means to be noticed. They remain obscure and underappreciated, and their great potential is wasted.
+				What a tragedy! Exceptional webpages deserve proper commemoration, for their own sake and for yours.
 			</p>
 
 			<p>
-				<strong>Epic internet treasure</strong> can be anything anyone cares about. Any topic is fair game, and importantly,
-				any <em>combination of topics</em> can be dynamically indexed.
+				To fix this, the highlights need to be documented and indexed. But crawling and algorithmically indexing
+				has not worked for 2 important reasons:
 			</p>
 
-			<p>
-				Recommendations are produced by an open user base and its consensus, to the extent that that's possible.
-				There's still an algorithm, but it's minimal, <a href='https://github.com/julianlk522/modeep-backend'
-					>open source</a
-				>, and deliberately <a href='/about/how#global-tag-calculation'>transparent</a>. Links are evaluated by
-				simple, predictable rules and aggregate feedback interactions like clicks, stars, and <a
-					href='/about/how#cats'>cat</a
-				> assignments.
-			</p>
+			<ol>
+				<li>
+					<strong
+						>Misjudging the tradeoff between breadth and accuracy, and offering too little control over it</strong
+					>. It's not helpful to get 1,000,000+ pages of results. Nobody is looking through all that. Nor
+					should they because it doesn't make sense: there aren't 1,000,000 relevant pages for anything. Only
+					very vague topics, e.g., "funny" are that broad, and why settle for vagueness? It would be easier to
+					just be more specific about what you want ("funny" and "gaming" and "fails", ...) so you can rule
+					out and skip poor matches. Literally, you <em>can</em> search "funny gaming fails" in most search engines,
+					but there's no guarantee that the output will be exclusive to that intersection of themes. We routinely
+					are forced to under-specify due to lack of precise parameters, get way too many results, ignore 99.9999%
+					of them and select from the first few, and finally accept something that fails to capture the full intent
+					of our request. That's dumb! It's more helpful and efficient to prioritize accuracy. However it's nice
+					to be able to browse: to start with a broad scope and narrow it progressively based on what's available.
+					The best of both worlds is to provide flexible search precision, where it can be scaled up or down through
+					optional parameters to meet changing needs.
+				</li>
 
-			<p>
-				<a href='/about/how'>Learn more</a>
-			</p>
+				<li>
+					<strong>A single point of failure</strong>. Even if relevancy to <em>all</em> keywords were guaranteed,
+					any keywords said to be associated with a link, and any determination of its quality, are still just
+					<em>what the crawler / algorithm unilaterally decides</em>, which is only tenuously reliable. A
+					sample size of one gives an incomplete representation of the whole of anything, even if it's a
+					high-quality source, and a voracious web crawler is no exception. Important choices (like choosing
+					the best resource) warrant multiple perspectives to guarantee accuracy. Which perspectives are worth
+					considering? It depends, and it's good to have options. Sometimes consensus is preferred so you
+					might consider everyone's inputs equally. Sometimes it's better for a subjective expert to answer a
+					more subjective request, e.g., for something really funny, what does the funniest person you know
+					recommend? It may have nothing to do with expertise: your best friend knows you well and you trust
+					them, what do <em>they</em> think is valuable? Their picks are likely worth more to you than the tellings
+					of a program which cannot conceive of your complex personhood. Regardless of subjectivity, corroborated
+					results give the most certainty. If you want the "funniest dog video ever," to you, would you rather
+					ask your 1 search engine of choice or 10 close friends?
+				</li>
+			</ol>
 		</section>
 
 		<section>
-			<h2>Benefits</h2>
+			<h2>How <em>should</em> a search engine work?</h2>
 
 			<ul>
 				<li>
-					<strong>Objective, relevant recommendations.</strong> Link sorting and ranking are decided by cumulative
-					user interactions and other simple metadata, not an opaque algorithm. Filtering to match various conditions
-					is easy and reliable because searches do exactly what they say they do, nothing more, nothing less. Finding
-					what most people recommend for something is very easy: by default, the most-liked (starred) links from
-					any search go first. Because fairness and accountability are crucial in this exchange, Modeep is <a
-						href='https://github.com/julianlk522/modeep-backend'>open</a
-					> and made to be easily understood.
+					Draw from links curated directly by Internet users, ranked by how much they have been publicly
+					vouched for.
 				</li>
 
 				<li>
-					<strong>Maximal search precision.</strong> Matching <em>all</em>&mdash;not <em>any</em>&mdash; of
-					your keywords (cats). In exchange for not getting an endless feed to scroll, you get sniper-like
-					concentration on the few most truly noteworthy items for your inquiry. Incrementally adding or
-					removing specificity by <a href='/about/how#stacking-cats'>stacking</a> or un-stacking cats lets you
-					fine-tune the breadth of your searches to be just right.
+					Infinitely many subjective search views: letting people decide link ratings and classifications
+					which can then be either independently explored or amalgamated into explorable global
+					averages/aggregates.
+				</li>
+
+				<li>Fine-grained search parameters, which can be scoped to subjective or global views.</li>
+
+				<li>
+					Snapshots of the most frequent themes from within specific search results for real-time, high-level
+					overviews of active subcategories.
+					<ul>
+						<li>
+							with a simple interface for including and excluding subcategories, for rapid incremental
+							specificity adjustments.
+						</li>
+					</ul>
 				</li>
 
 				<li>
-					<strong>No distractions.</strong> Modeep is more like a library or art gallery than a bar&mdash;an efficient
-					pipeline for accessing the documented world. No being inundated with obnoxious ads or other unsolicited
-					fluff. You're encouraged to effortlessly locate specific material using specialized search tools, or
-					to wander amid new ideas and see what looks interesting. Comments, direct messaging, and other fun but
-					inappropriate attention-callers are absent to help make this a safe sanctuary for enjoying purposefully
-					curated online delights.
+					<a href='https://github.com/julianlk522/modeep-backend'>Open source</a> engine.
 				</li>
+
+				<li>Not polluting the experience with paid placement or other ad garbage.</li>
 			</ul>
+
+			<p>Now that's more like it!</p>
+
+			<br />
+
+			<p>
+				Good news: that's Modeep in a nutshell. It was built to organize and improve the accessibility of
+				high-value resources, while maintaining transparency, accuracy, subjectivity, and minimal noise.
+			</p>
+
+			<p></p>
+			<p>
+				<a href='/about/how'>Learn more</a> about how it works.
+			</p>
 		</section>
 
 		<section>
 			<h2>Seen something great?</h2>
 
-			<p>Broad input helps all kinds of people discover and enjoy web treasures.</p>
-
 			<p>
-				Consider <a href='/new'>showing off a cool thing you've found</a>. Anything at all. If you like it,
-				someone else will too.
+				Consider <a href='/new'>showing off a cool thing you found</a>. Anything at all. If you like it then
+				someone else would too, and you could make their day by sharing it.
 			</p>
 
-			<p>Otherwise, sit back and enjoy the goodies!</p>
+			<p>Otherwise sit back and enjoy the treasure!</p>
 		</section>
 	</main>
 </WithFooter>
@@ -113,17 +140,13 @@ import WithFooter from '../layouts/WithFooter.astro'
 		padding: 1rem 0;
 	}
 
-	img {
-		display: flex;
-		margin: 0 auto;
+	p,
+	li {
+		font-size: 1.1rem;
 	}
 
-	img#cornucopia {
-		max-height: 150px;
-		margin-bottom: 1rem;
-	}
-
-	ul {
+	ul,
+	ol {
 		margin-bottom: 0;
 
 		li {
@@ -133,13 +156,7 @@ import WithFooter from '../layouts/WithFooter.astro'
 
 	@media (min-width: 480px) {
 		section {
-			padding: 3rem 0 1rem;
-		}
-	}
-
-	@media (min-width: 680px) {
-		img#cornucopia {
-			max-height: 200px;
+			padding: 2rem 0;
 		}
 	}
 </style>
