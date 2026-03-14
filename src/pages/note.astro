@@ -24,28 +24,60 @@ import WithFooter from '../layouts/WithFooter.astro'
 				I can. I hope people will discover and use it, and recommend it to others. (If you would like to help
 				with that, please <a id='contact' href=''>contact me</a>.)
 			</p>
-			<div style='display: flex'>
-				<p>
-					I also envision modeep as an especially useful resource to find information and community around
-					mental health and suicide prevention. Those who suffer from mental health challenges, as Julian did,
-					may feel very alone. It may take too much energy to seek out all the help they need. But it’s not
-					that hard to surf the internet, especially with some pointers along the way. I hope the resources on
-					modeep—along with countless others that are available—may provide some solidarity and ways forward.
-					I encourage users to add links that may be helpful for navigating mental health, suicide ideation,
-					or its painful aftermath.
-				</p>
-				<img src='/setup.JPEG' style='width: 20%; margin: 0px 100px;' />
-			</div>
-			<p>
-				I wish—oh, do I wish—that I had found more ways to help Julian. By maintaining modeep and, though it,
-				highlighting mental health and suicide prevention resources, I hope perhaps to help someone else.
+			<p id='one'>
+				I also envision modeep as an especially useful resource to find information and community around mental
+				health and suicide prevention. Those who suffer from mental health challenges, as Julian did, may feel
+				very alone. It may take too much energy to seek out all the help they need. But it's not that hard to
+				surf the internet, especially with some pointers along the way. I hope the resources on modeep—along
+				with countless others that are available—may provide some solidarity and ways forward. I encourage users
+				to add links that may be helpful for navigating mental health, suicide ideation, or its painful
+				aftermath.
+				<br />
+				<br />
+				I wish—oh, do I wish—that I had found more ways to help Julian. By maintaining modeep and, though it, highlighting
+				mental health and suicide prevention resources, I hope perhaps to help someone else.
 			</p>
 			<p>Lisa Lindsay (Julian’s mom)</p>
 			<p>March 2026</p>
-			<div style='display: flex; justify-content:space-around;F'>
+			<div style='display: flex; justify-content:space-around; padding-top: 1rem;'>
 				<img src='/patagonia-2019.jpeg' style='width:30%;' />
+				<img src='/setup.JPEG' style='width:30%;' />
 				<img src='/whiteboard.JPEG' style='width:30%;' />
 			</div>
 		</section>
 	</main>
 </WithFooter>
+
+<style>
+	section {
+		padding: 1rem 0;
+	}
+
+	p,
+	li {
+		font-size: 1.1rem;
+	}
+
+	ul,
+	ol {
+		margin-bottom: 0;
+
+		li {
+			margin-top: 1rem;
+		}
+	}
+
+	#flex {
+		display: flex;
+	}
+
+	#two {
+		width: 100px;
+	}
+
+	@media (min-width: 480px) {
+		section {
+			padding: 2rem 0;
+		}
+	}
+</style>
