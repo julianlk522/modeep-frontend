@@ -9,7 +9,7 @@ export default defineConfig({
 
   integrations: [
       preact({
-          devtools: true,
+          devtools: false,
       }),
 	],
 
