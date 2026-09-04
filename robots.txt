@@ -1,0 +1,14 @@
+User-agent: *
+Crawl-delay: 10
+
+User-agent: Baiduspider
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: meta-webindexer
+Disallow: /
+
+User-agent: meta-externalagent
+Disallow: /

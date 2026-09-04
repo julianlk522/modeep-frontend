@@ -29,6 +29,11 @@ if (!get_tags_resp.Response || get_tags_resp.RedirectTo) {
 }
 const data: TagPage = await get_tags_resp.Response.json()
 const { Link: link, YourTag: your_tag, TagRankings: tags } = data
+
+if (!link || !tags) {
+	return Astro.redirect('/404')
+	}
+
 link.TagCount = tags.length
 
 const page_title = `Tags for ${link.Summary ? link.Summary : link.URL}`

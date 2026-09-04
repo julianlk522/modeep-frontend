@@ -4,7 +4,25 @@ import type { VerifyErrors } from 'jsonwebtoken'
 import jwt from 'jsonwebtoken'
 import { API_URL } from './constants'
 
-export const onRequest = sequence(handle_jwt_auth, handle_redirect_action)
+export const onRequest = sequence(handle_ip_logging, handle_jwt_auth, handle_redirect_action)
+
+async function handle_ip_logging(
+	context: APIContext,
+	next: () => Promise<Response>
+) {
+	const ip =
+		context.request.headers.get('x-forwarded-for') ||
+		context.clientAddress ||
+		'unknown'
+
+	const userAgent = context.request.headers.get('user-agent') || 'Unknown User-Agent';
+
+	console.log(
+		`[${new Date().toISOString()}] ${ip} ${userAgent} ${context.request.method} ${context.request.url}`
+	)
+
+	return next()
+}
 
 async function handle_jwt_auth(
 	context: APIContext,
